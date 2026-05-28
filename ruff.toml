@@ -1,6 +1,10 @@
 target-version = "py39"
 line-length = 100
 
+# Vendored third-party competition bots (e.g. the UTS_Imass 2019 server) are not
+# our code and are not linted/formatted.
+extend-exclude = ["microrts_agent/tournaments/competition_winners"]
+
 [lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4"]
 ignore = ["E501"]  # line length is handled by the formatter

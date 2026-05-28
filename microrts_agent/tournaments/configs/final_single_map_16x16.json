@@ -1,0 +1,38 @@
+{
+  "maps": [
+    "maps/open_competition/basesWorkers16x16A.xml"
+  ],
+  "ais": [
+    "agent:../outputs/runs/single_map/BestRL-350M",
+    "agent:../outputs/runs/single_map/PhasedRL-300M",
+    "agent:../outputs/runs/single_map/GridNet-300M",
+    "agent:../outputs/runs/single_map/TopFeatsRL-100M",
+    "agent:../outputs/runs/single_map/AllFeatsRL-100M",
+    "RandomBiasedAI",
+    "POLightRush",
+    "POWorkerRush",
+    "NaiveMCTS",
+    "CoacAI",
+    "Mayari",
+    "MixedBot",
+    "Tiamat",
+    "Droplet",
+    "ObiBotKenobi",
+    "StrategyTactics",
+    "TMA",
+    "RAISocketAI",
+    "UtsImass"
+  ],
+  "iterations": 5,
+  "maxGameLengths": [4000],
+  "timeBudget": 100,
+  "iterationsBudget": -1,
+  "preAnalysisBudget": 3600000,
+  "fullObservability": true,
+  "selfMatches": false,
+  "timeoutCheck": false,
+  "runGC": true,
+  "saveTraces": false,
+  "saveGameLogs": true,
+  "slowAIs": ["RAISocketAI", "NaiveMCTS", "Droplet", "Tiamat", "MixedBot", "StrategyTactics"]
+}
