@@ -46,6 +46,24 @@ imperative present ("add", not "added"). The body explains the *why*; the
 
 Direct pushes to `main` are blocked by branch protection.
 
+## Local checks
+
+Before pushing:
+
+```bash
+uvx ruff@0.15.14 check .      # lint
+uvx ruff@0.15.14 format .     # auto-format
+```
+
+Or install the hooks once so they run on every commit:
+
+```bash
+pipx install pre-commit && pre-commit install
+```
+
+CI runs the same `ruff check` + `ruff format --check` on every PR; it must be green
+before merge.
+
 ## Merge strategy
 
 **Squash & merge** — one PR = one commit on `main`, linear history.
