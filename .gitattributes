@@ -1,0 +1,15 @@
+# Normalize line endings to LF on checkin
+* text=auto eol=lf
+*.sh text eol=lf
+
+# Binary files: no diff, no EOL normalization
+*.jar binary
+*.pdf binary
+*.png binary
+*.ttf binary
+*.otf binary
+*.pkl binary
+
+# Vendored third-party code: exclude from GitHub language statistics
+microrts_agent/microrts/** linguist-vendored
+microrts_agent/tournaments/competition_winners/** linguist-vendored

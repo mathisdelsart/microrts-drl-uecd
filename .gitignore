@@ -1,0 +1,44 @@
+# Ignore macOS system files, build artifacts, logs, Python cache
+.DS_Store
+bin/
+build/
+out/
+*.class
+*.log
+*.aux
+__pycache__/
+*.pyc
+.vscode/
+.claude/
+
+# All generated outputs (runs, recordings, tournament results, comparisons)
+outputs/
+
+# Build artifacts
+*.whl
+*.zip
+*.tfevents.*
+.java-build/
+
+# Model checkpoints / experiment tracking
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+wandb/
+
+# Report build artifacts (LaTeX)
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.run.xml
+*.toc
+/**/*.aux
+*.synctex.gz
+
