@@ -1,0 +1,41 @@
+#!/bin/bash
+#SBATCH --job-name=bc_te
+#SBATCH --output=slurm-bc-te-%j.out
+#SBATCH --error=slurm-bc-te-%j.err
+#SBATCH --time=2:00:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=12
+#SBATCH --mem=32G
+#SBATCH --gres=gpu:1
+#SBATCH --partition=batch
+
+module load Python/3.11 2>/dev/null || module load Python/3.9
+module load Java/17 2>/dev/null || module load Java/11
+module load CUDA/11.8 2>/dev/null || module load CUDA/12.1
+source $HOME/microrts-drl-uecd/cluster_venv/bin/activate
+export PYTHONUNBUFFERED=1
+cd $HOME/microrts-drl-uecd
+
+SEED=${SEED:-1}
+BC_RUN_DIR="outputs/runs/bc_v3_s${SEED}"
+mkdir -p "${BC_RUN_DIR}/EVAL"
+
+echo "=== BC+VF Train ==="
+python microrts_agent/bc_train.py \
+    --data outputs/bc_data/bc_chunk_RAISocketAI_*.npz outputs/bc_data/bc_chunk_CoacAI_*.npz outputs/bc_data/bc_chunk_Mayari_*.npz \
+    --architecture unet_entity_cbam_deep \
+    --gelu --epochs 30 --batch-size 128 --lr 1e-4 --vf-coef 0.5 --gamma 0.99 \
+    --seed $SEED --output "$BC_RUN_DIR"
+
+[ $? -ne 0 ] && { echo "ERROR: Train failed"; exit 1; }
+
+echo "=== Eval ==="
+for BOT in RandomBiasedAI POWorkerRush POLightRush CoacAI Mayari; do
+    echo "  vs $BOT..."
+    python microrts_agent/evaluate.py \
+        --agent "$BC_RUN_DIR" --opponent "$BOT" \
+        --nb_games 10 --maps maps/16x16/basesWorkers16x16A.xml --max-steps 4000 \
+        2>&1 | tee "${BC_RUN_DIR}/EVAL/bc_vs_${BOT}.txt"
+done
+
+echo "=== DONE ==="
