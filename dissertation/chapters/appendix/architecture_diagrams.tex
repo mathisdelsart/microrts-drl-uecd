@@ -1,0 +1,645 @@
+\chapter{UECD Architecture: Full Specification}
+\label{app:arch-diagrams}
+
+The simplified \code{UECD} diagram in Chapter~\ref{chap:architectures} (Figure~\ref{fig:arch-cbam-deep}) conveys the overall idea of the architecture (modules, axes addressed, scatter targets) but omits channel widths and intermediate tensor shapes for readability. This appendix provides the fully annotated counterpart (Figure~\ref{fig:arch-uecd-detailed}), making every block, channel count, and tensor dimension explicit. The intent is to allow the \code{UECD} network to be reproduced exactly from the diagram alone, without referring to the source code.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{chapters/appendix/figures/arch_cbam_deep.pdf}
+    \caption[\code{UECD} architecture (fully annotated)]{\code{UECD} architecture (annotated, ${\approx}4.7$\,M parameters at $ch1{=}48$). Encoder (blue): $(2, 3, 4)$ CBAM-ResBlocks with spatial self-attention at the bottleneck (red). Entity Transformer (green): enriches per-unit representations via self-attention, scatters into the bottleneck and \emph{skip2} (dashed green). Decoder (orange): $(3, 2)$ CBAM-ResBlocks with U-Net skip connections ($\oplus$, dashed blue). All tensor dimensions are given; the architecture is map-size agnostic via the critic's adaptive pool.}
+    \label{fig:arch-uecd-detailed}
+\end{figure}
+
+
+% \begin{table}[htbp]
+% \centering
+% \caption{Architecture progression (reproduced from Table~\ref{tab:arch-summary} for convenience).}
+% \label{tab:arch-summary-app}
+% \small
+% \begin{tabularx}{\textwidth}{@{}l r r X l@{}}
+% \toprule
+% \textbf{Architecture} & \textbf{Params} & \textbf{SPS\textsuperscript{\dag}} & \textbf{Key addition} & \textbf{Diagram} \\
+% \midrule
+% GridNet & 838k & 2,688 & Baseline encoder-decoder & Fig.~\ref{fig:arch-gridnet} \\
+% IMPALA & 1.02M & 2,416 & Residual blocks & Fig.~\ref{fig:arch-impala} \\
+% IMPALA-Entity & 1.37M & 1,903 & + Entity Transformer & Fig.~\ref{fig:arch-impala-entity} \\
+% UNet & 2.59M & 2,121 & + U-Net skip connections + SE & Fig.~\ref{fig:arch-unet} \\
+% UNet-Entity & 2.90M & 1,518 & + Entity scatter to UNet & Fig.~\ref{fig:arch-unet-entity} \\
+% UNet-Entity-CBAM & 2.90M & 1,289 & + Spatial attention (CBAM) & Fig.~\ref{fig:arch-unet-entity-cbam} \\
+% U-Net-Entity-CBAM-Deep & 4.72M & 1,176 & + Deeper bottleneck + self-attn & Fig.~\ref{fig:arch-cbam-deep} \\
+% \bottomrule
+% \multicolumn{5}{@{}l}{\textsuperscript{\dag}\scriptsize Steps per second, measured on \emph{basesWorkers16x16A} with 24 environments.}
+% \end{tabularx}
+% \end{table}
+
+% % \newpage
+
+% \begin{figure}[!ht]
+%     \centering
+%     \resizebox{0.55\textwidth}{!}{%
+%         \begin{tikzpicture}[
+%             >=latex,
+%             block/.style={draw, rounded corners=2pt, minimum width=2.4cm, minimum height=0.6cm,
+%                           font=\tiny, align=center, thick},
+%             conv/.style={block, fill=blue!12},
+%             pool/.style={block, fill=blue!22},
+%             deconv/.style={block, fill=orange!18},
+%             head/.style={block, fill=gray!12, minimum width=2.0cm},
+%             io/.style={block, fill=yellow!12},
+%             flow/.style={->, thick},
+%             lbl/.style={font=\tiny\itshape, text=gray!60!black},
+%             groupbox/.style={draw, rounded corners=6pt, thick, inner sep=6pt},
+%             grouplbl/.style={font=\scriptsize\bfseries, inner sep=2pt},
+%         ]
+
+%         \def\EX{-2.4}  \def\AX{1.8}  \def\CX{5.4}
+%         \def\ryA{0} \def\ryB{-1.1} \def\ryC{-2.2} \def\ryD{-3.3}
+%         \def\ryE{-4.4} \def\ryF{-5.5} \def\ryG{-6.6} \def\ryH{-7.7} \def\ryI{-8.8}
+%         \def\routeY{-9.8}
+
+%         \node[io] at (\EX, \ryA) (obs) {Observation $(B, C, 16, 16)$};
+
+%         \node[conv] at (\EX, \ryB) (c1) {Conv $3{\times}3$\\$(B, C, 16, 16) \to (B, 32, 16, 16)$};
+%         \node[pool] at (\EX, \ryC) (p1) {$\downarrow$ MaxPool stride-2, ReLU\\$(B, 32, 16, 16) \to (B, 32, 8, 8)$};
+%         \node[conv] at (\EX, \ryD) (c2) {Conv $3{\times}3$\\$(B, 32, 8, 8) \to (B, 64, 8, 8)$};
+%         \node[pool] at (\EX, \ryE) (p2) {$\downarrow$ MaxPool stride-2, ReLU\\$(B, 64, 8, 8) \to (B, 64, 4, 4)$};
+%         \node[conv] at (\EX, \ryF) (c3) {Conv $3{\times}3$\\$(B, 64, 4, 4) \to (B, 128, 4, 4)$};
+%         \node[pool] at (\EX, \ryG) (p3) {$\downarrow$ MaxPool stride-2, ReLU\\$(B, 128, 4, 4) \to (B, 128, 2, 2)$};
+%         \node[conv] at (\EX, \ryH) (c4) {Conv $3{\times}3$\\$(B, 128, 2, 2) \to (B, 256, 2, 2)$};
+%         \node[pool] at (\EX, \ryI) (p4) {$\downarrow$ MaxPool stride-2\\$(B, 256, 2, 2) \to (B, 256, 1, 1)$};
+
+%         \draw[flow] (obs) -- (c1);
+%         \foreach \a/\b in {c1/p1, p1/c2, c2/p2, p2/c3, c3/p3, p3/c4, c4/p4}
+%             \draw[flow] (\a) -- (\b);
+
+%         \node[deconv] at (\AX, \ryI)       (d1) {$\uparrow$ ConvT $3{\times}3$, stride-2, ReLU\\$(B, 256, 1, 1) \to (B, 128, 2, 2)$};
+%         \node[deconv] at (\AX, \ryI + 1.1) (d2) {$\uparrow$ ConvT $3{\times}3$, stride-2, ReLU\\$(B, 128, 2, 2) \to (B, 64, 4, 4)$};
+%         \node[deconv] at (\AX, \ryI + 2.2) (d3) {$\uparrow$ ConvT $3{\times}3$, stride-2, ReLU\\$(B, 64, 4, 4) \to (B, 32, 8, 8)$};
+%         \node[deconv] at (\AX, \ryI + 3.3) (d4) {$\uparrow$ ConvT $3{\times}3$, stride-2\\$(B, 32, 8, 8) \to (B, 78, 16, 16)$};
+%         \node[io]     at (\AX, \ryI + 4.3) (actions) {Actions $(B, 78, 16, 16)$};
+
+%         \draw[flow] (p4.south) -- (\EX, \routeY) -- (\AX, \routeY) -- (d1.south);
+%         \foreach \a/\b in {d1/d2, d2/d3, d3/d4}
+%             \draw[flow] (\a) -- (\b);
+%         \draw[flow] (d4) -- node[right, lbl, xshift=-1.5pt] {CategoricalMasked} (actions);
+
+%         \node[head] at (\CX, \ryI)       (flat)  {Flatten\\$(B, 256, 1, 1) \to (B, 256)$};
+%         \node[head] at (\CX, \ryI + 1.1) (fc1)   {Linear, ReLU\\$(B, 256) \to (B, 128)$};
+%         \node[head] at (\CX, \ryI + 2.2) (fc2)   {Linear\\$(B, 128) \to (B, 1)$};
+%         \node[io]   at (\CX, \ryI + 3.2) (value) {Value $\hat{V}(s)$};
+
+%         \draw[flow] (\AX, \routeY) -- (\CX, \routeY) -- (flat.south);
+%         \foreach \a/\b in {flat/fc1, fc1/fc2, fc2/value}
+%             \draw[flow] (\a) -- (\b);
+
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=blue!4, fit=(c1)(p1)(c2)(p2)(c3)(p3)(c4)(p4),
+%                   label={[grouplbl, text=blue!60!black, fill=blue!4, xshift=-25pt]below:Encoder}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=orange!4, fit=(d1)(d2)(d3)(d4)(actions),
+%                   label={[grouplbl, text=orange!60!black, fill=orange!4]above:Actor (Decoder)}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=gray!6, fit=(flat)(fc1)(fc2)(value),
+%                   label={[grouplbl, text=gray!60!black, fill=gray!6]above:Critic}] {};
+%         \end{scope}
+
+%         \end{tikzpicture}
+%     }
+%      \caption{GridNet architecture (838,k parameters). Four stages of Conv $3{\times}3$ + MaxPool stride-2 compress the $16{\times}16$ observation to a $1{\times}1{\times}256$ bottleneck. The actor mirrors with four $3{\times}3$ transposed convolutions. The critic flattens the bottleneck into a two-layer MLP. Fixed to $16{\times}16$ maps.}
+%     \label{fig:arch-gridnet}
+% \end{figure}
+
+% \begin{figure}[!ht]
+%     \centering
+%     \resizebox{0.55\textwidth}{!}{%
+%         \begin{tikzpicture}[
+%             >=latex,
+%             block/.style={draw, rounded corners=2pt, minimum width=2.4cm, minimum height=0.6cm,
+%                           font=\tiny, align=center, thick},
+%             conv/.style={block, fill=blue!12},
+%             pool/.style={block, fill=blue!22},
+%             res/.style={block, fill=blue!8},
+%             deconv/.style={block, fill=orange!18},
+%             head/.style={block, fill=gray!12, minimum width=2.0cm},
+%             io/.style={block, fill=yellow!12},
+%             flow/.style={->, thick},
+%             lbl/.style={font=\tiny\itshape, text=gray!60!black},
+%             groupbox/.style={draw, rounded corners=6pt, thick, inner sep=6pt},
+%             grouplbl/.style={font=\scriptsize\bfseries, inner sep=2pt},
+%         ]
+
+%         \def\EX{-2.4}  \def\AX{1.8}  \def\CX{5.4}
+%         \def\ryA{0} \def\ryB{-1.1} \def\ryC{-2.1} \def\ryD{-3.0}
+%         \def\ryE{-4.1} \def\ryF{-5.1} \def\ryG{-6.0}
+%         \def\ryH{-7.1} \def\ryI{-8.1} \def\ryJ{-9.0} \def\ryK{-9.9}
+%         \def\routeY{-11.0}
+
+%         \node[io] at (\EX, \ryA) (obs) {Observation $(B, C, H, W)$};
+
+%         \node[conv] at (\EX, \ryB) (c1) {Conv $3{\times}3$\\$(B, C, H, W) \to (B, 32, H, W)$};
+%         \node[pool] at (\EX, \ryC) (p1) {$\downarrow$ MaxPool stride-2\\$(B, 32, H, W) \to (B, 32, \frac{H}{2}, \frac{W}{2})$};
+%         \node[res]  at (\EX, \ryD) (r1) {$2{\times}$ ResBlock, $(B, 32, \frac{H}{2}, \frac{W}{2})$};
+
+%         \node[conv] at (\EX, \ryE) (c2) {Conv $3{\times}3$\\$(B, 32, \frac{H}{2}, \frac{W}{2}) \to (B, 64, \frac{H}{2}, \frac{W}{2})$};
+%         \node[pool] at (\EX, \ryF) (p2) {$\downarrow$ MaxPool stride-2\\$(B, 64, \frac{H}{2}, \frac{W}{2}) \to (B, 64, \frac{H}{4}, \frac{W}{4})$};
+%         \node[res]  at (\EX, \ryG) (r2) {$2{\times}$ ResBlock, $(B, 64, \frac{H}{4}, \frac{W}{4})$};
+
+%         \node[conv] at (\EX, \ryH) (c3) {Conv $3{\times}3$\\$(B, 64, \frac{H}{4}, \frac{W}{4}) \to (B, 128, \frac{H}{4}, \frac{W}{4})$};
+%         \node[pool] at (\EX, \ryI) (p3) {$\downarrow$ MaxPool stride-2\\$(B, 128, \frac{H}{4}, \frac{W}{4}) \to (B, 128, \frac{H}{8}, \frac{W}{8})$};
+%         \node[res]  at (\EX, \ryJ) (r3) {$2{\times}$ ResBlock, $(B, 128, \frac{H}{8}, \frac{W}{8})$};
+
+%         \node[conv, fill=orange!12] at (\EX, \ryK) (act) {ReLU};
+
+%         \draw[flow] (obs) -- (c1);
+%         \foreach \a/\b in {c1/p1, p1/r1, r1/c2, c2/p2, p2/r2, r2/c3, c3/p3, p3/r3, r3/act}
+%             \draw[flow] (\a) -- (\b);
+
+%         \node[deconv] at (\AX, \ryK)       (d1) {$\uparrow$ ConvT $3{\times}3$, stride-2, ReLU\\$(B, 128, \frac{H}{8}, \frac{W}{8}) \to (B, 64, \frac{H}{4}, \frac{W}{4})$};
+%         \node[deconv] at (\AX, \ryK + 1.1) (d2) {$\uparrow$ ConvT $3{\times}3$, stride-2, ReLU\\$(B, 64, \frac{H}{4}, \frac{W}{4}) \to (B, 32, \frac{H}{2}, \frac{W}{2})$};
+%         \node[deconv] at (\AX, \ryK + 2.2) (d3) {$\uparrow$ ConvT $3{\times}3$, stride-2\\$(B, 32, \frac{H}{2}, \frac{W}{2}) \to (B, 78, H, W)$};
+%         \node[io]     at (\AX, \ryK + 3.2) (actions) {Actions $(B, H, W, 78)$};
+
+%         \draw[flow] (act.south) -- (\EX, \routeY) -- (\AX, \routeY) -- (d1.south);
+%         \foreach \a/\b in {d1/d2, d2/d3}
+%             \draw[flow] (\a) -- (\b);
+%         \draw[flow] (d3) -- node[right, lbl] {CategoricalMasked} (actions);
+
+%         \node[head] at (\CX, \ryK)       (pool)  {AdaptiveAvgPool\\$(B, 128, \frac{H}{8}, \frac{W}{8}) \to (B, 128)$};
+%         \node[head] at (\CX, \ryK + 1.1) (fc1)   {Linear, ReLU\\$(B, 128) \to (B, 256)$};
+%         \node[head] at (\CX, \ryK + 2.2) (fc2)   {Linear\\$(B, 256) \to (B, 1)$};
+%         \node[io]   at (\CX, \ryK + 3.2) (value) {Value $\hat{V}(s)$};
+
+%         \draw[flow] (\AX, \routeY) -- (\CX, \routeY) -- (pool.south);
+%         \foreach \a/\b in {pool/fc1, fc1/fc2, fc2/value}
+%             \draw[flow] (\a) -- (\b);
+
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=blue!4, fit=(c1)(p1)(r1)(c2)(p2)(r2)(c3)(p3)(r3)(act),
+%                   label={[grouplbl, text=blue!60!black, fill=blue!4, xshift=-25pt]below:Encoder}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=orange!4, fit=(d1)(d2)(d3)(actions),
+%                   label={[grouplbl, text=orange!60!black, fill=orange!4]above:Actor (Decoder)}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=gray!6, fit=(pool)(fc1)(fc2)(value),
+%                   label={[grouplbl, text=gray!60!black, fill=gray!6]above:Critic}] {};
+%         \end{scope}
+
+%         \end{tikzpicture}
+%     }
+%     \caption{IMPALA architecture (${\approx}1.0$,M parameters). Three stages of {Conv $3{\times}3$ $\to$ MaxPool stride-2 $\to$ $2{\times}$ ResBlock}, channels 32$\to$64$\to$128, with $8{\times}$ spatial compression. Each ResBlock uses pre-activation residual connections (ReLU$\to$Conv$\to$ReLU$\to$Conv$+$skip) to improve gradient flow. The decoder mirrors with three $3{\times}3$ transposed convolutions. Map-size independent.}
+%     \label{fig:arch-impala}
+% \end{figure}
+
+% \begin{figure}[!ht]
+%     \centering
+%     \resizebox{0.7\textwidth}{!}{%
+%         \begin{tikzpicture}[
+%             >=latex,
+%             block/.style={draw, rounded corners=2pt, minimum width=2.4cm, minimum height=0.6cm,
+%                           font=\tiny, align=center, thick},
+%             conv/.style={block, fill=blue!12},
+%             pool/.style={block, fill=blue!22},
+%             res/.style={block, fill=blue!8},
+%             deconv/.style={block, fill=orange!18},
+%             entity/.style={block, fill=green!12, minimum width=2.0cm},
+%             head/.style={block, fill=gray!12, minimum width=2.0cm},
+%             io/.style={block, fill=yellow!12},
+%             op/.style={draw, circle, inner sep=2pt, thick, font=\scriptsize},
+%             flow/.style={->, thick},
+%             entflow/.style={->, thick, green!50!black},
+%             scflow/.style={->, thick, densely dashed, green!50!black},
+%             lbl/.style={font=\tiny\itshape, text=gray!60!black},
+%             groupbox/.style={draw, rounded corners=6pt, thick, inner sep=6pt},
+%             grouplbl/.style={font=\scriptsize\bfseries, inner sep=2pt},
+%         ]
+
+%         \def\TX{-5.6}  \def\EX{-2.0}  \def\AX{1.6}  \def\CX{5.2}
+%         \def\ryA{0} \def\ryB{-1.1} \def\ryC{-2.1} \def\ryD{-3.0}
+%         \def\ryE{-4.1} \def\ryF{-5.1} \def\ryG{-6.0}
+%         \def\ryH{-7.1} \def\ryI{-8.1} \def\ryJ{-9.0} \def\ryK{-9.9}
+%         \def\routeY{-11.0}
+
+%         \node[io] at (\EX, \ryA) (obs) {Observation $(B, C, H, W)$};
+
+%         \node[conv] at (\EX, \ryB) (c1) {Conv $3{\times}3$\\$(B, C, H, W) \to (B, 32, H, W)$};
+%         \node[pool] at (\EX, \ryC) (p1) {$\downarrow$ MaxPool stride-2\\$(B, 32, H, W) \to (B, 32, \frac{H}{2}, \frac{W}{2})$};
+%         \node[res]  at (\EX, \ryD) (r1) {$2{\times}$ ResBlock, $(B, 32, \frac{H}{2}, \frac{W}{2})$};
+
+%         \node[conv] at (\EX, \ryE) (c2) {Conv $3{\times}3$\\$(B, 32, \frac{H}{2}, \frac{W}{2}) \to (B, 64, \frac{H}{2}, \frac{W}{2})$};
+%         \node[pool] at (\EX, \ryF) (p2) {$\downarrow$ MaxPool stride-2\\$(B, 64, \frac{H}{2}, \frac{W}{2}) \to (B, 64, \frac{H}{4}, \frac{W}{4})$};
+%         \node[res]  at (\EX, \ryG) (r2) {$2{\times}$ ResBlock, $(B, 64, \frac{H}{4}, \frac{W}{4})$};
+
+%         \node[conv] at (\EX, \ryH) (c3) {Conv $3{\times}3$\\$(B, 64, \frac{H}{4}, \frac{W}{4}) \to (B, 128, \frac{H}{4}, \frac{W}{4})$};
+%         \node[pool] at (\EX, \ryI) (p3) {$\downarrow$ MaxPool stride-2\\$(B, 128, \frac{H}{4}, \frac{W}{4}) \to (B, 128, \frac{H}{8}, \frac{W}{8})$};
+%         \node[res]  at (\EX, \ryJ) (r3) {$2{\times}$ ResBlock, $(B, 128, \frac{H}{8}, \frac{W}{8})$};
+
+%         \node[conv, fill=orange!12] at (\EX, \ryK) (act) {ReLU};
+
+%         \draw[flow] (obs) -- (c1);
+%         \foreach \a/\b in {c1/p1, p1/r1, r1/c2, c2/p2, p2/r2, r2/c3, c3/p3, p3/r3, r3/act}
+%             \draw[flow] (\a) -- (\b);
+
+%         % Entity Transformer
+%         \node[entity] at (\TX, \ryB) (fr1) {Conv $3{\times}3$, ReLU\\$(B, C, H, W) \to (B, 64, H, W)$};
+%         \node[entity] at (\TX, \ryC) (fr2) {Conv $3{\times}3$, ReLU\\$(B, 64, H, W) \to (B, 64, H, W)$};
+%         \node[entity] at (\TX, \ryE) (ext) {Entity Extractor\\$[\text{obs}(C) | \text{CNN}(64) | \text{pos}(2)]$\\$\to (B, N, 128)$};
+%         \node[entity] at (\TX, \ryG) (trf) {Transformer Encoder\\2 layers, 4 heads, $d{=}128$\\$(B, N, 128) \to (B, N, 128)$};
+%         \node[entity] at (\TX, \ryI) (scP) {Linear $128 \to 128$, ReLU\\$(B, N, 128) \to (B, N, 128)$};
+
+%         \draw[entflow] (fr1) -- (fr2);
+%         \draw[entflow] (fr2) -- (ext);
+%         \draw[entflow] (ext) -- (trf);
+%         \draw[entflow] (trf) -- (scP);
+
+%         \draw[flow] (obs.west) -- (\TX, \ryA) -- (fr1.north);
+%         \draw[flow, densely dashed] (obs.west) -- ++(-0.75, 0) |- (ext.east);
+
+%         % Scatter ⊕
+%         \node[op] at (\TX + 0.6, \ryK) (scadd) {$\oplus$};
+%         \draw[scflow] (scP.south) |- (scadd.west);
+%         \draw[flow] (act.west) -- (scadd.east);
+%         \draw[thick] (scadd.south) -- (\TX + 0.6, \routeY);
+
+%         % Actor Decoder (ConvT 3×3 — inherited from IMPALA)
+%         \node[deconv] at (\AX, \ryK)       (d1)      {$\uparrow$ ConvT $3{\times}3$, stride-2, ReLU\\$(B, 128, \frac{H}{8}, \frac{W}{8}) \to (B, 64, \frac{H}{4}, \frac{W}{4})$};
+%         \node[deconv] at (\AX, \ryK + 1.1) (d2)      {$\uparrow$ ConvT $3{\times}3$, stride-2, ReLU\\$(B, 64, \frac{H}{4}, \frac{W}{4}) \to (B, 32, \frac{H}{2}, \frac{W}{2})$};
+%         \node[deconv] at (\AX, \ryK + 2.2) (d3)      {$\uparrow$ ConvT $3{\times}3$, stride-2\\$(B, 32, \frac{H}{2}, \frac{W}{2}) \to (B, 78, H, W)$};
+%         \node[io]     at (\AX, \ryK + 3.2) (actions) {Actions $(B, H, W, 78)$};
+
+%         \foreach \a/\b in {d1/d2, d2/d3}
+%             \draw[flow] (\a) -- (\b);
+%         \draw[flow] (d3) -- node[right, lbl] {CategoricalMasked} (actions);
+
+%         % Critic (inherited from IMPALA)
+%         \node[head] at (\CX, \ryK)       (pool)  {AdaptiveAvgPool\\$(B, 128, \frac{H}{8}, \frac{W}{8}) \to (B, 128)$};
+%         \node[head] at (\CX, \ryK + 1.1) (fc1)   {Linear, ReLU\\$(B, 128) \to (B, 256)$};
+%         \node[head] at (\CX, \ryK + 2.2) (fc2)   {Linear\\$(B, 256) \to (B, 1)$};
+%         \node[io]   at (\CX, \ryK + 3.2) (value) {Value $\hat{V}(s)$};
+
+%         \foreach \a/\b in {pool/fc1, fc1/fc2, fc2/value}
+%             \draw[flow] (\a) -- (\b);
+
+%         % Bridges
+%         \draw[flow] (\TX + 0.6, \routeY) -- (\AX, \routeY) -- (d1.south);
+%         \draw[flow] (\AX, \routeY) -- (\CX, \routeY) -- (pool.south);
+
+%         % Group boxes
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=blue!4, fit=(c1)(p1)(r1)(c2)(p2)(r2)(c3)(p3)(r3)(act),
+%                   label={[grouplbl, text=blue!60!black, fill=blue!4]below:Encoder}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=green!4, fit=(fr1)(fr2)(ext)(trf)(scP),
+%                   label={[grouplbl, text=green!50!black, fill=green!4]below:Entity Transformer}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=orange!4, fit=(d1)(d2)(d3)(actions),
+%                   label={[grouplbl, text=orange!60!black, fill=orange!4]above:Actor (Decoder)}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=gray!6, fit=(pool)(fc1)(fc2)(value),
+%                   label={[grouplbl, text=gray!60!black, fill=gray!6]above:Critic}] {};
+%         \end{scope}
+
+%         \end{tikzpicture}
+%     }
+%     \caption{IMPALA-Entity architecture (${\approx}1.35$,M parameters). A parallel full-resolution CNN (green, $2{\times}$ Conv $3{\times}3$, 64ch) provides per-unit features. A 2-layer Transformer enriches unit tokens, which are scatter-added ($\oplus$) to the IMPALA bottleneck at $H/8$. Decoder and critic inherited from IMPALA.}
+%     \label{fig:arch-impala-entity}
+% \end{figure}
+
+% \begin{figure}[!ht]
+%     \centering
+%     \resizebox{0.7\textwidth}{!}{%
+%         \begin{tikzpicture}[
+%             >=latex,
+%             block/.style={draw, rounded corners=2pt, minimum width=2.4cm, minimum height=0.6cm,
+%                           font=\tiny, align=center, thick},
+%             stage/.style={block, fill=blue!12},
+%             down/.style={block, fill=blue!22},
+%             up/.style={block, fill=orange!18},
+%             head/.style={block, fill=gray!12, minimum width=2.0cm},
+%             io/.style={block, fill=yellow!12},
+%             flow/.style={->, thick},
+%             skip/.style={->, thick, densely dashed, blue!50},
+%             lbl/.style={font=\tiny\itshape, text=gray!60!black},
+%             groupbox/.style={draw, rounded corners=6pt, thick, inner sep=6pt},
+%             grouplbl/.style={font=\scriptsize\bfseries, inner sep=2pt},
+%         ]
+
+%         \def\EX{-2.4}  \def\DX{2.0}  \def\CX{6.0}
+%         \def\ryA{0} \def\ryB{-1.1} \def\ryC{-2.2} \def\ryD{-3.2}
+%         \def\ryE{-4.3} \def\ryF{-5.4} \def\ryG{-6.5}
+%         \def\dyA{-5.4} \def\dyB{-4.3} \def\dyC{-3.2} \def\dyD{-2.2}
+%         \def\routeY{-7.6}
+
+%         \node[io] at (\EX, \ryA) (obs) {Observation $(B, C, H, W)$};
+
+%         \node[stage] at (\EX, \ryB) (proj) {Conv $3{\times}3$, ReLU\\$(B, C, H, W) \to (B, \text{ch1}, H, W)$};
+%         \node[stage] at (\EX, \ryC) (s1)   {$2{\times}$ SE-Res\\$(B, \text{ch1}, H, W)$};
+%         \node[down]  at (\EX, \ryD) (d1)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, \text{ch1}, H, W) \to (B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[stage] at (\EX, \ryE) (s2)   {$2{\times}$ SE-Res\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[down]  at (\EX, \ryF) (d2)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2}) \to (B, \text{ch3}, \frac{H}{4}, \frac{W}{4})$};
+%         \node[stage] at (\EX, \ryG) (bot)  {$2{\times}$ SE-Res (bottleneck)\\$(B, \text{ch3}, \frac{H}{4}, \frac{W}{4})$};
+
+%         \draw[flow] (obs) -- (proj);
+%         \foreach \a/\b in {proj/s1, s1/d1, d1/s2, s2/d2, d2/bot}
+%             \draw[flow] (\a) -- (\b);
+
+%         \node[up]    at (\DX, \dyA) (u1) {$\uparrow$ ConvT $2{\times}2$, stride-2, ReLU\\$(B, \text{ch3}, \frac{H}{4}, \frac{W}{4}) \to (B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[stage] at (\DX, \dyB) (f1) {$2{\times}$ SE-Res\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[up]    at (\DX, \dyC) (u2) {$\uparrow$ ConvT $2{\times}2$, stride-2, ReLU\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2}) \to (B, \text{ch1}, H, W)$};
+%         \node[stage] at (\DX, \dyD) (f2) {$2{\times}$ SE-Res\\$(B, \text{ch1}, H, W)$};
+
+%         \draw[flow] (bot.east) -| (\DX, \ryG) -- (u1.south);
+%         \foreach \a/\b in {u1/f1, f1/u2, u2/f2}
+%             \draw[flow] (\a) -- (\b);
+
+%         \draw[skip] (s1) -- node[above, lbl] {skip1 $\oplus$} (f2);
+%         \draw[skip] (s2) -- node[above, lbl] {skip2 $\oplus$} (f1);
+
+%         \node[block, fill=gray!12] at (\DX, -1.1) (actor) {Actor: Conv $3{\times}3$\\$(B, \text{ch1}, H, W) \to (B, 78, H, W)$};
+%         \node[io] at (\DX, 0) (actions) {Actions $(B, 78, H, W)$};
+%         \draw[flow] (f2) -- (actor);
+%         \draw[flow] (actor) -- node[right, lbl] {CategoricalMasked} (actions);
+
+%         \node[head] at (\CX, \dyD)       (cr1)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, \text{ch1}, H, W) \to (B, 64, \frac{H}{2}, \frac{W}{2})$};
+%         \node[head] at (\CX, \dyD - 0.9) (cr2)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, 64, \frac{H}{2}, \frac{W}{2}) \to (B, 64, \frac{H}{4}, \frac{W}{4})$};
+%         \node[head] at (\CX, \dyD - 1.8) (pool)  {AdaptiveAvgPool\\$(B, 64, \frac{H}{4}, \frac{W}{4}) \to (B, 64)$};
+%         \node[head] at (\CX, \dyD - 2.7) (fc1)   {Linear, ReLU\\$(B, 64) \to (B, 64)$};
+%         \node[head] at (\CX, \dyD - 3.5) (fc2)   {Linear\\$(B, 64) \to (B, 1)$};
+%         \node[io]   at (\CX, \dyD - 4.3) (value) {Value $\hat{V}(s)$};
+
+%         \draw[flow] (f2.east) -- ++(0.5, 0) |- (cr1.west);
+%         \foreach \a/\b in {cr1/cr2, cr2/pool, pool/fc1, fc1/fc2, fc2/value}
+%             \draw[flow] (\a) -- (\b);
+
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=blue!4, fit=(proj)(s1)(d1)(s2)(d2)(bot),
+%                   label={[grouplbl, text=blue!60!black, fill=blue!4]below:Encoder}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=orange!4, fit=(u1)(f1)(u2)(f2)(actor)(actions),
+%                   label={[grouplbl, text=orange!60!black, fill=orange!4]above:Decoder + Actor}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=gray!6, fit=(cr1)(cr2)(pool)(fc1)(fc2)(value),
+%                   label={[grouplbl, text=gray!60!black, fill=gray!6]above:Critic}] {};
+%         \end{scope}
+
+%         \end{tikzpicture}
+%     }
+%     \caption{UNet architecture (${\approx}2.5$,M parameters at $C_1{=}48$). Three stages of SE-ResBlocks (Conv$\to$ReLU$\to$Conv$\to$SE channel attention$+$skip) with learned stride-2 downsampling replace max-pooling. U-Net skip connections ($\oplus$) preserve spatial detail at full and half resolution. The decoder uses $2{\times}2$ transposed convolutions. The critic applies two stride-2 convolutions and adaptive average pooling (map-size independent).}
+%     \label{fig:arch-unet}
+% \end{figure}
+
+% \begin{figure}[!ht]
+%     \centering
+%     \resizebox{0.85\textwidth}{!}{%
+%         \begin{tikzpicture}[
+%             >=latex,
+%             block/.style={draw, rounded corners=2pt, minimum width=2.4cm, minimum height=0.6cm,
+%                           font=\tiny, align=center, thick},
+%             stage/.style={block, fill=blue!12},
+%             down/.style={block, fill=blue!22},
+%             up/.style={block, fill=orange!18},
+%             entity/.style={block, fill=green!12, minimum width=2.0cm},
+%             head/.style={block, fill=gray!12, minimum width=2.0cm},
+%             io/.style={block, fill=yellow!12},
+%             flow/.style={->, thick},
+%             skip/.style={->, thick, densely dashed, blue!50},
+%             entflow/.style={->, thick, green!50!black},
+%             scflow/.style={->, thick, densely dashed, green!50!black},
+%             lbl/.style={font=\tiny\itshape, text=gray!60!black},
+%             groupbox/.style={draw, rounded corners=6pt, thick, inner sep=6pt},
+%             grouplbl/.style={font=\scriptsize\bfseries, inner sep=2pt},
+%         ]
+
+%         \def\TX{-5.6}  \def\EX{-2.0}  \def\DX{2.0}  \def\CX{5.8}
+%         \def\ryA{0} \def\ryB{-1.1} \def\ryC{-2.2} \def\ryD{-3.2}
+%         \def\ryE{-4.3} \def\ryF{-5.4} \def\ryG{-6.5}
+%         \def\dyA{-5.4} \def\dyB{-4.3} \def\dyC{-3.2} \def\dyD{-2.2}
+%         \def\routeY{-8.0}
+
+%         \node[io] at (\EX, \ryA) (obs) {Observation $(B, C, H, W)$};
+
+%         \node[stage] at (\EX, \ryB) (proj) {Conv $3{\times}3$, ReLU\\$(B, C, H, W) \to (B, \text{ch1}, H, W)$};
+%         \node[stage] at (\EX, \ryC) (s1)   {$2{\times}$ SE-Res\\$(B, \text{ch1}, H, W)$};
+%         \node[down]  at (\EX, \ryD) (d1)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, \text{ch1}, H, W) \to (B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[stage] at (\EX, \ryE) (s2)   {$2{\times}$ SE-Res\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[down]  at (\EX, \ryF) (d2)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2}) \to (B, \text{ch3}, \frac{H}{4}, \frac{W}{4})$};
+%         \node[stage] at (\EX, \ryG) (bot)  {$2{\times}$ SE-Res (bottleneck)\\$(B, \text{ch3}, \frac{H}{4}, \frac{W}{4})$};
+
+%         \draw[flow] (obs) -- (proj);
+%         \foreach \a/\b in {proj/s1, s1/d1, d1/s2, s2/d2, d2/bot}
+%             \draw[flow] (\a) -- (\b);
+
+%         \node[up]    at (\DX, \dyA) (u1) {$\uparrow$ ConvT $2{\times}2$, stride-2, ReLU\\$(B, \text{ch3}, \frac{H}{4}, \frac{W}{4}) \to (B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[stage] at (\DX, \dyB) (f1) {$2{\times}$ SE-Res\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[up]    at (\DX, \dyC) (u2) {$\uparrow$ ConvT $2{\times}2$, stride-2, ReLU\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2}) \to (B, \text{ch1}, H, W)$};
+%         \node[stage] at (\DX, \dyD) (f2) {$2{\times}$ SE-Res\\$(B, \text{ch1}, H, W)$};
+
+%         \draw[flow] (bot.east) -- (\DX, \ryG) -- (u1.south);
+%         \foreach \a/\b in {u1/f1, f1/u2, u2/f2}
+%             \draw[flow] (\a) -- (\b);
+
+%         \draw[skip] (s1) -- node[above, lbl] {skip1 $\oplus$} (f2);
+%         \draw[skip] (s2) -- node[above, lbl] {skip2 $\oplus$} (f1);
+
+%         % Entity Transformer
+%         \node[entity] at (\TX, \ryC) (ext) {Entity Extractor\\$[\text{obs}(C) | \text{skip1}(\text{ch1}) | \text{pos}(2)]$\\$\to (B, N, 128)$};
+%         \node[entity] at (\TX, -3.25) (trf) {Transformer Encoder\\2 layers, 4 heads, $d{=}128$\\$(B, N, 128) \to (B, N, 128)$};
+%         \node[entity] at (\TX, \ryE) (scS) {Proj $128 \to \text{ch2}$\\scatter $\to$ skip2 $(\frac{H}{2})$};
+%         \node[entity] at (\TX, \ryF) (scB) {Proj $128 \to \text{ch3}$\\scatter $\to$ bot $(\frac{H}{4})$};
+
+%         \draw[entflow] (ext) -- (trf);
+%         \draw[entflow] (trf) -- (scS);
+%         \draw[entflow] (trf.west) -- ++(-0.4, 0) |- (scB.west);
+
+%         \draw[flow] (obs.west) -- (\TX, \ryA) -- (ext.north);
+%         \draw[skip] (s1.west) -- node[above, lbl, xshift=-2pt] {skip1} (ext.east);
+
+%         % Scatter routing
+%         \def\scatterXL{-4.2}
+%         \def\routeXR{3.8}
+
+%         \draw[scflow] (scS.east) -- (\scatterXL + 0.3, \ryE)
+%             -- (\scatterXL + 0.3, \routeY + 0.3)
+%             -- node[lbl, above, pos=0.5, yshift=-2pt] {scatter skip2 $\oplus$}
+%             (\routeXR + 0.1, \routeY + 0.3)
+%             -- (\routeXR + 0.1, \dyB) -- (f1.east);
+
+%         \draw[scflow] (scB.east) -- (\scatterXL, \ryF)
+%             -- (\scatterXL, \routeY)
+%             -- node[lbl, above, pos=0.5, yshift=-2pt] {scatter bot $\oplus$}
+%             (\routeXR + 0.3, \routeY)
+%             -- (\routeXR + 0.3, \dyA) -- (u1.east);
+
+%         % Actor
+%         \node[block, fill=gray!12] at (\DX, -1.1) (actor) {Actor: Conv $3{\times}3$\\$(B, \text{ch1}, H, W) \to (B, 78, H, W)$};
+%         \node[io] at (\DX, 0) (actions) {Actions $(B, 78, H, W)$};
+%         \draw[flow] (f2) -- (actor);
+%         \draw[flow] (actor) -- node[right, lbl] {CategoricalMasked} (actions);
+
+%         % Critic
+%         \node[head] at (\CX, \dyD)       (cr1)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, \text{ch1}, H, W) \to (B, 64, \frac{H}{2}, \frac{W}{2})$};
+%         \node[head] at (\CX, \dyD - 1.1) (cr2)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, 64, \frac{H}{2}, \frac{W}{2}) \to (B, 64, \frac{H}{4}, \frac{W}{4})$};
+%         \node[head] at (\CX, \dyD - 2.2) (pool)  {AdaptiveAvgPool\\$(B, 64, \frac{H}{4}, \frac{W}{4}) \to (B, 64)$};
+%         \node[head] at (\CX, \dyD - 3.2) (fc1)   {Linear, ReLU\\$(B, 64) \to (B, 64)$};
+%         \node[head] at (\CX, \dyD - 4.1) (fc2)   {Linear\\$(B, 64) \to (B, 1)$};
+%         \node[io]   at (\CX, \dyD - 5.0) (value) {Value $\hat{V}(s)$};
+
+%         \draw[flow] (f2.east) -- ++(0.5, 0) |- (cr1.west);
+%         \foreach \a/\b in {cr1/cr2, cr2/pool, pool/fc1, fc1/fc2, fc2/value}
+%             \draw[flow] (\a) -- (\b);
+
+%         % Group boxes
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=blue!4, fit=(proj)(s1)(d1)(s2)(d2)(bot),
+%                   label={[grouplbl, text=blue!60!black, fill=blue!4]below:Encoder}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=orange!4, fit=(u1)(f1)(u2)(f2)(actor)(actions),
+%                   label={[grouplbl, text=orange!60!black, fill=orange!4]above:Decoder + Actor}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=green!4, fit=(ext)(trf)(scS)(scB),
+%                   label={[grouplbl, text=green!50!black, fill=green!4]below:Entity Transformer}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=gray!6, fit=(cr1)(cr2)(pool)(fc1)(fc2)(value),
+%                   label={[grouplbl, text=gray!60!black, fill=gray!6]above:Critic}] {};
+%         \end{scope}
+
+%         \end{tikzpicture}
+%     }
+%     \caption{UNet-Entity architecture (${\approx}2.9$,M parameters at $C_1{=}48$). The Entity Transformer (green) extracts per-unit features from raw observations and skip1 encoder features, enriches them via self-attention, and scatters back into the bottleneck and skip2 tensors (dashed green). Unlike IMPALA-Entity, entity features are sourced from the UNet's skip1 output, eliminating the separate full-resolution CNN. Decoder uses $2{\times}2$ transposed convolutions with U-Net skip connections ($\oplus$).}
+%     \label{fig:arch-unet-entity}
+% \end{figure}
+
+% \begin{figure}[!ht]
+%     \centering
+%     \resizebox{0.85\textwidth}{!}{%
+%         \begin{tikzpicture}[
+%             >=latex,
+%             block/.style={draw, rounded corners=2pt, minimum width=2.4cm, minimum height=0.6cm,
+%                           font=\tiny, align=center, thick},
+%             stage/.style={block, fill=blue!12},
+%             down/.style={block, fill=blue!22},
+%             up/.style={block, fill=orange!18},
+%             entity/.style={block, fill=green!12, minimum width=2.0cm},
+%             head/.style={block, fill=gray!12, minimum width=2.0cm},
+%             io/.style={block, fill=yellow!12},
+%             flow/.style={->, thick},
+%             skip/.style={->, thick, densely dashed, blue!50},
+%             entflow/.style={->, thick, green!50!black},
+%             scflow/.style={->, thick, densely dashed, green!50!black},
+%             lbl/.style={font=\tiny\itshape, text=gray!60!black},
+%             groupbox/.style={draw, rounded corners=6pt, thick, inner sep=6pt},
+%             grouplbl/.style={font=\scriptsize\bfseries, inner sep=2pt},
+%         ]
+
+%         \def\TX{-5.6}  \def\EX{-2.0}  \def\DX{2.0}  \def\CX{5.8}
+%         \def\ryA{0} \def\ryB{-1.1} \def\ryC{-2.2} \def\ryD{-3.2}
+%         \def\ryE{-4.3} \def\ryF{-5.4} \def\ryG{-6.5}
+%         \def\dyA{-5.4} \def\dyB{-4.3} \def\dyC{-3.2} \def\dyD{-2.2}
+%         \def\routeY{-8.0}
+
+%         \node[io] at (\EX, \ryA) (obs) {Observation $(B, C, H, W)$};
+
+%         \node[stage] at (\EX, \ryB) (proj) {Conv $3{\times}3$, ReLU\\$(B, C, H, W) \to (B, \text{ch1}, H, W)$};
+%         \node[stage] at (\EX, \ryC) (s1)   {$2{\times}$ CBAM-Res\\$(B, \text{ch1}, H, W)$};
+%         \node[down]  at (\EX, \ryD) (d1)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, \text{ch1}, H, W) \to (B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[stage] at (\EX, \ryE) (s2)   {$2{\times}$ CBAM-Res\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[down]  at (\EX, \ryF) (d2)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2}) \to (B, \text{ch3}, \frac{H}{4}, \frac{W}{4})$};
+%         \node[stage] at (\EX, \ryG) (bot)  {$2{\times}$ CBAM-Res (bottleneck)\\$(B, \text{ch3}, \frac{H}{4}, \frac{W}{4})$};
+
+%         \draw[flow] (obs) -- (proj);
+%         \foreach \a/\b in {proj/s1, s1/d1, d1/s2, s2/d2, d2/bot}
+%             \draw[flow] (\a) -- (\b);
+
+%         \node[up]    at (\DX, \dyA) (u1) {$\uparrow$ ConvT $2{\times}2$, stride-2, ReLU\\$(B, \text{ch3}, \frac{H}{4}, \frac{W}{4}) \to (B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[stage] at (\DX, \dyB) (f1) {$2{\times}$ CBAM-Res\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2})$};
+%         \node[up]    at (\DX, \dyC) (u2) {$\uparrow$ ConvT $2{\times}2$, stride-2, ReLU\\$(B, \text{ch2}, \frac{H}{2}, \frac{W}{2}) \to (B, \text{ch1}, H, W)$};
+%         \node[stage] at (\DX, \dyD) (f2) {$2{\times}$ CBAM-Res\\$(B, \text{ch1}, H, W)$};
+
+%         \draw[flow] (bot.east) -- (\DX, \ryG) -- (u1.south);
+%         \foreach \a/\b in {u1/f1, f1/u2, u2/f2}
+%             \draw[flow] (\a) -- (\b);
+
+%         \draw[skip] (s1) -- node[above, lbl] {skip1 $\oplus$} (f2);
+%         \draw[skip] (s2) -- node[above, lbl] {skip2 $\oplus$} (f1);
+
+%         % Entity Transformer
+%         \node[entity] at (\TX, \ryC) (ext) {Entity Extractor\\$[\text{obs}(C) | \text{skip1}(\text{ch1}) | \text{pos}(2)]$\\$\to (B, N, 128)$};
+%         \node[entity] at (\TX, -3.25) (trf) {Transformer Encoder\\2 layers, 4 heads, $d{=}128$\\$(B, N, 128) \to (B, N, 128)$};
+%         \node[entity] at (\TX, \ryE) (scS) {Proj $128 \to \text{ch2}$\\scatter $\to$ skip2 $(\frac{H}{2})$};
+%         \node[entity] at (\TX, \ryF) (scB) {Proj $128 \to \text{ch3}$\\scatter $\to$ bot $(\frac{H}{4})$};
+
+%         \draw[entflow] (ext) -- (trf);
+%         \draw[entflow] (trf) -- (scS);
+%         \draw[entflow] (trf.west) -- ++(-0.4, 0) |- (scB.west);
+
+%         \draw[flow] (obs.west) -- (\TX, \ryA) -- (ext.north);
+%         \draw[skip] (s1.west) -- node[above, lbl, xshift=-2pt] {skip1} (ext.east);
+
+%         % Scatter routing
+%         \def\scatterXL{-4.2}
+%         \def\routeXR{3.8}
+
+%         \draw[scflow] (scS.east) -- (\scatterXL + 0.3, \ryE)
+%             -- (\scatterXL + 0.3, \routeY + 0.3)
+%             -- node[lbl, above, pos=0.5, yshift=-2pt] {scatter skip2 $\oplus$}
+%             (\routeXR + 0.1, \routeY + 0.3)
+%             -- (\routeXR + 0.1, \dyB) -- (f1.east);
+
+%         \draw[scflow] (scB.east) -- (\scatterXL, \ryF)
+%             -- (\scatterXL, \routeY)
+%             -- node[lbl, above, pos=0.5, yshift=-2pt] {scatter bot $\oplus$}
+%             (\routeXR + 0.3, \routeY)
+%             -- (\routeXR + 0.3, \dyA) -- (u1.east);
+
+%         % Actor
+%         \node[block, fill=gray!12] at (\DX, -1.1) (actor) {Actor: Conv $3{\times}3$\\$(B, \text{ch1}, H, W) \to (B, 78, H, W)$};
+%         \node[io] at (\DX, 0) (actions) {Actions $(B, 78, H, W)$};
+%         \draw[flow] (f2) -- (actor);
+%         \draw[flow] (actor) -- node[right, lbl] {CategoricalMasked} (actions);
+
+%         % Critic
+%         \node[head] at (\CX, \dyD)       (cr1)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, \text{ch1}, H, W) \to (B, 64, \frac{H}{2}, \frac{W}{2})$};
+%         \node[head] at (\CX, \dyD - 1.1) (cr2)   {$\downarrow$ Conv $3{\times}3$, stride-2, ReLU\\$(B, 64, \frac{H}{2}, \frac{W}{2}) \to (B, 64, \frac{H}{4}, \frac{W}{4})$};
+%         \node[head] at (\CX, \dyD - 2.2) (pool)  {AdaptiveAvgPool\\$(B, 64, \frac{H}{4}, \frac{W}{4}) \to (B, 64)$};
+%         \node[head] at (\CX, \dyD - 3.2) (fc1)   {Linear, ReLU\\$(B, 64) \to (B, 64)$};
+%         \node[head] at (\CX, \dyD - 4.1) (fc2)   {Linear\\$(B, 64) \to (B, 1)$};
+%         \node[io]   at (\CX, \dyD - 5.0) (value) {Value $\hat{V}(s)$};
+
+%         \draw[flow] (f2.east) -- ++(0.5, 0) |- (cr1.west);
+%         \foreach \a/\b in {cr1/cr2, cr2/pool, pool/fc1, fc1/fc2, fc2/value}
+%             \draw[flow] (\a) -- (\b);
+
+%         % Group boxes
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=blue!4, fit=(proj)(s1)(d1)(s2)(d2)(bot),
+%                   label={[grouplbl, text=blue!60!black, fill=blue!4]below:Encoder}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=orange!4, fit=(u1)(f1)(u2)(f2)(actor)(actions),
+%                   label={[grouplbl, text=orange!60!black, fill=orange!4]above:Decoder + Actor}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=green!4, fit=(ext)(trf)(scS)(scB),
+%                   label={[grouplbl, text=green!50!black, fill=green!4]below:Entity Transformer}] {};
+%         \end{scope}
+%         \begin{scope}[on background layer]
+%             \node[groupbox, fill=gray!6, fit=(cr1)(cr2)(pool)(fc1)(fc2)(value),
+%                   label={[grouplbl, text=gray!60!black, fill=gray!6]above:Critic}] {};
+%         \end{scope}
+
+%         \end{tikzpicture}
+%     }
+%     \caption{UNet-Entity-CBAM architecture (${\approx}2.9$,M parameters at $C_1{=}48$). Identical to UNet-Entity (Figure~\ref{fig:arch-unet-entity}) but with CBAM-ResBlocks (Figure~\ref{fig:cbam-resblock}) replacing SE-ResBlocks, adding spatial attention ("where to look") alongside channel attention ("which features matter").}
+%     \label{fig:arch-unet-entity-cbam}
+% \end{figure}

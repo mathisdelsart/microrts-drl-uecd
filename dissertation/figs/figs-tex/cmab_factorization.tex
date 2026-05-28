@@ -1,0 +1,118 @@
+\documentclass[border=4pt]{standalone}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning, fit, calc, arrows.meta, backgrounds}
+
+\begin{document}
+
+\definecolor{unitA}{RGB}{55,126,184}
+\definecolor{unitB}{RGB}{230,111,15}
+\definecolor{unitC}{RGB}{122,49,158}
+\definecolor{cmabRed}{RGB}{178,24,43}
+\definecolor{cmabGreen}{RGB}{27,120,55}
+
+\begin{tikzpicture}[
+    every node/.style={transform shape},
+    nodeA/.style={circle, draw=unitA!80!black, fill=unitA!22, line width=0.85pt, minimum size=18pt, inner sep=0pt},
+    nodeB/.style={circle, draw=unitB!80!black, fill=unitB!22, line width=0.7pt, minimum size=15pt, inner sep=0pt},
+    nodeC/.style={circle, draw=unitC!80!black, fill=unitC!22, line width=0.6pt, minimum size=12pt, inner sep=0pt},
+    leafN/.style={circle, draw=gray!55, fill=gray!22, line width=0.4pt, minimum size=6pt, inner sep=0pt},
+    bigA/.style={circle, draw=unitA!80!black, fill=unitA!22, line width=0.85pt, minimum size=18pt, inner sep=0pt},
+    bigB/.style={circle, draw=unitB!80!black, fill=unitB!22, line width=0.85pt, minimum size=18pt, inner sep=0pt},
+    bigC/.style={circle, draw=unitC!80!black, fill=unitC!22, line width=0.85pt, minimum size=18pt, inner sep=0pt},
+    actA/.style={circle, draw=unitA!80!black, fill=unitA!12, line width=0.5pt, minimum size=10pt, inner sep=0pt},
+    actB/.style={circle, draw=unitB!80!black, fill=unitB!15, line width=0.5pt, minimum size=10pt, inner sep=0pt},
+    actC/.style={circle, draw=unitC!80!black, fill=unitC!15, line width=0.5pt, minimum size=10pt, inner sep=0pt},
+    arrA/.style={->, line width=0.7pt, color=unitA!75!black},
+    arrB/.style={->, line width=0.55pt, color=unitB!80!black},
+    arrC/.style={->, line width=0.4pt, color=unitC!75!black},
+    paneltitle/.style={fill=black!6, draw=black!35, line width=0.8pt, text=black!80,
+                       rounded corners=4pt, inner xsep=9pt, inner ysep=4pt, font=\huge\bfseries\sffamily},
+    metricpill/.style={rounded corners=3pt, line width=0.7pt, inner xsep=7pt, inner ysep=4pt,
+                       font=\Large\bfseries},
+    entlabel/.style={font=\normalsize\bfseries\ttfamily, text=black!75},
+    footnote/.style={rounded corners=3pt, line width=0.6pt, inner xsep=7pt, inner ysep=3.5pt,
+                     font=\large\bfseries\itshape},
+    qlabel/.style={font=\normalsize},
+]
+
+% ── LEFT: Joint action space ──
+\node[paneltitle] at (0, 4.7) {Joint action space};
+\node[metricpill, fill=cmabRed!15, draw=cmabRed!50, text=cmabRed!60!black] at (0, 3.7) {$\boldsymbol{k^n = 3^3 = 27}$ combinations};
+
+\node[nodeA] (root) at (0, 2.65) {};
+\node[entlabel, left=6pt] at (root.west) {Unit A};
+
+\foreach \i/\x in {1/-3, 2/0, 3/3} {
+    \node[nodeB] (a\i) at (\x, 1.0) {};
+    \draw[arrA] (root) -- (a\i);
+}
+\node[entlabel, left=6pt] at (a1.west) {Unit B};
+
+\foreach \i/\bx in {1/-3, 2/0, 3/3} {
+    \foreach \j/\dx in {1/-0.8, 2/0, 3/0.8} {
+        \pgfmathtruncatemacro{\idx}{\i*10+\j}
+        \pgfmathsetmacro{\cx}{\bx+\dx}
+        \node[nodeC] (b\idx) at (\cx, -0.45) {};
+        \draw[arrB] (a\i) -- (b\idx);
+    }
+}
+\node[entlabel, left=6pt] at (b11.west) {Unit C};
+
+\foreach \i/\bx in {1/-3, 2/0, 3/3} {
+    \foreach \j/\dx in {1/-0.8, 2/0, 3/0.8} {
+        \pgfmathtruncatemacro{\idx}{\i*10+\j}
+        \pgfmathsetmacro{\basex}{\bx+\dx}
+        \foreach \k/\ddx in {1/-0.22, 2/0, 3/0.22} {
+            \pgfmathsetmacro{\lx}{\basex+\ddx}
+            \node[leafN] (c\idx\k) at (\lx, -1.95) {};
+            \draw[arrC] (b\idx) -- (c\idx\k);
+        }
+    }
+}
+
+\node[footnote, fill=cmabRed!15, draw=cmabRed!50, text=cmabRed!60!black] at (0, -2.85) {27 joint actions to evaluate};
+
+% ── SEPARATOR ──
+\draw[dashed, line width=0.8pt, color=gray!55] (6, 5.15) -- (6, -3.3);
+
+% ── RIGHT: CMAB factorization ──
+\node[paneltitle] at (11, 4.7) {CMAB factorization};
+\node[metricpill, fill=cmabGreen!15, draw=cmabGreen!55, text=cmabGreen!45!black] at (11, 3.7) {$\boldsymbol{n \times k = 3 \times 3 = 9}$ evaluations};
+
+\node[bigA] (fa) at (8.5, 2.1) {};
+\node[entlabel, above=4pt] at (fa.north) {Unit A};
+\foreach \i/\y in {1/1.0, 2/0.3, 3/-0.4} {
+    \node[actA] (fa\i) at (9.7, \y) {};
+    \draw[arrA] (fa) -- (fa\i);
+    \node[qlabel, right=3pt] at (fa\i.east) {$Q_A(a_\i)$};
+}
+
+\node[bigB] (fb) at (11, 2.1) {};
+\node[entlabel, above=4pt] at (fb.north) {Unit B};
+\foreach \i/\y in {1/1.0, 2/0.3, 3/-0.4} {
+    \node[actB] (fb\i) at (12.2, \y) {};
+    \draw[arrB] (fb) -- (fb\i);
+    \node[qlabel, right=3pt] at (fb\i.east) {$Q_B(a_\i)$};
+}
+
+\node[bigC] (fc) at (13.5, 2.1) {};
+\node[entlabel, above=4pt] at (fc.north) {Unit C};
+\foreach \i/\y in {1/1.0, 2/0.3, 3/-0.4} {
+    \node[actC] (fc\i) at (14.7, \y) {};
+    \draw[arrC] (fc) -- (fc\i);
+    \node[qlabel, right=3pt] at (fc\i.east) {$Q_C(a_\i)$};
+}
+
+\node[draw=black!55, line width=0.8pt, rounded corners=3pt, fill=gray!10, inner sep=7pt, font=\large] at (11, -1.5) {%
+    $Q(s, \mathbf{a}) \approx Q_A(a_A) + Q_B(a_B) + Q_C(a_C)$
+};
+
+\node[footnote, fill=cmabGreen!15, draw=cmabGreen!55, text=cmabGreen!45!black] at (11, -2.85) {9 values to estimate};
+
+\end{tikzpicture}
+\end{document}

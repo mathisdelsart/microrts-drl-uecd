@@ -1,0 +1,46 @@
+\chapter{Limitations}
+\label{chap:limitations}
+
+The contributions of Chapters~\ref{chap:evaluation-framework} to~\ref{chap:results} sit within a defined scope. Section~\ref{sec:lim-deliberate} enumerates the trade-offs adopted by design to keep the work tractable within an academic budget; Section~\ref{sec:lim-open} catalogs the residual gaps observed in the experimental results, which the budget allowed neither to explain nor to close, and whose corresponding research directions are developed in Chapter~\ref{chap:future-work}. In the language of experimental validity, Section~\ref{sec:lim-deliberate} concerns internal validity (the controlled, single-run conditions under which each effect is attributed), whereas Section~\ref{sec:lim-open} concerns external validity (how far the findings generalize beyond the studied setting).
+
+\section{Deliberate Methodological Choices}
+\label{sec:lim-deliberate}
+
+\paragraph*{MicroRTS rather than a commercial RTS.}
+The choice of MicroRTS was justified in Chapter~\ref{chap:introduction} by the $384$ TPUs and $44$ training days that AlphaStar required on StarCraft~II~\cite{vinyalsGrandmasterLevelStarCraft2019}. Every conclusion of this work is therefore validated on a minimalist abstraction, and the transfer of \code{UECD} and its training pipeline to a commercial-scale environment remains an open empirical question.
+
+\paragraph*{Full observability.}
+Experiments disable MicroRTS's fog-of-war and stochastic damage (Section~\ref{sec:microrts_env}), which isolates the combinatorial and relational difficulty of RTS from the state-estimation problem that partial observability introduces. The architectural axes of Chapter~\ref{chap:architectures} have not been stress-tested against belief-update mechanisms that commercial RTS games require.
+
+\paragraph*{Pure reinforcement learning.}
+The agent is trained end-to-end with PPO and never queries a symbolic planner, a search routine, or a language model, which isolates how far DRL can go on MicroRTS as a sole learning signal. Strategy classes naturally expressible as compact rules (rush counters, unit-counter cycles, build-order priors) are therefore rediscovered from scratch by gradient descent rather than injected as priors.
+
+\paragraph*{Per-cell action representation.}
+GridNet emits one action vector per occupied cell at every step, which keeps the action space tractable but pins the policy at the unit level: no native mechanism for multi-unit macros, multi-step plans, or hierarchical sub-goals. Temporally extended control would require an additional abstraction layer that this thesis does not investigate.
+
+\paragraph*{Single-map focus for the final agent.}
+\code{UECD-Best} is trained, fine-tuned, and tournament-evaluated on \emph{basesWorkers16x16A} (Section~\ref{sec:single-map-agent}) to attribute each architectural and training contribution causally through controlled ablation, rather than to maximize breadth at the expense of interpretability. The headline tournament result therefore characterizes one specific topology.
+
+\paragraph*{Padded multi-map training.}
+Where RAISocketAI rewrote the Java--Python bridge~\cite{goodfriendCompetitionWinningDeep2024} to dispatch natively on each map's dimensions, this thesis pads every observation to the largest map size (Section~\ref{subsec:padding}). The padded scheme preserves the per-cell GridNet action representation but wastes most of the convolutional work on empty cells (quantified in Section~\ref{subsec:padding}). The decision was driven by the JVM single-startup constraint (Section~\ref{subsec:jvm-integration}) and by implementation cost, not by a measured throughput comparison.
+
+\paragraph*{Three-seed, 50\,\text{M}-step ablation.}
+The feature ablation (Section~\ref{sec:feat-ablation}) tests features at $50$\,\text{M} steps with three seeds each (${\sim}19.4$ GPU-days total), balancing feature discrimination against compute cost. The per-feature standard deviation often matches the baseline's own ($\pm 7.5$ pp), making the ranking of moderate-effect features statistically weak; a $5$- to $10$-seed protocol at $100$\,\text{M} steps would have been more conclusive but exceeded the budget. The same applies to the final agent: \code{UECD-Best} is reported from a single training run, so the $96.67$\% headline of Section~\ref{sec:single-map-tournament} has no seed band either.
+
+\section{Open Residual Limitations}
+\label{sec:lim-open}
+
+\paragraph*{Sparse reward triggers rush collapse.}
+Removing the shaped reward entirely while keeping $\gamma=0.99$ amplifies the win signal of a fast rush by a factor of ${\sim}92$ (Section~\ref{sec:rush-collapse}), and the policy reorganizes around this shortcut at the cost of out-of-distribution robustness. The remedy retained in \code{UECD-Best} floors the shaped weight at $10$\% instead of annealing it to zero, which pins the value function to a stable scale but leaves the policy reliant on a hand-tuned residual signal rather than on a clean sparse objective.
+
+\paragraph*{Monotone emergent strategy.}
+After fine-tuning, \code{UECD-Best} converges to a Ranged-only composition (Section~\ref{sec:emergent-strategy}) that dominates the tournament pool. The RAISocketAI matchup is still won (65.7\% stochastic win rate, 9--1 deterministic) but by a narrower margin, since its fast Light rush exploits the rock-paper-scissors counter (Light beats Ranged at melee range) before the Ranged line is built. Late-stage attempts to diversify the composition (elevated \emph{ProduceLight} reward, Ranged production penalty, higher entropy) failed to shift the policy: the Ranged-only attractor was too entrenched for fine-tuning to dislodge without destroying the learned behavior. Closing the margin would require retraining from an earlier checkpoint, before the composition locks in.
+
+\paragraph*{Topology-shift collapse.}
+Following established generalization-probing methodology~\cite{korkmazSurveyAnalyzingGeneralization2024, wittyMeasuringCharacterizingGeneralization2018}, the probes of Section~\ref{sec:gen-probes} show that \code{UECD-Best} retains $\geq 95\%$ win rate against five of eight opponents under a scale shift ($16{\times}16 \to 32{\times}32$) but collapses to $4$--$22$\% against the strongest opponents under a layout shift (\emph{TwoBasesBarracks16x16}). Single-map training overfits to the specific layout far more than to the specific size. The multi-map study (Section~\ref{sec:multi-map}) shows that broadening the training distribution removes the per-map collapse, but the resulting generalist does not reach competition-grade strength against the strongest bots, so the gap is narrowed rather than closed.
+
+\paragraph*{Generalization probed on two shifts only.}
+The probes (Section~\ref{sec:gen-probes}) cover one layout shift (\emph{TwoBasesBarracks16x16}) and one scale shift (\emph{basesWorkers32x32A}) at $100$ games per opponent, enough to establish a qualitative asymmetry between scale and layout robustness but not to delineate the failure mode systematically: the maps of Chapter~\ref{chap:evaluation-framework} beyond \emph{basesWorkers16x16A} and the two shift maps are not probed with \code{UECD-Best}; three of them are instead used to train \code{UECD-MultiMap} on its five-map pool (Section~\ref{sec:multi-map}), leaving six entirely unused, and the probes do not control for terrain density, resource asymmetry, or chamber structure independently.
+
+\paragraph*{Replay-bound BC warmstart.}
+The BC-PPO experiment (Section~\ref{sec:bc-ppo}) confirms that supervised pre-training on bot replays~\cite{fosterBehaviorCloningAll2024} accelerates early PPO without lifting the final plateau. The approach does not transfer to the rest of the work: the BC dataset was generated on \emph{basesWorkers16x16A} only, in the standard $29$-channel format, without additional features. Extending BC to the multi-map, multi-feature setting would require regenerating replays per map and retraining BC per feature combination, an effort beyond the thesis's time budget.

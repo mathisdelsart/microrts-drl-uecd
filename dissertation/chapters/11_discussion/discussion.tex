@@ -1,0 +1,51 @@
+\addtocontents{toc}{\vspace{\baselineskip}\noindent{\titlefont\bfseries\large IV\quad Discussion and Conclusions}\par\vspace{0.3em}}
+\chapter{Discussion}
+\label{chap:discussion}
+
+This chapter steps back from Chapter~\ref{chap:results}'s per-experiment analysis to draw out what its results mean once assembled. It reads them along four angles. The first two situate the work against the literature: how the findings depart from prior results on the benchmark, and where they instead confirm established observations (Section~\ref{sec:disc-priorwork}). The last two turn to consequences: implications for practitioners building an RTS agent under a constrained budget (Section~\ref{sec:disc-practitioners}), and what they imply for researchers beyond the specific case of this agent (Section~\ref{sec:disc-researchers}). Two further angles are addressed elsewhere: the internal correlation across the result sections is already built into the staged structure of Chapter~\ref{chap:results}, where each experiment feeds the next, and the threats to the validity of the findings are gathered in Chapter~\ref{chap:limitations}.
+
+\vspace*{-0.2cm}
+
+\section{Findings in Relation to Prior Work}
+\label{sec:disc-priorwork}
+
+\vspace*{-0.05cm}
+
+\subsection{Where the Findings Differ}
+
+\code{UECD-Best} beats RAISocketAI~\cite{goodfriendCompetitionWinningDeep2024}, the strongest DRL MicroRTS agent to date, on \emph{basesWorkers16x16A}. The more interesting point is not the ranking but where the gain comes from. In the ablation (Section~\ref{sec:feat-ablation}), the features that deliver a reliable gain are the ones that change what the policy perceives (extended observations, filtered masks, opponent modeling) or which matchups its gradient focuses on (MCW). They cost almost no parameters. At this scale the lever is not network capacity but the quality of the training signal.
+
+The clearest difference concerns behavior cloning. RAISocketAI~\cite{goodfriendCompetitionWinningDeep2024} reported a BC warmstart raising tournament win rate from ${\sim}72$\% to ${\sim}88$\%. On a single map at $100$\,\text{M} steps, BC accelerates early training but produces no detectable change in the final plateau at this evaluation resolution: both agents converge to the same range (Section~\ref{sec:bc-ppo}). This is not a contradiction but a different setting: RAISocketAI measures the effect across several maps, whereas the experiment here isolates a single map at a fixed budget. In that setting, BC buys training time, not a higher ceiling.
+
+Finally, the discount-induced rush collapse of Section~\ref{sec:rush-collapse} has no counterpart in the MicroRTS literature. The formal account of why annealing the shaped reward all the way to zero pushes the policy toward the shortest games extends the classical reward-shaping analysis~\cite{ngPolicyInvarianceReward1999}. The discount-induced preference for shorter episodes is itself classical; the contribution here is its concrete identification, quantification (the ${\approx}92\times$ amplification of Section~\ref{sec:rush-collapse}), and mitigation in the shaped-to-sparse annealing regime, together with the out-of-distribution fragility test.
+
+\vspace*{-0.05cm}
+
+\subsection{Where the Findings Agree}
+
+Several results confirm known observations. BC speeding up early training matches~\cite{fosterBehaviorCloningAll2024} and RAISocketAI~\cite{goodfriendCompetitionWinningDeep2024}; only the conclusion about the final level differs. The value of relational attention for multi-unit control is in line with the StarCraft~II agents that use it~\cite{vinyalsGrandmasterLevelStarCraft2019, wangSCCEfficientDeep2020}. Self-play with PFSP being useful but budget-sensitive echoes the large-scale work~\cite{vinyalsGrandmasterLevelStarCraft2019, openaiDota2Large2019}: its instability at $50$\,\text{M} steps comes from a checkpoint pool that has no time to mature. Overfitting to topology rather than to map size (Section~\ref{sec:gen-probes}) mirrors what the RL generalization literature describes~\cite{korkmazSurveyAnalyzingGeneralization2024, wittyMeasuringCharacterizingGeneralization2018}. And the game-theoretic metrics surface structure that a plain win rate hides, which supports their use as evaluation tools~\cite{balduzziReevaluatingEvaluation2018, omidshafieiARankMultiAgentEvaluation2019}.
+
+\section{Implications for Practitioners}
+\label{sec:disc-practitioners}
+
+For anyone building an RTS agent under limited compute, the results translate into concrete rules:
+
+\begin{itemize}\itemsep2pt
+  \item Spend the budget on perception and training signal, not on network capacity: the features that deliver a stable gain change what the policy perceives or which matchups it weights, at near-zero parameter cost (Section~\ref{sec:feat-ablation}); enlarging the backbone does not.
+  \item Do not anneal the shaped reward all the way to zero while $\gamma<1$ and the policy controls episode length, or it triggers the rush collapse of Section~\ref{sec:rush-collapse}. The clean remedy is a properly trained multi-head value function, like the one in RAISocketAI~\cite{goodfriendCompetitionWinningDeep2024}: implemented correctly, it handles the structural shift by design.
+  \item Use a BC warmstart when wall-clock is the binding constraint: at equal compute it yields a stronger agent, though not a higher ceiling once the budget is large~\cite{fosterBehaviorCloningAll2024}.
+  \item With few seeds, choose features on their reliability, not their mean: a steady, low-variance gain is worth more than a larger but unstable one.
+  \item For robustness across maps, broaden the training distribution with a map-and-matchup curriculum~\cite{jiangPrioritizedLevelReplay2021} rather than redesign the architecture (Section~\ref{sec:multi-map}).
+\end{itemize}
+
+\section{Implications for Researchers}
+\label{sec:disc-researchers}
+
+Several of these rules generalize beyond the particular agent built here:
+
+\begin{itemize}\itemsep2pt
+  \item The reward collapse is domain-independent: any shaped-to-terminal annealing schedule with $\gamma<1$ and a policy-controlled horizon is exposed to the same discount-induced shortcut, so the characterization and the three mitigations of Section~\ref{sec:rush-collapse} transfer to long-horizon RL beyond MicroRTS~\cite{ngPolicyInvarianceReward1999}.
+  \item Capacity is not the bottleneck at this scale: the practitioner rule above questions the reflex of enlarging networks for small-to-medium RTS, since where compute is scarce the training signal, not width or depth, is the variable that pays.
+  \item Topology overfitting is a property of the data, not the model: it originates in the training distribution rather than the architecture (Section~\ref{sec:multi-map}), pointing to environment design (PCG and regret-based adversaries~\cite{dennisEmergentComplexityZeroshot2021, wangPairedOpenEndedTrailblazer2019}, or PLR~\cite{jiangPrioritizedLevelReplay2021}) as the principled route to generalization, not a better encoder.
+  \item Multi-metric evaluation should be the default: each game-theoretic metric exposes structure the others hide (Section~\ref{sec:gt-metrics}), so reporting win rate alone can understate or flatter an agent~\cite{balduzziReevaluatingEvaluation2018, omidshafieiARankMultiAgentEvaluation2019}.
+\end{itemize}

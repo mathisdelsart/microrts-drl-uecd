@@ -1,0 +1,130 @@
+\addtocontents{toc}{\vspace{\baselineskip}\noindent{\titlefont\bfseries\large V\quad Appendices}\par\vspace{0.3em}}
+\chapter{Derivations Underlying PPO}
+\label{app:derivation}
+
+This appendix provides two derivations underlying PPO. Section~\ref{app:pg-derivation} derives the \emph{policy gradient theorem} (Equation~\ref{eq:policy-gradient}), showing why $\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta})$ can be estimated from sampled trajectories without differentiating through the environment. Section~\ref{app:pg-surrogate} then re-expresses this gradient as the \emph{importance-sampled surrogate loss} (Equation~\ref{eq:surrogate-is}), establishing the equivalence $\nabla \mathcal{L}^{\text{IS}}(\boldsymbol{\theta}) = \nabla J(\boldsymbol{\theta})$ in expectation, which justifies PPO's multiple gradient steps per batch.
+
+\section{Policy Gradient Theorem}
+\label{app:pg-derivation}
+
+Recall the policy-gradient objective 
+(Equation~\ref{eq:j_theta}):
+\begin{equation}
+J(\boldsymbol{\theta}) 
+= \mathbb{E}_{\tau \sim \pi_{\boldsymbol{\theta}}}[G_0] 
+= \int p_{\boldsymbol{\theta}}(\tau) \, G(\tau) \, d\tau,
+\label{eq:J}
+\end{equation}
+where $p_{\boldsymbol{\theta}}(\tau)$ is the probability of trajectory $\tau = (s_0, a_0, r_1, s_1, a_1, r_2, \ldots, s_T)$ under policy $\pi_{\boldsymbol{\theta}}$.
+
+Differentiating directly yields
+\begin{equation}
+\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) = \int 
+\nabla_{\boldsymbol{\theta}} p_{\boldsymbol{\theta}}(\tau) \, G(\tau) \, d\tau,
+\end{equation}
+which is no longer an expectation and cannot be estimated by Monte Carlo sampling.
+
+The \emph{log-derivative identity}
+\begin{equation}
+\nabla_{\boldsymbol{\theta}} f(\boldsymbol{\theta}) 
+= f(\boldsymbol{\theta}) \cdot \nabla_{\boldsymbol{\theta}} \log f(\boldsymbol{\theta})
+\end{equation}
+restores the expectation form when applied to $f = p_{\boldsymbol{\theta}}(\tau)$:
+\begin{equation}
+\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) 
+= \mathbb{E}_{\tau \sim \pi_{\boldsymbol{\theta}}} 
+\left[ \nabla_{\boldsymbol{\theta}} \log p_{\boldsymbol{\theta}}(\tau) \, G(\tau) \right].
+\label{eq:expect_J}
+\end{equation}
+The gradient is again an expectation, and therefore estimable by sampling.
+
+\medskip
+
+It remains to evaluate $\nabla_{\boldsymbol{\theta}} \log p_{\boldsymbol{\theta}}(\tau)$. The trajectory probability factorizes into the initial-state distribution, the policy, and the environment transitions:
+\begin{equation}
+p_{\boldsymbol{\theta}}(\tau) = p(s_0) \prod_{t=0}^{T-1} 
+\pi_{\boldsymbol{\theta}}(a_t \mid s_t) \, p(s_{t+1} \mid s_t, a_t).
+\label{eq:trajectory-prob}
+\end{equation}
+Taking the logarithm turns the product into a sum:
+\begin{equation}
+\log p_{\boldsymbol{\theta}}(\tau) = \log p(s_0) 
++ \sum_{t=0}^{T-1} \log \pi_{\boldsymbol{\theta}}(a_t \mid s_t)
++ \sum_{t=0}^{T-1} \log p(s_{t+1} \mid s_t, a_t).
+\end{equation}
+The initial-state and transition terms do not depend on $\boldsymbol{\theta}$ and vanish under $\nabla_{\boldsymbol{\theta}}$:
+\begin{equation}
+\nabla_{\boldsymbol{\theta}} \log p_{\boldsymbol{\theta}}(\tau) 
+= \sum_{t=0}^{T-1} \nabla_{\boldsymbol{\theta}} \log 
+\pi_{\boldsymbol{\theta}}(a_t \mid s_t).
+\label{eq:trajlog-gradient}
+\end{equation}
+
+Substituting Equation~\ref{eq:trajlog-gradient} 
+into  Equation~\ref{eq:expect_J}:
+\begin{equation}
+\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) 
+= \mathbb{E}_{\tau \sim \pi_{\boldsymbol{\theta}}} 
+\left[ \sum_{t=0}^{T-1} \nabla_{\boldsymbol{\theta}} 
+\log \pi_{\boldsymbol{\theta}}(a_t \mid s_t) \cdot G(\tau) \right].
+\end{equation}
+A standard causality argument~\cite{suttonReinforcementLearningIntroduction2020} replaces $G_0$ with the future-only return $G_t$ in each summand, since rewards $r_1, \ldots, r_t$ predate $a_t$ and only add variance to the estimator, yielding Equation~\ref{eq:policy-gradient}:
+\begin{equation}
+\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) 
+= \mathbb{E}_{\tau \sim \pi_{\boldsymbol{\theta}}} 
+\left[ \sum_{t=0}^{T-1} \nabla_{\boldsymbol{\theta}} 
+\log \pi_{\boldsymbol{\theta}}(a_t \mid s_t) \cdot G_t \right].
+\label{eq:policy-grad}
+\end{equation}
+
+\section{Importance-Sampled Surrogate Loss}
+\label{app:pg-surrogate}
+
+The policy gradient above requires sampling from $\pi_{\boldsymbol{\theta}}$. After each update, $\boldsymbol{\theta}$ changes and previously collected data is no longer on-policy. To enable multiple gradient steps per batch, the gradient is re-expressed as the gradient of an \emph{importance-sampled surrogate loss}.
+
+\medskip
+
+Provided $q(x) > 0$ wherever $p(x) > 0$:
+\begin{equation}
+\mathbb{E}_{x \sim p}[f(x)] 
+= \mathbb{E}_{x \sim q}\!\left[\frac{p(x)}{q(x)} f(x)\right].
+\end{equation}
+Applying this to Equation~\ref{eq:policy-grad} with $p = \pi_{\boldsymbol{\theta}}$ and $q = \pi_{\boldsymbol{\theta}_{\text{old}}}$ gives:
+\begin{equation}
+\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) 
+= \mathbb{E}_{\tau \sim \pi_{\boldsymbol{\theta}_{\text{old}}}}\!\left[
+\sum_{t=0}^{T-1} \rho_t(\boldsymbol{\theta})\, 
+\nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_t \mid s_t) \cdot G_t
+\right],
+\label{eq:is-gradient}
+\end{equation}
+with $\rho_t(\boldsymbol{\theta}) = \pi_{\boldsymbol{\theta}}(a_t \mid s_t) 
+\,/\, \pi_{\boldsymbol{\theta}_{\text{old}}}(a_t \mid s_t)$ the 
+importance sampling ratio.
+
+\medskip
+
+The corresponding surrogate objective is
+\begin{equation}
+\mathcal{L}^{\text{IS}}(\boldsymbol{\theta}) 
+= \mathbb{E}_{\tau \sim \pi_{\boldsymbol{\theta}_{\text{old}}}}\!\left[
+\sum_{t=0}^{T-1} \rho_t(\boldsymbol{\theta}) \cdot G_t \right].
+\label{eq:is-surrogate}
+\end{equation}
+Differentiating with respect to $\boldsymbol{\theta}$ (with $\pi_{\boldsymbol{\theta}_{\text{old}}}$ fixed) yields
+\begin{equation}
+\nabla_{\boldsymbol{\theta}} \mathcal{L}^{\text{IS}}(\boldsymbol{\theta}) 
+= \mathbb{E}_{\tau \sim \pi_{\boldsymbol{\theta}_{\text{old}}}}\!\left[
+\sum_{t=0}^{T-1} \frac{\nabla_{\boldsymbol{\theta}} \pi_{\boldsymbol{\theta}}(a_t \mid s_t)}
+{\pi_{\boldsymbol{\theta}_{\text{old}}}(a_t \mid s_t)} \cdot G_t \right].
+\end{equation}
+Multiplying and dividing by $\pi_{\boldsymbol{\theta}}(a_t \mid s_t)$ recovers the log-derivative form:
+\begin{equation}
+\nabla_{\boldsymbol{\theta}} \mathcal{L}^{\text{IS}}(\boldsymbol{\theta}) 
+= \mathbb{E}_{\tau \sim \pi_{\boldsymbol{\theta}_{\text{old}}}}\!\left[
+\sum_{t=0}^{T-1} \rho_t(\boldsymbol{\theta})\,
+\nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_t \mid s_t) \cdot G_t \right],
+\end{equation}
+matching Equation~\ref{eq:is-gradient}, so $\nabla \mathcal{L}^{\text{IS}} = \nabla J$ in expectation. The surrogate remains differentiable for nearby $\boldsymbol{\theta}$, enabling multiple gradient steps per batch as long as $\rho_t$ stays close to $1$, which motivates the PPO clipping mechanism (Section~\ref{sec:ppo}).
+
+In practice, $G_t$ is replaced by the lower-variance advantage estimator $\hat{A}_t$ (Equation~\ref{eq:gae}); the IS argument applies identically since the change of measure does not depend on the integrand. The result is Equation~\ref{eq:surrogate-is}, the form used in the body\footnote{The body uses the PPO shorthand $\mathbb{E}_t[\cdot] \equiv \tfrac{1}{T}\mathbb{E}_{\tau \sim \pi_{\boldsymbol{\theta}_{\text{old}}}}\!\left[\sum_{t=0}^{T-1} \cdot\right]$; the constant $T$ is absorbed in the learning rate.}.

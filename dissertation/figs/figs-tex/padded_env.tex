@@ -1,0 +1,66 @@
+\documentclass[border=4pt]{standalone}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning, calc, arrows.meta}
+
+\definecolor{padteal}{RGB}{15,110,86}   % transform arrow : dark teal
+
+\begin{document}
+
+\begin{tikzpicture}[
+    % ── Text styles (sans-serif scientific) ──
+    heading/.style={font=\Large\bfseries\sffamily, anchor=south},
+    % ── black "pill" label (signature element) ──
+    pill/.style={fill=black!82, text=white, rounded corners=3pt, align=center,
+                 inner xsep=6pt, inner ysep=3.5pt, font=\normalsize\bfseries\sffamily},
+    % ── red "pill" for the padding zone ──
+    redpill/.style={fill=red!72!black, text=white, rounded corners=3pt, align=center,
+                    inner xsep=8pt, inner ysep=4pt, font=\Large\bfseries\sffamily},
+    % ── Borders ──
+    actualborder/.style={draw=blue!65!black, line width=1.6pt, rounded corners=3pt},
+    paddedborder/.style={draw=black!72, line width=1.3pt, rounded corners=3pt},
+    % ── Padding grid ──
+    paddinggrid/.style={draw=black!25, line width=0.4pt, step=0.5},
+]
+
+% === Left: actual game screenshot ===
+\node[anchor=north west, inner sep=0] (screenshot) at (0, 0) {
+    \includegraphics[width=6cm, height=6cm]{../report/chapters/02_microrts_decision_problem/figures/microRTS-image.pdf}
+};
+\draw[actualborder] (0, 0) rectangle (6, -6);
+\node[heading] at (3, 0.4) {Game state ($12 \times 12$)};
+
+% === Transform arrow (thick teal) + black pill label ===
+\draw[-{Stealth[length=11pt,width=11pt]}, line width=4pt, padteal!75!black]
+    (6.85, -3) -- (8.55, -3);
+\node[pill] at (7.7, -4.4) {zero-pad to\\$H_{\max} \times W_{\max}$};
+
+% === Right: padded observation ===
+\begin{scope}[shift={(9.5, 0)}]
+    % Padded area background
+    \fill[red!15] (0, -8) rectangle (8, 0);
+    % Actual game screenshot inside padded frame
+    \node[anchor=north west, inner sep=0] at (0, 0) {
+        \includegraphics[width=6cm, height=6cm]{../report/chapters/02_microrts_decision_problem/figures/microRTS-image.pdf}
+    };
+    % Grid over padding zone only
+    \draw[paddinggrid] (6, -8) grid (8, 0);
+    \draw[paddinggrid] (0, -6) grid (8, -8);
+    % Border actual
+    \draw[actualborder] (0, 0) rectangle (6, -6);
+    % Border padded
+    \draw[paddedborder] (0, 0) rectangle (8, -8);
+    % "Zero padding" pill
+    \node[redpill] at (3, -7) {Zero padding};
+    % Right heading
+    \node[heading] at (4, 0.4) {Padded Game state ($H_{\max} \times W_{\max}$)};
+\end{scope}
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,119 @@
+\chapter{Introduction}
+\label{chap:introduction}
+
+Many real-world problems require multiple agents to make decisions simultaneously, in real time, and with limited information: from landing drone swarms~\cite{aschuMARLanderLocalPath2024} to coordinating warehouse robots~\cite{krnjaicScalableMultiAgentReinforcement2024} and piloting fighter jets in air combat~\cite{popeHierarchicalReinforcementLearning2021}. In such settings, agents must allocate scarce resources and anticipate others' actions despite delayed feedback. Real-time strategy (RTS) games pose the same challenge in miniature~\cite{ontanonSurveyRealTimeStrategy2013}: multiple players gather resources, build armies, and fight on a shared map, controlling every unit at every moment. The motivation goes beyond academic curiosity: methods developed in RTS games have already reached expert level in demanding real-time control, from championship-level car racing~\cite{wurmanOutracingChampionGran2022} to real-world fusion-reactor plasma control~\cite{degraveMagneticControlTokamak2022}. This is what makes RTS games one of the most demanding benchmarks for sequential decision-making~\cite{buroRTSChallenge2003}.
+  
+\medskip
+
+AlphaStar~\cite{vinyalsGrandmasterLevelStarCraft2019} demonstrated that deep reinforcement learning (DRL) can reach Grandmaster level (\emph{top $0.15$\%}) in StarCraft~II, a commercial RTS game whose hundreds of unit types and rich action parameterization yield roughly $10^{26}$ legal actions per timestep. However, training required $384$ tensor processing units (TPUs) over $44$ days and substantial engineering effort, far beyond academic reach. MicroRTS~\cite{ontanonCombinatorialMultiArmedBandit2013} offers an accessible alternative that distills the RTS problem to economy and combat on small grid maps, yet retains the key difficulties: combinatorial action space, multi-unit coordination, and sparse long-horizon planning~\cite{ontanonSurveyRealTimeStrategy2013}. Since $2017$, an annual competition~\cite{ontanonFirstMicroRTSArtificial2018} at the IEEE Conference on Games (CoG), formerly the Conference on Computational Intelligence and Games (CIG), has attracted agent submissions. The Gym-$\mu$RTS Python wrapper~\cite{huangGym$m$RTSAffordableFull2021} has made the environment directly usable for reinforcement learning (RL).
+
+\medskip
+
+This master's thesis investigates the application of DRL to MicroRTS, aiming to produce a competitive agent within an academic compute budget. Because the $2026$ MicroRTS competition has shifted its focus to large language model (LLM)-based agents, direct participation falls outside the scope of this work. Instead, the format of the $2023$ competition is replicated: a benchmark of fifteen agents spanning seven years of MicroRTS history is assembled across twelve maps, yielding a reproducible evaluation framework. RAISocketAI~\cite{goodfriendCompetitionWinningDeep2024}, the first DRL agent to win the competition, serves as the primary competitive reference throughout. Starting from the GridNet baseline introduced alongside Gym-$\mu$RTS~\cite{huangGym$m$RTSAffordableFull2021}, each architectural and algorithmic improvement is evaluated in isolation before the best components are combined into final agents.
+
+\medskip
+
+This work is guided by two research questions:
+
+\begin{itemize}
+    \item \textbf{RQ1.} \hlc{gray!12}{Which architectural and algorithmic design decisions most improve a MicroRTS agent's performance, and how robust this effect is across seeds?}
+    \item \textbf{RQ2.} \hlc{gray!12}{Can an agent competitive with the strongest prior competition entries be trained within an academic compute budget?}
+\end{itemize}
+
+To answer these questions, this thesis contributes a \textbf{\emph{(i)}} reproducible CoG-style tournament framework, \textbf{\emph{(ii)}} an extended and modular Java--Python environment stack, \textbf{\emph{(iii)}} the \code{UECD} architecture, \textbf{\emph{(iv)}} a modular training pipeline whose mechanisms are ablated in isolation, \textbf{\emph{(v)}} a formal analysis of a discount-induced reward collapse, and \textbf{\emph{(vi)}} the resulting agent named \code{UECD-Best}.
+
+\medskip
+
+On the standard \emph{basesWorkers16x16A} map, \code{UECD-Best} tops a $19$-agent round-robin tournament with a \textbf{96.67\%} overall win rate ($\mathrm{WR}$) and holds a \textbf{65.7\%} head-to-head $\mathrm{WR}$ against RAISocketAI. This is achieved at a training cost of \textbf{9.47} graphics processing unit (GPU)-days and ${\sim}$\textbf{350\,\text{M}} environment steps, below the ${\sim}23.6$ GPU-days and ${\sim}500\,\text{M}$ steps reported by RAISocketAI for its small-map subset ($\le 16{\times}16$), trading that agent’s multi-layout breadth for single-layout depth.
+
+\medskip
+
+A paper distilling the contributions and results of this thesis has been submitted to IEEE CoG $2026$ (currently under review)\footnote{Titled \emph{``Combining Spatial and Entity-Based Reasoning for Competitive MicroRTS via U-Net and Transformers''}.}. The complete codebase is open-sourced\footnote{M.~Delsart, \emph{microrts-drl-uecd}, 2026, GitHub: \url{https://github.com/mathisdelsart/microrts-drl-uecd}.}, alongside a companion website hosting recorded \code{UECD-Best} matchups\footnote{Available at \url{https://mathisdelsart.github.io/microrts-drl-uecd-website}.}.
+
+\medskip
+
+The work is structured as follows:
+
+\rule{\linewidth}{0.4pt}\\[-1.0em]
+        \rule{\linewidth}{0.4pt}\\[+0.0em]
+        \textbf{Part~I --- Background}\\[-0.5em]
+        \rule{\linewidth}{0.4pt}\\[-1.0em]
+        \rule{\linewidth}{0.4pt}
+        
+\begin{itemize}
+
+    \item \textbf{Chapter~\ref{chap:background} --- MicroRTS as a Sequential Decision Problem.} Introduces real-time strategy games and their challenges for Artificial Intelligence (AI). The MicroRTS environment is presented in detail. The problem is formalized as a Markov Decision Process (MDP) under full observability, defining state space, action space, transition dynamics, and reward signal.
+
+    \item \textbf{Chapter~\ref{chap:rl_basis} --- Reinforcement Learning Foundations.} Covers the core RL concepts required for the rest of this work. The chapter concludes with a detailed presentation of Proximal Policy Optimization (PPO) and an overview of the end-to-end training loop applied to the MicroRTS environment.
+
+\end{itemize}
+
+\rule{\linewidth}{0.4pt}\\[-1.0em]
+        \rule{\linewidth}{0.4pt}\\[+0.0em]
+        \textbf{Part~II --- State of the Art}\\[-0.5em]
+        \rule{\linewidth}{0.4pt}\\[-1.0em]
+        \rule{\linewidth}{0.4pt}
+        
+\begin{itemize}
+
+    \item \textbf{Chapter~\ref{chap:historical-approach} --- Classical Approaches in RTS Games.} Reviews rule-based, search-based, and hierarchical decomposition paradigms for RTS game AI. Each paradigm is illustrated with concrete agents from the MicroRTS competition that appear in the evaluation benchmark.
+
+    \item \textbf{Chapter~\ref{chap:sota} --- Deep Reinforcement Learning Approaches in RTS Games.} Reviews the milestones that brought DRL from board games to RTS games. AlphaStar is presented in detail as the most influential reference for this work. The chapter surveys DRL work on MicroRTS, from the first Gym-$\mu$RTS agent to RAISocketAI, and positions the contributions of this thesis.
+
+\end{itemize}
+
+\rule{\linewidth}{0.4pt}\\[-1.0em]
+        \rule{\linewidth}{0.4pt}\\[+0.0em]
+        \textbf{Part~III --- Contributions}\\[-0.5em]
+        \rule{\linewidth}{0.4pt}\\[-1.0em]
+        \rule{\linewidth}{0.4pt}
+        
+\begin{itemize}
+
+    \item \textbf{Chapter~\ref{chap:evaluation-framework} --- MicroRTS Tournament Framework.} Defines the tournament infrastructure for comparing agents throughout this thesis. The chapter presents the twelve evaluation maps, the fifteen benchmark agents assembled to replicate the $2023$ CoG competition format, and the five ranking metrics used to assess agent performance.
+
+    \item \textbf{Chapter~\ref{chap:python_bridge} --- MicroRTS Environment Stack.} Extends the Gym-$\mu$RTS framework with substantial modifications to both the Java and Python layers. The Java--Python bridge, vectorized game client, standard and extended observation encodings, action space structure, reward functions, and composable wrapper stack are described in detail.
+
+    \item \textbf{Chapter~\ref{chap:architectures} --- Spatial and Entity-Based Neural Architectures.} Organizes the architectural requirements of an RTS network into three reasoning axes (local spatial, long-range relational, global spatial). Presents the seven architectures explored, from the GridNet baseline to the final \code{UECD} design. Each architecture is introduced as an incremental modification of the previous one, with the specific motivation and expected effect of each change.
+
+    \item \textbf{Chapter~\ref{chap:training-system} --- Training Procedure and Mechanisms.} Specifies the PPO training procedure built on the chosen architecture, then the catalog of optional, flag-gated mechanisms layered on top of it. The mechanisms are presented from those closest to per-step action sampling outward to global generalization: action sampling, reward and value shaping, the opponent curriculum, auxiliary representation learning, generalization, and architectural refinements.
+
+    \item \textbf{Chapter~\ref{chap:results}: Experimental Results and Analysis.} Reports the empirical evaluation of all contributions. Architecture and feature ablations isolate per-component effects and feed into the single-map agent \code{UECD-Best}, built via two-phase opponent-pool fine-tuning and motivated by a theoretical analysis of the discount-induced rush collapse observed on a first long-horizon run. \code{UECD-Best} is evaluated in a $19$-agent round-robin tournament, and probed for robustness under layout and scale shift. Two complementary experiments close the chapter: a multi-map variant validating cross-layout training, and a behavior-cloning warmstart quantifying the compute-efficiency benefit of pre-training on bot replays.
+
+\end{itemize}
+
+\rule{\linewidth}{0.4pt}\\[-1.0em]
+        \rule{\linewidth}{0.4pt}\\[+0.0em]
+        \textbf{Part~IV --- Discussion and Conclusions}\\[-0.5em]
+        \rule{\linewidth}{0.4pt}\\[-1.0em]
+        \rule{\linewidth}{0.4pt}
+
+\begin{itemize}
+
+      \item \textbf{Chapter~\ref{chap:discussion} --- Discussion.} Steps back from the per-experiment analysis to interpret the results as a whole: how the findings depart from and confirm prior work, and what they imply for practitioners and for researchers.
+
+      \item \textbf{Chapter~\ref{chap:limitations}: Limitations.} Distinguishes deliberate methodological choices (trade-offs adopted by design) from open residual limitations (gaps observed in the experimental results).
+
+      \item \textbf{Chapter~\ref{chap:future-work}: Future Work.} Outlines two horizons of research directions: short-term extensions of the existing artifacts, and a longer-term program toward general RTS AI built on a cross-game research line on transferable representations.
+
+      \item \textbf{Chapter~\ref{chap:conclusion} --- Conclusion.} Summarizes the main findings and contributions of this thesis.
+
+\end{itemize}
+
+\rule{\linewidth}{0.4pt}\\[-1.0em]
+        \rule{\linewidth}{0.4pt}\\[+0.0em]
+        \textbf{Part~V --- Appendices}\\[-0.5em]
+        \rule{\linewidth}{0.4pt}\\[-1.0em]
+        \rule{\linewidth}{0.4pt}
+        
+\begin{itemize}
+
+    \item \textbf{Appendix~\ref{app:derivation} --- Derivations Underlying PPO.} Provides the policy gradient theorem and importance-sampled surrogate loss derivations referenced in Chapter~\ref{chap:rl_basis}.
+
+    \item \textbf{Appendix~\ref{app:maps}: Evaluation Map Visualizations.} Shows the twelve evaluation maps used by the tournament framework of Chapter~\ref{chap:evaluation-framework} and the experiments of Chapter~\ref{chap:results}.
+
+    \item \textbf{Appendix~\ref{app:game-theory} --- Game-Theoretic Evaluation Metrics.} Provides the mathematical definitions of Nash averaging, $\alpha$-Rank, Copeland score, and regret used in tournament analysis.
+    
+    \item \textbf{Appendix~\ref{app:arch-diagrams}: UECD Architecture: Full Specification.} Provides the fully annotated \code{UECD} diagram with all channel widths and tensor dimensions needed to reproduce the network.
+    
+\end{itemize}

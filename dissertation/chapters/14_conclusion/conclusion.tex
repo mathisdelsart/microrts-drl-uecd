@@ -1,0 +1,20 @@
+\chapter{Conclusion}
+\label{chap:conclusion}
+
+MicroRTS has been an academic benchmark for RTS AI since $2017$. It isolates the core RTS difficulties (combinatorial action space, multi-unit coordination, sparse long-horizon planning) on small grids. Its compute requirements remain tractable compared to full-scale environments such as StarCraft~II, where AlphaStar required $384$ TPUs over $44$ days to reach Grandmaster level~\cite{vinyalsGrandmasterLevelStarCraft2019}. Within this scope, this work targets a DRL agent capable of competing with the state of the art on MicroRTS.
+
+\medskip
+
+Building on the Gym-$\mu$RTS baseline, this work delivers six contributions: \textbf{\emph{(i)}} a reproducible CoG-style tournament framework over twelve maps and fifteen reference agents, \textbf{\emph{(ii)}} an extended Java--Python bridge with composable wrappers, vectorized self-play, and padded observations for multi-map training, \textbf{\emph{(iii)}} the \code{UECD} architecture combining multi-scale convolution, entity-level Transformer reasoning, and bottleneck self-attention, \textbf{\emph{(iv)}} a modular training pipeline with flag-gated PPO additions, each ablated in isolation on a single map, \textbf{\emph{(v)}} a formal analysis of discount-induced reward collapse that explains, and provides mitigations for, the instability of shaped-to-sparse reward annealing, and \textbf{\emph{(vi)}} the final \code{UECD-Best} agent, which integrates the above under a two-phase opponent-curriculum fine-tuning schedule. A paper based on these contributions has been submitted to IEEE CoG $2026$ (currently under review).
+  
+\medskip
+
+On the \emph{basesWorkers16x16A} map, \code{UECD-Best} tops a $19$-agent round-robin tournament, finishing first on four of the five ranking metrics: overall win rate (\textbf{96.67\%}), Copeland score, $\alpha$-Rank, and average regret. Against RAISocketAI, the primary competitive reference, \code{UECD-Best} holds a \textbf{65.7\%} head-to-head win rate under the $1\,000$-game stochastic protocol ($9$--$1$ under the deterministic CoG format) while consuming \textbf{9.47} GPU-days and roughly \textbf{350\,\text{M}} environment steps, below the ${\sim}500\,\text{M}$ steps and ${\sim}23.6$ GPU-days reported by RAISocketAI for its small-map subset ($\le 16{\times}16$), trading that agent's multi-layout breadth for single-layout depth. Against the \code{GridNet} baseline, \code{UECD-Best} improves the win rate by \textbf{+63.06} pp ($33.61$\% $\to$ $96.67$\%), driven by the combined effect of the \code{UECD} architecture, the retained PPO additions, and the two-phase fine-tuning curriculum. Among the retained features, the ablation study identifies four leading individual contributors: extended observations (\textbf{+26.3} pp), filtered masks $+$ reserved observations (\textbf{+22.6} pp), Matchup Competitiveness Weighting (\textbf{+20.4} pp), and opponent modeling (\textbf{+19.8} pp).
+
+\medskip
+
+By bringing per-unit Transformer reasoning, systematic feature ablation, and game-theoretic evaluation together on a controlled MicroRTS map, this work demonstrates that a carefully designed DRL agent can outperform the strongest existing competitor on a single fixed layout, at an academic compute budget and at the cost of cross-layout robustness, and isolates the design decisions that drive this performance, among them the mitigation of a discount-induced reward collapse. Together, these results answer the two research questions raised in Chapter~\ref{chap:introduction}.
+
+\medskip
+
+Beyond the agent itself, this work arrives at a turning point in the MicroRTS competition: after a trajectory from early rule-based agents through search-based and hybrid methods to the first DRL winner in $2023$, the focus is now shifting toward LLM-based agents for the $2026$ cycle. The open-source pipeline released alongside this thesis is designed to bridge that transition, providing a tested DRL substrate for future hybrid DRL/LLM systems, multi-map extensions, or any of the other directions outlined in Chapters~\ref{chap:limitations} and~\ref{chap:future-work}.

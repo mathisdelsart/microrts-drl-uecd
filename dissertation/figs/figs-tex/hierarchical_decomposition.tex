@@ -1,0 +1,106 @@
+\documentclass[border=4pt]{standalone}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning, fit, calc, arrows.meta, backgrounds, decorations.pathmorphing}
+
+\begin{document}
+
+\definecolor{macrocolor}{RGB}{124, 58, 237}
+\definecolor{microcolor}{RGB}{13, 148, 136}
+\definecolor{envcolor}{RGB}{71, 85, 105}
+\definecolor{feedbackcolor}{RGB}{71, 85, 105}
+
+\begin{tikzpicture}[
+    every node/.style={transform shape},
+    box/.style={
+        draw, line width=1.6pt, rounded corners=6pt,
+        minimum width=3cm, minimum height=1.3cm,
+        align=center, font=\normalsize\bfseries
+    },
+    stratbox/.style={
+        draw, rounded corners=3pt, line width=0.7pt,
+        minimum width=1.5cm, minimum height=0.7cm,
+        align=center, font=\scriptsize
+    },
+    unitbox/.style={
+        draw, rounded corners=3pt, line width=0.7pt,
+        minimum width=1.4cm, minimum height=0.8cm,
+        align=center, font=\scriptsize
+    },
+    arrow/.style={-stealth, line width=1.4pt, black!80},
+    smallarrow/.style={-stealth},
+    lbl/.style={font=\footnotesize\bfseries, fill=white, inner sep=2pt},
+    methodbadge/.style={
+        font=\scriptsize\itshape\bfseries, rounded corners=2pt,
+        inner sep=2pt, fill=#1!12, draw=#1!50, line width=0.4pt,
+        text=#1!50!black
+    },
+    grouphdr/.style={
+        font=\small\bfseries\itshape, text=#1!55!black,
+        fill=#1!12, rounded corners=2pt, inner sep=3pt
+    },
+]
+
+% ── Top row: 3 main boxes (micro and env shifted right to clear group overlap) ──
+\node[box, fill=macrocolor!10, draw=macrocolor] (macro) at (0, 0) {
+    $\pi_{\text{macro}}$\\[2pt]
+    {\normalfont\footnotesize every $T$ steps}
+};
+
+\node[box, fill=microcolor!10, draw=microcolor] (micro) at (5.5, 0) {
+    $\pi_{\text{micro}}$\\[2pt]
+    {\normalfont\footnotesize every step}
+};
+
+\node[box, fill=envcolor!10, draw=envcolor] (env) at (10.5, 0) {
+    Environment
+};
+
+% ── Main flow arrows ──
+\draw[arrow] (macro) -- node[lbl, above] {strategy} (micro);
+\draw[arrow] (micro) -- node[lbl, above] {actions} (env);
+
+% ── Strategy alternatives below macro (spaced out to avoid overlap) ──
+\node[stratbox, fill=macrocolor!8, draw=macrocolor!55] (s1) at (-1.8, -1.9) {WorkerRush};
+\node[stratbox, fill=macrocolor!35, draw=macrocolor, line width=1.3pt] (s2) at (0, -1.9) {LightRush};
+\node[stratbox, fill=macrocolor!8, draw=macrocolor!55] (s3) at (1.8, -1.9) {RangedRush};
+
+\draw[smallarrow, macrocolor!50, line width=0.5pt] (macro.south) -- (s1.north);
+\draw[smallarrow, macrocolor, line width=1.4pt] (macro.south) -- (s2.north);
+\draw[smallarrow, macrocolor!50, line width=0.5pt] (macro.south) -- (s3.north);
+
+% ── Unit alternatives below micro (shifted right to follow micro) ──
+\node[unitbox, fill=microcolor!8, draw=microcolor!55] (u1) at (3.9, -1.9) {Worker 1\\{\tiny\itshape harvest}};
+\node[unitbox, fill=microcolor!8, draw=microcolor!55] (u2) at (5.5, -1.9) {Worker 2\\{\tiny\itshape build}};
+\node[unitbox, fill=microcolor!8, draw=microcolor!55] (u3) at (7.1, -1.9) {Light 1\\{\tiny\itshape attack}};
+
+\draw[smallarrow, microcolor!70, line width=0.6pt] (micro.south) -- (u1.north);
+\draw[smallarrow, microcolor!70, line width=0.6pt] (micro.south) -- (u2.north);
+\draw[smallarrow, microcolor!70, line width=0.6pt] (micro.south) -- (u3.north);
+
+% ── Group boxes (background, tighter inner_xsep to avoid horizontal overlap) ──
+\begin{scope}[on background layer]
+    \node[fill=macrocolor!5, rounded corners=6pt, draw=macrocolor!30, line width=0.5pt,
+          fit=(macro)(s1)(s2)(s3), inner xsep=4pt, inner ysep=10pt] (macrogroup) {};
+    \node[fill=microcolor!5, rounded corners=6pt, draw=microcolor!30, line width=0.5pt,
+          fit=(micro)(u1)(u2)(u3), inner xsep=4pt, inner ysep=10pt] (microgroup) {};
+\end{scope}
+
+% Group headers (below the group boxes)
+\node[grouphdr=macrocolor, anchor=north] at ([yshift=-2pt]macrogroup.south) {Strategic level (slow)};
+\node[grouphdr=microcolor, anchor=north] at ([yshift=-2pt]microgroup.south) {Tactical level (fast)};
+
+% ── Feedback loop env → macro (path adjusted to clear new positions) ──
+\draw[arrow, feedbackcolor!65, dashed, line width=1pt]
+    (env.south) -- (10.5, -4.0)
+    -- (-3.0, -4.0)
+    -- (-3.0, 0)
+    -- (macro.west);
+\node[font=\footnotesize, color=feedbackcolor!75!black, fill=white, inner sep=2pt] at (3.5, -4.0) {state $s_t$ feedback};
+
+\end{tikzpicture}
+\end{document}
