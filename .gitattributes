@@ -10,6 +10,9 @@
 *.otf binary
 *.pkl binary
 
-# Vendored third-party code: exclude from GitHub language statistics
-microrts_agent/microrts/** linguist-vendored
+# Vendored third-party code / data: exclude from GitHub language statistics.
+# The hand-written Java bridge in microrts_agent/microrts/src/ is NOT vendored — it counts.
+microrts_agent/microrts/maps/** linguist-vendored
+microrts_agent/microrts/microrts.jar linguist-vendored
+microrts_agent/microrts/lib/bots/** linguist-vendored
 microrts_agent/tournaments/competition_winners/** linguist-vendored
