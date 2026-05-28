@@ -1,0 +1,85 @@
+\documentclass[border=4pt]{standalone}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\begin{document}
+
+% ─── Palette ───
+\definecolor{dqnColor}{RGB}{37, 99, 235}        % blue-600
+\definecolor{agoColor}{RGB}{13, 148, 136}       % teal-600
+\definecolor{azoColor}{RGB}{16, 185, 129}       % emerald-500
+\definecolor{starColor}{RGB}{234, 88, 12}       % orange-600
+\definecolor{muzColor}{RGB}{124, 58, 237}       % violet-600
+\definecolor{timelinegray}{RGB}{100, 116, 139}  % slate-500
+
+\begin{tikzpicture}[
+  >={Stealth[length=6pt]},
+  milestone/.style={
+    draw, rounded corners=6pt, line width=1.5pt,
+    minimum width=2.6cm, minimum height=1.6cm,
+    inner sep=5pt, align=center, font=\small
+  },
+  wideMilestone/.style={
+    draw, rounded corners=6pt, line width=1.5pt,
+    minimum width=3cm, minimum height=1.6cm,
+    inner sep=5pt, align=center, font=\small
+  },
+  yearlabel/.style={font=\footnotesize\bfseries, color=timelinegray},
+]
+
+% ── Timeline axis ──
+\draw[->, line width=2pt, timelinegray] (-1.3,0) -- (16,0);
+
+% ── DQN (2013) ──
+\node[milestone, fill=dqnColor!8, draw=dqnColor] (dqn) at (0, 1.5) {%
+  {\large\bfseries DQN}\\[2pt]
+  {\scriptsize Atari 2600}
+};
+\draw[dqnColor, line width=1.2pt] (0,0) -- (dqn.south);
+\filldraw[fill=dqnColor, draw=dqnColor] (0,0) circle (5pt);
+\node[yearlabel] at (0,-0.65) {2013};
+
+% ── AlphaGo (2016) ──
+\node[milestone, fill=agoColor!8, draw=agoColor] (ago) at (3.5, 1.5) {%
+  {\large\bfseries AlphaGo}\\[2pt]
+  {\scriptsize Lee Sedol, Go}
+};
+\draw[agoColor, line width=1.2pt] (3.5,0) -- (ago.south);
+\filldraw[fill=agoColor, draw=agoColor] (3.5,0) circle (5pt);
+\node[yearlabel] at (3.5,-0.65) {2016};
+
+% ── AlphaZero (2017) ──
+\node[milestone, fill=azoColor!8, draw=azoColor] (azo) at (7, 1.5) {%
+  {\large\bfseries AlphaZero}\\[2pt]
+  {\scriptsize Stockfish \& AlphaGo}
+};
+\draw[azoColor, line width=1.2pt] (7,0) -- (azo.south);
+\filldraw[fill=azoColor, draw=azoColor] (7,0) circle (5pt);
+\node[yearlabel] at (7,-0.65) {2017};
+
+% ── AlphaStar / OpenAI Five (2019) ──
+\node[wideMilestone, fill=starColor!10, draw=starColor] (star) at (10.5, 1.5) {%
+  {\large\bfseries\shortstack{AlphaStar\\[-1pt]OpenAI Five}}\\[2pt]
+  {\scriptsize SC\,II \& Dota\,2 pros}
+};
+\draw[starColor, line width=1.2pt] (10.5,0) -- (star.south);
+\filldraw[fill=starColor, draw=starColor] (10.5,0) circle (5pt);
+\node[yearlabel] at (10.5,-0.65) {2019};
+
+% ── MuZero (2020) ──
+\node[milestone, fill=muzColor!8, draw=muzColor] (muz) at (14, 1.5) {%
+  {\large\bfseries MuZero}\\[2pt]
+  {\scriptsize Go, Chess, Shogi \& Atari}
+};
+\draw[muzColor, line width=1.2pt] (14,0) -- (muz.south);
+\filldraw[fill=muzColor, draw=muzColor] (14,0) circle (5pt);
+\node[yearlabel] at (14,-0.65) {2020};
+
+\end{tikzpicture}
+
+\end{document}

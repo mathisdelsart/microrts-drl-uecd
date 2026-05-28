@@ -1,0 +1,166 @@
+\documentclass[border=4pt]{standalone}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\begin{document}
+
+\begin{tikzpicture}[
+    vecbox/.style={draw=black!45, line width=0.6pt, minimum height=0.5cm, minimum width=0.5cm,
+                   inner sep=0pt, font=\small\bfseries, fill=#1},
+    vecbox/.default={white},
+    grouplabel/.style={font=\normalsize\bfseries, text=black, anchor=north, yshift=-2pt},
+    uniticon/.style={draw=black!55, line width=1pt, rounded corners=2pt, minimum size=1.3cm,
+                     inner sep=0pt, align=center, fill=white},
+    titlepill/.style={fill=black!82, text=white, rounded corners=3pt, anchor=south,
+                      inner xsep=7pt, inner ysep=3.5pt, font=\large\bfseries\sffamily},
+]
+
+% === Left: Game screenshot ===
+\node[anchor=center, inner sep=0] (img) at (0, -4.5) {
+    \includegraphics[width=7cm]{../report/chapters/02_microrts_decision_problem/figures/microRTS-image.pdf}
+};
+\node[titlepill] at (0, -0.8) {Game state};
+
+% === Markers on top of image at approximate cell positions ===
+\draw[blue!70, very thick, rounded corners=1pt] (-2.47, -2.95) rectangle (-1.97, -2.45);
+\draw[green!60!black, very thick, rounded corners=1pt] (-2.95, -1.95) rectangle (-2.48, -1.48);
+\draw[yellow!70!black, very thick, rounded corners=1pt] (0.48, -4.9) rectangle (0.95, -5.4);
+
+% === Arrows from markers to vectors ===
+\draw[-stealth, very thick, green!60!black] (-2.48, -1.715) -- (5.8, -4.5);
+\draw[-stealth, very thick, blue!70] (-1.97, -2.7) -- (5.8, -1.5);
+\draw[-stealth, very thick, yellow!70!black] (0.95, -5.15) -- (5.8, -7.5);
+
+
+% ══════════════════════════════════════════════
+% Row 1: Base (Player 0, HP=10)
+% ══════════════════════════════════════════════
+\begin{scope}[shift={(6, -1.5)}]
+    \node[uniticon, fill=gray!20] (icon1) at (0, 0) {};
+    \fill[gray!40] (-0.35, -0.35) rectangle (0.35, 0.35);
+    \node[font=\small\bfseries, text=black] at (0, 0) {5};
+    \node[font=\large\bfseries, anchor=north] at (0, -0.75) {\textcolor{blue!70}{\textcircled{\scriptsize 1}} Base};
+
+    \def\startx{1.8}
+    \foreach \i/\v/\c in {0/0/white, 1/0/white, 2/0/white, 3/0/white, 4/1/purple!35} {
+        \node[vecbox=\c] at (\startx+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+1, -0.4) {HP};
+
+    \foreach \i/\v/\c in {0/0/white, 1/0/white, 2/0/white, 3/0/white, 4/1/green!30} {
+        \node[vecbox=\c] at (\startx+3+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+4, -0.4) {Res.};
+
+    \foreach \i/\v/\c in {0/0/white, 1/1/blue!35, 2/0/white} {
+        \node[vecbox=\c] at (\startx+6+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+6.5, -0.4) {Owner};
+
+    \foreach \i/\v/\c in {0/0/white, 1/1/orange!40, 2/0/white, 3/0/white, 4/0/white, 5/0/white, 6/0/white, 7/0/white} {
+        \node[vecbox=\c] at (\startx+8+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+9.75, -0.4) {Unit type};
+
+    \foreach \i/\v/\c in {0/1/teal!30, 1/0/white, 2/0/white, 3/0/white, 4/0/white, 5/0/white} {
+        \node[vecbox=\c] at (\startx+12.5+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+13.75, -0.4) {Action};
+
+    \foreach \i/\v/\c in {0/1/yellow!30, 1/0/white} {
+        \node[vecbox=\c] at (\startx+16+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+16.25, -0.4) {Terrain};
+\end{scope}
+
+% ══════════════════════════════════════════════
+% Row 2: Resource (neutral, HP=1)
+% ══════════════════════════════════════════════
+\begin{scope}[shift={(6, -4.5)}]
+    \node[uniticon, fill=green!20] (icon2) at (0, 0) {};
+    \fill[green!50] (-0.3, -0.3) rectangle (0.3, 0.3);
+    \node[font=\small\bfseries, text=black] at (0, 0) {18};
+    \node[font=\large\bfseries, anchor=north] at (0, -0.75) {\textcolor{green!60!black}{\textcircled{\scriptsize 2}} Resource};
+
+    \def\startx{1.8}
+    \foreach \i/\v/\c in {0/0/white, 1/1/purple!35, 2/0/white, 3/0/white, 4/0/white} {
+        \node[vecbox=\c] at (\startx+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+1, -0.4) {HP};
+
+    \foreach \i/\v/\c in {0/0/white, 1/0/white, 2/0/white, 3/0/white, 4/1/green!30} {
+        \node[vecbox=\c] at (\startx+3+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+4, -0.4) {Res.};
+
+    \foreach \i/\v/\c in {0/1/gray!25, 1/0/white, 2/0/white} {
+        \node[vecbox=\c] at (\startx+6+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+6.5, -0.4) {Owner};
+
+    \foreach \i/\v/\c in {0/1/orange!40, 1/0/white, 2/0/white, 3/0/white, 4/0/white, 5/0/white, 6/0/white, 7/0/white} {
+        \node[vecbox=\c] at (\startx+8+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+9.75, -0.4) {Unit type};
+
+    \foreach \i/\v/\c in {0/1/teal!30, 1/0/white, 2/0/white, 3/0/white, 4/0/white, 5/0/white} {
+        \node[vecbox=\c] at (\startx+12.5+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+13.75, -0.4) {Action};
+
+    \foreach \i/\v/\c in {0/1/yellow!30, 1/0/white} {
+        \node[vecbox=\c] at (\startx+16+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+16.25, -0.4) {Terrain};
+\end{scope}
+
+% ══════════════════════════════════════════════
+% Row 3: Heavy (Player 0, HP=4)
+% ══════════════════════════════════════════════
+\begin{scope}[shift={(6, -7.5)}]
+    \node[uniticon, fill=white] (icon3) at (0, 0) {};
+    \fill[yellow!70] (0, 0) circle (0.4cm);
+    \draw[blue!60, thick] (0, 0) circle (0.4cm);
+    \node[font=\large\bfseries, anchor=north] at (0, -0.75) {\textcolor{yellow!70!black}{\textcircled{\scriptsize 3}} Heavy};
+
+    \def\startx{1.8}
+    \foreach \i/\v/\c in {0/0/white, 1/0/white, 2/0/white, 3/0/white, 4/1/purple!35} {
+        \node[vecbox=\c] at (\startx+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+1, -0.4) {HP};
+
+    \foreach \i/\v/\c in {0/1/green!30, 1/0/white, 2/0/white, 3/0/white, 4/0/white} {
+        \node[vecbox=\c] at (\startx+3+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+4, -0.4) {Res.};
+
+    \foreach \i/\v/\c in {0/0/white, 1/1/blue!35, 2/0/white} {
+        \node[vecbox=\c] at (\startx+6+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+6.5, -0.4) {Owner};
+
+    \foreach \i/\v/\c in {0/0/white, 1/0/white, 2/0/white, 3/0/white, 4/0/white, 5/1/orange!40, 6/0/white, 7/0/white} {
+        \node[vecbox=\c] at (\startx+8+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+9.75, -0.4) {Unit type};
+
+    \foreach \i/\v/\c in {0/0/white, 1/1/teal!30, 2/0/white, 3/0/white, 4/0/white, 5/0/white} {
+        \node[vecbox=\c] at (\startx+12.5+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+13.75, -0.4) {Action};
+
+    \foreach \i/\v/\c in {0/1/yellow!30, 1/0/white} {
+        \node[vecbox=\c] at (\startx+16+\i*0.5, 0) {\v};
+    }
+    \node[grouplabel] at (\startx+16.25, -0.4) {Terrain};
+\end{scope}
+
+\end{tikzpicture}
+
+\end{document}

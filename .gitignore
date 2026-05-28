@@ -41,4 +41,14 @@ wandb/
 *.toc
 /**/*.aux
 *.synctex.gz
+# LaTeX glossary / xelatex intermediates
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.ist
+*.xdv
 

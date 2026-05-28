@@ -1,0 +1,28 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Custom LaTeX Commands     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Hyphenation hints for technical terms
+%%% Add terms that LaTeX breaks incorrectly
+%%% Example: \hyphenation{Micro-RTS reinforce-ment}
+\hyphenation{}
+
+%%% Inline sparkline graphs
+%%% Embeds small PDF graphs inline with text
+%%% Usage: The loss decreased \sparkline{figures/loss.pdf} over time.
+\newcommand{\sparkline}[1]{%
+    $\vcenter{\hbox{\includegraphics[scale=0.04]{#1}}}$%
+}
+
+\newcommand{\code}[1]{{\small\ttfamily\hyphenchar\font=45\relax #1}}
+
+\newcommand{\redheart}{%
+  \makebox[0pt][l]{\textcolor{red}{\faHeart}}\textcolor{black}{\faHeart[regular]}%
+}
+
+% For inline fluo
+\soulregister{\emph}{0}
+\soulregister{\cite}{0}
+\soulregister{\ref}{0}
+\soulregister{\textit}{0}
+\newcommand{\hlc}[2]{{\sethlcolor{#1}\hl{#2}}}

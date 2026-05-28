@@ -1,0 +1,188 @@
+\documentclass[border=4pt]{standalone}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning, fit, calc, arrows.meta, backgrounds}
+
+% Make \code harmless in standalone (defined as \texttt in the thesis)
+\providecommand{\code}[1]{\texttt{#1}}
+
+\begin{document}
+
+% ─── Palette moderne pétante (Tailwind-inspired) ───
+\definecolor{ruleblue}{RGB}{37, 99, 235}
+\definecolor{searchorange}{RGB}{249, 115, 22}
+\definecolor{hierpurple}{RGB}{124, 58, 237}
+\definecolor{drlemerald}{RGB}{5, 150, 105}
+\definecolor{limitred}{RGB}{220, 38, 38}
+\definecolor{sepgray}{RGB}{120, 120, 120}
+
+\begin{tikzpicture}[
+  >={Stealth[length=6pt]},
+  paradigm/.style={
+    draw, rounded corners=6pt, line width=1.6pt,
+    minimum width=5.5cm, minimum height=1.3cm,
+    text width=5.1cm, inner sep=6pt, align=center
+  },
+  limitlabel/.style={
+    font=\small\itshape\bfseries, color=limitred, below=2pt
+  },
+  mininode/.style={font=\tiny, inner sep=2pt},
+  miniarrow/.style={->, >=stealth, thin, gray!70},
+  separator/.style={dashed, line width=1pt, sepgray!75},
+  sepslbl/.style={font=\small\bfseries\itshape, text=sepgray, fill=white, inner sep=4pt},
+]
+
+% ═══════════════════════════════════════════════
+% PARADIGM BLOCKS (cascade)
+% ═══════════════════════════════════════════════
+\node[paradigm, fill=ruleblue!10, draw=ruleblue] (rule) at (0, 0) {%
+  {\large\bfseries\textsc{Rule-Based}}\\[3pt]
+  \normalsize Fixed policy via conditional rules
+};
+
+\node[paradigm, fill=searchorange!10, draw=searchorange] (search) at (3, -1.8) {%
+  {\large\bfseries\textsc{Search-Based}}\\[3pt]
+  \normalsize Forward simulation \& factorization
+};
+
+\node[paradigm, fill=hierpurple!10, draw=hierpurple] (hier) at (6, -3.6) {%
+  {\large\bfseries\textsc{Hierarchical}}\\[3pt]
+  \normalsize Macro \& micro decomposition
+};
+
+\node[paradigm, fill=drlemerald!10, draw=drlemerald] (drl) at (9, -5.7) {%
+  {\large\bfseries\textsc{DRL}}\\[3pt]
+  \normalsize End-to-end learned policies
+};
+
+% ═══════════════════════════════════════════════
+% SIDE ANNOTATIONS + MINI DIAGRAMS
+% ═══════════════════════════════════════════════
+
+% ── 1. Rule-Based ──
+\begin{scope}[shift={($(rule.east)+(1.2,0)$)}]
+  \node[mininode, draw, rounded corners=2pt, fill=ruleblue!12] (if1) at (0,0.3) {\texttt{if}};
+  \node[mininode, draw, rounded corners=2pt, fill=ruleblue!12] (then1) at (-0.5,-0.1) {\texttt{T}};
+  \node[mininode, draw, rounded corners=2pt, fill=ruleblue!12] (else1) at (0.5,-0.1) {\texttt{F}};
+  \node[mininode, circle, draw, fill=ruleblue!25, minimum size=5pt, inner sep=0pt] (a1) at (-0.5,-0.45) {};
+  \node[mininode, circle, draw, fill=ruleblue!25, minimum size=5pt, inner sep=0pt] (a2) at (0.5,-0.45) {};
+  \draw[miniarrow] (if1) -- (then1);
+  \draw[miniarrow] (if1) -- (else1);
+  \draw[miniarrow] (then1) -- (a1);
+  \draw[miniarrow] (else1) -- (a2);
+\end{scope}
+\node[font=\small\itshape, text width=3.2cm, align=left, anchor=west]
+  (ann1) at ($(rule.east)+(3.0,0)$) {%
+  $\pi(a|s)$ as decision tree\\
+  e.g.\ \code{LightRush}
+};
+
+% ── 2. Search-Based ──
+\begin{scope}[shift={($(search.east)+(1.5,0)$)}]
+  \node[mininode, circle, draw, fill=searchorange!25, minimum size=9pt] (r) at (0,0.4) {};
+  \node[mininode, circle, draw, fill=searchorange!25, minimum size=7pt] (c1) at (-0.7,-0.1) {};
+  \node[mininode, circle, draw, fill=searchorange!25, minimum size=7pt] (c2) at (0,-0.1) {};
+  \node[mininode, circle, draw, fill=searchorange!25, minimum size=7pt] (c3) at (0.7,-0.1) {};
+  \node[mininode, circle, draw, fill=searchorange!12, minimum size=5pt] (d1) at (-0.95,-0.55) {};
+  \node[mininode, circle, draw, fill=searchorange!12, minimum size=5pt] (d2) at (-0.5,-0.55) {};
+  \node[mininode, circle, draw, fill=searchorange!12, minimum size=5pt] (d3) at (-0.15,-0.55) {};
+  \node[mininode, circle, draw, fill=searchorange!12, minimum size=5pt] (d4) at (0.15,-0.55) {};
+  \node[mininode, circle, draw, fill=searchorange!60, minimum size=5pt] (d5) at (0.5,-0.55) {};
+  \node[mininode, circle, draw, fill=searchorange!12, minimum size=5pt] (d6) at (0.95,-0.55) {};
+  \draw[miniarrow] (r) -- (c1);
+  \draw[miniarrow] (r) -- (c2);
+  \draw[miniarrow, searchorange, line width=0.7pt] (r) -- (c3);
+  \draw[miniarrow] (c1) -- (d1);
+  \draw[miniarrow] (c1) -- (d2);
+  \draw[miniarrow] (c2) -- (d3);
+  \draw[miniarrow] (c2) -- (d4);
+  \draw[miniarrow, searchorange, line width=0.7pt] (c3) -- (d5);
+  \draw[miniarrow] (c3) -- (d6);
+\end{scope}
+\node[font=\small\itshape, text width=3.2cm, align=left, anchor=west]
+  (ann2) at ($(search.east)+(3.0,0)$) {%
+  MCTS + CMAB\\
+  $Q(\boldsymbol{s}, \boldsymbol{a}) \approx \sum_{i=1}^n Q_i(\boldsymbol{s}, \boldsymbol{a}_i)$
+};
+
+% ── 3. Hierarchical ──
+\begin{scope}[shift={($(hier.east)+(1.3,0)$)}]
+  \node[mininode, draw, rounded corners=2pt, fill=hierpurple!30, inner sep=4pt] (mac) at (0,0.35) {\small$\pi_{\text{M}}$};
+  \node[mininode, draw, rounded corners=2pt, fill=hierpurple!15, inner sep=3pt] (mic1) at (-0.7,-0.4) {\footnotesize$\pi_\mu$};
+  \node[mininode, draw, rounded corners=2pt, fill=hierpurple!15, inner sep=3pt] (mic2) at (0.0,-0.4) {\footnotesize$\pi_\mu$};
+  \node[mininode, draw, rounded corners=2pt, fill=hierpurple!15, inner sep=3pt] (mic3) at (0.7,-0.4) {\footnotesize$\pi_\mu$};
+  \draw[miniarrow, hierpurple, line width=0.6pt] (mac) -- (mic1);
+  \draw[miniarrow, hierpurple, line width=0.6pt] (mac) -- (mic2);
+  \draw[miniarrow, hierpurple, line width=0.6pt] (mac) -- (mic3);
+\end{scope}
+\node[font=\small\itshape, text width=3.2cm, align=left, anchor=west]
+  (ann3) at ($(hier.east)+(3.0,0)$) {%
+  $\pi_{\text{macro}}$ + $\pi_{\text{micro}}$\\
+  e.g.\ PuppetSearch
+};
+
+% ── 4. DRL ──
+\begin{scope}[shift={($(drl.east)+(1.1,0)$)}]
+  \foreach \i/\y in {1/0.35, 2/0, 3/-0.35} {
+    \node[mininode, circle, draw, fill=drlemerald!15, minimum size=7pt, inner sep=0pt] (in\i) at (-0.5,\y) {};
+  }
+  \foreach \i/\y in {1/0.5, 2/0.17, 3/-0.17, 4/-0.5} {
+    \node[mininode, circle, draw, fill=drlemerald!40, minimum size=7pt, inner sep=0pt] (hd\i) at (0.25,\y) {};
+  }
+  \foreach \i/\y in {1/0.2, 2/-0.2} {
+    \node[mininode, circle, draw, fill=drlemerald!70, minimum size=7pt, inner sep=0pt] (out\i) at (1.0,\y) {};
+  }
+  \foreach \i in {1,2,3} {
+    \foreach \j in {1,2,3,4} {
+      \draw[drlemerald!50, very thin] (in\i) -- (hd\j);
+    }
+  }
+  \foreach \i in {1,2,3,4} {
+    \foreach \j in {1,2} {
+      \draw[drlemerald!60, very thin] (hd\i) -- (out\j);
+    }
+  }
+\end{scope}
+\node[font=\small\itshape, text width=3.2cm, align=left, anchor=west]
+  (ann4) at ($(drl.east)+(3.0,0)$) {%
+  PPO + GridNet\\
+  Chapter 5
+};
+
+% ═══════════════════════════════════════════════
+% CASCADE ARROWS
+% ═══════════════════════════════════════════════
+\coordinate (start1) at ($(rule.south west)!0.25!(rule.south east)$);
+\coordinate (start2) at ($(search.south west)!0.25!(search.south east)$);
+\coordinate (start3) at ($(hier.south west)!0.25!(hier.south east)$);
+\coordinate (corner1) at (start1 |- search.west);
+\coordinate (corner2) at (start2 |- hier.west);
+\coordinate (corner3) at (start3 |- drl.west);
+
+\draw[gray!75, line width=1.6pt, ->]
+  (start1) -- (corner1) -- (search.west)
+  node[limitlabel, pos=1, anchor=north east] {No adaptability};
+
+\draw[gray!75, line width=1.6pt, ->]
+  (start2) -- (corner2) -- (hier.west)
+  node[limitlabel, pos=1, anchor=north east] {No multi-scale reasoning};
+
+\draw[gray!75, line width=1.6pt, ->]
+  (start3) -- (corner3) -- (drl.west)
+  node[limitlabel, pos=1, anchor=north east] {Hand-designed decompositions};
+
+% ═══════════════════════════════════════════════
+% SEPARATOR between CLASSICAL methods and DRL
+% ═══════════════════════════════════════════════
+\begin{scope}[on background layer]
+    \draw[separator] (-4.5, -4.6) -- (16, -4.6);
+\end{scope}
+\node[sepslbl, anchor=south west] at (-4.5, -4.55) {classical methods};
+\node[sepslbl, anchor=north west] at (-4.5, -4.65) {Learning paradigm};
+
+\end{tikzpicture}
+\end{document}

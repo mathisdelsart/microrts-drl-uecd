@@ -1,0 +1,55 @@
+\documentclass[border=4pt]{standalone}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning, fit, calc, arrows.meta, backgrounds}
+
+\definecolor{tierc}{RGB}{70,130,200}   % difficulty tiers : blue
+\definecolor{spc}{RGB}{76,160,90}      % self-play : green
+
+\begin{document}
+
+\begin{tikzpicture}[
+  font=\footnotesize, >={Stealth[length=6pt]},
+  node distance=19mm,
+  tier/.style={draw=tierc!80!black, line width=0.9pt, rounded corners=3pt, align=center,
+               inner sep=3pt, minimum height=1.0cm, minimum width=2.0cm,
+               font=\footnotesize\bfseries},
+  sp/.style={draw=spc!75!black, line width=1pt, fill=spc!22, rounded corners=3pt,
+             align=center, inner sep=3pt, minimum height=1.0cm, minimum width=2.3cm,
+             font=\footnotesize\bfseries},
+  %% soft win-rate threshold badges (white chip, thin gray border) ──
+  wrpill/.style={fill=white, draw=black!32, line width=0.4pt, text=black!72,
+                 rounded corners=1.5pt, inner xsep=2.5pt, inner ysep=1pt,
+                 font=\fontsize{3.8pt}{4.4pt}\selectfont\bfseries\sffamily},
+]
+
+%% ── scripted-bot difficulty tiers, then self-play (single row) ───
+\node[tier, fill=tierc!14] (a) {Random\\BiasedAI};
+\node[tier, fill=tierc!30, right=of a] (b) {WorkerRush};
+\node[tier, fill=tierc!48, right=of b] (c) {LightRush};
+\node[tier, fill=tierc!66, right=of c] (d) {CoacAI +\\Mayari};
+\node[sp, right=24mm of d] (sp) {Self-play\\(PFSP-hard)};
+
+\draw[->, line width=0.9pt, black!60] (a) -- node[above=1.5pt, wrpill]{WR\,$>$\,70\%} (b);
+\draw[->, line width=0.9pt, black!60] (b) -- node[above=1.5pt, wrpill]{WR\,$>$\,70\%} (c);
+\draw[->, line width=0.9pt, black!60] (c) -- node[above=1.5pt, wrpill]{WR\,$>$\,70\%} (d);
+\draw[->, line width=1pt, spc!75!black] (d) -- node[above=1.5pt, wrpill] {WR\,$>$\,90\%} (sp);
+
+%% ── increasing-difficulty axis (just above the scripted tiers) ───
+\draw[->, black!40, line width=0.8pt]
+  ($(a.north west)+(0,0.40)$) -- ($(d.north east)+(0,0.40)$)
+  node[midway, above, font=\scriptsize\itshape, text=black!70, inner sep=2pt] {increasing difficulty};
+
+%% ── notes below the row ──────────────────────────────────────────
+\node[font=\scriptsize, text=black!70, align=center] at ($(b)!0.5!(c)+(0,-0.95)$)
+  {$\geq 2$ environments per tier retained (anti-forgetting)};
+\node[font=\scriptsize\itshape, text=black!65, align=center] at ($(sp)+(0,-0.95)$)
+  {dormant until activated};
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,111 @@
+% Main thesis document
+\documentclass[openany]{dissertation}
+
+%%% Load all package configurations and custom commands
+\input{preamble}
+
+\renewcommand{\footnotesize}{\fontsize{7pt}{9pt}\selectfont}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Document Structure %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% Caption closer to the table and figure
+\captionsetup[table]{skip=3pt}
+\captionsetup[figure]{skip=6pt}
+
+%%% Front matter (Roman numerals)
+\frontmatter
+
+%%% Cover page
+\includepdf[pages=-]{covers/_frontbanner_EPL-master-thesis.pdf}
+
+%%% Dedication
+\let\cleardoublepage\clearpage
+\include{chapters/00_dedication/dedication}
+
+%%% Abstract
+\let\cleardoublepage\clearpage
+\include{chapters/00_abstract/abstract}
+
+%%% Acknowledgments
+\let\cleardoublepage\clearpage
+\include{chapters/00_acks/acks}
+
+%%% Interlude
+\let\cleardoublepage\clearpage
+\include{chapters/00_interlude/interlude}
+
+%%% Table of contents
+\tableofcontents
+
+%%% List of figures and tables (short captions feed these lists)
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables
+
+%% List of Acronyms
+\phantomsection
+\glsaddall
+\addcontentsline{toc}{chapter}{List of Acronyms}
+\printglossary[type=\acronymtype, title=List of Acronyms]
+
+%%% Main content (Arabic numerals)
+\mainmatter
+
+%%% Enable chapter thumb indices
+\thumbtrue
+
+%%% ==== Chapters ====
+
+%%% == Introduction ==
+\include{chapters/01_introduction/introduction}
+
+%%% == Background ==
+\include{chapters/02_microrts_decision_problem/microrts_decision_problem}
+\include{chapters/03_reinforcement_learning/reinforcement_learning}
+
+%%% == State-Of-The-Art ==
+\include{chapters/04_classical_approaches_rts/classical_approaches_rts}
+\include{chapters/05_deep_rl_approaches_rts/deep_rl_approaches_rts}
+
+%%% == Contribution ==
+\include{chapters/06_evaluation_framework/evaluation_framework}
+\include{chapters/07_env_stack/env_stack}
+\include{chapters/08_architectures/architectures}
+\include{chapters/09_training_system/training_system}
+\include{chapters/10_results/results}
+
+%%% == Discussion + Conclusions ==
+\include{chapters/11_discussion/discussion}
+\include{chapters/12_limitations/limitations}
+\include{chapters/13_future_work/future_work}
+\include{chapters/14_conclusion/conclusion}
+
+%%% == Appendices ==
+\input{chapters/appendix/appendices_title}
+\appendix
+\include{chapters/appendix/rl_derivations}
+\include{chapters/appendix/evaluation_map}
+\include{chapters/appendix/game_theoretic}
+\include{chapters/appendix/architecture_diagrams}
+
+%%% Disable thumb indices for back matter
+\thumbfalse
+
+%%% Bibliography
+\printbibliography[heading=bibintoc, title={Bibliography}]
+\setheader{Bibliography}
+
+%%% Back cover
+\includepdf[pages=-]{covers/_backbanner_EPL-master-thesis.pdf}
+
+\end{document}

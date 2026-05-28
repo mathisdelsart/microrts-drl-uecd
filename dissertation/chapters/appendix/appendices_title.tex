@@ -1,0 +1,43 @@
+\cleardoublepage
+\thispagestyle{empty}
+
+\usetikzlibrary{fadings}
+% Darker cyan for decorative lines (better print contrast)
+\definecolor{appendix-rule}{cmyk}{1,0.15,0,0.15}
+
+% Ornamental divider: gradient lines + centered diamond
+\newcommand{\appendixdivider}{%
+  \begin{tikzpicture}
+    \pgfmathsetmacro{\W}{0.97}% total width as fraction of \textwidth
+    \pgfmathsetmacro{\M}{0.49}% diamond center
+    \pgfmathsetmacro{\G}{0.03}% gap around diamond (each side)
+    % Left line: fade out toward left edge
+    \draw[appendix-rule, line width=1pt, line cap=round,
+          path fading=west]
+      (0,0) -- (\M*\textwidth-\G*\textwidth,0);
+    % Diamond
+    \node[appendix-rule, inner sep=0pt] at (\M*\textwidth,0) {$\diamond$};
+    % Right line: fade out toward right edge
+    \draw[appendix-rule, line width=1pt, line cap=round,
+          path fading=east]
+      (\M*\textwidth+\G*\textwidth,0) -- (\W*\textwidth,0);
+  \end{tikzpicture}%
+}
+
+\vspace*{5.5cm}
+\begin{center}
+  \appendixdivider
+
+  \vspace{0.5cm}
+  {\Huge\bfseries\color{tudelft-cyan} APPENDICES}
+
+  \vspace{0.5cm}
+  \appendixdivider
+
+  \vspace{0.8cm}
+  {\fontsize{12.5pt}{17pt}\selectfont\itshape
+   Supplementary materials referenced throughout this master's thesis.}
+\end{center}
+
+\vspace*{\fill}
+\cleardoublepage

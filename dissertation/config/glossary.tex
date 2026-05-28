@@ -1,0 +1,17 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Glossary Initialization   %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Initialize glossary system
+\makeglossaries
+
+%%% Fix arrow rendering in glossary entries
+%%% Ensures consistent rightarrow symbol across document
+\newcommand*{\origrightarrow}{}
+\let\oldarrow\textrightarrow
+\renewcommand*{\textrightarrow}{
+    \fontfamily{cmr}\selectfont\origrightarrow
+}
+
+%%% Load glossary entries from glossary.tex
+\loadglsentries[main]{content/glossary}

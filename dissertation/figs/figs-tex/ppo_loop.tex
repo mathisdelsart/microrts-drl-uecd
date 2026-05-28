@@ -1,0 +1,162 @@
+\documentclass[border=4pt]{standalone}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning, fit, calc, arrows.meta, backgrounds}
+
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\definecolor{agentbg}{RGB}{238,237,254}
+\definecolor{agentborder}{RGB}{127,119,221}
+\definecolor{envbg}{RGB}{225,245,238}
+\definecolor{envborder}{RGB}{15,110,86}
+
+\definecolor{encodercolor}{RGB}{133,183,235}
+\definecolor{actorcolor}{RGB}{175,169,236}
+\definecolor{criticcolor}{RGB}{240,153,123}
+\definecolor{gaecolor}{RGB}{180,178,169}
+\definecolor{ppocolor}{RGB}{192,221,151}
+
+\definecolor{statecolor}{RGB}{93,202,165}
+\definecolor{obscolor}{RGB}{133,183,235}
+\definecolor{rewcolor}{RGB}{239,159,39}
+\definecolor{termcolor}{RGB}{180,178,169}
+
+\definecolor{actionarrow}{RGB}{216,90,48}
+\definecolor{obsarrow}{RGB}{24,95,165}
+\definecolor{rewarrow}{RGB}{186,117,23}
+
+\tikzset{
+  block/.style={
+    draw, line width=1pt, rounded corners=3pt,
+    minimum width=4.8cm, text width=4.4cm,
+    inner sep=5pt, align=center,
+    font=\small\bfseries
+  },
+  arrowlabel/.style={font=\footnotesize\bfseries, midway},
+  sectionlabel/.style={font=\small\bfseries},
+  outerframe/.style={draw, rounded corners=5pt, dashed, thick, inner sep=8pt},
+}
+
+\begin{document}
+
+\begin{tikzpicture}[
+  node distance=12pt,
+  >={Stealth[length=5pt]}
+]
+
+%% ── AGENT column ──────────────────────────────────────────────────
+\node[block, fill=encodercolor!30, draw=encodercolor!85!black] (encoder) {%
+  \textsc{Encoder:} $f_{\boldsymbol{\theta}}$
+};
+
+\node[block, fill=actorcolor!40, draw=actorcolor!85!black, below=of encoder] (actor) {%
+  \textsc{Actor:} $\pi_{\boldsymbol{\theta}}(\boldsymbol{a}_t \mid \boldsymbol{s}_t)$
+};
+
+\node[block, fill=criticcolor!40, draw=criticcolor!85!black, below=of actor] (critic) {%
+  \textsc{Critic:} $V_{\boldsymbol{\theta}}(\boldsymbol{s}_t)$
+};
+
+\node[block, fill=gaecolor!40, draw=gaecolor!85!black, below=of critic] (gae) {%
+  \textsc{GAE:} $\hat{A}_t$
+};
+
+\node[block, fill=ppocolor!50, draw=ppocolor!85!black, below=of gae] (ppo) {%
+  \textsc{PPO Update:} $\mathcal{L}$
+};
+
+% Encoder → Actor
+\draw[->, thick, gray!60] ([xshift=-45pt]encoder.south) -- node[right, font=\scriptsize, gray, xshift=1pt] {features} ([xshift=-45pt]actor.north);
+
+% Encoder → Critic
+\draw[->, thick, gray!60] ([xshift=-50pt]encoder.south) -- ([xshift=-50pt]critic.north);
+
+% Critic → PPO
+\draw[->, thick, gray!60] ([xshift=-50pt]critic.south) -- ([xshift=-50pt]ppo.north);
+
+% Critic -> GAE
+\draw[->, thick, gray!60] ([xshift=-45pt]critic.south) -- node[right, font=\scriptsize, gray, xshift=1pt] {$V_{\boldsymbol{\theta}}$} ([xshift=-45pt]gae.north);
+
+% Actor → PPO
+\draw[->, thick, gray!60] ([xshift=45pt]actor.south) -- node[right, font=\scriptsize, gray, pos=0.95] {$\pi_{\boldsymbol{\theta}}$} ([xshift=45pt]ppo.north);
+
+% GAE -> PPO
+\draw[->, thick, gray!60] (gae) -- node[right, font=\scriptsize, gray, xshift=1pt] {$\hat{A}_t$} (ppo);
+
+% PPO -> Encoder
+\draw[->, thick, gray!60] (ppo.west) -- +(-0.5,0) |- node[left, font=\scriptsize, gray, near start] {$\nabla\boldsymbol{\theta}$} (encoder.west);
+
+\begin{pgfonlayer}{background}
+  \node[outerframe, fit=(encoder)(actor)(critic)(gae)(ppo),
+        fill=agentbg, draw=agentborder,
+        label={[sectionlabel, agentborder]above:PPO Agent}] (agentframe) {};
+\end{pgfonlayer}
+
+%% ── ENV column (aligned to agent) ────────────────────────────────
+\node[draw=envborder, thick, rounded corners=3pt,
+      minimum width=4.8cm, minimum height=3.2cm,
+      right=2.8cm of encoder,
+      fill=envbg!30,
+      label={[font=\scriptsize, envborder]below:{$\boldsymbol{s}_t \in \mathcal{S}$}}]
+      (gameimg) {%
+  \includegraphics[width=4.4cm]{../report/chapters/02_microrts_decision_problem/figures/microRTS-image.pdf}
+};
+
+\node[block, fill=rewcolor!40, draw=rewcolor!85!black,
+      minimum width=4.8cm] (rew) at (gameimg |- gae) {%
+  \textsc{Reward}: $r_{t+1}$
+};
+
+\begin{pgfonlayer}{background}
+  \node[outerframe, fit=(gameimg)(rew),
+        fill=envbg, draw=envborder,
+        label={[sectionlabel, envborder]above:MicroRTS Environment}] (envframe) {};
+\end{pgfonlayer}
+
+%% ── HORIZONTAL ARROWS between columns ─────────────────────────────
+\draw[->, thick, actionarrow]
+  (actor.east) -- node[arrowlabel, above, actionarrow]
+  {$\boldsymbol{a}_t \sim \pi_{\boldsymbol{\theta}}(\cdot|\boldsymbol{s}_t)$}
+  (actor.east -| gameimg.west);
+
+\draw[->, thick, obsarrow]
+  (encoder.east -| gameimg.west) -- node[arrowlabel, above, obsarrow]
+  {$\boldsymbol{o}_t = \boldsymbol{s}_t$}
+  (encoder.east);
+
+\draw[->, thick, rewarrow]
+  (rew.west) -- node[arrowlabel, below, rewarrow]
+  {$r_{t+1}$}
+  (gae.east);
+
+%% ── SIDE LABELS (architecture vs training) ────────────────────────
+\coordinate (sep) at ($(critic.south)!0.5!(gae.north)$);
+
+\draw[agentborder!70, thick, dashed]
+  ([xshift=0pt]agentframe.west |- sep)
+  -- ([xshift=35pt]agentframe.east |- sep);
+
+\node[font=\scriptsize\itshape, agentborder, anchor=south west]
+  at ([xshift=-2pt]agentframe.east |- sep) {Architecture};
+
+\node[font=\scriptsize\itshape, agentborder, anchor=north west]
+  at ([xshift=-2pt]agentframe.east |- sep) {Training};
+
+%% ── TEMPORAL LOOP ─────────────────────────────────────────────────
+\coordinate (loopStart) at (agentframe.east |- ppo);
+\coordinate (loopR) at (loopStart -| envframe.south);
+
+\draw[->, thick, dashed, gray]
+  (loopStart) -- node[below right, pos=0, font=\footnotesize\itshape, gray, xshift=4pt, yshift=-2pt]
+  {episode ends $\to$ reset \quad OR \quad $t \to t{+}1$}
+  (loopR) -- (envframe.south);
+
+\end{tikzpicture}
+
+\end{document}

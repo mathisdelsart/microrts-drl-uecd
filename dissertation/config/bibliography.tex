@@ -1,0 +1,44 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% BibLaTeX Configuration    %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% IEEE style with customizations
+\usepackage[
+    backend=biber,        % Modern backend (replaces bibtex)
+    style=ieee,           % IEEE citation style
+    citestyle=numeric-comp,
+    sorting=none,         % No Sorting
+    language=english,      % English Language
+    url=true,             % Show URLs
+    doi=true,             % Show DOIs
+    isbn=true,           % Hide ISBNs
+    eprint=true,          % Show eprint fields
+    date=year,            % Show only year
+    minbibnames=6,        % Min 6 authors in bibliography
+    maxbibnames=6         % Max 6 authors in bibliography
+]{biblatex}
+
+\renewcommand{\UrlFont}{\small\ttfamily}
+
+\DeclareFieldFormat{isbn}{%
+    \mkbibacro{ISBN}\addcolon\space
+    \StrSubstitute{#1}{-}{}[\isbnclean]%
+    \href{https://books.google.com/books?vid=ISBN\isbnclean}{#1}
+}
+
+\DeclareSourcemap{
+    \maps[datatype=bibtex]{
+      \map{
+        \step[fieldsource=doi,final]
+        \step[fieldset=url,null]
+      }
+    }
+}
+
+\AtEveryBibitem{\clearfield{urlyear}\clearfield{urlmonth}\clearfield{urlday}}
+
+% To see every refs (uncited one too)
+% \nocite{*}
+
+%%% Bibliography database
+\addbibresource{references.bib}
