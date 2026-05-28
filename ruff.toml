@@ -1,0 +1,9 @@
+target-version = "py39"
+line-length = 100
+
+[lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4"]
+ignore = ["E501"]  # line length is handled by the formatter
+
+[lint.isort]
+known-first-party = ["lib"]
