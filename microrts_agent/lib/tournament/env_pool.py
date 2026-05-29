@@ -14,7 +14,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from lib.env_factory import JVM_ARGS
+from microrts_agent.lib.env_factory import JVM_ARGS
 
 from .config import TournamentConfig
 from .servers import UTS_IMASS_TRAINING_DIR
@@ -60,7 +60,7 @@ class EnvPool:
     def _get_ai_mapping(self):
         """Lazy-load AI_MAPPING (requires JVM to be started)."""
         if self._ai_mapping is None:
-            from lib.mappings import ai as microrts_ai
+            from microrts_agent.lib.mappings import ai as microrts_ai
 
             self._ai_mapping = microrts_ai.AI_MAPPING
         return self._ai_mapping
@@ -120,7 +120,7 @@ class EnvPool:
         if map_path in self._bot_envs:
             return self._bot_envs[map_path]
 
-        from lib.env_factory import make_bot_env
+        from microrts_agent.lib.env_factory import make_bot_env
 
         N = self.config.iterations
         ai_mapping = self._get_ai_mapping()
@@ -144,7 +144,7 @@ class EnvPool:
         """
         if not agent_cfg:
             return env
-        from lib.wrapper_factory import apply_env_wrappers
+        from microrts_agent.lib.wrapper_factory import apply_env_wrappers
 
         return apply_env_wrappers(
             env,
@@ -176,7 +176,7 @@ class EnvPool:
         if key in self._agent_envs:
             return self._agent_envs[key]
 
-        from lib.env_factory import make_agent_env
+        from microrts_agent.lib.env_factory import make_agent_env
 
         N = self.config.iterations
         ai_mapping = self._get_ai_mapping()
@@ -242,7 +242,7 @@ class EnvPool:
         if key in self._selfplay_envs:
             return self._selfplay_envs[key]
 
-        from lib.env_factory import make_agent_env
+        from microrts_agent.lib.env_factory import make_agent_env
 
         N = self.config.iterations
         num_slots = 2 * N
@@ -277,7 +277,7 @@ class EnvPool:
     def get_agent(self, run_dir: str):
         """Load and cache a trained agent."""
         if run_dir not in self._agents:
-            from lib.arch_factory import load_agent_from_config
+            from microrts_agent.lib.arch_factory import load_agent_from_config
 
             agent, cfg = load_agent_from_config(run_dir, device=str(self.device))
             self._agents[run_dir] = (agent, cfg)
@@ -343,7 +343,7 @@ class EnvPool:
 
     @staticmethod
     def _get_base_env(env):
-        from lib.envs.base_vec_env import get_base_env
+        from microrts_agent.lib.envs.base_vec_env import get_base_env
 
         return get_base_env(env)
 

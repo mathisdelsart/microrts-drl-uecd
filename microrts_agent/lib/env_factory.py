@@ -79,11 +79,11 @@ def make_agent_env(
     }
 
     if padded:
-        from lib.envs.padded_rl_vec_env import PaddedMicroRTSRLVecEnv
+        from microrts_agent.lib.envs.padded_rl_vec_env import PaddedMicroRTSRLVecEnv
 
         return PaddedMicroRTSRLVecEnv(max_height=max_height, max_width=max_width, **kwargs)
 
-    from lib.envs.rl_vec_env import MicroRTSRLVecEnv
+    from microrts_agent.lib.envs.rl_vec_env import MicroRTSRLVecEnv
 
     return MicroRTSRLVecEnv(**kwargs)
 
@@ -99,7 +99,7 @@ def make_bot_env(
     full_rewards: bool = False,
 ):
     """Create a MicroRTSBotVecEnv. All parameters required."""
-    from lib.envs.bot_vec_env import MicroRTSBotVecEnv
+    from microrts_agent.lib.envs.bot_vec_env import MicroRTSBotVecEnv
 
     return MicroRTSBotVecEnv(
         ai1s=ai1s,

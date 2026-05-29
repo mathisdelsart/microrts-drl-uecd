@@ -7,7 +7,7 @@ import gymnasium as gym  # type: ignore[import-not-found]
 import numpy as np
 from stable_baselines3.common.vec_env import VecEnvWrapper  # type: ignore[import-not-found]
 
-from lib.envs.base_vec_env import get_base_env
+from microrts_agent.lib.envs.base_vec_env import get_base_env
 
 
 class ReservedPositionObs(VecEnvWrapper):

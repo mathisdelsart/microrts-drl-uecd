@@ -49,9 +49,9 @@ tournament = [
 ]
 dev = ["ruff==0.15.14"]
 
-# The code currently runs from source (python microrts_agent/train.py) and is
-# not yet an importable package. pyproject.toml exists to declare dependencies
-# in one place so `pip install -e ".[tournament]"` provisions the environment;
-# it packages no modules.
-[tool.setuptools]
-packages = []
+# microrts_agent is the importable package (run via `python -m microrts_agent.train`
+# after `pip install -e .`). The vendored competition bots and the Java engine are
+# data/source trees, not Python packages, so they are excluded from discovery.
+[tool.setuptools.packages.find]
+include = ["microrts_agent*"]
+exclude = ["microrts_agent.tournaments.competition_winners*"]

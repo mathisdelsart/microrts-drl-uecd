@@ -3,7 +3,7 @@
 
 def _parse_opponent_list(spec, num_bot_envs):
     """Parse 'BotA:3,BotB:2' into (labels, summary_string). Validates counts and names."""
-    from lib.mappings.ai import AI_MAPPING
+    from microrts_agent.lib.mappings.ai import AI_MAPPING
 
     # Split comma-separated entries and strip whitespace
     entries = [e.strip() for e in spec.split(",") if e.strip()]

@@ -8,7 +8,7 @@ from pathlib import Path
 
 import torch
 
-from lib.paths import TOURNAMENT_RESULTS_DIR
+from microrts_agent.lib.paths import TOURNAMENT_RESULTS_DIR
 
 from .config import TournamentConfig, generate_matchups, group_matchups, select_chunk_groups
 from .csv_io import write_csv_header, write_game_result

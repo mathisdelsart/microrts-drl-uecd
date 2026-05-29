@@ -90,17 +90,17 @@ conda activate microrts_agent
 bash microrts_agent/microrts/build_bridge.sh
 
 # 3. Train
-python microrts_agent/train.py --total-timesteps 1000000
-python microrts_agent/train.py --help        # all flags
+python -m microrts_agent.train --total-timesteps 1000000
+python -m microrts_agent.train --help        # all flags
 
 # 4. Monitor
 tensorboard --logdir outputs/runs/
 
 # 5. Evaluate a trained agent against a bot
-python microrts_agent/evaluate.py --agent outputs/runs/<run> --opponent CoacAI
+python -m microrts_agent.evaluate --agent outputs/runs/<run> --opponent CoacAI
 
 # 6. Run a tournament
-python microrts_agent/run_tournament.py --help
+python -m microrts_agent.run_tournament --help
 ```
 
 On the HPC cluster, use `setup_cluster_env.sh` and the job scripts under

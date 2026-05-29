@@ -146,7 +146,7 @@ def _value_loss_for_head(
     Dispatches to HL-Gauss, PopArt-normalized clipped MSE, or standard clipped MSE.
     """
     if hl_gauss:
-        from lib.architectures.features.hl_gauss import hl_gauss_loss
+        from microrts_agent.lib.architectures.features.hl_gauss import hl_gauss_loss
 
         return hl_gauss_loss(logits.view(-1, hl_gauss_bins), returns, hl_gauss_bins)
 
@@ -362,7 +362,7 @@ def ppo_update(
 
             # Auxiliary losses
             if aux_tasks and b_aux_targets:
-                from lib.training.auxiliary import compute_aux_losses
+                from microrts_agent.lib.training.auxiliary import compute_aux_losses
 
                 mb_aux_targets = {
                     k: v[mb_inds] if v.dim() > 0 and v.shape[0] == batch_size else v

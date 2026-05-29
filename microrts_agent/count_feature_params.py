@@ -4,15 +4,10 @@ For each feature, instantiate UNet-Entity-CBAM-Deep with that feature enabled
 (all others disabled) and report param count + delta vs baseline.
 
 Usage:
-    python microrts_agent/count_feature_params.py
+    python -m microrts_agent.count_feature_params
 """
 
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-from lib.arch_factory import _build_agent_kwargs
+from microrts_agent.lib.arch_factory import _build_agent_kwargs
 
 ACTION_NVEC = [6, 4, 4, 4, 4, 7, 49]
 BASE_OBS_CHANNELS = 27  # default (non-extended, no frame stack)

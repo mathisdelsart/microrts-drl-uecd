@@ -3,10 +3,10 @@ Order: StatsRecorder → FrameStack → ReservedObs → SymmetryAugmentation.
 VecMonitor is applied separately in train.py after this.
 """
 
-from lib.wrappers.frame_stack import FrameStack
-from lib.wrappers.reserved_obs import ReservedPositionObs
-from lib.wrappers.stats_recorder import StatsRecorder
-from lib.wrappers.symmetry_augmentation import SymmetryAugmentation
+from microrts_agent.lib.wrappers.frame_stack import FrameStack
+from microrts_agent.lib.wrappers.reserved_obs import ReservedPositionObs
+from microrts_agent.lib.wrappers.stats_recorder import StatsRecorder
+from microrts_agent.lib.wrappers.symmetry_augmentation import SymmetryAugmentation
 
 
 def apply_env_wrappers(

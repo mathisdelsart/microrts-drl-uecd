@@ -344,14 +344,14 @@ def play_agent_vs_bot_batch(
 
 def _make_obs_adapter(config, num_envs):
     """Create a per-model obs adapter (shared implementation in lib/obs_adapter.py)."""
-    from lib.eval.obs_adapter import ObsAdapter
+    from microrts_agent.lib.eval.obs_adapter import ObsAdapter
 
     return ObsAdapter(config, num_envs)
 
 
 def _get_reserved_planes_raw_tournament(base_env):
     """Compute reserved-position planes (delegates to lib/obs_adapter.py)."""
-    from lib.eval.obs_adapter import get_reserved_planes
+    from microrts_agent.lib.eval.obs_adapter import get_reserved_planes
 
     return get_reserved_planes(base_env)
 
@@ -360,7 +360,7 @@ def _process_obs_agent_vs_agent(
     base_env, raw_obs, p0_adapter, p1_adapter, device, env_extended_obs
 ):
     """Delegates to shared implementation in lib/eval/obs_adapter.py."""
-    from lib.eval.obs_adapter import process_obs_rl_vs_rl
+    from microrts_agent.lib.eval.obs_adapter import process_obs_rl_vs_rl
 
     return process_obs_rl_vs_rl(
         base_env,

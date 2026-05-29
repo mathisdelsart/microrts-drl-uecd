@@ -11,7 +11,7 @@ import time
 import numpy as np
 import torch
 
-from lib.training.eval import create_eval_envs
+from microrts_agent.lib.training.eval import create_eval_envs
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Eval setup — create envs + CSV once at training start
@@ -274,7 +274,7 @@ def run_eval_block(
     Single-map: plays eval_games per bot (half P0, half P1).
     Multi-map:  plays 2 games per bot per map (1 P0 + 1 P1), logs per-map + aggregate.
     """
-    from lib.training.eval import (
+    from microrts_agent.lib.training.eval import (
         log_eval_results,
         log_multimap_eval_results,
         run_evaluation,
@@ -361,7 +361,7 @@ def compute_gae_from_rollout(
         advantages is (T, N) in single-head mode, (T, N, H) otherwise.
         returns_sparse/returns_cost are None when their heads are inactive.
     """
-    from lib.training.ppo import compute_gae, compute_multi_head_gae
+    from microrts_agent.lib.training.ppo import compute_gae, compute_multi_head_gae
 
     with torch.no_grad():
         # Bootstrap: get V(s_{T+1}) for each head from the last observation
@@ -469,7 +469,7 @@ def maybe_switch_map(
 
     # Restore adaptive opponents (switch_map resets all AIs to defaults)
     if adaptive_scheduler is not None:
-        from lib.mappings.ai import AI_MAPPING
+        from microrts_agent.lib.mappings.ai import AI_MAPPING
 
         for env_idx in range(args.num_bot_envs):
             opp_type = env_opponent_labels[args.num_selfplay_envs + env_idx]
