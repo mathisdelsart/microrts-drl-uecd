@@ -15,8 +15,8 @@
 #
 #  Prerequisites (tournament bots):
 #    Transfer the wheel (225MB, too large for git):
-#      scp microrts_agent/tournaments/competition_winners/RAISocketAI/rl_algo_impls-0.2.1-py3-none-any.whl \
-#          lyra:~/microrts-drl-uecd/microrts_agent/tournaments/competition_winners/RAISocketAI/
+#      scp microrts_agent/bots/RAISocketAI/rl_algo_impls-0.2.1-py3-none-any.whl \
+#          lyra:~/microrts-drl-uecd/microrts_agent/bots/RAISocketAI/
 #
 #  Usage:
 #    ssh lyra
@@ -28,7 +28,7 @@
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 VENV_DIR="$PROJECT_DIR/cluster_venv"
-WHEEL_FILE="$PROJECT_DIR/microrts_agent/tournaments/competition_winners/RAISocketAI/rl_algo_impls-0.2.1-py3-none-any.whl"
+WHEEL_FILE="$PROJECT_DIR/microrts_agent/bots/RAISocketAI/rl_algo_impls-0.2.1-py3-none-any.whl"
 MICRORTS_JAR="$PROJECT_DIR/microrts_agent/microrts/microrts.jar"
 
 echo "========================================"

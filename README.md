@@ -58,7 +58,8 @@ microrts-drl-uecd/
 │   │   ├── lib/{bots/*.jar, bridge.jar}
 │   │   ├── src/                  # Bridge sources (JNI, reward functions, game wrapper)
 │   │   └── build_bridge.sh       # Recompiles src/ -> lib/bridge.jar
-│   ├── tournaments/              # configs/ (tournament setups) + competition_winners/ (vendored bots)
+│   ├── bots/                     # Vendored competition bots (sources/builds + RAISocketAI wheel)
+│   ├── tournament_configs/       # Tournament setup JSON files
 │   ├── experiments/              # SLURM job scripts for the HPC runs
 │   ├── train.py  evaluate.py  run_tournament.py
 │   ├── bc_train.py  bc_generate.py

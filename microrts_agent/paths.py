@@ -19,4 +19,4 @@ BENCHMARKS_DIR = OUTPUTS_DIR / "inference_bench"
 COMPARISONS_DIR = OUTPUTS_DIR / "comparisons"
 TOURNAMENT_RESULTS_DIR = OUTPUTS_DIR / "tournament_results"
 
-TOURNAMENT_CONFIGS_DIR = AGENT_DIR / "tournaments" / "configs"
+TOURNAMENT_CONFIGS_DIR = AGENT_DIR / "tournament_configs"

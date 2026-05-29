@@ -31,7 +31,7 @@ dependencies = [
 [project.optional-dependencies]
 # Runtime deps for the RAISocketAI tournament bot. The bot's own wheel
 # (rl_algo_impls) is installed separately, with --no-deps, from
-# microrts_agent/tournaments/competition_winners/RAISocketAI/ — its pinned
+# microrts_agent/bots/RAISocketAI/ — its pinned
 # dependency set conflicts with the core stack, so the setup scripts install
 # the wheel without deps and rely on the cherry-picked subset listed here.
 tournament = [
@@ -54,4 +54,4 @@ dev = ["ruff==0.15.14"]
 # data/source trees, not Python packages, so they are excluded from discovery.
 [tool.setuptools.packages.find]
 include = ["microrts_agent*"]
-exclude = ["microrts_agent.tournaments.competition_winners*"]
+exclude = ["microrts_agent.bots*"]
