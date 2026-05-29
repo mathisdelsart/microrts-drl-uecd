@@ -76,7 +76,7 @@ echo "============================================================"
 
 if [ ! -f "$DATA_RR" ]; then
     echo "  [1/3] RAISocketAI vs RAISocketAI (100 games)..."
-    python microrts_agent/bc_generate.py \
+    python -m microrts_agent.bc generate \
         --bot RAISocketAI --opponents RAISocketAI \
         --games-per-opponent 100 \
         --map "$MAP" --output "$DATA_RR"
@@ -87,7 +87,7 @@ fi
 
 if [ ! -f "$DATA_RC" ]; then
     echo "  [2/3] RAISocketAI vs CoacAI (100 games)..."
-    python microrts_agent/bc_generate.py \
+    python -m microrts_agent.bc generate \
         --bot RAISocketAI --opponents CoacAI \
         --games-per-opponent 100 \
         --map "$MAP" --output "$DATA_RC"
@@ -98,7 +98,7 @@ fi
 
 if [ ! -f "$DATA_RM" ]; then
     echo "  [3/3] RAISocketAI vs Mayari (100 games)..."
-    python microrts_agent/bc_generate.py \
+    python -m microrts_agent.bc generate \
         --bot RAISocketAI --opponents Mayari \
         --games-per-opponent 100 \
         --map "$MAP" --output "$DATA_RM"
@@ -119,7 +119,7 @@ echo "============================================================"
 echo "  STEP 2/3 — Training BC+VF"
 echo "============================================================"
 
-python microrts_agent/bc_train.py \
+python -m microrts_agent.bc train \
     --data ${BC_DATA_DIR}/bc_chunk_RAISocketAI_*.npz ${BC_DATA_DIR}/bc_chunk_CoacAI_*.npz ${BC_DATA_DIR}/bc_chunk_Mayari_*.npz \
     --architecture unet_entity_cbam_deep \
     --gelu \

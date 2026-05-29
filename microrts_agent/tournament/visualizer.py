@@ -18,7 +18,6 @@ Generates PDFs:
 import json
 from pathlib import Path
 
-from .analysis.data import GameData
 from .plots import (
     generate_game_theory,
     plot_final_standings,
@@ -26,6 +25,7 @@ from .plots import (
     plot_head_to_head_matrix,
     plot_per_map_winrates,
 )
+from .results.data import GameData
 
 
 class TournamentData:
