@@ -63,10 +63,10 @@ microrts-drl-uecd/
 │   │   └── build_bridge.sh       # Recompiles src/ -> lib/bridge.jar
 │   ├── bots/                     # Vendored competition bots (sources/builds + RAISocketAI wheel)
 │   ├── tournament_configs/       # Tournament setup JSON files
-│   ├── experiments/              # SLURM job scripts for the HPC runs
 │   └── train.py  evaluate.py  run_tournament.py   # simple entry points
 ├── dissertation/                 # LaTeX thesis, figures, figure generators (figs/figs-python/), compiled PDF
 ├── cog-2026-paper/               # CoG 2026 short-paper submission
+├── experiments/                  # SLURM jobs: single-map/ multi-map/ bc/ eval/ tournament/ bench/ ablation/
 ├── setup/                       # env setup scripts (local.sh, cluster.sh)
 └── LICENSE  CONTRIBUTING.md  ruff.toml  pyproject.toml
 ```
@@ -105,7 +105,7 @@ python -m microrts_agent tournament --help
 ```
 
 On the HPC cluster, use `setup/cluster.sh` and the job scripts under
-`microrts_agent/experiments/`.
+`experiments/` (grouped by single-map/ multi-map/ bc/ eval/ tournament/ bench/ ablation/).
 
 ## Results
 

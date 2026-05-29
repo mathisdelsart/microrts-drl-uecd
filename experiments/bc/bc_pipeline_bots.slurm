@@ -1,33 +1,34 @@
 #!/bin/bash
-#SBATCH --job-name=bc_pipeline
-#SBATCH --output=slurm-bc-%j.out
-#SBATCH --error=slurm-bc-%j.err
-#SBATCH --time=5:00:00
+#SBATCH --job-name=bc_bots
+#SBATCH --output=slurm-bc-bots-%j.out
+#SBATCH --error=slurm-bc-bots-%j.err
+#SBATCH --time=24:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12
-#SBATCH --mem=32G
+#SBATCH --mem=64G
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# BC Pipeline: generate replays → train BC → evaluate
+# BC Pipeline (bot replays): clone CoacAI and Mayari from their own games
 #
-#   Step 1: Record 3000 games of RAISocketAI vs 5 opponents
-#   Step 2: Train BC on the recorded data (30 epochs)
-#   Step 3: Evaluate the BC agent vs 4 bots (10 games each)
+#   CoacAI vs CoacAI:   2000 games (learn CoacAI's style)
+#   Mayari vs Mayari:    2000 games (learn Mayari's style)
+#   CoacAI vs Mayari:    1000 games (learn CoacAI against a strong opponent)
+#   Mayari vs CoacAI:    1000 games (learn Mayari against a strong opponent)
+#   Total: 6000 games
 #
 # Usage:
-#   sbatch microrts_agent/experiments/bc_pipeline.slurm
+#   sbatch experiments/bc/bc_pipeline_bots.slurm
 #
 
 SEED=${SEED:-1}
 
 echo "============================================================"
-echo "  BC Pipeline — Generate + Train + Evaluate"
+echo "  BC Pipeline (Bot Replays) — Generate + Train + Evaluate"
 echo "============================================================"
 echo "  Job ID:   $SLURM_JOB_ID"
 echo "  Seed:     $SEED"
 echo "  Node:     $SLURM_NODELIST"
-echo "  GPUs:     $CUDA_VISIBLE_DEVICES"
 echo "  Started:  $(date)"
 echo "============================================================"
 
@@ -55,13 +56,20 @@ python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 
-BC_DATA="outputs/bc_data/RAISocketAI_vs_5opps_basesWorkers16x16A_250g.npz"
-BC_RUN_DIR="outputs/runs/bc_unet_entity_cbam_deep_s${SEED}"
+BC_DATA_DIR="outputs/bc_data"
+BC_RUN_DIR="outputs/runs/bc_bots_s${SEED}"
 BC_EVAL_DIR="${BC_RUN_DIR}/EVAL"
 MAP="maps/open_competition/basesWorkers16x16A.xml"
 
+DATA_COAC_SELF="${BC_DATA_DIR}/CoacAI_vs_CoacAI_500g.npz"
+DATA_MAYA_SELF="${BC_DATA_DIR}/Mayari_vs_Mayari_500g.npz"
+DATA_COAC_MAYA="${BC_DATA_DIR}/CoacAI_vs_Mayari_250g.npz"
+DATA_MAYA_COAC="${BC_DATA_DIR}/Mayari_vs_CoacAI_250g.npz"
+
+mkdir -p "$BC_DATA_DIR"
+
 # ══════════════════════════════════════════════════════════════════════════
-# STEP 1: Generate BC data (3000 games)
+# STEP 1: Generate BC data (6000 games total)
 # ══════════════════════════════════════════════════════════════════════════
 
 echo ""
@@ -69,30 +77,59 @@ echo "============================================================"
 echo "  STEP 1/3 — Generating BC replay data"
 echo "============================================================"
 
-mkdir -p "$(dirname "$BC_DATA")"
-
-if [ -f "$BC_DATA" ]; then
-    echo "  BC data already exists: $BC_DATA — skipping generation"
-else
+# CoacAI vs CoacAI (2000 games, learn CoacAI's perspective)
+if [ ! -f "$DATA_COAC_SELF" ]; then
+    echo "  [1/4] CoacAI vs CoacAI (500 games)..."
     python -m microrts_agent.bc generate \
-        --bot RAISocketAI \
-        --opponents RAISocketAI CoacAI Mayari POWorkerRush POLightRush \
-        --games-per-opponent 50 50 50 50 50 \
-        --map "$MAP" \
-        --output "$BC_DATA"
+        --bot CoacAI --opponents CoacAI \
+        --games-per-opponent 500 \
+        --map "$MAP" --output "$DATA_COAC_SELF"
+    [ $? -ne 0 ] && { echo "ERROR: Generation failed"; exit 1; }
+else
+    echo "  [1/4] Skipping: $DATA_COAC_SELF exists"
+fi
 
-    if [ $? -ne 0 ]; then
-        echo "ERROR: BC data generation failed"
-        exit 1
-    fi
+# Mayari vs Mayari (2000 games, learn Mayari's perspective)
+if [ ! -f "$DATA_MAYA_SELF" ]; then
+    echo "  [2/4] Mayari vs Mayari (500 games)..."
+    python -m microrts_agent.bc generate \
+        --bot Mayari --opponents Mayari \
+        --games-per-opponent 500 \
+        --map "$MAP" --output "$DATA_MAYA_SELF"
+    [ $? -ne 0 ] && { echo "ERROR: Generation failed"; exit 1; }
+else
+    echo "  [2/4] Skipping: $DATA_MAYA_SELF exists"
+fi
+
+# CoacAI vs Mayari (1000 games, learn CoacAI's perspective against Mayari)
+if [ ! -f "$DATA_COAC_MAYA" ]; then
+    echo "  [3/4] CoacAI vs Mayari (250 games)..."
+    python -m microrts_agent.bc generate \
+        --bot CoacAI --opponents Mayari \
+        --games-per-opponent 250 \
+        --map "$MAP" --output "$DATA_COAC_MAYA"
+    [ $? -ne 0 ] && { echo "ERROR: Generation failed"; exit 1; }
+else
+    echo "  [3/4] Skipping: $DATA_COAC_MAYA exists"
+fi
+
+# Mayari vs CoacAI (250 games, learn Mayari's perspective against CoacAI)
+if [ ! -f "$DATA_MAYA_COAC" ]; then
+    echo "  [4/4] Mayari vs CoacAI (250 games)..."
+    python -m microrts_agent.bc generate \
+        --bot Mayari --opponents CoacAI \
+        --games-per-opponent 250 \
+        --map "$MAP" --output "$DATA_MAYA_COAC"
+    [ $? -ne 0 ] && { echo "ERROR: Generation failed"; exit 1; }
+else
+    echo "  [4/4] Skipping: $DATA_MAYA_COAC exists"
 fi
 
 echo ""
-echo "  Step 1 complete: $BC_DATA"
-echo "  $(date)"
+echo "  Step 1 complete: $(date)"
 
 # ══════════════════════════════════════════════════════════════════════════
-# STEP 2: Train BC (30 epochs, batch_size=128)
+# STEP 2: Train BC on all bot data (early stopping, patience=5)
 # ══════════════════════════════════════════════════════════════════════════
 
 echo ""
@@ -101,7 +138,7 @@ echo "  STEP 2/3 — Training behavior cloning"
 echo "============================================================"
 
 python -m microrts_agent.bc train \
-    --data "$BC_DATA" \
+    --data "$DATA_COAC_SELF" "$DATA_MAYA_SELF" "$DATA_COAC_MAYA" "$DATA_MAYA_COAC" \
     --architecture unet_entity_cbam_deep \
     --gelu \
     --epochs 30 \
@@ -120,7 +157,7 @@ echo "  Step 2 complete: ${BC_RUN_DIR}/agent.pt"
 echo "  $(date)"
 
 # ══════════════════════════════════════════════════════════════════════════
-# STEP 3: Evaluate BC agent (10 games per bot per position = 20 total each)
+# STEP 3: Evaluate BC agent
 # ══════════════════════════════════════════════════════════════════════════
 
 echo ""
@@ -154,9 +191,12 @@ done
 
 echo ""
 echo "============================================================"
-echo "  BC PIPELINE COMPLETE"
+echo "  BC PIPELINE (BOT REPLAYS) COMPLETE"
 echo "============================================================"
-echo "  BC data:   $BC_DATA"
+echo "  Data:      $DATA_COAC_SELF"
+echo "             $DATA_MAYA_SELF"
+echo "             $DATA_COAC_MAYA"
+echo "             $DATA_MAYA_COAC"
 echo "  BC model:  ${BC_RUN_DIR}/agent.pt"
 echo "  Eval logs: $BC_EVAL_DIR"
 echo "  Finished:  $(date)"

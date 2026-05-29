@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=phased300M
-#SBATCH --output=slurm-phased-%j.out
-#SBATCH --error=slurm-phased-%j.err
+#SBATCH --job-name=BEST_300M
+#SBATCH --output=slurm-%j.out
+#SBATCH --error=slurm-%j.err
 #SBATCH --time=5-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24
@@ -9,41 +9,49 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Phased training — 300M steps, single map, RAISocketAI-inspired schedule
+# BEST AGENT — 300M steps, single-map, robust features only (3-seed ablation)
 #
-# Phase 1 (0-100M):   24 bots, shaped rewards dominant, high LR, high entropy
-#                      → learn fundamentals (gather, build, rush defence)
-# Transition 1 (100M-150M): linear blend to Phase 2
-# Phase 2 (150M-250M): 12 bots + 12 self-play + PFSP, mixed rewards, normal LR
-#                      → diversify strategies against self-play opponents
-# Transition 2 (250M-280M): linear blend to Phase 3
-# Phase 3 (280M-300M): 12 bots + 12 self-play, sparse dominant, low LR, low entropy
-#                      → polish for win/loss only
-#
-# S-tier features only (robust across 3 seeds):
-#   extended-obs, filtered-masks, reserved-obs, prioritized-sampling,
-#   aux-opponent-modeling, gelu
+# Architecture: UNet-Entity-CBAM-Deep (4.7M params)
+# Features enabled (from 3-seed feat ablation, mean ± std):
+#   S-tier (robust, all seeds positive):
+#     - Extended Obs 73ch           (84.3 ± 1.7, +26.3%)
+#     - Filtered Masks + Res Obs    (80.6 ± 5.6, +22.6%)
+#     - Prioritized Sampling        (78.4 ± 0.4, +20.4%)
+#     - Opponent Modeling            (77.8 ± 4.0, +19.8%)
+#   A-tier (positive mean, moderate variance):
+#     - PAE keep=95%                (71.3 ± 8.1, +13.3%)
+#     - GELU                        (66.3 ± 8.2, +8.3%)
+#     - Frame Stack 4               (65.3 ± 4.5, +7.3%)
+#   Self-play (positive mean, high variance):
+#     - Bots + Self-Play + PFSP     (66.9 ± 9.1, +8.9%)
+#   REMOVED (negative or unstable cross-seed):
+#     - HL-Gauss, Adaptive Opponents, Augment Symmetry, Triple Value Heads
+#     - Aux Contrastive, Aux Spatial, SPP Critic, Autoregressive
 #
 # Usage:
-#   sbatch microrts_agent/experiments/phased_single_map_300M.slurm
-#   SEED=2 sbatch microrts_agent/experiments/phased_single_map_300M.slurm
+#   sbatch experiments/BEST_agent_300M.slurm
+#   SEED=2 sbatch experiments/BEST_agent_300M.slurm
 #
 
 SEED=${SEED:-1}
 
 echo "============================================================"
-echo "  Phased Training — 300M steps, single map"
+echo "  BEST AGENT — 300M steps, all best features"
 echo "============================================================"
-echo "  Job ID:   $SLURM_JOB_ID"
-echo "  Seed:     $SEED"
-echo "  Node:     $SLURM_NODELIST"
-echo "  GPUs:     $CUDA_VISIBLE_DEVICES"
-echo "  Started:  $(date)"
+echo "  Job ID:       $SLURM_JOB_ID"
+echo "  Seed:         $SEED"
+echo "  Node:         $SLURM_NODELIST"
+echo "  Started:      $(date)"
 echo "============================================================"
 
-module load Python/3.11 2>/dev/null || module load Python/3.9
-module load Java/17 2>/dev/null || module load Java/11
-module load CUDA/11.8 2>/dev/null || module load CUDA/12.1
+# ── Environment setup ──────────────────────────────────────────────────────
+
+module load Python/3.11 2>/dev/null || module load Python/3.9 2>/dev/null || {
+    echo "ERROR: No Python module found"; exit 1; }
+module load Java/17 2>/dev/null || module load Java/11 2>/dev/null || {
+    echo "ERROR: No Java module found"; exit 1; }
+module load CUDA/11.8 2>/dev/null || module load CUDA/12.1 2>/dev/null || {
+    echo "WARNING: No CUDA module found"; }
 
 VENV_DIR="$HOME/microrts-drl-uecd/cluster_venv"
 if [ -d "$VENV_DIR" ]; then
@@ -61,7 +69,7 @@ python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.
 # ── Resume logic ──────────────────────────────────────────────────────────
 
 RESUME_FLAG=""
-RUN_DIR="outputs/runs/phased_single_map_300M_s${SEED}"
+RUN_DIR="outputs/runs/BEST_agent_300M_s${SEED}"
 if [ -f "${RUN_DIR}/checkpoint.pt" ]; then
     echo "  Resuming from $RUN_DIR"
     RESUME_FLAG="--resume ${RUN_DIR}"
@@ -92,26 +100,24 @@ python microrts_agent/train.py \
     --gae-lambda 0.95 \
     --clip-coef 0.1 \
     --max-grad-norm 0.5 \
+    --learning-rate 2.5e-4 \
+    --anneal-lr True \
+    --ent-coef 0.01 \
+    --ent-coef-end 0.001 \
     --vf-coef 0.5 \
-    \
-    --reward-schedule linear \
-    --reward-schedule-start 0.3 \
-    --reward-schedule-end 0.7 \
-    \
-    --phase-steps 100000000 150000000 250000000 280000000 \
-    --phase-ent-coef 0.01 0.005 0.001 \
-    --phase-lr 2.5e-4 2.5e-4 5e-5 \
     \
     --extended-obs True \
     --filtered-masks True \
     --reserved-obs True \
     --aux-opponent-modeling True \
+    --pae-keep 0.95 \
     --gelu True \
+    --frame-stack 4 \
     \
     --with-eval True \
     --num-models 2 \
     --seed $SEED \
-    --exp-name phased_single_map_300M_s${SEED}
+    --exp-name BEST_agent_300M_s${SEED}
 
 EXIT_CODE=$?
 

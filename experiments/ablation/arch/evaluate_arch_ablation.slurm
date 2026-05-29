@@ -17,7 +17,7 @@
 #   Results saved to outputs/eval_arch_ablation/
 #
 # Usage:
-#   sbatch microrts_agent/experiments/ablation/evaluate_arch_ablation.slurm
+#   sbatch experiments/ablation/evaluate_arch_ablation.slurm
 #
 
 SEED=${SEED:-1}

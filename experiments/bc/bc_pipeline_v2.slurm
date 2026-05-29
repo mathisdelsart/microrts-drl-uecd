@@ -16,7 +16,7 @@
 #   Step 3: Evaluate
 #
 # Usage:
-#   sbatch microrts_agent/experiments/bc_pipeline_v2.slurm
+#   sbatch experiments/bc/bc_pipeline_v2.slurm
 #
 
 SEED=${SEED:-1}

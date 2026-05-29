@@ -1,46 +1,35 @@
 #!/bin/bash
-#SBATCH --job-name=BEST_300M
-#SBATCH --output=slurm-%j.out
-#SBATCH --error=slurm-%j.err
-#SBATCH --time=5-00:00:00
+#SBATCH --job-name=bc_ft_100M
+#SBATCH --output=slurm-bc-ft-%j.out
+#SBATCH --error=slurm-bc-ft-%j.err
+#SBATCH --time=3-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24
 #SBATCH --mem=32G
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:TeslaA40:1
 #SBATCH --partition=batch
 #
-# BEST AGENT — 300M steps, single-map, robust features only (3-seed ablation)
+# BC-PPO: Load BC warmstart, fine-tune with RL for 100M steps
 #
-# Architecture: UNet-Entity-CBAM-Deep (4.7M params)
-# Features enabled (from 3-seed feat ablation, mean ± std):
-#   S-tier (robust, all seeds positive):
-#     - Extended Obs 73ch           (84.3 ± 1.7, +26.3%)
-#     - Filtered Masks + Res Obs    (80.6 ± 5.6, +22.6%)
-#     - Prioritized Sampling        (78.4 ± 0.4, +20.4%)
-#     - Opponent Modeling            (77.8 ± 4.0, +19.8%)
-#   A-tier (positive mean, moderate variance):
-#     - PAE keep=95%                (71.3 ± 8.1, +13.3%)
-#     - GELU                        (66.3 ± 8.2, +8.3%)
-#     - Frame Stack 4               (65.3 ± 4.5, +7.3%)
-#   Self-play (positive mean, high variance):
-#     - Bots + Self-Play + PFSP     (66.9 ± 9.1, +8.9%)
-#   REMOVED (negative or unstable cross-seed):
-#     - HL-Gauss, Adaptive Opponents, Augment Symmetry, Triple Value Heads
-#     - Aux Contrastive, Aux Spatial, SPP Critic, Autoregressive
+# Compare with from-scratch training to measure BC warmstart benefit.
+# Same features as BEST_agent_single_map_300M.slurm but 100M steps.
 #
 # Usage:
-#   sbatch microrts_agent/experiments/BEST_agent_300M.slurm
-#   SEED=2 sbatch microrts_agent/experiments/BEST_agent_300M.slurm
+#   sbatch experiments/bc/bc_finetune_100M.slurm
+#   SEED=2 sbatch experiments/bc/bc_finetune_100M.slurm
 #
 
 SEED=${SEED:-1}
+BC_MODEL="outputs/runs/bc_v3_s1/agent.pt"
 
 echo "============================================================"
-echo "  BEST AGENT — 300M steps, all best features"
+echo "  BC-PPO Fine-tuning — 100M steps, single map"
 echo "============================================================"
 echo "  Job ID:       $SLURM_JOB_ID"
 echo "  Seed:         $SEED"
+echo "  BC model:     $BC_MODEL"
 echo "  Node:         $SLURM_NODELIST"
+echo "  GPUs:         $CUDA_VISIBLE_DEVICES"
 echo "  Started:      $(date)"
 echo "============================================================"
 
@@ -66,10 +55,18 @@ cd $HOME/microrts-drl-uecd
 
 python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"N/A\"}')"
 
+# ── Check BC model exists ─────────────────────────────────────────────────
+
+if [ ! -f "$BC_MODEL" ]; then
+    echo "ERROR: BC model not found: $BC_MODEL"
+    echo "Run bc_pipeline.slurm first."
+    exit 1
+fi
+
 # ── Resume logic ──────────────────────────────────────────────────────────
 
 RESUME_FLAG=""
-RUN_DIR="outputs/runs/BEST_agent_300M_s${SEED}"
+RUN_DIR="outputs/runs/bc_v3_finetune_100M_s${SEED}"
 if [ -f "${RUN_DIR}/checkpoint.pt" ]; then
     echo "  Resuming from $RUN_DIR"
     RESUME_FLAG="--resume ${RUN_DIR}"
@@ -79,20 +76,15 @@ fi
 
 python microrts_agent/train.py \
     $RESUME_FLAG \
+    --load-model "$BC_MODEL" \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
-    --total-timesteps 300000000 \
+    --total-timesteps 100000000 \
     --map maps/open_competition/basesWorkers16x16A.xml \
     --max-steps 4000 \
-    \
-    --num-bot-envs 12 \
-    --num-selfplay-envs 12 \
-    --num-latest-selfplay-envs 6 \
-    --pfsp True \
+    --num-bot-envs 24 \
     --diverse-opponents True \
     --alternate-players True \
-    --prioritized-sampling True \
-    \
     --num-steps 512 \
     --update-epochs 2 \
     --n-minibatch 3 \
@@ -102,22 +94,14 @@ python microrts_agent/train.py \
     --max-grad-norm 0.5 \
     --learning-rate 2.5e-4 \
     --anneal-lr True \
+    --lr-warmup-updates 100 \
     --ent-coef 0.01 \
     --ent-coef-end 0.001 \
     --vf-coef 0.5 \
-    \
-    --extended-obs True \
-    --filtered-masks True \
-    --reserved-obs True \
-    --aux-opponent-modeling True \
-    --pae-keep 0.95 \
-    --gelu True \
-    --frame-stack 4 \
-    \
     --with-eval True \
     --num-models 2 \
     --seed $SEED \
-    --exp-name BEST_agent_300M_s${SEED}
+    --exp-name bc_v3_finetune_100M_s${SEED}
 
 EXIT_CODE=$?
 
