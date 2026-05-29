@@ -10,7 +10,7 @@
 #    - Plotting & visualization
 #
 #  Requirements:
-#    - Cluster with module system (Python 3.9+, Java 11+, CUDA)
+#    - Cluster with module system (Python 3.9+, Java 17+, CUDA)
 #    - For RAISocketAI: transfer wheel first (see prerequisites below)
 #
 #  Prerequisites (tournament bots):

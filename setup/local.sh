@@ -12,7 +12,7 @@
 #
 #  Requirements:
 #    - conda or miniconda installed
-#    - Java 11+ (for microrts.jar via JPype)
+#    - Java 17+ (JDK; the committed bridge.jar is Java 17 bytecode)
 #
 #  Usage:
 #    bash setup/local.sh
@@ -45,7 +45,7 @@ fi
 
 # Java
 if ! command -v java &>/dev/null; then
-    echo "ERROR: Java not found. Install Java 11+ (JDK)."
+    echo "ERROR: Java not found. Install Java 17+ (JDK)."
     echo "  macOS: brew install openjdk@17"
     echo "  Linux: sudo apt install openjdk-17-jdk"
     exit 1
