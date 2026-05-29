@@ -70,20 +70,6 @@ def mixedBot(utt):
     return MixedBot(utt)
 
 
-# https://github.com/jr9Hernandez/RojoBot
-def rojo(utt):
-    from ai.competition.rojobot import Rojo  # type: ignore[import-not-found]
-
-    return Rojo(utt)
-
-
-# https://github.com/rubensolv/IzanagiBot
-def izanagi(utt):
-    from ai.competition.IzanagiBot import Izanagi  # type: ignore[import-not-found]
-
-    return Izanagi(utt)
-
-
 # https://github.com/jr9Hernandez/TiamatBot
 def tiamat(utt):
     from ai.competition.tiamat import Tiamat  # type: ignore[import-not-found]
@@ -110,13 +96,6 @@ def coacAI(utt):
     from ai.coac import CoacAI  # type: ignore[import-not-found]
 
     return CoacAI(utt)
-
-
-# https://github.com/rubensolv/GRojoA3N
-def guidedRojoA3N(utt):
-    from ai.competition.GRojoA3N import GuidedRojoA3N  # type: ignore[import-not-found]
-
-    return GuidedRojoA3N(utt)
 
 
 def obiBotKenobi(utt):
@@ -159,11 +138,8 @@ AI_MAPPING = {
     "Mayari": mayari,
     "NaiveMCTS": naiveMCTSAI,
     "MixedBot": mixedBot,
-    "Rojo": rojo,
-    "Izanagi": izanagi,
     "Tiamat": tiamat,
     "Droplet": droplet,
-    "GuidedRojoA3N": guidedRojoA3N,
     "POLightRush": POLightRush,
     "POWorkerRush": POWorkerRush,
     "POHeavyRush": POHeavyRush,

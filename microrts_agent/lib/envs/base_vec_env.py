@@ -57,8 +57,6 @@ class BaseMicroRTSVecEnv(ABC):
             "microrts.jar",
             "lib/bots/Coac.jar",
             "lib/bots/Droplet.jar",
-            "lib/bots/GRojoA3N.jar",
-            "lib/bots/Izanagi.jar",
             "lib/bots/mayariBot.jar",
             "lib/bots/MixedBot.jar",
             "lib/bots/ObiBotKenobi.jar",
