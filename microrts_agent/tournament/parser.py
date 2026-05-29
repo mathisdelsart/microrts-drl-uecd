@@ -11,7 +11,7 @@ Both formats are merged into a single ParsedTournamentConfig + flat list of Game
 Also detects and extracts trace ZIP files (game replays) when present.
 
 Usage:
-    from microrts_agent.tournament.viz import TournamentParser
+    from microrts_agent.tournament import TournamentParser
 
     parser = TournamentParser("results/tournament.csv").parse()
     config = parser.config      # ParsedTournamentConfig
