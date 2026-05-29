@@ -15,4 +15,8 @@
 microrts_agent/microrts/maps/** linguist-vendored
 microrts_agent/microrts/microrts.jar linguist-vendored
 microrts_agent/microrts/lib/bots/** linguist-vendored
-microrts_agent/tournaments/competition_winners/** linguist-vendored
+microrts_agent/bots/** linguist-vendored
+
+# Thesis and paper are documentation (LaTeX), not project source languages.
+dissertation/** linguist-documentation
+cog-2026-paper/** linguist-documentation
