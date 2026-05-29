@@ -14,8 +14,8 @@ from collections import deque
 import numpy as np
 import torch
 
-from lib.arch_factory import create_agent
-from lib.training.scheduling import CheckpointPool
+from microrts_agent.lib.arch_factory import create_agent
+from microrts_agent.lib.training.scheduling import CheckpointPool
 
 
 class SelfPlayManager:

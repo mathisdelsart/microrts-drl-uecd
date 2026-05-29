@@ -137,7 +137,7 @@ class GridActorCriticBase(nn.Module):
         self.hl_gauss = hl_gauss
         self.hl_gauss_bins = hl_gauss_bins
         if hl_gauss:
-            from lib.architectures.features.hl_gauss import convert_critic_to_bins
+            from microrts_agent.lib.architectures.features.hl_gauss import convert_critic_to_bins
 
             convert_critic_to_bins(self.critic_shaped, hl_gauss_bins)
             if dual_value_heads:
@@ -202,7 +202,10 @@ class GridActorCriticBase(nn.Module):
         # and adjusts the output layer weights to preserve denormalized values.
         self.use_popart = popart
         if popart:
-            from lib.architectures.features.popart import PopArtNormalizer, get_output_layer
+            from microrts_agent.lib.architectures.features.popart import (
+                PopArtNormalizer,
+                get_output_layer,
+            )
 
             self.popart_shaped = PopArtNormalizer()
             self._popart_linear_shaped = get_output_layer(self.critic_shaped)
@@ -228,7 +231,7 @@ class GridActorCriticBase(nn.Module):
         HL-Gauss: bins -> scalar via expected value. PopArt: denormalize. Tanh: for sparse (bounded)."""
         raw_output_critic = head(hidden)
         if self.hl_gauss:
-            from lib.architectures.features.hl_gauss import hl_gauss_value
+            from microrts_agent.lib.architectures.features.hl_gauss import hl_gauss_value
 
             val = hl_gauss_value(raw_output_critic, self.hl_gauss_bins).unsqueeze(-1)
             return torch.tanh(val) if use_tanh else val
@@ -381,7 +384,7 @@ class GridActorCriticBase(nn.Module):
         # Compute critic logits once, reuse for both value extraction and HL-Gauss loss
         if self.hl_gauss:
             logits_shaped = self.critic_shaped(hidden)
-            from lib.architectures.features.hl_gauss import hl_gauss_value
+            from microrts_agent.lib.architectures.features.hl_gauss import hl_gauss_value
 
             v_shaped = hl_gauss_value(logits_shaped, self.hl_gauss_bins).unsqueeze(-1)
         else:

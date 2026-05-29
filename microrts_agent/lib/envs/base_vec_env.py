@@ -12,7 +12,7 @@ import numpy as np
 from jpype.imports import registerDomain
 from PIL import Image
 
-from lib.paths import MICRORTS_DIR
+from microrts_agent.lib.paths import MICRORTS_DIR
 
 
 def get_base_env(env):

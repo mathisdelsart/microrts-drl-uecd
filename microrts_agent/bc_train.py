@@ -25,8 +25,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from lib.arch_factory import ARCHITECTURE_REGISTRY, create_agent
-from lib.paths import OUTPUTS_DIR
+from microrts_agent.lib.arch_factory import ARCHITECTURE_REGISTRY, create_agent
+from microrts_agent.lib.paths import OUTPUTS_DIR
 
 ACTION_NVEC = [6, 4, 4, 4, 4, 7, 49]  # MicroRTS action space per cell
 

@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
-from lib.paths import AGENT_DIR
+from microrts_agent.lib.paths import AGENT_DIR
 
 # ── Data classes ─────────────────────────────────────────────────────────────
 

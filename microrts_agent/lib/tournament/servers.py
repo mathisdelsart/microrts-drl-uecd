@@ -8,7 +8,7 @@ import time
 from pathlib import Path
 from typing import Optional
 
-from lib.paths import AGENT_DIR, PROJECT_ROOT
+from microrts_agent.lib.paths import AGENT_DIR, PROJECT_ROOT
 
 UTS_IMASS_PORT = 9823
 UTS_IMASS_SCRIPT = (

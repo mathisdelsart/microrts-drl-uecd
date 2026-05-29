@@ -6,9 +6,9 @@ import numpy as np
 import torch
 from stable_baselines3.common.vec_env import VecMonitor  # type: ignore[import-not-found]
 
-from lib.env_factory import JVM_ARGS, make_agent_env
-from lib.mappings.ai import AI_MAPPING
-from lib.wrapper_factory import apply_env_wrappers
+from microrts_agent.lib.env_factory import JVM_ARGS, make_agent_env
+from microrts_agent.lib.mappings.ai import AI_MAPPING
+from microrts_agent.lib.wrapper_factory import apply_env_wrappers
 
 # ── Env creation ──────────────────────────────────────────────────────────
 
@@ -203,7 +203,7 @@ def log_eval_results(eval_results, writer, global_step, eval_csv_path):
 
 def _unwrap_padded_env(env):
     """Find PaddedMicroRTSRLVecEnv in wrapper chain."""
-    from lib.envs.padded_rl_vec_env import PaddedMicroRTSRLVecEnv
+    from microrts_agent.lib.envs.padded_rl_vec_env import PaddedMicroRTSRLVecEnv
 
     cur = env
     while cur is not None:

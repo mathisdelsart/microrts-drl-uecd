@@ -4,9 +4,9 @@ Reads TensorBoard event files to get the first/last event wall_time, then
 prints elapsed hours, total steps reached, and average SPS.
 
 Usage:
-    python microrts_agent/compute_audit.py outputs/runs/rai_style_v3_300M_s1
-    python microrts_agent/compute_audit.py outputs/runs/*
-    python microrts_agent/compute_audit.py --all
+    python -m microrts_agent.compute_audit outputs/runs/rai_style_v3_300M_s1
+    python -m microrts_agent.compute_audit outputs/runs/*
+    python -m microrts_agent.compute_audit --all
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ from glob import glob
 
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator  # type: ignore
 
-from lib.paths import RUNS_DIR
+from microrts_agent.lib.paths import RUNS_DIR
 
 
 def audit_run(run_dir: str) -> dict | None:

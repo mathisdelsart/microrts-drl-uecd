@@ -96,7 +96,7 @@ def get_reserved_planes(env):
     """
     from ts import FilteredMaskClient  # type: ignore[import]
 
-    from lib.envs.base_vec_env import get_base_env
+    from microrts_agent.lib.envs.base_vec_env import get_base_env
 
     # Accept both wrapped and unwrapped envs
     if hasattr(env, "venv") or hasattr(env, "vec_client"):
@@ -134,7 +134,7 @@ def process_obs_rl_vs_rl(
     """
     import torch
 
-    from lib.envs.base_vec_env import get_base_env
+    from microrts_agent.lib.envs.base_vec_env import get_base_env
 
     if base_env is None:
         base_env = get_base_env(env) if hasattr(env, "venv") else env

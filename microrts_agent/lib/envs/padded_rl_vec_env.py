@@ -102,7 +102,7 @@ class PaddedMicroRTSRLVecEnv(MicroRTSRLVecEnv):
         """Switch all envs to a new map mid-training (called by PLR in train).
         Updates actual dims, max_steps, recreates Java client. JVM stays alive.
         """
-        from lib.mappings.maps import get_max_cycles
+        from microrts_agent.lib.mappings.maps import get_max_cycles
 
         # 1. Parse new map dimensions
         root = ET.parse(os.path.join(self.microrts_path, map_path)).getroot()

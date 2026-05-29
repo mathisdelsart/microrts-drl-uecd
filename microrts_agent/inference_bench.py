@@ -22,13 +22,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
-from lib.arch_factory import load_agent_from_config
-from lib.env_factory import JVM_ARGS, make_agent_env, make_bot_env
-from lib.envs.base_vec_env import suppress_java_output
-from lib.eval import is_agent_dir
-from lib.mappings.ai import AI_MAPPING
-from lib.paths import BENCHMARKS_DIR
-from lib.wrapper_factory import apply_env_wrappers
+from microrts_agent.lib.arch_factory import load_agent_from_config
+from microrts_agent.lib.env_factory import JVM_ARGS, make_agent_env, make_bot_env
+from microrts_agent.lib.envs.base_vec_env import suppress_java_output
+from microrts_agent.lib.eval import is_agent_dir
+from microrts_agent.lib.mappings.ai import AI_MAPPING
+from microrts_agent.lib.paths import BENCHMARKS_DIR
+from microrts_agent.lib.wrapper_factory import apply_env_wrappers
 
 # ── Java bot helpers ─────────────────────────────────────────────────────
 

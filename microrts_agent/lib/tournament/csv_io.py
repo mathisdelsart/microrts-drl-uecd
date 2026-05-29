@@ -5,7 +5,7 @@ Tournament CSV I/O: write results, merge chunks, resolve results directories.
 import sys
 from pathlib import Path
 
-from lib.paths import TOURNAMENT_RESULTS_DIR
+from microrts_agent.lib.paths import TOURNAMENT_RESULTS_DIR
 
 
 def write_csv_header(f, config):

@@ -10,4 +10,4 @@ select = ["E", "F", "W", "I", "UP", "B", "SIM", "C4"]
 ignore = ["E501"]  # line length is handled by the formatter
 
 [lint.isort]
-known-first-party = ["lib"]
+known-first-party = ["microrts_agent"]

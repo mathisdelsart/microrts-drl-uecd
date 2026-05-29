@@ -14,9 +14,9 @@ import argparse
 import os
 import sys
 
-from lib.mappings import ai as microrts_ai
-from lib.paths import TOURNAMENT_CONFIGS_DIR
-from lib.tournament import (
+from microrts_agent.lib.mappings import ai as microrts_ai
+from microrts_agent.lib.paths import TOURNAMENT_CONFIGS_DIR
+from microrts_agent.lib.tournament import (
     TournamentConfig,
     ensure_tournament_csv,
     needs_uts_imass,
@@ -25,7 +25,7 @@ from lib.tournament import (
     start_uts_imass_server,
     stop_uts_imass_server,
 )
-from lib.tournament.viz import TournamentData, TournamentParser, TournamentVisualizer
+from microrts_agent.lib.tournament.viz import TournamentData, TournamentParser, TournamentVisualizer
 
 # ── CLI ──────────────────────────────────────────────────────────────────────
 

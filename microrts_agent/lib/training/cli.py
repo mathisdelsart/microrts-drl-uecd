@@ -7,9 +7,9 @@ post-parse helpers.
 
 import argparse
 
-from lib.arch_factory import ARCHITECTURE_REGISTRY
-from lib.mappings.ai import AI_MAPPING
-from lib.mappings.maps import COMPETITION_OPEN_MAPS
+from microrts_agent.lib.arch_factory import ARCHITECTURE_REGISTRY
+from microrts_agent.lib.mappings.ai import AI_MAPPING
+from microrts_agent.lib.mappings.maps import COMPETITION_OPEN_MAPS
 
 
 def strtobool(x):

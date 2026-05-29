@@ -16,13 +16,13 @@ import sys
 
 import torch
 
-from lib.architectures.gridnet import GridNetAgent
-from lib.architectures.impala import IMPALAAgent
-from lib.architectures.impala_entity import IMPALAEntityAgent
-from lib.architectures.unet import IMPALAUNetAgent
-from lib.architectures.unet_entity import IMPALAUNetEntityAgent
-from lib.architectures.unet_entity_cbam import IMPALAUNetEntityCBAMAgent
-from lib.architectures.unet_entity_cbam_deep import IMPALAUNetEntityCBAMV2Agent
+from microrts_agent.lib.architectures.gridnet import GridNetAgent
+from microrts_agent.lib.architectures.impala import IMPALAAgent
+from microrts_agent.lib.architectures.impala_entity import IMPALAEntityAgent
+from microrts_agent.lib.architectures.unet import IMPALAUNetAgent
+from microrts_agent.lib.architectures.unet_entity import IMPALAUNetEntityAgent
+from microrts_agent.lib.architectures.unet_entity_cbam import IMPALAUNetEntityCBAMAgent
+from microrts_agent.lib.architectures.unet_entity_cbam_deep import IMPALAUNetEntityCBAMV2Agent
 
 ARCHITECTURE_REGISTRY = {
     "gridnet": GridNetAgent,

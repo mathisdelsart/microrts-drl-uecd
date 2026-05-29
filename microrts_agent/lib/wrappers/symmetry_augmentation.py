@@ -16,7 +16,7 @@ class SymmetryAugmentation(VecEnvWrapper):
         self.pad_height, self.pad_width = env.observation_space.shape[:2]
         self._obs_channels = env.observation_space.shape[2]
 
-        from lib.envs.base_vec_env import get_base_env
+        from microrts_agent.lib.envs.base_vec_env import get_base_env
 
         self._base_env = get_base_env(self)  # for dynamic actual dimensions (switch_map)
 
