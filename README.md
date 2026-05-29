@@ -132,3 +132,9 @@ Released under the [MIT License](LICENSE) © 2026 Mathis Delsart.
 ## Author
 
 **Mathis Delsart** — Master's thesis, UCLouvain.
+
+## Acknowledgments
+
+Every experiment ran on the HPC clusters of the **CÉCI** (Consortium des
+Équipements de Calcul Intensif) — see [`ACKNOWLEDGMENTS.md`](ACKNOWLEDGMENTS.md)
+for the full acknowledgment.
