@@ -44,15 +44,18 @@ the winner of the IEEE-CoG MicroRTS competition.
 
 ```
 microrts-drl-uecd/
-├── microrts_agent/               # Importable package (python -m microrts_agent.<entry>)
+├── microrts_agent/               # Importable package — unified CLI: python -m microrts_agent <command>
 │   ├── envs/                     # Vectorised MicroRTS envs (base, rl, padded, bot) + factory
 │   ├── architectures/            # Policies (gridnet, impala, unet, *_entity, *_cbam) + features/ + factory
 │   ├── training/                 # PPO core, schedules, self-play, in-training eval, logging
-│   ├── tournament/               # Round-robin engine + result visualisation (viz/)
+│   ├── tournament/               # Round-robin engine, parser/visualizer, ranking/ (game-theory metrics), plots/
 │   ├── registries/               # Bot registry (ai.py) + map registry (maps.py)
 │   ├── wrappers/                 # Composable VecEnv wrappers (frame-stack, symmetry, ...) + factory
 │   ├── obs_adapter.py            # ObsAdapter for agent-vs-agent evaluation
 │   ├── paths.py                  # Canonical output paths
+│   ├── bc/                       # Behaviour cloning:    python -m microrts_agent bc {train|generate}
+│   ├── bench/                    # Inference benchmarks: python -m microrts_agent bench {inference|head2head}
+│   ├── analysis/                 # Run analysis tools:   python -m microrts_agent analysis {metrics|audit|params}
 │   ├── microrts/                 # Java engine + Java↔Python bridge
 │   │   ├── microrts.jar          # MicroRTS engine (vendored)
 │   │   ├── lib/{bots/*.jar, bridge.jar}
@@ -61,9 +64,7 @@ microrts-drl-uecd/
 │   ├── bots/                     # Vendored competition bots (sources/builds + RAISocketAI wheel)
 │   ├── tournament_configs/       # Tournament setup JSON files
 │   ├── experiments/              # SLURM job scripts for the HPC runs
-│   ├── train.py  evaluate.py  run_tournament.py
-│   ├── bc_train.py  bc_generate.py
-│   └── inference_bench.py  h2h_inference_bench.py  analyze_metrics.py
+│   └── train.py  evaluate.py  run_tournament.py   # simple entry points
 ├── dissertation/                 # LaTeX thesis, figures, figure generators (figs/figs-python/), compiled PDF
 ├── cog-2026-paper/               # CoG 2026 short-paper submission
 ├── setup_local_env.sh  setup_cluster_env.sh
@@ -89,18 +90,18 @@ conda activate microrts_agent
 # 2. (Re)build the bridge manually if you edit microrts_agent/microrts/src/
 bash microrts_agent/microrts/build_bridge.sh
 
-# 3. Train
-python -m microrts_agent.train --total-timesteps 1000000
-python -m microrts_agent.train --help        # all flags
+# 3. Train  (list every command with:  python -m microrts_agent --help)
+python -m microrts_agent train --total-timesteps 1000000
+python -m microrts_agent train --help        # all flags
 
 # 4. Monitor
 tensorboard --logdir outputs/runs/
 
 # 5. Evaluate a trained agent against a bot
-python -m microrts_agent.evaluate --agent outputs/runs/<run> --opponent CoacAI
+python -m microrts_agent evaluate --agent outputs/runs/<run> --opponent CoacAI
 
 # 6. Run a tournament
-python -m microrts_agent.run_tournament --help
+python -m microrts_agent tournament --help
 ```
 
 On the HPC cluster, use `setup_cluster_env.sh` and the job scripts under

@@ -40,7 +40,7 @@ echo "============================================================"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader
 echo ""
 
-python microrts_agent/h2h_inference_bench.py \
+python -m microrts_agent.bench head2head \
     --agent "$AGENT_PATH" \
     --opponent RAISocketAI \
     --games $GAMES \

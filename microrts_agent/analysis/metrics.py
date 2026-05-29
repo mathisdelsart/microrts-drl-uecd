@@ -6,16 +6,16 @@ suitable for direct inclusion in a LaTeX thesis report.
 
 Usage:
     # Single run
-    python -m microrts_agent.analyze_metrics outputs/runs/V0_baseline_300M
+    python -m microrts_agent.analysis metrics outputs/runs/V0_baseline_300M
 
     # Multiple runs (each analyzed independently)
-    python -m microrts_agent.analyze_metrics outputs/runs/P8_* outputs/runs/P9_*
+    python -m microrts_agent.analysis metrics outputs/runs/P8_* outputs/runs/P9_*
 
     # All runs
-    python -m microrts_agent.analyze_metrics --all
+    python -m microrts_agent.analysis metrics --all
 
     # Custom smoothing (EMA alpha, higher = smoother)
-    python -m microrts_agent.analyze_metrics outputs/runs/V0_baseline_300M --smoothing 0.97
+    python -m microrts_agent.analysis metrics outputs/runs/V0_baseline_300M --smoothing 0.97
 """
 
 import argparse

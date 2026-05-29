@@ -21,7 +21,7 @@ BC_RUN_DIR="outputs/runs/bc_v3_s${SEED}"
 mkdir -p "${BC_RUN_DIR}/EVAL"
 
 echo "=== BC+VF Train ==="
-python microrts_agent/bc_train.py \
+python -m microrts_agent.bc train \
     --data outputs/bc_data/bc_chunk_RAISocketAI_*.npz outputs/bc_data/bc_chunk_CoacAI_*.npz outputs/bc_data/bc_chunk_Mayari_*.npz \
     --architecture unet_entity_cbam_deep \
     --gelu --epochs 30 --batch-size 128 --lr 1e-4 --vf-coef 0.5 --gamma 0.99 \

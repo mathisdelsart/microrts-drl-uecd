@@ -74,7 +74,7 @@ mkdir -p "$(dirname "$BC_DATA")"
 if [ -f "$BC_DATA" ]; then
     echo "  BC data already exists: $BC_DATA — skipping generation"
 else
-    python microrts_agent/bc_generate.py \
+    python -m microrts_agent.bc generate \
         --bot RAISocketAI \
         --opponents RAISocketAI CoacAI Mayari POWorkerRush POLightRush \
         --games-per-opponent 50 50 50 50 50 \
@@ -100,7 +100,7 @@ echo "============================================================"
 echo "  STEP 2/3 — Training behavior cloning"
 echo "============================================================"
 
-python microrts_agent/bc_train.py \
+python -m microrts_agent.bc train \
     --data "$BC_DATA" \
     --architecture unet_entity_cbam_deep \
     --gelu \

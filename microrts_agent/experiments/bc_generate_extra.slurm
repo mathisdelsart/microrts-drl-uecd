@@ -43,7 +43,7 @@ fi
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-python microrts_agent/bc_generate.py \
+python -m microrts_agent.bc generate \
     --bot RAISocketAI \
     --opponents CoacAI Mayari \
     --games-per-opponent 1000 1000 \

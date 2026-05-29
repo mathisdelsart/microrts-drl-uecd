@@ -80,7 +80,7 @@ echo "============================================================"
 # CoacAI vs CoacAI (2000 games, learn CoacAI's perspective)
 if [ ! -f "$DATA_COAC_SELF" ]; then
     echo "  [1/4] CoacAI vs CoacAI (500 games)..."
-    python microrts_agent/bc_generate.py \
+    python -m microrts_agent.bc generate \
         --bot CoacAI --opponents CoacAI \
         --games-per-opponent 500 \
         --map "$MAP" --output "$DATA_COAC_SELF"
@@ -92,7 +92,7 @@ fi
 # Mayari vs Mayari (2000 games, learn Mayari's perspective)
 if [ ! -f "$DATA_MAYA_SELF" ]; then
     echo "  [2/4] Mayari vs Mayari (500 games)..."
-    python microrts_agent/bc_generate.py \
+    python -m microrts_agent.bc generate \
         --bot Mayari --opponents Mayari \
         --games-per-opponent 500 \
         --map "$MAP" --output "$DATA_MAYA_SELF"
@@ -104,7 +104,7 @@ fi
 # CoacAI vs Mayari (1000 games, learn CoacAI's perspective against Mayari)
 if [ ! -f "$DATA_COAC_MAYA" ]; then
     echo "  [3/4] CoacAI vs Mayari (250 games)..."
-    python microrts_agent/bc_generate.py \
+    python -m microrts_agent.bc generate \
         --bot CoacAI --opponents Mayari \
         --games-per-opponent 250 \
         --map "$MAP" --output "$DATA_COAC_MAYA"
@@ -116,7 +116,7 @@ fi
 # Mayari vs CoacAI (250 games, learn Mayari's perspective against CoacAI)
 if [ ! -f "$DATA_MAYA_COAC" ]; then
     echo "  [4/4] Mayari vs CoacAI (250 games)..."
-    python microrts_agent/bc_generate.py \
+    python -m microrts_agent.bc generate \
         --bot Mayari --opponents CoacAI \
         --games-per-opponent 250 \
         --map "$MAP" --output "$DATA_MAYA_COAC"
@@ -137,7 +137,7 @@ echo "============================================================"
 echo "  STEP 2/3 — Training behavior cloning"
 echo "============================================================"
 
-python microrts_agent/bc_train.py \
+python -m microrts_agent.bc train \
     --data "$DATA_COAC_SELF" "$DATA_MAYA_SELF" "$DATA_COAC_MAYA" "$DATA_MAYA_COAC" \
     --architecture unet_entity_cbam_deep \
     --gelu \

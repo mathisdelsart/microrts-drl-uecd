@@ -47,7 +47,7 @@ nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader
 echo ""
 
 # Benchmark — both agents in one call so CSV / PDF are produced together
-python microrts_agent/inference_bench.py \
+python -m microrts_agent.bench inference \
     --agents "$AGENT_PATH" RAISocketAI \
     --games $GAMES \
     --map "$MAP" \
