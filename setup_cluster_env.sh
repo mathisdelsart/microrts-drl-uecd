@@ -81,56 +81,23 @@ fi
 echo "Python: $(python --version) @ $(which python)"
 echo ""
 
-# ── 3. Core dependencies (training + eval + plotting) ────────────────────────
+# ── 3. Python dependencies (single source of truth: pyproject.toml) ──────────
+# Core stack + the [tournament] extra (RAISocketAI's cherry-picked runtime deps).
 
-echo "=== Installing core dependencies ==="
+echo "=== Installing Python dependencies (pip install -e .[tournament]) ==="
 pip install --upgrade pip
-
-pip install \
-    "torch>=2.0" \
-    "numpy<2" \
-    "gym==0.23.1" \
-    "stable-baselines3" \
-    "tensorboard" \
-    "JPype1" \
-    "Pillow"
-
-# Plotting & analysis
-pip install \
-    "matplotlib" \
-    "scipy" \
-    "seaborn" \
-    "pandas"
-
-# Tournament visualization
-pip install "rich"
-
-# Multi-agent env (pin to last version compatible with gymnasium<1.0)
-pip install "pettingzoo==1.24.3"
+pip install -e "${PROJECT_DIR}[tournament]"
 
 echo ""
 
-# ── 4. Tournament bot dependencies (RAISocketAI) ─────────────────────────────
+# ── 4. RAISocketAI tournament bot wheel ──────────────────────────────────────
+# Installed separately with --no-deps: its pinned dependency set conflicts with
+# the core stack (the [tournament] extra above provides the compatible subset).
 
-echo "=== Installing tournament dependencies ==="
-
+echo "=== Installing RAISocketAI wheel ==="
 if [ -f "$WHEEL_FILE" ]; then
     echo "Installing rl_algo_impls wheel (--no-deps to avoid conflicts)..."
     pip install --no-deps --force-reinstall "$WHEEL_FILE"
-
-    # rl_algo_impls runtime deps (cherry-picked to avoid conflicts)
-    pip install \
-        "gymnasium==0.29.1" \
-        "psutil" \
-        "PyYAML" \
-        "tqdm" \
-        "einops" \
-        "torchvision" \
-        "accelerate" \
-        "wandb" \
-        "GPUtil" \
-        "moviepy" \
-        "pyvirtualdisplay"
 else
     echo "WARNING: RAISocketAI wheel not found at:"
     echo "  $WHEEL_FILE"
