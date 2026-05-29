@@ -20,13 +20,13 @@
 #
 #  Usage:
 #    ssh lyra
-#    cd ~/microrts-drl-uecd && bash setup_cluster_env.sh
+#    cd ~/microrts-drl-uecd && bash setup/cluster.sh
 #
 #  Activate:
 #    source ~/microrts-drl-uecd/cluster_venv/bin/activate
 # ──────────────────────────────────────────────────────────────────────────────
 
-PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"  # repo root (script lives in setup/)
 VENV_DIR="$PROJECT_DIR/cluster_venv"
 WHEEL_FILE="$PROJECT_DIR/microrts_agent/bots/RAISocketAI/rl_algo_impls-0.2.1-py3-none-any.whl"
 MICRORTS_JAR="$PROJECT_DIR/microrts_agent/microrts/microrts.jar"

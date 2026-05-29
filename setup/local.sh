@@ -15,7 +15,7 @@
 #    - Java 11+ (for microrts.jar via JPype)
 #
 #  Usage:
-#    bash setup_local_env.sh
+#    bash setup/local.sh
 #
 #  Activate:
 #    conda activate microrts_agent
@@ -23,7 +23,7 @@
 
 ENV_NAME="microrts_agent"
 PYTHON_VERSION="3.9"
-PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"  # repo root (script lives in setup/)
 WHEEL_FILE="$PROJECT_DIR/microrts_agent/bots/RAISocketAI/rl_algo_impls-0.2.1-py3-none-any.whl"
 
 echo "========================================"
