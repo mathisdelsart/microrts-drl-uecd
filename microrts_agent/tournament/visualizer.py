@@ -4,7 +4,7 @@ Tournament Visualizer — Orchestrator
 Loads tournament data and delegates to individual plot modules in plots/.
 
 Usage:
-    from microrts_agent.tournament.viz import TournamentData, TournamentVisualizer
+    from microrts_agent.tournament import TournamentData, TournamentVisualizer
 
     data = TournamentData(results_dir / "tournament_parsed.json")
     viz = TournamentVisualizer(data, console)
@@ -18,7 +18,7 @@ Generates PDFs:
 import json
 from pathlib import Path
 
-from .data import GameData
+from .analysis.data import GameData
 from .plots import (
     generate_game_theory,
     plot_final_standings,
