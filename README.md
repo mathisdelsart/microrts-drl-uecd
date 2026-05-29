@@ -67,7 +67,7 @@ microrts-drl-uecd/
 │   └── train.py  evaluate.py  run_tournament.py   # simple entry points
 ├── dissertation/                 # LaTeX thesis, figures, figure generators (figs/figs-python/), compiled PDF
 ├── cog-2026-paper/               # CoG 2026 short-paper submission
-├── setup_local_env.sh  setup_cluster_env.sh
+├── setup/                       # env setup scripts (local.sh, cluster.sh)
 └── LICENSE  CONTRIBUTING.md  ruff.toml  pyproject.toml
 ```
 
@@ -84,7 +84,7 @@ Generated runs, recordings, and tournament CSVs live under `outputs/` (git-ignor
 ```bash
 # 1. Set up the environment (creates the `microrts_agent` conda env and
 #    rebuilds the Java<->Python bridge from source)
-bash setup_local_env.sh
+bash setup/local.sh
 conda activate microrts_agent
 
 # 2. (Re)build the bridge manually if you edit microrts_agent/microrts/src/
@@ -104,7 +104,7 @@ python -m microrts_agent evaluate --agent outputs/runs/<run> --opponent CoacAI
 python -m microrts_agent tournament --help
 ```
 
-On the HPC cluster, use `setup_cluster_env.sh` and the job scripts under
+On the HPC cluster, use `setup/cluster.sh` and the job scripts under
 `microrts_agent/experiments/`.
 
 ## Results
