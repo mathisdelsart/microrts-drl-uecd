@@ -67,8 +67,12 @@ microrts-drl-uecd/
 ├── dissertation/                 # LaTeX thesis, figures, figure generators (figs/figs-python/), compiled PDF
 ├── cog-2026-paper/               # CoG 2026 short-paper submission
 ├── setup_local_env.sh  setup_cluster_env.sh
-└── LICENSE  CONTRIBUTING.md  ruff.toml
+└── LICENSE  CONTRIBUTING.md  ruff.toml  pyproject.toml
 ```
+
+Python dependencies are declared once in `pyproject.toml` (core stack +
+`[tournament]` / `[dev]` extras); the setup scripts install them via
+`pip install -e ".[tournament]"`.
 
 Generated runs, recordings, and tournament CSVs live under `outputs/` (git-ignored).
 

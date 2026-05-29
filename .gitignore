@@ -8,6 +8,8 @@ out/
 *.aux
 __pycache__/
 *.pyc
+*.egg-info/
+.eggs/
 .vscode/
 .claude/
 
