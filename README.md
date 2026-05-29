@@ -44,16 +44,15 @@ the winner of the IEEE-CoG MicroRTS competition.
 
 ```
 microrts-drl-uecd/
-├── microrts_agent/
-│   ├── lib/                      # Importable library
-│   │   ├── envs/                 # Vectorised MicroRTS envs (base, rl, padded, bot)
-│   │   ├── architectures/        # Policies (gridnet, impala, unet, *_entity, *_cbam) + features/
-│   │   ├── training/             # PPO core, schedules, self-play, in-training eval, logging
-│   │   ├── eval/                 # ObsAdapter for agent-vs-agent evaluation
-│   │   ├── tournament/           # Round-robin engine + result visualisation (viz/)
-│   │   ├── mappings/             # Bot registry (ai.py) + map registry (maps.py)
-│   │   ├── wrappers/             # Composable VecEnv wrappers (frame-stack, symmetry, ...)
-│   │   ├── arch_factory.py  env_factory.py  wrapper_factory.py  paths.py
+├── microrts_agent/               # Importable package (python -m microrts_agent.<entry>)
+│   ├── envs/                     # Vectorised MicroRTS envs (base, rl, padded, bot) + factory
+│   ├── architectures/            # Policies (gridnet, impala, unet, *_entity, *_cbam) + features/ + factory
+│   ├── training/                 # PPO core, schedules, self-play, in-training eval, logging
+│   ├── tournament/               # Round-robin engine + result visualisation (viz/)
+│   ├── registries/               # Bot registry (ai.py) + map registry (maps.py)
+│   ├── wrappers/                 # Composable VecEnv wrappers (frame-stack, symmetry, ...) + factory
+│   ├── obs_adapter.py            # ObsAdapter for agent-vs-agent evaluation
+│   ├── paths.py                  # Canonical output paths
 │   ├── microrts/                 # Java engine + Java↔Python bridge
 │   │   ├── microrts.jar          # MicroRTS engine (vendored)
 │   │   ├── lib/{bots/*.jar, bridge.jar}

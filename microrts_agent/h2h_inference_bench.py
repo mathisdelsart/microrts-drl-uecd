@@ -24,11 +24,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
-from microrts_agent.lib.arch_factory import load_agent_from_config
-from microrts_agent.lib.env_factory import JVM_ARGS, make_agent_env
-from microrts_agent.lib.envs.base_vec_env import suppress_java_output
-from microrts_agent.lib.mappings.ai import AI_MAPPING
-from microrts_agent.lib.wrapper_factory import apply_env_wrappers
+from microrts_agent.architectures.factory import load_agent_from_config
+from microrts_agent.envs.base_vec_env import suppress_java_output
+from microrts_agent.envs.factory import JVM_ARGS, make_agent_env
+from microrts_agent.registries.ai import AI_MAPPING
+from microrts_agent.wrappers.factory import apply_env_wrappers
 
 
 def benchmark_h2h(
@@ -73,7 +73,7 @@ def benchmark_h2h(
 
     # Configure the Java bot's time budget
     try:
-        from microrts_agent.lib.tournament.game_loops import _configure_ai_with_budget
+        from microrts_agent.tournament.game_loops import _configure_ai_with_budget
 
         client = env.vec_client.clients[0]
         client.ai2 = _configure_ai_with_budget(client.ai2, time_budget)

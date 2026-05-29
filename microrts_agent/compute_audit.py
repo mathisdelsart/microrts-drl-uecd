@@ -19,7 +19,7 @@ from glob import glob
 
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator  # type: ignore
 
-from microrts_agent.lib.paths import RUNS_DIR
+from microrts_agent.paths import RUNS_DIR
 
 
 def audit_run(run_dir: str) -> dict | None:

@@ -17,32 +17,32 @@ import torch.optim as optim
 from gymnasium.spaces import MultiDiscrete  # type: ignore[import-not-found]
 from stable_baselines3.common.vec_env import VecMonitor  # type: ignore[import-not-found]
 
-from microrts_agent.lib.arch_factory import create_agent
-from microrts_agent.lib.env_factory import JVM_ARGS, make_agent_env
-from microrts_agent.lib.envs.base_vec_env import suppress_java_output
-from microrts_agent.lib.mappings.ai import AI_MAPPING
-from microrts_agent.lib.paths import RUNS_DIR
-from microrts_agent.lib.training.checkpoint import (
+from microrts_agent.architectures.factory import create_agent
+from microrts_agent.envs.base_vec_env import suppress_java_output
+from microrts_agent.envs.factory import JVM_ARGS, make_agent_env
+from microrts_agent.paths import RUNS_DIR
+from microrts_agent.registries.ai import AI_MAPPING
+from microrts_agent.training.checkpoint import (
     Tee,
     resume_checkpoint,
     save_checkpoint,
     setup_device_and_seed,
     setup_tensorboard,
 )
-from microrts_agent.lib.training.cli import parse_args
-from microrts_agent.lib.training.config import print_config_banner, save_run_config
-from microrts_agent.lib.training.logging import log_step_episodes, log_update
-from microrts_agent.lib.training.opponents import build_opponent_config
-from microrts_agent.lib.training.ppo import ppo_update
-from microrts_agent.lib.training.scheduling import (
+from microrts_agent.training.cli import parse_args
+from microrts_agent.training.config import print_config_banner, save_run_config
+from microrts_agent.training.logging import log_step_episodes, log_update
+from microrts_agent.training.opponents import build_opponent_config
+from microrts_agent.training.ppo import ppo_update
+from microrts_agent.training.scheduling import (
     AdaptiveOpponentScheduler,
     MapPLR,
     OpponentTracker,
     build_importance_weights,
     compute_schedules,
 )
-from microrts_agent.lib.training.selfplay import SelfPlayManager
-from microrts_agent.lib.training.setup import (
+from microrts_agent.training.selfplay import SelfPlayManager
+from microrts_agent.training.setup import (
     _unwrap_base_env,
     build_aux_coefs,
     build_aux_targets,
@@ -52,7 +52,7 @@ from microrts_agent.lib.training.setup import (
     run_eval_block,
     setup_eval,
 )
-from microrts_agent.lib.wrapper_factory import apply_env_wrappers
+from microrts_agent.wrappers.factory import apply_env_wrappers
 
 # ── Training ─────────────────────────────────────────────────────────────
 

@@ -7,7 +7,7 @@ Usage:
     python -m microrts_agent.count_feature_params
 """
 
-from microrts_agent.lib.arch_factory import _build_agent_kwargs
+from microrts_agent.architectures.factory import _build_agent_kwargs
 
 ACTION_NVEC = [6, 4, 4, 4, 4, 7, 49]
 BASE_OBS_CHANNELS = 27  # default (non-extended, no frame stack)

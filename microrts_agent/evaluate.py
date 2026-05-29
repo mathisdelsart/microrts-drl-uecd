@@ -20,25 +20,25 @@ import numpy as np
 import torch
 from gymnasium.wrappers.monitoring.video_recorder import VideoRecorder  # type: ignore
 
-from microrts_agent.lib.arch_factory import load_agent_from_config
-from microrts_agent.lib.env_factory import JVM_ARGS, make_agent_env, make_bot_env
-from microrts_agent.lib.envs.base_vec_env import get_base_env as _get_base_env
-from microrts_agent.lib.envs.base_vec_env import suppress_java_output
+from microrts_agent.architectures.factory import load_agent_from_config
+from microrts_agent.envs.base_vec_env import get_base_env as _get_base_env
+from microrts_agent.envs.base_vec_env import suppress_java_output
+from microrts_agent.envs.factory import JVM_ARGS, make_agent_env, make_bot_env
+from microrts_agent.obs_adapter import ObsAdapter as _ObsAdapter
 
 # ── Helpers ───────────────────────────────────────────────────────────────
-from microrts_agent.lib.eval import is_agent_dir
-from microrts_agent.lib.eval.obs_adapter import ObsAdapter as _ObsAdapter
-from microrts_agent.lib.eval.obs_adapter import process_obs_rl_vs_rl as _process_obs_rl_vs_rl
-from microrts_agent.lib.mappings.ai import AI_MAPPING
-from microrts_agent.lib.mappings.maps import map_short
-from microrts_agent.lib.paths import RECORDINGS_DIR
-from microrts_agent.lib.tournament.servers import (
+from microrts_agent.obs_adapter import is_agent_dir
+from microrts_agent.obs_adapter import process_obs_rl_vs_rl as _process_obs_rl_vs_rl
+from microrts_agent.paths import RECORDINGS_DIR
+from microrts_agent.registries.ai import AI_MAPPING
+from microrts_agent.registries.maps import map_short
+from microrts_agent.tournament.servers import (
     needs_uts_imass,
     run_uts_imass_preanalysis,
     start_uts_imass_server,
     stop_uts_imass_server,
 )
-from microrts_agent.lib.wrapper_factory import apply_env_wrappers
+from microrts_agent.wrappers.factory import apply_env_wrappers
 
 
 def _padding_kwargs(config):
