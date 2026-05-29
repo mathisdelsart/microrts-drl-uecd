@@ -3,10 +3,11 @@ Generate the comparative figure for game-theoretic metrics
 (Nash, Alpha-Rank, Copeland, Regret) applied to the same win-rate matrix.
 
 Dependencies: numpy, matplotlib, scipy
-Usage: python generate_metrics_comparison.py
-Output: metrics_comparison.pdf (vector, for LaTeX inclusion)
-        metrics_comparison.png (raster, for previews)
+Usage: python metrics_comparison.py
+Output: figs-pdf/metrics_comparison.pdf (vector, for LaTeX inclusion)
 """
+
+import os
 
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
@@ -357,5 +358,6 @@ ax_reg.set_ylim(0, max(regret) * 1.32 + 0.02)
 # ─────────────────────────────────────────────────────────────
 #  Save
 # ─────────────────────────────────────────────────────────────
-fig.savefig("metrics_comparison.pdf", bbox_inches="tight")
-print("\nSaved: metrics_comparison.pdf (for LaTeX)")
+out = os.path.join(os.path.dirname(__file__), "..", "figs-pdf", "metrics_comparison.pdf")
+fig.savefig(out, bbox_inches="tight")
+print(f"\nSaved: {out}")
