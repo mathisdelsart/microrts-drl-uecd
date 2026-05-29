@@ -18,7 +18,7 @@ Generates PDFs:
 import json
 from pathlib import Path
 
-from .data import GameData
+from .analysis.data import GameData
 from .plots import (
     generate_game_theory,
     plot_final_standings,
