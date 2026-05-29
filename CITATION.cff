@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "MicroRTS Deep-RL Agent"
+abstract: >-
+  A competitive real-time-strategy agent for MicroRTS, trained with PPO over a
+  hand-written Java<->Python bridge, opponent curricula and self-play, targeting
+  the IEEE-CoG MicroRTS competition winner RAISocketAI. Master's thesis, UCLouvain.
+type: software
+version: "0.1.0"
+authors:
+  - family-names: Delsart
+    given-names: Mathis
+    affiliation: "UCLouvain"
+url: "https://github.com/mathisdelsart/microrts-drl-uecd"
+repository-code: "https://github.com/mathisdelsart/microrts-drl-uecd"
+license: MIT
+keywords:
+  - reinforcement-learning
+  - deep-reinforcement-learning
+  - microrts
+  - ppo
+  - real-time-strategy
+  - self-play

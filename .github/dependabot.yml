@@ -1,0 +1,8 @@
+version: 2
+updates:
+  # Keep the GitHub Actions used in CI up to date (low-noise; pinned ruff is
+  # managed manually, so only the actions ecosystem is tracked here).
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
