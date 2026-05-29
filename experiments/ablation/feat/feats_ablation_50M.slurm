@@ -36,7 +36,7 @@
 #   21 = + autoregressive + hierarchical mask (combined)
 #
 # Usage:
-#   sbatch microrts_agent/experiments/feat_ablation/feats_ablation_50M.slurm
+#   sbatch experiments/feat_ablation/feats_ablation_50M.slurm
 #
 
 SEED=${SEED:-1}

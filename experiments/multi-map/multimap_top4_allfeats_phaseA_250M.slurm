@@ -1,47 +1,46 @@
 #!/bin/bash
-#SBATCH --job-name=BEST_MM_300M
+#SBATCH --job-name=mmtop4_allf_A
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
-#SBATCH --time=5-00:00:00
+#SBATCH --time=4-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24
 #SBATCH --mem=48G
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# BEST AGENT — 300M steps, MULTI-MAP (5 maps <= 16x16), all best features
+# XP1b Phase A — Multi-map (top-4 maps <= 16x16), ALL ablation-positive features.
+# 250M steps, 12 bot envs + 12 self-play envs (PFSP).
 #
-# Architecture: UNet-Entity-CBAM-Deep (4.7M params, C=48)
-# Map pool (5 maps, padded to 16x16):
-#   - basesWorkers8x8A        (8x8)
-#   - FourBasesWorkers8x8     (8x8)
-#   - NoWhereToRun9x8         (9x8)
-#   - basesWorkers16x16A      (16x16)
-#   - TwoBasesBarracks16x16   (16x16)
+# Map pool (4 — NoWhereToRun9x8 excluded as 'the special one'):
+#   - basesWorkers8x8A, FourBasesWorkers8x8, basesWorkers16x16A, TwoBasesBarracks16x16
 #
-# Multi-map features:
-#   - PLR (prioritized level replay) for smart map sampling
-#   - HL-Gauss + symlog for scale-invariant value estimation across maps
+# Features enabled (every positive in results.tex §394-403):
+#   Always-on top-4:       extended-obs, filtered-masks+reserved-obs,
+#                          prioritized-sampling (MCW), aux-opponent-modeling
+#   Conditionally positive: gelu, spp-critic, augment-symmetry, pae-keep,
+#                          popart, build-time rewards, self-play+PFSP,
+#                          adaptive-opponents
+#   Uncertain but no-downside: frame-stack 4, autoregressive, aux-spatial,
+#                              aux-unit-count
+#   Map: PLR enabled.
+# Features OFF (per ablation):
+#   - HL-Gauss (incompatible with PopArt, strictly worse)
+#   - aux-contrastive (weakest aux head)
+#   - triple-value-heads (seed-3 < baseline; excluded from single-map BestRL)
 #
-# Same 12 features as single-map BEST agent.
-#
-# Usage:
-#   sbatch microrts_agent/experiments/BEST_agent_multi_map_300M.slurm
-#   SEED=2 sbatch microrts_agent/experiments/BEST_agent_multi_map_300M.slurm
+# Chained by:
+#   sbatch --dependency=afterok:$JOB --export=ALL,VARIANT=AllFeats \
+#       experiments/multimap_top4_phaseB_150M.slurm
 #
 
 SEED=${SEED:-1}
 
 echo "============================================================"
-echo "  BEST AGENT — 300M steps, MULTI-MAP (<= 16x16)"
+echo "  XP1b — Multi-map top-4 (<=16x16), ALL POSITIVE features, 250M"
+echo "  Job ID: $SLURM_JOB_ID | Seed: $SEED | Node: $SLURM_NODELIST"
+echo "  Started: $(date)"
 echo "============================================================"
-echo "  Job ID:       $SLURM_JOB_ID"
-echo "  Seed:         $SEED"
-echo "  Node:         $SLURM_NODELIST"
-echo "  Started:      $(date)"
-echo "============================================================"
-
-# ── Environment setup ──────────────────────────────────────────────────────
 
 module load Python/3.11 2>/dev/null || module load Python/3.9 2>/dev/null || {
     echo "ERROR: No Python module found"; exit 1; }
@@ -54,8 +53,7 @@ VENV_DIR="$HOME/microrts-drl-uecd/cluster_venv"
 if [ -d "$VENV_DIR" ]; then
     source "$VENV_DIR/bin/activate"
 else
-    echo "ERROR: cluster_venv not found."
-    exit 1
+    echo "ERROR: cluster_venv not found."; exit 1
 fi
 
 export PYTHONUNBUFFERED=1
@@ -63,19 +61,16 @@ cd $HOME/microrts-drl-uecd
 
 python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"N/A\"}')"
 
-# ── Training command ───────────────────────────────────────────────────────
-
 python microrts_agent/train.py \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
-    --total-timesteps 300000000 \
+    --total-timesteps 250000000 \
     --max-steps 4000 \
     \
     --multi-map True \
     --map-pool \
         maps/open_competition/basesWorkers8x8A.xml \
         maps/open_competition/FourBasesWorkers8x8.xml \
-        maps/open_competition/NoWhereToRun9x8.xml \
         maps/open_competition/basesWorkers16x16A.xml \
         maps/open_competition/TwoBasesBarracks16x16.xml \
     --max-map-size 16 \
@@ -89,6 +84,7 @@ python microrts_agent/train.py \
     --diverse-opponents True \
     --alternate-players True \
     --prioritized-sampling True \
+    --adaptive-opponents True \
     \
     --num-steps 512 \
     --update-epochs 2 \
@@ -103,33 +99,35 @@ python microrts_agent/train.py \
     --ent-coef-end 0.001 \
     --vf-coef 0.5 \
     \
+    --reward-schedule linear \
+    --reward-schedule-start 0.3 \
+    --reward-schedule-end 0.7 \
+    --reward-unit-build-time True \
+    \
     --extended-obs True \
     --filtered-masks True \
     --reserved-obs True \
-    --frame-stack 4 \
-    --spp-critic True \
     --gelu True \
+    --spp-critic True \
+    --frame-stack 4 \
     --autoregressive True \
-    --aux-contrastive True \
-    --aux-spatial True \
-    --adaptive-opponents True \
-    --hl-gauss True \
-    --aux-unit-count True \
-    --pae-keep 0.95 \
     --augment-symmetry True \
+    --pae-keep 0.95 \
+    --popart True \
+    --aux-opponent-modeling True \
+    --aux-opponent-modeling-coef 0.01 \
+    --aux-spatial True \
+    --aux-unit-count True \
     \
     --with-eval True \
     --num-models 2 \
     --seed $SEED \
-    --exp-name BEST_agent_multi_map_300M_s${SEED}
+    --exp-name MultiMapTop4_AllFeats_PhaseA_s${SEED}
 
 EXIT_CODE=$?
 
 echo ""
 echo "============================================================"
-echo "  JOB COMPLETE"
-echo "  Exit code: $EXIT_CODE"
-echo "  Finished:  $(date)"
+echo "  JOB COMPLETE | Exit code: $EXIT_CODE | $(date)"
 echo "============================================================"
-
 exit $EXIT_CODE

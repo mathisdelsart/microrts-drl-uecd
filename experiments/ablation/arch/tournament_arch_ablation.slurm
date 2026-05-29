@@ -1,24 +1,33 @@
 #!/bin/bash
-#SBATCH --job-name=bc_gen_extra
-#SBATCH --output=slurm-bc-gen-%j.out
-#SBATCH --error=slurm-bc-gen-%j.err
-#SBATCH --time=24:00:00
+#SBATCH --job-name=tourn_arch
+#SBATCH --output=slurm-%j_%a.out
+#SBATCH --error=slurm-%j_%a.err
+#SBATCH --time=06:00:00
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=12
-#SBATCH --mem=32G
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=16G
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
+#SBATCH --array=0-6
 #
-# Generate extra BC data: 500 games RAI vs CoacAI + 500 games RAI vs Mayari
+# ARCHITECTURE TOURNAMENT — 12 AIs, 264 matchups, 7 chunks
+#
+#   6 RL agents + 5 scripted bots, round-robin, 2 iterations
 #
 # Usage:
-#   sbatch microrts_agent/experiments/bc_generate_extra.slurm
+#   sbatch experiments/ablation/tournament_arch_ablation.slurm
 #
+# After all chunks finish:
+#   python microrts_agent/run_tournament.py parse arch_ablation_16x16
+#   python microrts_agent/run_tournament.py viz arch_ablation_16x16
+#   python microrts_agent/run_tournament.py analyze arch_ablation_16x16
+
+TOTAL_CHUNKS=7
 
 echo "============================================================"
-echo "  BC Extra Data Generation — CoacAI + Mayari"
+echo "  TOURNAMENT — arch_ablation_16x16 (chunk $SLURM_ARRAY_TASK_ID/$TOTAL_CHUNKS)"
 echo "============================================================"
-echo "  Job ID:   $SLURM_JOB_ID"
+echo "  Job ID:   $SLURM_JOB_ID (array task $SLURM_ARRAY_TASK_ID)"
 echo "  Node:     $SLURM_NODELIST"
 echo "  Started:  $(date)"
 echo "============================================================"
@@ -43,17 +52,17 @@ fi
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-python -m microrts_agent.bc generate \
-    --bot RAISocketAI \
-    --opponents CoacAI Mayari \
-    --games-per-opponent 1000 1000 \
-    --output outputs/bc_data/RAISocketAI_vs_CoacAI_Mayari_2000g.npz
+# ── Run tournament chunk ─────────────────────────────────────────────────
+
+python microrts_agent/run_tournament.py run arch_ablation_16x16 \
+    --chunk $SLURM_ARRAY_TASK_ID \
+    --total-chunks $TOTAL_CHUNKS
 
 EXIT_CODE=$?
 
 echo ""
 echo "============================================================"
-echo "  COMPLETE"
+echo "  CHUNK $SLURM_ARRAY_TASK_ID COMPLETE"
 echo "  Exit code: $EXIT_CODE"
 echo "  Finished:  $(date)"
 echo "============================================================"

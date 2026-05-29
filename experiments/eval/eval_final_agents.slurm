@@ -15,7 +15,7 @@
 # --dependency=singleton ensures only one eval job runs at a time.
 #
 # Usage:
-#   sbatch microrts_agent/experiments/eval_final_agents.slurm
+#   sbatch experiments/eval/eval_final_agents.slurm
 #
 
 module load Python/3.11 2>/dev/null || module load Python/3.9

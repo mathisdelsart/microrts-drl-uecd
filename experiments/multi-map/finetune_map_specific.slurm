@@ -15,8 +15,8 @@
 #   1 = NoWhereToRun9x8 (50M steps)
 #
 # Usage:
-#   sbatch microrts_agent/experiments/finetune_map_specific.slurm
-#   sbatch --array=0 microrts_agent/experiments/finetune_map_specific.slurm  # 8x8 only
+#   sbatch experiments/multi-map/finetune_map_specific.slurm
+#   sbatch --array=0 experiments/multi-map/finetune_map_specific.slurm  # 8x8 only
 #
 
 SEED=${SEED:-1}

@@ -14,7 +14,7 @@
 # Cluster: Hercules2 (A40).
 #
 # Usage:
-#   sbatch microrts_agent/experiments/eval_bestrl_vs_rai_32x32_100g.slurm
+#   sbatch experiments/eval/eval_bestrl_vs_rai_32x32_100g.slurm
 #
 
 module load Python/3.11 2>/dev/null || module load Python/3.9

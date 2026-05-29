@@ -1,33 +1,24 @@
 #!/bin/bash
-#SBATCH --job-name=tourn_feats
-#SBATCH --output=slurm-%j_%a.out
-#SBATCH --error=slurm-%j_%a.err
-#SBATCH --time=12:00:00
+#SBATCH --job-name=bc_gen_extra
+#SBATCH --output=slurm-bc-gen-%j.out
+#SBATCH --error=slurm-bc-gen-%j.err
+#SBATCH --time=24:00:00
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=16G
+#SBATCH --cpus-per-task=12
+#SBATCH --mem=32G
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
-#SBATCH --array=0-9
 #
-# FEATURE TOURNAMENT — 21 AIs, 840 matchups, 10 chunks
-#
-#   16 RL agents + 5 scripted bots, round-robin, 2 iterations
+# Generate extra BC data: 500 games RAI vs CoacAI + 500 games RAI vs Mayari
 #
 # Usage:
-#   sbatch microrts_agent/experiments/feat_ablation/tournament_feats_ablation.slurm
+#   sbatch experiments/bc/bc_generate_extra.slurm
 #
-# After all chunks finish:
-#   python microrts_agent/run_tournament.py parse feats_ablation_16x16
-#   python microrts_agent/run_tournament.py viz feats_ablation_16x16
-#   python microrts_agent/run_tournament.py analyze feats_ablation_16x16
-
-TOTAL_CHUNKS=10
 
 echo "============================================================"
-echo "  TOURNAMENT — feats_ablation_16x16 (chunk $SLURM_ARRAY_TASK_ID/$TOTAL_CHUNKS)"
+echo "  BC Extra Data Generation — CoacAI + Mayari"
 echo "============================================================"
-echo "  Job ID:   $SLURM_JOB_ID (array task $SLURM_ARRAY_TASK_ID)"
+echo "  Job ID:   $SLURM_JOB_ID"
 echo "  Node:     $SLURM_NODELIST"
 echo "  Started:  $(date)"
 echo "============================================================"
@@ -52,17 +43,17 @@ fi
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-# ── Run tournament chunk ─────────────────────────────────────────────────
-
-python microrts_agent/run_tournament.py run feats_ablation_16x16 \
-    --chunk $SLURM_ARRAY_TASK_ID \
-    --total-chunks $TOTAL_CHUNKS
+python -m microrts_agent.bc generate \
+    --bot RAISocketAI \
+    --opponents CoacAI Mayari \
+    --games-per-opponent 1000 1000 \
+    --output outputs/bc_data/RAISocketAI_vs_CoacAI_Mayari_2000g.npz
 
 EXIT_CODE=$?
 
 echo ""
 echo "============================================================"
-echo "  CHUNK $SLURM_ARRAY_TASK_ID COMPLETE"
+echo "  COMPLETE"
 echo "  Exit code: $EXIT_CODE"
 echo "  Finished:  $(date)"
 echo "============================================================"

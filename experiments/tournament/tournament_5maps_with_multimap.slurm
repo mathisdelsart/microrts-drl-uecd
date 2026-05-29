@@ -20,7 +20,7 @@
 # Sharded into 8 chunks to fit walltime; chunks merge automatically on parse.
 #
 # Submit:
-#   sbatch microrts_agent/experiments/tournament_5maps_with_multimap.slurm
+#   sbatch experiments/tournament/tournament_5maps_with_multimap.slurm
 #
 # Parse + viz once all chunks done:
 #   python microrts_agent/run_tournament.py analyze final_open_5maps_with_multimap

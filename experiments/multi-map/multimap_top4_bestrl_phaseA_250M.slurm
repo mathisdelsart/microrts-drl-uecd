@@ -24,7 +24,7 @@
 #
 # Chained by:
 #   sbatch --dependency=afterok:$JOB --export=ALL,VARIANT=BestRL \
-#       microrts_agent/experiments/multimap_top4_phaseB_150M.slurm
+#       experiments/multimap_top4_phaseB_150M.slurm
 #
 
 SEED=${SEED:-1}
