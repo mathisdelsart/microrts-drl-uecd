@@ -11,20 +11,18 @@ means all rights reserved). They are redistributed here in good faith for academ
 non-commercial reproducibility, **with attribution**. For any reuse beyond that, please refer to
 the upstream repository and/or contact the original authors.
 
-| Bot | Maintainer / origin | Upstream | License | Notes |
-|-----|---------------------|----------|---------|-------|
-| RAISocketAI | Scott Goodfriend | <https://github.com/sgoodfriend/rl-algo-impls> | **MIT** | IEEE-CoG MicroRTS winner (2023 PPO, 2024 BC+PPO) |
-| CoacAI | Coac | <https://github.com/Coac/coac-ai-microrts> | none stated | Rule-based |
-| Mayari | barvazkrav | <https://github.com/barvazkrav/mayariBot> | none stated | MicroRTS competition |
-| MixedBot | AmoyZhp | <https://github.com/AmoyZhp/MixedBotmRTS> | none stated | IEEE-CoG 2019 (integrates Tiamat / Capivara / StrategyTactics) |
-| Tiamat | Mariño, Moraes, Toledo, Lelis | <https://github.com/jr9Hernandez/TiamatBot> | none stated | 2018 mRTS competition |
-| Izanagi | rubensolv | <https://github.com/rubensolv/IzanagiBot> | none stated | MicroRTS competition |
-| GRojoA3N | rubensolv | <https://github.com/rubensolv/GRojoA3N> | none stated | MicroRTS competition |
-| Droplet | zuozhiyang | <https://github.com/zuozhiyang/Droplet> | none stated | MicroRTS competition |
-| StrategyTactics | L. H. S. Lelis et al. | microRTS competition | none stated | Won the 2017 CIG competition |
-| TMA (Tactical Manager AI) | TMA authors | microRTS competition | none stated | CoG 2024 submission |
-| ObiBotKenobi | — | microRTS competition | none stated | MicroRTS competition bot |
-| UTS_Imass | UTS iMass team | microRTS competition | none stated | 2019 CoG MicroRTS winner |
+| Bot | Maintainer / origin | Upstream | License |
+|-----|---------------------|----------|---------|
+| RAISocketAI | Scott Goodfriend | <https://github.com/sgoodfriend/rl-algo-impls> | MIT |
+| CoacAI | Coac | <https://github.com/Coac/coac-ai-microrts> | none stated |
+| Mayari | barvazkrav | <https://github.com/barvazkrav/mayariBot> | none stated |
+| MixedBot | AmoyZhp | <https://github.com/AmoyZhp/MixedBotmRTS> | none stated |
+| Tiamat | Mariño, Moraes, Toledo, Lelis | <https://github.com/jr9Hernandez/TiamatBot> | none stated |
+| Droplet | zuozhiyang | <https://github.com/zuozhiyang/Droplet> | none stated |
+| StrategyTactics | N. Barriga | <https://github.com/nbarriga/microRTSbot> | none stated |
+| TMA (Tactical Manager AI) | A. Mazza | <https://github.com/MazzaAlessandro/TMA> | none stated |
+| ObiBotKenobi | Jannis42 | <https://github.com/Jannis42/MicroRTSObiBotKenobi> | none stated |
+| UTS_Imass | UTS iMass team | <https://github.com/narsue/UTS_Imass> | Apache-2.0 |
 
 ## Engine
 
@@ -32,6 +30,4 @@ The base **MicroRTS** engine (`microrts_agent/microrts/microrts.jar` and the map
 `microrts_agent/microrts/maps/`) is by **Santiago Ontañón** —
 <https://github.com/santiontanon/microrts>.
 
-> Note: "none stated" means no `LICENSE` file was found in the upstream repository at the time of
-> writing. Before redistributing this repository publicly, confirm each bot's terms or obtain the
-> author's permission.
+> "none stated" means no `LICENSE` file was found in the upstream repository at the time of writing.
