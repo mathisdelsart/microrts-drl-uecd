@@ -1,6 +1,6 @@
 """UECD-Best generalization probes: layout shift vs scale shift.
 Dumbbell chart (win-rate), marker size = episode length. Data from results.tex
-Table tab:gen-probe. Output: ShortPaperCoG/figures/generalization_probes.pdf"""
+Table tab:gen-probe. Output: figs-pdf/generalization_probes.pdf"""
 
 import os
 
@@ -127,8 +127,6 @@ leg2 = ax.legend(
 leg2.get_title().set_fontweight("bold")
 
 fig.tight_layout()
-out = os.path.join(
-    os.path.dirname(__file__), "..", "..", "ShortPaperCoG", "figures", "generalization_probes.pdf"
-)
+out = os.path.join(os.path.dirname(__file__), "..", "figs-pdf", "generalization_probes.pdf")
 fig.savefig(out, bbox_inches="tight")
 print("wrote", os.path.abspath(out))
