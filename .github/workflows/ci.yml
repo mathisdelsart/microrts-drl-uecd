@@ -26,3 +26,16 @@ jobs:
       - run: pip install ruff==0.15.14
       - run: ruff check --output-format=github .
       - run: ruff format --check .
+
+  bridge:
+    name: java bridge (build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      # Recompile src/ against the vendored microrts.jar so the bridge source
+      # cannot silently drift from the committed bridge.jar.
+      - run: bash microrts_agent/microrts/build_bridge.sh
