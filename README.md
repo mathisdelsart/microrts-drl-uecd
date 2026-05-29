@@ -135,7 +135,6 @@ Released under the [MIT License](LICENSE) © 2026 Mathis Delsart.
 
 ## Acknowledgments
 
-Computational resources have been provided by the
-[Consortium des Équipements de Calcul Intensif (CÉCI)](https://www.ceci-hpc.be/),
-funded by the Fonds de la Recherche Scientifique de Belgique (F.R.S.-FNRS) under
-Grant No. 2.5020.11 and by the Walloon Region.
+Every experiment ran on the HPC clusters of the **CÉCI** (Consortium des
+Équipements de Calcul Intensif) — see [`ACKNOWLEDGMENTS.md`](ACKNOWLEDGMENTS.md)
+for the full acknowledgment.
