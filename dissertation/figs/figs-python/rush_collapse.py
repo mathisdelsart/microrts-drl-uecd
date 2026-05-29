@@ -5,7 +5,7 @@ Two stacked panels (weight-schedule panel removed — red zone already marks the
      with the reward-transition zone shaded in red.
   2. Unweighted episodic return per reward component (symlog), same x-axis.
 
-Output: figures/phased_300M_reward_annealing_compact.pdf
+Output: figures/rush_collapse.pdf
 """
 
 import matplotlib.pyplot as plt
@@ -227,6 +227,6 @@ ax_rc.legend(
     prop={"weight": "bold", "size": 13},
 )
 
-out = FIGURES_DIR / "phased_300M_reward_annealing_compact.pdf"
+out = FIGURES_DIR / "rush_collapse.pdf"
 fig.savefig(out, bbox_inches="tight", pad_inches=0.15)
 print(f"Saved: {out}")

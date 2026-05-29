@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parent.parent.parent  # MasterThesis/
+ROOT = Path(__file__).resolve().parent.parent.parent.parent  # repo root (microrts-drl-uecd/)
 FIGURES_DIR = ROOT / "figures"
 RUNS_DIR = ROOT / "outputs" / "runs"
 

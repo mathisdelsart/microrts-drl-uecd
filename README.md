@@ -61,11 +61,10 @@ microrts-drl-uecd/
 │   │   └── build_bridge.sh       # Recompiles src/ -> lib/bridge.jar
 │   ├── tournaments/              # configs/ (tournament setups) + competition_winners/ (vendored bots)
 │   ├── experiments/              # SLURM job scripts for the HPC runs
-│   ├── plots/                    # Figure-generation scripts
 │   ├── train.py  evaluate.py  run_tournament.py
 │   ├── bc_train.py  bc_generate.py
 │   └── inference_bench.py  h2h_inference_bench.py  analyze_metrics.py
-├── dissertation/                 # LaTeX thesis + figures + compiled PDF
+├── dissertation/                 # LaTeX thesis, figures, figure generators (figs/figs-python/), compiled PDF
 ├── cog-2026-paper/               # CoG 2026 short-paper submission
 ├── setup_local_env.sh  setup_cluster_env.sh
 └── LICENSE  CONTRIBUTING.md  ruff.toml
