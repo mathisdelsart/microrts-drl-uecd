@@ -30,7 +30,7 @@ from rich.panel import Panel
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
 from rich.table import Table
 
-from .results.data import GameResult, ParsedTournamentConfig
+from .ranking.data import GameResult, ParsedTournamentConfig
 
 
 class TournamentParser:

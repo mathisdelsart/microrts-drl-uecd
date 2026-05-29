@@ -65,7 +65,7 @@ def generate_game_theory(data, console, output_dir: Path, per_map_dir: Path = No
 
 
 def _run_analysis(games, ai_names, console, output_dir: Path):
-    from ..results.game_theory import (
+    from ..ranking.game_theory import (
         alpha_rank,
         build_winrate_matrix,
         condorcet_winner,
@@ -176,7 +176,7 @@ def _plot_nash_scores(output_path, names, nash_s, console):
 
 
 def _plot_alpha_sweep(output_path, names, winrate, console):
-    from ..results.game_theory import alpha_rank
+    from ..ranking.game_theory import alpha_rank
 
     alphas = np.logspace(-3, 3, 80)
     n = len(names)

@@ -1,11 +1,11 @@
-"""CLI dispatcher: python -m microrts_agent.bench {inference|h2h} [args...]"""
+"""CLI dispatcher: python -m microrts_agent.bench {inference|head2head} [args...]"""
 
 import importlib
 import sys
 
 _COMMANDS = {
     "inference": "microrts_agent.bench.inference",
-    "h2h": "microrts_agent.bench.h2h",
+    "head2head": "microrts_agent.bench.head_to_head",
 }
 
 

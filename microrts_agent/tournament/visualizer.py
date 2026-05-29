@@ -25,7 +25,7 @@ from .plots import (
     plot_head_to_head_matrix,
     plot_per_map_winrates,
 )
-from .results.data import GameData
+from .ranking.data import GameData
 
 
 class TournamentData:
