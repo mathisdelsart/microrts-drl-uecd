@@ -11,12 +11,8 @@ from typing import Optional
 from microrts_agent.paths import AGENT_DIR, PROJECT_ROOT
 
 UTS_IMASS_PORT = 9823
-UTS_IMASS_SCRIPT = (
-    AGENT_DIR / "tournaments" / "competition_winners" / "UTS_Imass" / "start_server.sh"
-)
-UTS_IMASS_TRAINING_DIR = (
-    AGENT_DIR / "tournaments" / "competition_winners" / "UTS_Imass" / "training_data"
-)
+UTS_IMASS_SCRIPT = AGENT_DIR / "bots" / "UTS_Imass" / "start_server.sh"
+UTS_IMASS_TRAINING_DIR = AGENT_DIR / "bots" / "UTS_Imass" / "training_data"
 
 
 def _open_server_log(path):

@@ -1,6 +1,6 @@
 # Credits — Vendored Third-Party Bots
 
-The competition bots under `microrts_agent/tournaments/competition_winners/` and the opponent
+The competition bots under `microrts_agent/bots/` and the opponent
 JARs under `microrts_agent/microrts/lib/bots/` are **third-party code**, included so that the
 agent can be evaluated against the MicroRTS competition field reproducibly. They are **not**
 covered by this project's MIT license (see [`LICENSE`](LICENSE)); copyright remains with their

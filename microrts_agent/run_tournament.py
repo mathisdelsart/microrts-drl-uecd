@@ -6,7 +6,7 @@ MicroRTS Tournament — Run, Parse & Visualize.
     python run_tournament.py viz <name>
     python run_tournament.py analyze <name>   # parse + viz
 
-<name> resolves to tournaments/configs/<name>.json (run)
+<name> resolves to tournament_configs/<name>.json (run)
 or outputs/tournament_results/<name>/ (parse/viz/analyze).
 """
 
