@@ -35,7 +35,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from microrts_agent.lib.paths import RUNS_DIR
+from microrts_agent.paths import RUNS_DIR
 
 # ---------------------------------------------------------------------------
 # Style
