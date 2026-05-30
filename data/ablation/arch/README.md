@@ -9,6 +9,13 @@ Transformer and CBAM attention to build up the final thesis architecture
 `unet_entity_cbam_deep` (referred to as `UECD` in the dissertation and the
 CoG paper).
 
+## Contents
+
+| Path | What |
+|---|---|
+| [`agent/`](agent/) | The 21 trained runs (7 architectures × 3 seeds). Each `agent/<arch>_s<N>/` carries the *minimal* tier needed to **load the model and inspect its training**: `agent.pt` (inference state-dict), `config.json` (launch hyperparameters), `eval_results.csv` (in-training eval at multiple steps), `train.log` (end-to-end textual log). No resume checkpoint, no TensorBoard events — these are ablation runs and no one resumes from them. |
+| [`eval/`](eval/) | The **formal post-training evaluation** of every run against the 5 base-pool bots (`RandomBiasedAI`, `WorkerRush`, `LightRush`, `CoacAI`, `Mayari`), **1 000 games per matchup**. [`eval/results.csv`](eval/results.csv) is the aggregate (105 rows: arch × seed × opponent → P0/P1 win rate and episode length). [`eval/s{1,2,3}/`](eval/) hold the cleaned per-run stdout dumps (`<arch>_vs_<opponent>.txt`, 35 files per seed). |
+
 ## Headline results
 
 Mean pool WR averaged over 3 seeds × 5 base-pool bots
