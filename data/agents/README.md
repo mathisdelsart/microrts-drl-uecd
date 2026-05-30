@@ -32,10 +32,10 @@ and enough to **audit what was trained** (`config.json`, `eval_results.csv`,
 | [`UECD-BC`](UECD-BC/)         | n/a (supervised) | **78.0%** | BC-only (no RL phase) | The 78% horizontal reference line of the dissertation's BC+VF→PPO vs from-scratch figure. Numerical proof under [`../bc_baseline/`](../bc_baseline/). |
 | [`UECD-BC-PPO`](UECD-BC-PPO/) | 100M ✅          | **96%**    | BC → PPO fine-tune    | The BC+VF→PPO curve+markers of the same figure. Lifts the BC-only 78% pool baseline to near-perfect after 100M of PPO. |
 
-`UECD-BC` is the only agent here without `agent.pt + checkpoint.pt +
-train.log + eval_results.csv` — the BC training script writes only
-`agent.pt` and `config.json`. The 78% pool win-rate proof lives at
-[`../bc_baseline/`](../bc_baseline/) instead of `eval_results.csv`.
+`UECD-BC` is the only agent here that does not carry the full medium tier
+(no `checkpoint.pt`, no `train.log`, no `eval_results.csv`) — the BC training
+script writes only `agent.pt` and `config.json`. The 78% pool win-rate proof
+lives at [`../bc_baseline/`](../bc_baseline/) instead of `eval_results.csv`.
 `UECD-BC-PPO` is shipped in the standard medium-tier layout.
 
 ## Lineage — `UECD-SingleMap-Best`
