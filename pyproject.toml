@@ -26,6 +26,7 @@ dependencies = [
     "pandas",
     "rich",
     "pettingzoo==1.24.3",
+    "moviepy",
 ]
 
 [project.optional-dependencies]

@@ -18,13 +18,7 @@ from typing import Optional
 
 import numpy as np
 import torch
-
-try:
-    from gymnasium.wrappers.monitoring.video_recorder import VideoRecorder  # type: ignore
-except ImportError:
-    # gymnasium >= 1.2 removed monitoring.video_recorder. Only --record needs
-    # it; everything else (incl. --help) keeps working without this symbol.
-    VideoRecorder = None  # type: ignore
+from moviepy import ImageSequenceClip
 
 from microrts_agent.architectures.factory import load_agent_from_config
 from microrts_agent.envs.base_vec_env import get_base_env as _get_base_env
@@ -396,7 +390,7 @@ _MAX_BATCH_STEPS = 100_000  # safety guard against infinite loops
 
 
 def _switch_render_client(env, game_idx, mode):
-    """Point render_client to a specific sub-env for VideoRecorder.capture_frame()."""
+    """Point render_client to a specific sub-env so the next env.render() call frames it."""
     base = _get_base_env(env)
     vc = base.vec_client
     if mode == MODE_RL_VS_RL:
@@ -409,11 +403,32 @@ def _switch_render_client(env, game_idx, mode):
         base.render_client = vc.botClients[game_idx]
 
 
-def _close_recorder(recorder):
-    """Close VideoRecorder (encodes mp4), suppressing MoviePy noise."""
-    sys.stdout.flush()  # flush before blocking encode
-    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-        recorder.close()
+class _FrameRecorder:
+    """Buffers per-tick frames from env.render() and writes one mp4 on save().
+
+    Replaces the deprecated gym(nasium) VideoRecorder. The env passed to the
+    constructor is only used by callers as the rendering source — capture()
+    must be called with the env in the right render_client state (the caller
+    drives _switch_render_client between sub-envs).
+    """
+
+    def __init__(self, env, base_path, fps=150):
+        self.env = env
+        self.base_path = base_path
+        self.fps = fps
+        self.frames = []
+
+    def capture(self):
+        self.frames.append(self.env.render())
+
+    def save(self):
+        if not self.frames:
+            return
+        clip = ImageSequenceClip(self.frames, fps=self.fps)
+        sys.stdout.flush()  # flush before blocking encode
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            clip.write_videofile(f"{self.base_path}.mp4", logger=None)
+        self.frames.clear()
 
 
 # ── Batch play with optional recording ────────────────────────────────────
@@ -456,20 +471,13 @@ def play_batch_bot_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=Non
     # Create per-game recorders
     recorders = [None] * num_games
     if rec_dir:
-        if VideoRecorder is None:
-            raise RuntimeError(
-                "--record needs gymnasium.wrappers.monitoring.video_recorder.VideoRecorder, "
-                "removed in gymnasium >= 1.2. Pin gymnasium <= 1.1 or migrate to "
-                "gymnasium.wrappers.RecordVideo / gymnasium.utils.save_video."
-            )
         mname = map_short(map_path)
         label = "P1" if swap else "P0"
         for i in range(num_games):
             vid_base = os.path.join(rec_dir, f"{mname}_{label}_game{i + 1:02d}")
             _switch_render_client(env, i, MODE_BOT_VS_BOT)
-            recorders[i] = VideoRecorder(env, base_path=vid_base)
-            recorders[i].frames_per_sec = 150
-            recorders[i].capture_frame()
+            recorders[i] = _FrameRecorder(env, vid_base, fps=150)
+            recorders[i].capture()
 
     completed = [False] * num_games
     results = [None] * num_games
@@ -487,14 +495,14 @@ def play_batch_bot_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=Non
             # Capture frame for active games
             if recorders[i] is not None:
                 _switch_render_client(env, i, MODE_BOT_VS_BOT)
-                recorders[i].capture_frame()
+                recorders[i].capture()
 
             if dones[i]:
                 completed[i] = True
                 wl = infos[i]["raw_rewards"][0]
                 results[i] = (wl_to_result(wl, player=0), step_counts[i])
                 if recorders[i] is not None:
-                    _close_recorder(recorders[i])
+                    recorders[i].save()
                 if on_done:
                     on_done(i, results[i])
 
@@ -506,7 +514,7 @@ def play_batch_bot_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=Non
             )
             results[i] = ("DRAW", step_counts[i])
             if recorders[i] is not None:
-                _close_recorder(recorders[i])
+                recorders[i].save()
             if on_done:
                 on_done(i, results[i])
 
@@ -552,20 +560,13 @@ def play_batch_rl_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=None
     # Create per-game recorders
     recorders = [None] * num_games
     if rec_dir:
-        if VideoRecorder is None:
-            raise RuntimeError(
-                "--record needs gymnasium.wrappers.monitoring.video_recorder.VideoRecorder, "
-                "removed in gymnasium >= 1.2. Pin gymnasium <= 1.1 or migrate to "
-                "gymnasium.wrappers.RecordVideo / gymnasium.utils.save_video."
-            )
         mname = map_short(map_path)
         label = "P1" if swap else "P0"
         for i in range(num_games):
             vid_base = os.path.join(rec_dir, f"{mname}_{label}_game{i + 1:02d}")
             _switch_render_client(env, i, MODE_RL_VS_BOT)
-            recorders[i] = VideoRecorder(env, base_path=vid_base)
-            recorders[i].frames_per_sec = 150
-            recorders[i].capture_frame()
+            recorders[i] = _FrameRecorder(env, vid_base, fps=150)
+            recorders[i].capture()
 
     completed = [False] * num_games
     results = [None] * num_games
@@ -586,13 +587,13 @@ def play_batch_rl_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=None
             step_counts[i] += 1
             if recorders[i] is not None:
                 _switch_render_client(env, i, MODE_RL_VS_BOT)
-                recorders[i].capture_frame()
+                recorders[i].capture()
             if dones[i]:
                 completed[i] = True
                 wl = infos[i]["raw_rewards"][0]
                 results[i] = (wl_to_result(wl, player=player), step_counts[i])
                 if recorders[i] is not None:
-                    _close_recorder(recorders[i])
+                    recorders[i].save()
                 if on_done:
                     on_done(i, results[i])
 
@@ -604,7 +605,7 @@ def play_batch_rl_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=None
             )
             results[i] = ("DRAW", step_counts[i])
             if recorders[i] is not None:
-                _close_recorder(recorders[i])
+                recorders[i].save()
             if on_done:
                 on_done(i, results[i])
 
@@ -690,9 +691,8 @@ def play_batch_rl_vs_rl(cfg, map_path, max_steps, swap, num_games, rec_dir=None,
         for i in range(num_games):
             vid_base = os.path.join(rec_dir, f"{mname}_{label}_game{i + 1:02d}")
             _switch_render_client(env, 2 * i, MODE_RL_VS_RL)  # P0 side of pair i
-            recorders[i] = VideoRecorder(env, base_path=vid_base)
-            recorders[i].frames_per_sec = 150
-            recorders[i].capture_frame()
+            recorders[i] = _FrameRecorder(env, vid_base, fps=150)
+            recorders[i].capture()
 
     completed = [False] * num_games
     results = [None] * num_games
@@ -744,13 +744,13 @@ def play_batch_rl_vs_rl(cfg, map_path, max_steps, swap, num_games, rec_dir=None,
             step_counts[k] += 1
             if recorders[k] is not None:
                 _switch_render_client(env, 2 * k, MODE_RL_VS_RL)
-                recorders[k].capture_frame()
+                recorders[k].capture()
             if dones[2 * k]:
                 completed[k] = True
                 wl = infos[2 * k]["raw_rewards"][0]
                 results[k] = (wl_to_result(wl, player=0), step_counts[k])
                 if recorders[k] is not None:
-                    _close_recorder(recorders[k])
+                    recorders[k].save()
                 if on_done:
                     on_done(k, results[k])
 
@@ -762,7 +762,7 @@ def play_batch_rl_vs_rl(cfg, map_path, max_steps, swap, num_games, rec_dir=None,
             )
             results[k] = ("DRAW", step_counts[k])
             if recorders[k] is not None:
-                _close_recorder(recorders[k])
+                recorders[k].save()
             if on_done:
                 on_done(k, results[k])
 
