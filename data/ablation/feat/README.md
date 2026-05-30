@@ -1,20 +1,30 @@
 # Feature ablation
 
-Systematic comparison of **21 individual feature additions** on top of a
+Systematic comparison of **22 individual feature additions** on top of a
 baseline `unet_entity_cbam_deep` agent, plus the baseline itself,
 trained from scratch for 50 M steps on `basesWorkers16x16A`, **3 seeds
-each = 64 runs** (one feature, `triple_heads`, only has seed 1 — the
-other two seeds did not complete). The ablation isolates the marginal
-contribution of every architectural, representational, or training
-feature considered by the thesis before they get composed in the
-top-5 selection used by `UECD-SingleMap-TopFeats`.
+each = 64 trained runs** with two known holes documented below. The
+ablation isolates the marginal contribution of every architectural,
+representational, or training feature considered by the thesis before
+they get composed in the top-5 selection used by
+`UECD-SingleMap-TopFeats`.
+
+### Known holes
+
+- **`triple_heads`** — only seed 1 trained to completion on the cluster
+  (seeds 2 and 3 jobs died). Eval was nonetheless run for all three
+  seeds (presumably from intermediate cluster checkpoints that are no
+  longer recoverable), so the feature has **1 agent dir + 15 eval rows**.
+- **`buildtime_rewards`** — all three seeds trained, but the formal
+  1 000-game eval was never launched. The feature has **3 agent dirs +
+  0 eval rows** and is therefore absent from the headline table below.
 
 ## Contents
 
 | Path | What |
 |---|---|
-| [`agent/`](agent/) | The 64 trained runs (21 features × 3 seeds + `triple_heads_s1`). Each `agent/<feature>_s<N>/` carries the *minimal* tier: `agent.pt` (inference state-dict), `config.json` (launch hyperparameters), `train.log` (end-to-end textual log). No `eval_results.csv` (the feat-ablation training script logs in-training eval only to stdout), no resume checkpoint, no TensorBoard events. |
-| [`eval/`](eval/) | The **formal post-training evaluation** of every run with at least one eval seed, against the 5 base-pool bots (`RandomBiasedAI`, `WorkerRush`, `LightRush`, `CoacAI`, `Mayari`), **1 000 games per matchup**. [`eval/results.csv`](eval/results.csv) is the aggregate (315 rows: 21 features with full eval coverage × 3 seeds × 5 opponents). [`eval/s{1,2,3}/`](eval/) hold the per-seed cleaned stdout dumps (`<feature>_vs_<opponent>.txt`, 105 files per seed). `triple_heads` is **absent** from `eval/` — its evaluation never ran. |
+| [`agent/`](agent/) | The 64 trained runs (20 features × 3 seeds + `buildtime_rewards_s{1,2,3}` + `triple_heads_s1`). Each `agent/<feature>_s<N>/` carries the *minimal* tier: `agent.pt` (inference state-dict), `config.json` (launch hyperparameters), `train.log` (end-to-end textual log). No `eval_results.csv` (the feat-ablation training script logs in-training eval only to stdout), no resume checkpoint, no TensorBoard events. |
+| [`eval/`](eval/) | The **formal post-training evaluation** of every evaluated run against the 5 base-pool bots (`RandomBiasedAI`, `WorkerRush`, `LightRush`, `CoacAI`, `Mayari`), **1 000 games per matchup**. [`eval/results.csv`](eval/results.csv) is the aggregate (315 rows: 21 features with eval coverage × 3 seeds × 5 opponents). [`eval/s{1,2,3}/`](eval/) hold the per-seed cleaned stdout dumps (`<feature>_vs_<opponent>.txt`, 105 files per seed). `buildtime_rewards` is **absent** from `eval/`. |
 
 ## Headline results
 
