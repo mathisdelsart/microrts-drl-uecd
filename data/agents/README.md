@@ -29,31 +29,49 @@ and enough to **audit what was trained** (`config.json`, `eval_results.csv`,
 `UECD-SingleMap-Best` is the only agent in this folder whose `train.log`
 does not begin at step 0 — it is a fine-tune that resumes from a checkpoint
 of an earlier run. The full training trace from step 0 is reconstructed by
-chaining three segments:
+chaining three segments, each shipped under `lineage/` as a self-contained
+subdirectory so a reader never has to leave `UECD-SingleMap-Best/`:
 
 ```
-Step      0M → 150M         150M → 240M               240M → 360M
-Segment   UECD-SingleMap-    lineage/phase1-           UECD-SingleMap-Best
-          Rushed             pool-broadening           (this directory)
-What      Phased training    Phase 1 — broaden the    Phase 2 — harden
-          from scratch       opponent pool             against RAISocketAI
-Source    The same run was   Original run name was    Original run name was
-          continued to 300M  FineTuneStronger-300M    BestRL-350M
-          for the rush-      (recovered from local
-          collapse demo;     backup, not regenerated)
-          its 0-150M segment
-          IS this segment.
+Step      0M → 150M                    150M → 240M               240M → 360M
+Segment   lineage/phase0-from-scratch  lineage/phase1-           UECD-SingleMap-Best
+                                       pool-broadening           (this directory)
+What      Training from scratch with   Phase 1 — broaden the    Phase 2 — harden
+          phased learning rate /       opponent pool             against RAISocketAI
+          entropy / shaped reward      (CoacAI/Mayari/Tiamat +
+                                       RandomBiased/PORushes)
+Original  PhasedRL-300M (same          FineTuneStronger-300M    BestRL-350M
+run name  physical run as              (recovered from local     (still the on-disk
+          UECD-SingleMap-Rushed,       backup; not regenerated   name of this folder
+          but truncated here at        and not present in        in outputs/)
+          step 150M to exclude the     outputs/ today)
+          150M-300M continuation
+          that becomes the rush-
+          collapse demo)
 ```
 
-`UECD-SingleMap-Best/lineage/phase1-pool-broadening/` contains the medium-tier
-files of the Phase 1 segment (`train.log`, `config.json`, `eval_results.csv`)
-plus the **exact handoff checkpoint** that started Phase 2
-(`checkpoint_240M.pt`, copied as `checkpoint.pt` in the Phase 2 run dir at
-training time). To rebuild the full training history from step 0:
+Each `lineage/<phase>/` directory carries the medium-tier files of that
+segment (`train.log`, `config.json`, `eval_results.csv`) **plus the exact
+handoff checkpoint that ends the segment**:
 
-1. Read `data/agents/UECD-SingleMap-Rushed/train.log` up to step 150M.
-2. Read `data/agents/UECD-SingleMap-Best/lineage/phase1-pool-broadening/train.log` (covers 150M → 240M).
-3. Read `data/agents/UECD-SingleMap-Best/train.log` (covers 240M → 360M).
+- `lineage/phase0-from-scratch/checkpoint_150M.pt` — the 150M snapshot of
+  the original `PhasedRL-300M` run that started Phase 1.
+- `lineage/phase1-pool-broadening/checkpoint_240M.pt` — the 240M snapshot
+  of `FineTuneStronger-300M` that started Phase 2 (copied as `checkpoint.pt`
+  in the Phase 2 run dir at training time).
+
+The `train.log` of `phase0-from-scratch` was truncated at the first line
+whose `step=` is at or past the resume cutoff (`150,028,584`) so the file
+contains only the lineage segment and not the 150M-300M continuation.
+`eval_results.csv` was filtered to rows with `global_step <= 150,028,584`
+for the same reason. `config.json` is unchanged — it describes the
+`PhasedRL-300M` run as launched, before any fork.
+
+To rebuild the full training history from step 0:
+
+1. Read `lineage/phase0-from-scratch/train.log` (covers 0 → 150M).
+2. Read `lineage/phase1-pool-broadening/train.log` (covers 150M → 240M).
+3. Read `UECD-SingleMap-Best/train.log` (covers 240M → 360M).
 
 Every other agent in this folder trains from scratch and is self-contained.
 
