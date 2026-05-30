@@ -16,7 +16,6 @@ MICRORTS_DIR = AGENT_DIR / "microrts"
 RUNS_DIR = OUTPUTS_DIR / "runs"
 RECORDINGS_DIR = OUTPUTS_DIR / "recordings"
 BENCHMARKS_DIR = OUTPUTS_DIR / "inference_bench"
-COMPARISONS_DIR = OUTPUTS_DIR / "comparisons"
 TOURNAMENTS_DIR = OUTPUTS_DIR / "tournaments"
 
 TOURNAMENT_CONFIGS_DIR = AGENT_DIR / "tournament_configs"
