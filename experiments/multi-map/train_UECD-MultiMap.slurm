@@ -14,12 +14,7 @@
 #
 SEED=${SEED:-1}
 
-module load Python/3.11 2>/dev/null || module load Python/3.9
-module load Java/17 2>/dev/null || module load Java/11
-module load CUDA/11.8 2>/dev/null || module load CUDA/12.1
-source $HOME/microrts-drl-uecd/cluster_venv/bin/activate
-export PYTHONUNBUFFERED=1
-cd $HOME/microrts-drl-uecd
+source "$(dirname "$0")/../_setup_env.sh"
 
 echo "============================================================"
 echo "  Multi-map small (<=16x16) — 100M steps"

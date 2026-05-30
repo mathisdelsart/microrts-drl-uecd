@@ -47,20 +47,7 @@ echo "============================================================"
 echo "  BEST multi-map 400M — seed $SEED | Started: $(date)"
 echo "============================================================"
 
-module load Python/3.11 2>/dev/null || module load Python/3.9
-module load Java/17 2>/dev/null || module load Java/11
-module load CUDA/11.8 2>/dev/null || module load CUDA/12.1
-
-VENV_DIR="$HOME/microrts-drl-uecd/cluster_venv"
-if [ -d "$VENV_DIR" ]; then
-    source "$VENV_DIR/bin/activate"
-else
-    echo "ERROR: cluster_venv not found."
-    exit 1
-fi
-
-export PYTHONUNBUFFERED=1
-cd $HOME/microrts-drl-uecd
+source "$(dirname "$0")/../_setup_env.sh"
 
 python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"N/A\"}')"
 
