@@ -81,6 +81,11 @@ Repository = "https://github.com/mathisdelsart/microrts-drl-uecd"
 Issues = "https://github.com/mathisdelsart/microrts-drl-uecd/issues"
 Documentation = "https://mathisdelsart.github.io/microrts-drl-uecd-website/"
 
+# After `pip install -e .`, users can type `microrts-agent <cmd> ...` instead
+# of the longer `python -m microrts_agent <cmd> ...`. Both forms stay valid.
+[project.scripts]
+microrts-agent = "microrts_agent.__main__:main"
+
 # microrts_agent is the importable package (run via `python -m microrts_agent <cmd>`
 # after `pip install -e .`). The vendored competition bots and the Java engine are
 # data/source trees, not Python packages, so they are excluded from discovery.
