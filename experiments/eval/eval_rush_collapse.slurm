@@ -31,7 +31,7 @@ cd $HOME/microrts-drl-uecd
 RUN_DIR="outputs/runs/phased_single_map_300M_s1"
 BOTS=("TMA" "ObiBotKenobi" "CoacAI" "Mayari")
 NB_GAMES=500
-MAP="maps/16x16/basesWorkers16x16A.xml"
+MAP="maps/open_competition/basesWorkers16x16A.xml"
 MAX_STEPS=4000
 
 # Determine checkpoint and bot from array index

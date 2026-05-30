@@ -521,7 +521,7 @@ def main():
 
     for bot_name in bot_agents:
         print(f"\n  --- {bot_name} (Java bot) ---")
-        map_path = args.map or "maps/16x16/basesWorkers16x16A.xml"
+        map_path = args.map or "maps/open_competition/basesWorkers16x16A.xml"
         tick_times, meta = benchmark_bot(
             bot_name, args.games, map_path, args.max_steps, args.time_budget
         )

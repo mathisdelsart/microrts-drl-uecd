@@ -173,7 +173,7 @@ def parse_config() -> SessionConfig:
     p.add_argument(
         "--maps",
         nargs="+",
-        default=["maps/16x16/basesWorkers16x16A.xml"],
+        default=["maps/open_competition/basesWorkers16x16A.xml"],
         help="map path(s) (default: basesWorkers16x16A)",
     )
     p.add_argument(

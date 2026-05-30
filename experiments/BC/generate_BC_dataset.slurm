@@ -162,7 +162,7 @@ for BOT in "${BOTS[@]}"; do
         --agent "$BC_RUN_DIR" \
         --opponent "$BOT" \
         --nb_games 10 \
-        --maps maps/16x16/basesWorkers16x16A.xml \
+        --maps maps/open_competition/basesWorkers16x16A.xml \
         --max-steps 4000 \
         2>&1 | tee "$OUTFILE"
 

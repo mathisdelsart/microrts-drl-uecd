@@ -58,7 +58,7 @@ def get_max_cycles(map_path, default=4_000):
 
 
 def map_short(path):
-    """'maps/16x16/basesWorkers16x16A.xml' -> 'basesWorkers16x16A'"""
+    """'maps/open_competition/basesWorkers16x16A.xml' -> 'basesWorkers16x16A'"""
     import os
 
     return os.path.splitext(os.path.basename(path))[0]
