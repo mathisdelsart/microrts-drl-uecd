@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Cross-map fine-tune: BestRL-350M (basesWorkers16x16A) -> DoubleGame24x24
+# Cross-map fine-tune: UECD-Best (basesWorkers16x16A) -> DoubleGame24x24
 # V2 — OOM mitigations applied
 # ---------------------------------------------------------------------------
 # Changes vs v1 (which OOM'd):
@@ -45,13 +45,13 @@ export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
 echo "============================================================"
-echo "  Fine-tune BestRL-350M on DoubleGame24x24 (V2 — OOM fix)"
+echo "  Fine-tune UECD-Best on DoubleGame24x24 (V2 — OOM fix)"
 echo "  Seed: $SEED | Started: $(date)"
 echo "  Mem: 64G | Envs: 12 | num-steps: 512"
 echo "============================================================"
 
 python microrts_agent/train.py \
-    --load-model outputs/runs/single_map/BestRL-350M/agent.pt \
+    --load-model outputs/runs/single_map/UECD-Best/agent.pt \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 200000000 \

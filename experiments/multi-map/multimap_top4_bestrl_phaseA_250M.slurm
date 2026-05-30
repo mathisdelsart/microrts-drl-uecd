@@ -18,7 +18,7 @@
 #   - basesWorkers16x16A      (16x16)
 #   - TwoBasesBarracks16x16   (16x16)
 #
-# Features mirror single-map BestRL-350M config.json:
+# Features mirror single-map UECD-Best config.json:
 #   extended-obs, filtered-masks + reserved-obs, gelu, aux-opponent-modeling,
 #   prioritized-sampling, pfsp, alternate-players, anneal-lr, reward annealing.
 #

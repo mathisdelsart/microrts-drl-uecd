@@ -12,7 +12,7 @@
 # Agent B — 16x16 CLUSTER fine-tune
 # ---------------------------------------------------------------------------
 # Objective:
-#   Take BestRL-350M (single-map, basesWorkers16x16A) and turn it into a
+#   Take UECD-Best (single-map, basesWorkers16x16A) and turn it into a
 #   16x16-cluster generalist by fine-tuning on a multi-map mix of 16x16-class
 #   layouts.
 #
@@ -27,7 +27,7 @@
 # the wall); we evaluate on it but don't optimize for it here.
 #
 # Strategy:
-#   - Start from BestRL-350M weights (--load-model)
+#   - Start from UECD-Best weights (--load-model)
 #   - Multi-map mix (3 layouts): basesWorkers16x16A + TwoBasesBarracks16x16
 #                               + EightBasesWorkers16x16
 #   - Polish-style hyperparams: low LR, low entropy, shaped-weight floor at 0.10
@@ -45,12 +45,12 @@ export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
 echo "============================================================"
-echo "  Agent B — 16x16 cluster fine-tune from BestRL-350M"
+echo "  Agent B — 16x16 cluster fine-tune from UECD-Best"
 echo "  Seed: $SEED | Started: $(date)"
 echo "============================================================"
 
 python microrts_agent/train.py \
-    --load-model outputs/runs/single_map/BestRL-350M/agent.pt \
+    --load-model outputs/runs/single_map/UECD-Best/agent.pt \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 100000000 \

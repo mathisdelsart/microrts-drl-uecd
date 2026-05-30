@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:TeslaA40:1
 #SBATCH --partition=batch
 #
-# Evaluation: BestRL-350M vs RAISocketAI on basesWorkers16x16A
+# Evaluation: UECD-Best vs RAISocketAI on basesWorkers16x16A
 # 500 games as P0 + 500 games as P1 = 1000 stochastic games total.
 # Cluster: Hercules2 (A40).
 #
@@ -24,7 +24,7 @@ source $HOME/microrts-drl-uecd/cluster_venv/bin/activate
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-AGENT="outputs/runs/single_map/BestRL-350M"
+AGENT="outputs/runs/single_map/UECD-Best"
 OPPONENT="RAISocketAI"
 MAP="maps/16x16/basesWorkers16x16A.xml"
 NB_GAMES=500
@@ -35,7 +35,7 @@ mkdir -p "$EVAL_DIR"
 OUTFILE="${EVAL_DIR}/bestrl_vs_rai.txt"
 
 echo "============================================================"
-echo "  BestRL-350M vs RAISocketAI"
+echo "  UECD-Best vs RAISocketAI"
 echo "  Map:     $MAP"
 echo "  Games:   ${NB_GAMES} P0 + ${NB_GAMES} P1 = $((NB_GAMES * 2)) stochastic"
 echo "  Job ID:  $SLURM_JOB_ID"

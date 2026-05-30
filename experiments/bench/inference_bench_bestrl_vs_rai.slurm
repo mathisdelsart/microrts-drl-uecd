@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=gpu
 #
-# Per-tick decision time benchmark: BestRL-350M vs RAISocketAI
+# Per-tick decision time benchmark: UECD-Best vs RAISocketAI
 # Runs self-play for each agent on basesWorkers16x16A, on one GPU.
 # Produces CSV + PDF (boxplot + CDF).
 #
@@ -22,8 +22,8 @@ export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
 # ── CONFIG ────────────────────────────────────────────────────────
-# EDIT THIS: path to your BestRL-350M agent (relative to microrts-drl-uecd root)
-AGENT_PATH="outputs/runs/single_map/BestRL-350M"
+# EDIT THIS: path to your UECD-Best agent (relative to microrts-drl-uecd root)
+AGENT_PATH="outputs/runs/single_map/UECD-Best"
 
 MAP="maps/16x16/basesWorkers16x16A.xml"
 GAMES=5            # games per agent (self-play), ~4000 ticks/game = ~20k ticks total each
@@ -32,7 +32,7 @@ TIME_BUDGET=100    # ms — standard competition budget for Java bots
 OUTPUT_DIR="outputs/inference_bench/bestrl_vs_rai_$(date +%Y%m%d_%H%M%S)"
 
 echo "============================================================"
-echo "  Inference Time Benchmark: BestRL-350M vs RAISocketAI"
+echo "  Inference Time Benchmark: UECD-Best vs RAISocketAI"
 echo "  Map:       $MAP"
 echo "  Games:     $GAMES per agent"
 echo "  Max steps: $MAX_STEPS"

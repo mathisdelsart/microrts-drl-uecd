@@ -9,10 +9,10 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Cross-map fine-tune: BestRL-350M (basesWorkers16x16A) -> DoubleGame24x24
+# Cross-map fine-tune: UECD-Best (basesWorkers16x16A) -> DoubleGame24x24
 # ---------------------------------------------------------------------------
 # Objective:
-#   Re-purpose BestRL-350M on a NEW map of a different size (24x24).
+#   Re-purpose UECD-Best on a NEW map of a different size (24x24).
 #   The unet_entity_cbam_deep backbone is fully convolutional + attention
 #   over entities, so size-agnostic at the architecture level; the agent
 #   has never seen 24x24 spatial statistics, however, so this is a
@@ -26,7 +26,7 @@
 #      learned competitive priors are reinforced from step 1, not eroded
 #      by over-exposure to scripted rushes.
 #   -- --prioritized-sampling: bots where the WR is low are over-sampled.
-#      (No --adaptive-opponents to match BestRL-350M's exact feature set.)
+#      (No --adaptive-opponents to match UECD-Best's exact feature set.)
 #
 # Reward schedule (full restart: this is relearning, not polishing):
 #   reward_weight       = 1.00 x default (back to full shaped bootstrap)
@@ -56,12 +56,12 @@ export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
 echo "============================================================"
-echo "  Fine-tune BestRL-350M on DoubleGame24x24 (cross-map)"
+echo "  Fine-tune UECD-Best on DoubleGame24x24 (cross-map)"
 echo "  Seed: $SEED | Started: $(date)"
 echo "============================================================"
 
 python microrts_agent/train.py \
-    --load-model outputs/runs/single_map/BestRL-350M/agent.pt \
+    --load-model outputs/runs/single_map/UECD-Best/agent.pt \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 200000000 \

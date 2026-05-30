@@ -10,7 +10,7 @@
 #SBATCH --partition=gpu
 #
 # Head-to-head per-tick decision time benchmark:
-# BestRL-350M (P0) vs RAISocketAI (P1), same game sequence.
+# UECD-Best (P0) vs RAISocketAI (P1), same game sequence.
 # Gives fair apples-to-apples comparison (both sides see the same game states).
 #
 
@@ -21,7 +21,7 @@ source $HOME/microrts-drl-uecd/cluster_venv/bin/activate
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-AGENT_PATH="outputs/runs/single_map/BestRL-350M"
+AGENT_PATH="outputs/runs/single_map/UECD-Best"
 MAP="maps/16x16/basesWorkers16x16A.xml"
 GAMES=10
 MAX_STEPS=4000
@@ -29,7 +29,7 @@ TIME_BUDGET=100
 OUTPUT_DIR="outputs/inference_bench/h2h_bestrl_vs_rai_$(date +%Y%m%d_%H%M%S)"
 
 echo "============================================================"
-echo "  H2H Inference Benchmark: BestRL-350M (P0) vs RAISocketAI (P1)"
+echo "  H2H Inference Benchmark: UECD-Best (P0) vs RAISocketAI (P1)"
 echo "  Map:       $MAP"
 echo "  Games:     $GAMES (same sequence for both sides)"
 echo "  Max steps: $MAX_STEPS"

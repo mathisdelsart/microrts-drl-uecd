@@ -24,7 +24,7 @@ source $HOME/microrts-drl-uecd/cluster_venv/bin/activate
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-AGENT="outputs/runs/single_map/BestRL-350M"
+AGENT="outputs/runs/single_map/UECD-Best"
 MAP="maps/open_competition/TwoBasesBarracks16x16.xml"
 BOTS=("RandomBiasedAI" "WorkerRush" "LightRush" "CoacAI" "Mayari" "ObiBotKenobi" "TMA" "RAISocketAI")
 BOT=${BOTS[$SLURM_ARRAY_TASK_ID]}
