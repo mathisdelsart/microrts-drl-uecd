@@ -7,17 +7,25 @@ abstract: >-
   the IEEE-CoG MicroRTS competition winner RAISocketAI. Master's thesis, UCLouvain.
 type: software
 version: "0.1.0"
+date-released: "2026-05-30"
 authors:
   - family-names: Delsart
     given-names: Mathis
     affiliation: "UCLouvain"
+    email: "mathis.delsart@gmail.com"
 url: "https://github.com/mathisdelsart/microrts-drl-uecd"
 repository-code: "https://github.com/mathisdelsart/microrts-drl-uecd"
 license: MIT
 keywords:
   - reinforcement-learning
   - deep-reinforcement-learning
-  - microrts
-  - ppo
-  - real-time-strategy
+  - proximal-policy-optimization
   - self-play
+  - behavior-cloning
+  - reward-shaping
+  - transformer
+  - game-theoretic-evaluation
+  - microrts
+  - real-time-strategy
+  - pytorch
+  - masters-thesis
