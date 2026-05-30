@@ -24,7 +24,7 @@ source $HOME/microrts-drl-uecd/cluster_venv/bin/activate
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-AGENT="outputs/runs/single_map/UECD-Best"
+AGENT="outputs/runs/single_map/UECD-SingleMap-Best"
 OPPONENT="RAISocketAI"
 MAP="maps/16x16/basesWorkers16x16A.xml"
 NB_GAMES=500

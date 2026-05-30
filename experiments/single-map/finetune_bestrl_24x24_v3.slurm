@@ -60,7 +60,7 @@ echo "  PYTORCH_ALLOC_CONF=$PYTORCH_ALLOC_CONF"
 echo "============================================================"
 
 python microrts_agent/train.py \
-    --load-model outputs/runs/single_map/UECD-Best/agent.pt \
+    --load-model outputs/runs/single_map/UECD-SingleMap-Best/agent.pt \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 150000000 \

@@ -4,7 +4,7 @@ Head-to-head per-tick decision time benchmark.
 Plays RL agent (P0) vs Java bot (P1) on the same game sequence, timing
 both sides on matched game states for a fair apples-to-apples comparison.
 
-    python h2h_inference_bench.py --agent outputs/runs/single_map/UECD-Best \\
+    python h2h_inference_bench.py --agent outputs/runs/single_map/UECD-SingleMap-Best \\
                                   --opponent RAISocketAI \\
                                   --games 5
 """

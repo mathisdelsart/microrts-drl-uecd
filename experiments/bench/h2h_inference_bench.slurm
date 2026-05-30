@@ -21,7 +21,7 @@ source $HOME/microrts-drl-uecd/cluster_venv/bin/activate
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-AGENT_PATH="outputs/runs/single_map/UECD-Best"
+AGENT_PATH="outputs/runs/single_map/UECD-SingleMap-Best"
 MAP="maps/16x16/basesWorkers16x16A.xml"
 GAMES=10
 MAX_STEPS=4000

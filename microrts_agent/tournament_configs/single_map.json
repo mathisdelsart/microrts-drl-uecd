@@ -3,11 +3,11 @@
     "maps/open_competition/basesWorkers16x16A.xml"
   ],
   "ais": [
-    "agent:../outputs/runs/single_map/UECD-Best",
-    "agent:../outputs/runs/single_map/UECD-Rushed",
-    "agent:../outputs/runs/single_map/GridNet",
-    "agent:../outputs/runs/single_map/UECD-TopFeats",
-    "agent:../outputs/runs/single_map/UECD-AllFeats",
+    "agent:../outputs/runs/single_map/UECD-SingleMap-Best",
+    "agent:../outputs/runs/single_map/UECD-SingleMap-Rushed",
+    "agent:../outputs/runs/single_map/GridNet-SingleMap",
+    "agent:../outputs/runs/single_map/UECD-SingleMap-TopFeats",
+    "agent:../outputs/runs/single_map/UECD-SingleMap-AllFeats",
     "RandomBiasedAI",
     "LightRush",
     "WorkerRush",

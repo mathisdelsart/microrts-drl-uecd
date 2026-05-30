@@ -8,7 +8,7 @@
   ],
   "ais": [
     "agent:../outputs/runs/multiple_map/UECD-MultiMap",
-    "agent:../outputs/runs/single_map/UECD-Best",
+    "agent:../outputs/runs/single_map/UECD-SingleMap-Best",
     "RandomBiasedAI",
     "LightRush",
     "WorkerRush",

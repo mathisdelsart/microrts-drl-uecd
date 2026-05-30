@@ -23,7 +23,7 @@ cd $HOME/microrts-drl-uecd
 
 # ── CONFIG ────────────────────────────────────────────────────────
 # EDIT THIS: path to your UECD-Best agent (relative to microrts-drl-uecd root)
-AGENT_PATH="outputs/runs/single_map/UECD-Best"
+AGENT_PATH="outputs/runs/single_map/UECD-SingleMap-Best"
 
 MAP="maps/16x16/basesWorkers16x16A.xml"
 GAMES=5            # games per agent (self-play), ~4000 ticks/game = ~20k ticks total each
