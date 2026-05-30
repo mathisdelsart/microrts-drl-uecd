@@ -1,0 +1,63 @@
+name: Bug report
+description: Report something that is broken or behaves incorrectly.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. The more concrete the report, the faster it can be diagnosed.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One sentence describing what is broken.
+      placeholder: "`python -m microrts_agent train ...` crashes with KeyError on the second rollout."
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: The exact command(s), any non-default flags, and the map/bot/architecture you used.
+      placeholder: |
+        ```bash
+        python -m microrts_agent train --map basesWorkers16x16A.xml --opponent CoacAI ...
+        ```
+      render: bash
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Stack trace if any. Paste verbatim, no screenshots of text.
+      render: text
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Python, Java, PyTorch, CUDA (if relevant). One line.
+      placeholder: "macOS 14.5, Python 3.9.18, Java 17.0.10, PyTorch 2.3.0, CPU only"
+    validations:
+      required: true
+
+  - type: input
+    id: commit
+    attributes:
+      label: Commit / branch
+      description: Output of `git rev-parse --short HEAD` and the branch name.
+    validations:
+      required: true
