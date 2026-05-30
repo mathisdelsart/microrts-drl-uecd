@@ -24,3 +24,6 @@ cog-2026-paper/** linguist-documentation
 
 # Showcase game recordings are media, not source.
 recordings/** linguist-documentation
+
+# Shipped tournament results (CSV + PDF + parsed JSON) are data, not source.
+tournaments/** linguist-documentation
