@@ -25,6 +25,8 @@ ENV_NAME="microrts_agent"
 PYTHON_VERSION="3.9"
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"  # repo root (script lives in setup/)
 WHEEL_FILE="$PROJECT_DIR/microrts_agent/bots/RAISocketAI/rl_algo_impls-0.2.1-py3-none-any.whl"
+WHEEL_URL="https://github.com/mathisdelsart/microrts-drl-uecd/releases/download/assets-rai-v0.2.1/rl_algo_impls-0.2.1-py3-none-any.whl"
+WHEEL_SHA256="1e0a60133f4b96fa95f4331e258fd20495d2209d88c319116ac1bd19431e71d1"
 
 echo "========================================"
 echo "  MicroRTS Local Environment Setup"
@@ -112,16 +114,39 @@ echo ""
 # ── 4. RAISocketAI tournament bot wheel ──────────────────────────────────────
 # Installed separately with --no-deps: its pinned dependency set conflicts with
 # the core stack (the [tournament] extra above provides the compatible subset).
+# The wheel (~225 MB) is too large for git and is hosted as a GitHub Release
+# asset; downloaded on first run and verified against a pinned SHA-256.
+# Skip with: SKIP_RAISOCKETAI=1 bash setup/local.sh
 
 echo "=== Installing RAISocketAI wheel ==="
-if [ -f "$WHEEL_FILE" ]; then
+if [ "${SKIP_RAISOCKETAI:-0}" = "1" ]; then
+    echo "Skipping RAISocketAI install (SKIP_RAISOCKETAI=1)."
+    echo "  Tournament bots RAISocketAI/RAISocketAIBestModels won't work,"
+    echo "  but all other features still do."
+else
+    if [ ! -f "$WHEEL_FILE" ]; then
+        echo "Downloading RAISocketAI wheel (~225 MB) from GitHub Releases..."
+        if ! curl -L --fail --progress-bar "$WHEEL_URL" -o "$WHEEL_FILE"; then
+            echo "ERROR: download failed from $WHEEL_URL"
+            rm -f "$WHEEL_FILE"
+            exit 1
+        fi
+        if command -v sha256sum &>/dev/null; then
+            actual=$(sha256sum "$WHEEL_FILE" | awk '{print $1}')
+        else
+            actual=$(shasum -a 256 "$WHEEL_FILE" | awk '{print $1}')
+        fi
+        if [ "$actual" != "$WHEEL_SHA256" ]; then
+            echo "ERROR: SHA-256 mismatch for $WHEEL_FILE"
+            echo "  expected: $WHEEL_SHA256"
+            echo "  got:      $actual"
+            rm -f "$WHEEL_FILE"
+            exit 1
+        fi
+        echo "SHA-256 verified."
+    fi
     echo "Installing rl_algo_impls wheel (--no-deps to avoid conflicts)..."
     pip install --no-deps --force-reinstall "$WHEEL_FILE"
-else
-    echo "WARNING: RAISocketAI wheel not found at:"
-    echo "  $WHEEL_FILE"
-    echo "  Tournament bots RAISocketAI/RAISocketAIBestModels won't work."
-    echo "  This is optional — all other features work fine."
 fi
 
 echo ""
@@ -157,7 +182,9 @@ check "Seaborn"       "import seaborn"
 check "Pandas"        "import pandas"
 check "Rich"          "import rich"
 check "PettingZoo"    "import pettingzoo"
-check "rl_algo_impls" "import rl_algo_impls"
+if [ "${SKIP_RAISOCKETAI:-0}" != "1" ]; then
+    check "rl_algo_impls" "import rl_algo_impls"
+fi
 check "Gymnasium"     "import gymnasium"
 check "wandb"         "import wandb"
 

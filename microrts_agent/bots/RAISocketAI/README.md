@@ -16,14 +16,13 @@ Each set includes general models (16x16, 32x32, 64x64) and map-specific models.
 
 ## Installation
 
-```bash
-conda create -n microrts39 python=3.9 -y
-conda activate microrts39
-pip install torch
-pip install rl_algo_impls-0.2.1-py3-none-any.whl
-```
+The wheel is too large for git (~225 MB) and is hosted as a [GitHub Release
+asset](https://github.com/mathisdelsart/microrts-drl-uecd/releases/tag/assets-rai-v0.2.1).
+`setup/local.sh` and `setup/cluster.sh` download it on first run, verify its
+SHA-256, and install it into the `microrts_agent` env with `--no-deps`. Skip
+with `SKIP_RAISOCKETAI=1` if you do not need to evaluate against this bot.
 
-Verify: `rai_microrts --help`
+Verify: `rai_microrts --help`.
 
 ## How it works
 
@@ -31,9 +30,10 @@ The JAR (`RAISocketAI.jar` or `RAIBCPPOAI.jar`) spawns a Python process running 
 
 ## Usage in tournaments
 
-Activate the conda environment **before** starting the tournament:
+Activate the project env (`microrts_agent`) before starting the tournament; the
+wheel installs into it directly, so no separate Python is needed.
 
 ```bash
-conda activate microrts39
-python microrts_agent/run_tournament.py -c microrts_agent/tournaments/configs/default.json
+conda activate microrts_agent
+python -m microrts_agent tournament --config microrts_agent/tournament_configs/default.json
 ```

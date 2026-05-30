@@ -83,6 +83,16 @@ Generated runs, recordings, and tournament CSVs live under `outputs/` (git-ignor
 
 **Requirements:** conda, a JDK 17 (for the bridge + JPype), and — for GPU training — CUDA.
 
+### Optional: RAISocketAI competition bot
+
+`setup/local.sh` automatically downloads the RAISocketAI bot wheel
+(`rl_algo_impls v0.2.1`, ~225 MB) from this repo's
+[release assets](https://github.com/mathisdelsart/microrts-drl-uecd/releases/tag/assets-rai-v0.2.1)
+on first run, verifies its SHA-256, and installs it with `--no-deps`. Set
+`SKIP_RAISOCKETAI=1 bash setup/local.sh` to skip — every other feature
+(training, evaluation against the other competition bots, tournaments that
+don't include RAISocketAI) still works.
+
 ```bash
 # 1. Set up the environment (creates the `microrts_agent` conda env and
 #    rebuilds the Java<->Python bridge from source)
