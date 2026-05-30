@@ -308,7 +308,7 @@ def main():
 
         with open(agent_config_path) as f:
             cfg = json.load(f)
-        map_path = cfg.get("map", "maps/16x16/basesWorkers16x16A.xml")
+        map_path = cfg.get("map", "maps/open_competition/basesWorkers16x16A.xml")
 
     # Output
     if args.output is None:

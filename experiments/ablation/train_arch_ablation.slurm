@@ -64,7 +64,7 @@ python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.
 
 # ── Training command ───────────────────────────────────────────────────────
 
-python microrts_agent/train.py \
+python -m microrts_agent train \
     --architecture $CURRENT_ARCH \
     --total-timesteps 100000000 \
     --num-bot-envs 24 \

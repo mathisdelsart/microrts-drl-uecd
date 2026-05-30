@@ -5,9 +5,9 @@ Records (observation, action_grid) tuples from the perspective of --bot.
 Supports multiple opponents in a single run for diverse training data.
 
 Usage:
-    python bc_generate.py --bot RAISocketAI --opponents RAISocketAI CoacAI Mayari POWorkerRush POLightRush \
-                          --games-per-opponent 1000 500 500 500 500
-    python bc_generate.py --bot RAISocketAI  # defaults: RAISocketAI vs itself, 1000 games
+    python -m microrts_agent bc generate --bot RAISocketAI --opponents RAISocketAI CoacAI Mayari WorkerRush LightRush \
+                                         --games-per-opponent 1000 500 500 500 500
+    python -m microrts_agent bc generate --bot RAISocketAI  # defaults: RAISocketAI vs itself, 1000 games
 """
 
 import argparse
@@ -359,7 +359,7 @@ def main():
     for f in saved_files:
         print(f"    {f}")
     print("\nTo train BC+VF:")
-    print(f"  python bc_train.py --data {' '.join(saved_files)} ...")
+    print(f"  python -m microrts_agent bc train --data {' '.join(saved_files)} ...")
 
 
 if __name__ == "__main__":

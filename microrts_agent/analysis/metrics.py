@@ -5,17 +5,17 @@ Generates individual PDF figures and a text summary for each training run,
 suitable for direct inclusion in a LaTeX thesis report.
 
 Usage:
-    # Single run
-    python -m microrts_agent.analysis metrics outputs/runs/V0_baseline_300M
+    # Single run (any outputs/runs/<run>/ produced by `python -m microrts_agent train ...`)
+    python -m microrts_agent analysis metrics outputs/runs/<run>
 
-    # Multiple runs (each analyzed independently)
-    python -m microrts_agent.analysis metrics outputs/runs/P8_* outputs/runs/P9_*
+    # Multiple runs (each analysed independently)
+    python -m microrts_agent analysis metrics outputs/runs/UECD-SingleMap-* outputs/runs/UECD-MultiMap-*
 
-    # All runs
-    python -m microrts_agent.analysis metrics --all
+    # All runs under outputs/runs/
+    python -m microrts_agent analysis metrics --all
 
     # Custom smoothing (EMA alpha, higher = smoother)
-    python -m microrts_agent.analysis metrics outputs/runs/V0_baseline_300M --smoothing 0.97
+    python -m microrts_agent analysis metrics outputs/runs/<run> --smoothing 0.97
 """
 
 import argparse

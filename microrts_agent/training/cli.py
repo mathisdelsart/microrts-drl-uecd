@@ -103,7 +103,7 @@ def add_common_args(parser):
         help="fog-of-war (default: False)",
     )
     parser.add_argument(
-        "--map", type=str, default="maps/16x16/basesWorkers16x16A.xml", help="map path"
+        "--map", type=str, default="maps/open_competition/basesWorkers16x16A.xml", help="map path"
     )
     parser.add_argument(
         "--max-steps", type=int, default=3000, help="max game steps (default: 3000)"

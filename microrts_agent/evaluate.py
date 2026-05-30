@@ -4,8 +4,8 @@ Batch evaluation of a trained agent vs bots (or agent-vs-agent), always vectoriz
 Games run in parallel even with --record (recording switches render_client to each
 sub-env before capture).
 
-    python evaluate.py --agent outputs/runs/my_run --opponent CoacAI
-    python evaluate.py --agent outputs/runs/my_run --opponent CoacAI --record
+    python -m microrts_agent evaluate --agent data/agents/UECD-SingleMap-Best --opponent CoacAI
+    python -m microrts_agent evaluate --agent data/agents/UECD-SingleMap-Best --opponent CoacAI --record
 """
 
 import argparse
@@ -18,7 +18,13 @@ from typing import Optional
 
 import numpy as np
 import torch
-from gymnasium.wrappers.monitoring.video_recorder import VideoRecorder  # type: ignore
+
+try:
+    from gymnasium.wrappers.monitoring.video_recorder import VideoRecorder  # type: ignore
+except ImportError:
+    # gymnasium >= 1.2 removed monitoring.video_recorder. Only --record needs
+    # it; everything else (incl. --help) keeps working without this symbol.
+    VideoRecorder = None  # type: ignore
 
 from microrts_agent.architectures.factory import load_agent_from_config
 from microrts_agent.envs.base_vec_env import get_base_env as _get_base_env
@@ -173,7 +179,7 @@ def parse_config() -> SessionConfig:
     p.add_argument(
         "--maps",
         nargs="+",
-        default=["maps/16x16/basesWorkers16x16A.xml"],
+        default=["maps/open_competition/basesWorkers16x16A.xml"],
         help="map path(s) (default: basesWorkers16x16A)",
     )
     p.add_argument(
@@ -450,6 +456,12 @@ def play_batch_bot_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=Non
     # Create per-game recorders
     recorders = [None] * num_games
     if rec_dir:
+        if VideoRecorder is None:
+            raise RuntimeError(
+                "--record needs gymnasium.wrappers.monitoring.video_recorder.VideoRecorder, "
+                "removed in gymnasium >= 1.2. Pin gymnasium <= 1.1 or migrate to "
+                "gymnasium.wrappers.RecordVideo / gymnasium.utils.save_video."
+            )
         mname = map_short(map_path)
         label = "P1" if swap else "P0"
         for i in range(num_games):
@@ -540,6 +552,12 @@ def play_batch_rl_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=None
     # Create per-game recorders
     recorders = [None] * num_games
     if rec_dir:
+        if VideoRecorder is None:
+            raise RuntimeError(
+                "--record needs gymnasium.wrappers.monitoring.video_recorder.VideoRecorder, "
+                "removed in gymnasium >= 1.2. Pin gymnasium <= 1.1 or migrate to "
+                "gymnasium.wrappers.RecordVideo / gymnasium.utils.save_video."
+            )
         mname = map_short(map_path)
         label = "P1" if swap else "P0"
         for i in range(num_games):

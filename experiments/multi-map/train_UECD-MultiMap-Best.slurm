@@ -71,7 +71,7 @@ if [ -f "${RUN_DIR}/checkpoint.pt" ]; then
     RESUME_FLAG="--resume ${RUN_DIR}"
 fi
 
-python microrts_agent/train.py \
+python -m microrts_agent train \
     $RESUME_FLAG \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \

@@ -28,7 +28,7 @@ echo "  Fine-tune from 150M — no reward annealing, self-play"
 echo "  Seed: $SEED | Started: $(date)"
 echo "============================================================"
 
-python microrts_agent/train.py \
+python -m microrts_agent train \
     --resume outputs/runs/FineTuneStronger-300M \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \

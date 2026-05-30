@@ -1,8 +1,8 @@
 """
 PPO training for MicroRTS.
 
-    python train.py --total-timesteps 1000000
-    python train.py --architecture impala --ent-coef 0.05
+    python -m microrts_agent train --total-timesteps 1000000
+    python -m microrts_agent train --architecture impala --ent-coef 0.05
     tensorboard --logdir outputs/runs/
 """
 

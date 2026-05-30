@@ -80,11 +80,11 @@ OUTDIR="outputs/eval_arch_ablation/s${SEED}"
 mkdir -p "$OUTDIR"
 OUTFILE="$OUTDIR/${ARCH_NAME}_vs_${BOT}.txt"
 
-python microrts_agent/evaluate.py \
+python -m microrts_agent evaluate \
     --agent "$AGENT_DIR" \
     --opponent "$BOT" \
     --nb_games 500 \
-    --maps maps/16x16/basesWorkers16x16A.xml \
+    --maps maps/open_competition/basesWorkers16x16A.xml \
     --max-steps 4000 \
     2>&1 | tee "$OUTFILE"
 
