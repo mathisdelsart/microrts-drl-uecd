@@ -123,7 +123,10 @@ class OpponentTracker:
 
         Weight formula: w_i = max(1 - |WR_i - 0.5|, 0.1)
           - WR = 50% → w = 1.0 (hardest opponent, most learning signal)
-          - WR = 0% or 100% → w = 0.6, floored to 0.1 (trivial, but not ignored)
+          - WR = 0% or 100% → w = 0.5 (trivial, but not ignored). The 0.1
+            floor is there as a safety net for any |WR - 0.5| > 0.9 (which
+            can't happen with the formula above but guards against numerical
+            edge cases).
 
         Uses the priority window (larger, more stable) for variance reduction.
         Returns uniform weights if prioritized=False.
