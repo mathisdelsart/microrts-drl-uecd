@@ -14,4 +14,4 @@ basesWorkers32x32A,CoacAI,100,1.0,1358,0.92,1813,0.96
 basesWorkers32x32A,Mayari,100,1.0,1236,0.9,1674,0.95
 basesWorkers32x32A,ObiBotKenobi,100,0.52,1960,0.4,2220,0.46
 basesWorkers32x32A,TMA,100,0.16,2200,0.06,2119,0.11
-basesWorkers32x32A,RAISocketAI,100,,,,,0.95
+basesWorkers32x32A,RAISocketAI,,,,,,
