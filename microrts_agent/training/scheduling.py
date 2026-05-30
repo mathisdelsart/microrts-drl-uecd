@@ -12,7 +12,6 @@ This module contains everything that *changes during training*:
 import os
 import random
 from collections import deque
-from typing import Optional
 
 import numpy as np
 import torch
@@ -66,7 +65,7 @@ class OpponentTracker:
         self,
         opponent_name: str,
         win: bool,
-        map_path: Optional[str] = None,
+        map_path: str | None = None,
         ep_return: float = 0.0,
         ep_length: int = 0,
     ) -> None:
@@ -193,7 +192,7 @@ class AdaptiveOpponentScheduler:
         env_labels: list[str],
         threshold: float = 0.7,
         window: int = 50,
-        map_pool: Optional[list[str]] = None,
+        map_pool: list[str] | None = None,
         criteria: str = "strict",
         hybrid_min: float = 0.4,
     ):
@@ -218,7 +217,7 @@ class AdaptiveOpponentScheduler:
             for bot in set(env_labels):
                 self._per_map_results[bot] = {m: deque(maxlen=window) for m in map_pool}
 
-    def record(self, opponent_type: str, win: bool, map_name: Optional[str] = None) -> None:
+    def record(self, opponent_type: str, win: bool, map_name: str | None = None) -> None:
         """Record a game result for adaptive scheduling."""
         if opponent_type not in self.results:
             self.results[opponent_type] = deque(maxlen=self.window)
@@ -402,7 +401,7 @@ class CheckpointPool:
         self.pfsp_p = pfsp_p
         self.pfsp_window = pfsp_window
         self.ckpt_results: dict[str, deque] = {}
-        self.current_ckpt: Optional[str] = None  # currently loaded opponent
+        self.current_ckpt: str | None = None  # currently loaded opponent
 
         # Resume support: rehydrate from disk if pool_*.pt files already exist.
         # Sort by the numeric step embedded in the filename so recent/historical
@@ -459,7 +458,7 @@ class CheckpointPool:
             pool += random.sample(historical, n_sample)
         return pool
 
-    def sample(self) -> Optional[str]:
+    def sample(self) -> str | None:
         """Sample a checkpoint from the pool with optional PFSP weighting.
 
         PFSP modes:
@@ -531,7 +530,7 @@ class MapPLR:
         wr = self.get_win_rates()
         weights = np.array([1.0 - wr[m] + self.epsilon for m in self.map_pool])
         probs = weights / weights.sum()
-        return {m: float(p) for m, p in zip(self.map_pool, probs)}
+        return {m: float(p) for m, p in zip(self.map_pool, probs, strict=False)}
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -597,7 +596,7 @@ def interpolate_schedule(progress, start, end, t_start, t_end):
         return end
     t = (progress - t_start) / (t_end - t_start)
     if isinstance(start, (tuple, list)):
-        return tuple(s + t * (e - s) for s, e in zip(start, end))
+        return tuple(s + t * (e - s) for s, e in zip(start, end, strict=False))
     return start + t * (end - start)
 
 
@@ -640,7 +639,7 @@ def multi_phase_interpolate(current_step, phase_steps, phase_values):
             v_start = phase_values[i]
             v_end = phase_values[i + 1]
             if isinstance(v_start, (tuple, list)):
-                return tuple(s + t * (e - s) for s, e in zip(v_start, v_end))
+                return tuple(s + t * (e - s) for s, e in zip(v_start, v_end, strict=False))
             return v_start + t * (v_end - v_start)
 
     # Past all transitions: return final plateau

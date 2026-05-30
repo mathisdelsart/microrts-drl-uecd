@@ -42,7 +42,7 @@ fig, ax = plt.subplots(figsize=(8.2, 5.1))
 n = len(DATA)
 y = list(range(n))[::-1]  # first row on top
 
-for yi, (_name, lwr, llen, swr, slen) in zip(y, DATA):
+for yi, (_name, lwr, llen, swr, slen) in zip(y, DATA, strict=False):
     ax.plot([lwr, swr], [yi, yi], color="#999999", lw=2.0, zorder=1)
     ax.scatter(lwr, yi, s=msize(llen), color=RED, edgecolor="black", linewidth=0.8, zorder=3)
     ax.scatter(swr, yi, s=msize(slen), color=BLUE, edgecolor="black", linewidth=0.8, zorder=3)

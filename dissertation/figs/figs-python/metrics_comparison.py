@@ -293,7 +293,7 @@ def make_bar(
     # Per-bar value labels (with smart placement & font weight on winner)
     rng = max(abs(max(scores)), abs(min(scores)), 1e-3)
     pad = value_pad_frac * rng
-    for k, (bar, s) in enumerate(zip(bars, scores)):
+    for k, (bar, s) in enumerate(zip(bars, scores, strict=False)):
         h = bar.get_height()
         va = "bottom" if h >= 0 else "top"
         off = pad if h >= 0 else -pad

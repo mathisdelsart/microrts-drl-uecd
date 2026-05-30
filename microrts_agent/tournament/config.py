@@ -9,7 +9,6 @@ import random
 from collections import OrderedDict
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
 
 from microrts_agent.paths import AGENT_DIR
 
@@ -38,7 +37,7 @@ class TournamentConfig:
     # Derived (filled by load())
     ai_names: list[str] = field(default_factory=list)
     ai_is_agent: list[bool] = field(default_factory=list)
-    ai_run_dirs: list[Optional[str]] = field(default_factory=list)
+    ai_run_dirs: list[str | None] = field(default_factory=list)
 
     config_name: str = ""
     config_path: str = ""

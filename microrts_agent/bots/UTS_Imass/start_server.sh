@@ -3,15 +3,15 @@
 # Requires Python 3.6 (BL_JPS native module is compiled for 3.6 only).
 #
 # Local (macOS): Uses pyenv with Python 3.6.15
-# Cluster (HPC): Uses uts_imass_env (created by setup_cluster_env.sh via micromamba)
+# Cluster (HPC): Uses uts_imass_env (created by setup/cluster.sh via micromamba)
 #
 # Usage:
-#   bash microrts_agent/tournaments/competition_winners/UTS_Imass/start_server.sh
+#   bash microrts_agent/bots/UTS_Imass/start_server.sh
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SERVER_DIR="$SCRIPT_DIR/UTS_Imass_2019_Server"
-# Project root is 4 levels up: UTS_Imass -> competition_winners -> tournaments -> microrts_agent -> root
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+# Project root is 3 levels up: UTS_Imass -> bots -> microrts_agent -> root
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 
 echo "=========================================="
 echo "UTS_Imass Python Server"
@@ -20,7 +20,7 @@ echo "=========================================="
 # Find Python 3.6
 PYTHON=""
 
-# 1. Try dedicated env (cluster — created by setup_cluster_env.sh)
+# 1. Try dedicated env (cluster — created by setup/cluster.sh)
 UTS_ENV="$PROJECT_ROOT/uts_imass_env"
 if [ -z "$PYTHON" ] && [ -f "$UTS_ENV/bin/python" ]; then
     PY_VER=$("$UTS_ENV/bin/python" --version 2>&1 | awk '{print $2}')
@@ -60,7 +60,7 @@ fi
 if [ -z "$PYTHON" ]; then
     echo "ERROR: Python 3.6 not found."
     echo "  Local:   pyenv install 3.6.15 && pyenv local 3.6.15"
-    echo "  Cluster: Run setup_cluster_env.sh (installs Python 3.6 via micromamba)"
+    echo "  Cluster: Run bash setup/cluster.sh (installs Python 3.6 via micromamba)"
     exit 1
 fi
 

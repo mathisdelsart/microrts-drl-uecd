@@ -5,7 +5,7 @@ make_bot_env()   — bot vs bot (tournaments)
 
 import re
 import subprocess
-from typing import Callable
+from collections.abc import Callable
 
 import numpy as np
 

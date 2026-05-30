@@ -14,7 +14,6 @@ import io
 import os
 import sys
 from dataclasses import dataclass, field
-from typing import Optional
 
 import numpy as np
 import torch
@@ -126,8 +125,8 @@ class SessionConfig:
     maps: list[str]
     max_steps_per_map: list[int]
     device: torch.device = None
-    rl_player: Optional[int] = None  # rl_vs_bot: which side is RL
-    bot_name: Optional[str] = None  # rl_vs_bot: the Java bot name
+    rl_player: int | None = None  # rl_vs_bot: which side is RL
+    bot_name: str | None = None  # rl_vs_bot: the Java bot name
     agent_model: object = None
     opponent_model: object = None
     agent_config: dict = None

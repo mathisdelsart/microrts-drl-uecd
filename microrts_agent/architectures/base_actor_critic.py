@@ -291,7 +291,7 @@ class GridActorCriticBase(nn.Module):
         # Build one masked distribution per sub-action
         multi_categoricals = [
             CategoricalMasked(logits=sl, masks=sm, mask_value=self.mask_value)
-            for sl, sm in zip(split_logits, split_masks)  # 7 distributions
+            for sl, sm in zip(split_logits, split_masks, strict=False)  # 7 distributions
         ]
 
         if not self.use_autoregressive:
@@ -304,7 +304,7 @@ class GridActorCriticBase(nn.Module):
 
         # Compute log_prob and entropy per sub-action
         logprob = torch.stack(
-            [cat.log_prob(a) for a, cat in zip(action, multi_categoricals)]
+            [cat.log_prob(a) for a, cat in zip(action, multi_categoricals, strict=False)]
         )  # (7, B * mapsize)
         entropy = torch.stack([cat.entropy() for cat in multi_categoricals])  # (7, B * mapsize)
 
@@ -462,7 +462,7 @@ class GridActorCriticBase(nn.Module):
         )  # 7 masks:   [(B, mapsize, 6), ...]
 
         actions = []
-        for sl, sm in zip(split_logits, split_masks):
+        for sl, sm in zip(split_logits, split_masks, strict=False):
             masked = torch.where(sm.bool(), sl, self.mask_value)  # invalid → -1e8
             actions.append(masked.argmax(dim=2))  # (B, mapsize) best valid action
 

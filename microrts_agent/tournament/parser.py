@@ -22,7 +22,7 @@ Usage:
 import json
 import zipfile
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from rich import box
 from rich.console import Console
@@ -42,7 +42,7 @@ class TournamentParser:
     def __init__(self, csv_path: str):
         self.csv_path = Path(csv_path)
         self.tournament_dir = self.csv_path.parent
-        self.config: Optional[ParsedTournamentConfig] = None
+        self.config: ParsedTournamentConfig | None = None
         self.games: list[GameResult] = []
         self.traces_available: bool = False
         self.trace_files: list[str] = []
@@ -263,9 +263,7 @@ class TournamentParser:
         if skipped_count > 0:
             console.print(f"[dim]  Skipped {skipped_count} already extracted traces[/dim]")
 
-    def get_trace_path(
-        self, ai1_id: int, ai2_id: int, map_id: int, iteration: int
-    ) -> Optional[Path]:
+    def get_trace_path(self, ai1_id: int, ai2_id: int, map_id: int, iteration: int) -> Path | None:
         """
         Get the path to a specific game trace file
         Format: {AI1_ID}-vs-{AI2_ID}-{MapID}-{Iteration}.zip
@@ -296,7 +294,7 @@ class TournamentParser:
 
         return traces
 
-    def extract_trace(self, trace_path: Path, output_dir: Optional[Path] = None) -> Optional[Path]:
+    def extract_trace(self, trace_path: Path, output_dir: Path | None = None) -> Path | None:
         """
         Extract a trace ZIP file to get the game.xml file
 
@@ -332,7 +330,7 @@ class TournamentParser:
 
         return None
 
-    def export_to_json(self, output_path: Optional[str] = None) -> Path:
+    def export_to_json(self, output_path: str | None = None) -> Path:
         """
         Export parsed tournament data to JSON format
         Returns the path to the created JSON file

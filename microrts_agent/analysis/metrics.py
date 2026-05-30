@@ -325,7 +325,7 @@ def plot_position_bias(eval_data, out_dir, n_last=5):
     bot_names = list(bot_data.keys())
     p0_wrs = [bot_data[b]["wr_p0"] for b in bot_names]
     p1_wrs = [bot_data[b]["wr_p1"] for b in bot_names]
-    deltas = [p0 - p1 for p0, p1 in zip(p0_wrs, p1_wrs)]
+    deltas = [p0 - p1 for p0, p1 in zip(p0_wrs, p1_wrs, strict=False)]
     n_used = bot_data[bot_names[0]]["n_evals"]
 
     x = np.arange(len(bot_names))
@@ -354,7 +354,7 @@ def plot_position_bias(eval_data, out_dir, n_last=5):
     )
 
     # Annotate deltas
-    for i, (b1, b2, d) in enumerate(zip(bars1, bars2, deltas)):
+    for i, (b1, b2, d) in enumerate(zip(bars1, bars2, deltas, strict=False)):
         y_max = max(b1.get_height(), b2.get_height())
         sign = "+" if d >= 0 else ""
         ax.text(
@@ -547,7 +547,7 @@ def _build_bot_color_map(tb_data, eval_data):
     train_names = [t[len(prefix) :] for t in tb_data if t.startswith(prefix)]
     eval_names = sorted(eval_data.keys()) if eval_data else []
     all_names = sorted(set(train_names) | set(eval_names))
-    return dict(zip(all_names, get_colors(len(all_names))))
+    return dict(zip(all_names, get_colors(len(all_names)), strict=False))
 
 
 def plot_per_opponent_training_wr(tb_data, out_dir, alpha, color_map=None):
@@ -559,7 +559,7 @@ def plot_per_opponent_training_wr(tb_data, out_dir, alpha, color_map=None):
 
     if color_map is None:
         names = [t[len(prefix) :] for t in wr_tags]
-        color_map = dict(zip(names, get_colors(len(names))))
+        color_map = dict(zip(names, get_colors(len(names)), strict=False))
 
     fig, ax = plt.subplots(figsize=(12, 5))
     for tag in wr_tags:
@@ -593,7 +593,7 @@ def plot_per_opponent_stats(tb_data, out_dir, alpha, color_map=None):
         names = sorted(
             set([t[len(ret_prefix) :] for t in ret_tags] + [t[len(len_prefix) :] for t in len_tags])
         )
-        color_map = dict(zip(names, get_colors(len(names))))
+        color_map = dict(zip(names, get_colors(len(names)), strict=False))
 
     nplots = (1 if ret_tags else 0) + (1 if len_tags else 0)
     fig, axes = plt.subplots(nplots, 1, figsize=(12, 5 * nplots), squeeze=False)
@@ -639,7 +639,7 @@ def plot_eval_wr_per_opponent(eval_data, out_dir, color_map=None):
 
     bots = sorted(eval_data.keys())
     if color_map is None:
-        color_map = dict(zip(bots, get_colors(len(bots))))
+        color_map = dict(zip(bots, get_colors(len(bots)), strict=False))
 
     fig, ax = plt.subplots(figsize=(12, 5))
     for bot in bots:
@@ -689,7 +689,7 @@ def plot_combined_wr_per_opponent(tb_data, eval_data, out_dir, alpha, color_map=
         return
 
     if color_map is None:
-        color_map = dict(zip(all_bots, get_colors(len(all_bots))))
+        color_map = dict(zip(all_bots, get_colors(len(all_bots)), strict=False))
 
     ncols = min(len(all_bots), 3)
     nrows = (len(all_bots) + ncols - 1) // ncols

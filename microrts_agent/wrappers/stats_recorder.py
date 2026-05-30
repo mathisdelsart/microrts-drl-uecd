@@ -51,9 +51,9 @@ class StatsRecorder(VecEnvWrapper):
                 raw_discount_returns = np.array(self.raw_discount_rewards[i]).sum(
                     0
                 )  # (11,) discounted
-                info["microrts_stats"] = dict(zip(self._raw_names, raw_returns))
+                info["microrts_stats"] = dict(zip(self._raw_names, raw_returns, strict=False))
                 info["microrts_stats"].update(
-                    dict(zip(self._raw_discount_names, raw_discount_returns))
+                    dict(zip(self._raw_discount_names, raw_discount_returns, strict=False))
                 )
                 # Reset buffers for next episode
                 self.raw_rewards[i] = []
