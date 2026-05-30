@@ -1,0 +1,132 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/Users/mathisdelsart/miniconda3/envs/microrts_agent/lib/python3.9/site-packages/torch/nn/modules/transformer.py:515: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/NestedTensorImpl.cpp:182.)
+  output = torch._nested_tensor_from_mask(
+Loaded: UECD-Best (4,758,233 params)
+
+============================================================
+  MicroRTS Evaluation
+============================================================
+  Agent:       UECD-Best (rl)
+  Opponent:    WorkerRush (bot)
+  Mode:        rl_vs_bot
+  Device:      cpu
+  Maps:        1
+               - maps/open_competition/TwoBasesBarracks16x16.xml (max_steps=4000)
+  Games/pos:   50
+  Total games: 100
+  Actions:     stochastic
+============================================================
+
+  Map 1/1: TwoBasesBarracks16x16  (max_steps=4000)
+  ------------------------------------------------------
+    [P0] Game  11/50:  WIN  len=  315
+    [P0] Game  35/50:  WIN  len=  345
+    [P0] Game  36/50:  WIN  len=  355
+    [P0] Game  47/50:  WIN  len=  358
+    [P0] Game  16/50:  WIN  len=  365
+    [P0] Game  22/50:  WIN  len=  365
+    [P0] Game  41/50:  WIN  len=  365
+    [P0] Game  45/50:  WIN  len=  365
+    [P0] Game   9/50:  WIN  len=  366
+    [P0] Game  43/50:  WIN  len=  366
+    [P0] Game  49/50:  WIN  len=  366
+    [P0] Game   8/50:  WIN  len=  375
+    [P0] Game  17/50:  WIN  len=  375
+    [P0] Game  19/50:  WIN  len=  375
+    [P0] Game  26/50:  WIN  len=  375
+    [P0] Game  27/50:  WIN  len=  376
+    [P0] Game  48/50:  WIN  len=  376
+    [P0] Game   3/50:  WIN  len=  378
+    [P0] Game  15/50:  WIN  len=  380
+    [P0] Game  23/50:  WIN  len=  383
+    [P0] Game  25/50:  WIN  len=  385
+    [P0] Game  39/50:  WIN  len=  385
+    [P0] Game  40/50:  WIN  len=  385
+    [P0] Game  30/50:  WIN  len=  386
+    [P0] Game  37/50:  WIN  len=  391
+    [P0] Game   1/50:  WIN  len=  395
+    [P0] Game   2/50:  WIN  len=  395
+    [P0] Game  28/50:  WIN  len=  395
+    [P0] Game  31/50:  WIN  len=  395
+    [P0] Game  33/50:  WIN  len=  397
+    [P0] Game   6/50:  WIN  len=  405
+    [P0] Game  13/50:  WIN  len=  405
+    [P0] Game  18/50:  WIN  len=  405
+    [P0] Game  38/50:  WIN  len=  405
+    [P0] Game  14/50:  WIN  len=  415
+    [P0] Game  24/50:  WIN  len=  415
+    [P0] Game  42/50:  WIN  len=  415
+    [P0] Game   7/50:  WIN  len=  425
+    [P0] Game  44/50:  WIN  len=  440
+    [P0] Game  12/50:  WIN  len=  445
+    [P0] Game  29/50:  WIN  len=  455
+    [P0] Game  20/50:  WIN  len=  460
+    [P0] Game  50/50:  WIN  len=  465
+    [P0] Game   4/50:  WIN  len=  475
+    [P0] Game  10/50:  WIN  len=  475
+    [P0] Game   5/50:  WIN  len=  495
+    [P0] Game  21/50:  WIN  len=  495
+    [P0] Game  34/50: LOSS  len=  495
+    [P0] Game  46/50: LOSS  len=  690
+    [P0] Game  32/50: LOSS  len=  890
+    [P1] Game  22/50:  WIN  len=  353
+    [P1] Game  50/50:  WIN  len=  355
+    [P1] Game  13/50:  WIN  len=  375
+    [P1] Game  38/50:  WIN  len=  375
+    [P1] Game  20/50:  WIN  len=  380
+    [P1] Game  12/50:  WIN  len=  381
+    [P1] Game   7/50:  WIN  len=  391
+    [P1] Game   1/50:  WIN  len=  395
+    [P1] Game   2/50:  WIN  len=  395
+    [P1] Game  16/50:  WIN  len=  395
+    [P1] Game  24/50:  WIN  len=  395
+    [P1] Game  25/50:  WIN  len=  395
+    [P1] Game  28/50:  WIN  len=  395
+    [P1] Game  33/50:  WIN  len=  395
+    [P1] Game  48/50:  WIN  len=  395
+    [P1] Game  30/50:  WIN  len=  425
+    [P1] Game  29/50:  WIN  len=  435
+    [P1] Game   3/50:  WIN  len=  445
+    [P1] Game  32/50:  WIN  len=  445
+    [P1] Game  14/50:  WIN  len=  455
+    [P1] Game  11/50:  WIN  len=  465
+    [P1] Game  19/50:  WIN  len=  465
+    [P1] Game  41/50:  WIN  len=  465
+    [P1] Game  46/50:  WIN  len=  465
+    [P1] Game   9/50:  WIN  len=  475
+    [P1] Game  17/50:  WIN  len=  475
+    [P1] Game  23/50:  WIN  len=  482
+    [P1] Game  34/50:  WIN  len=  485
+    [P1] Game  27/50:  WIN  len=  490
+    [P1] Game  26/50:  WIN  len=  515
+    [P1] Game  39/50:  WIN  len=  525
+    [P1] Game  15/50:  WIN  len=  535
+    [P1] Game  49/50:  WIN  len=  558
+    [P1] Game  44/50:  WIN  len=  588
+    [P1] Game  37/50:  WIN  len=  590
+    [P1] Game  10/50:  WIN  len=  611
+    [P1] Game  40/50: LOSS  len=  640
+    [P1] Game   5/50:  WIN  len=  645
+    [P1] Game   6/50:  WIN  len=  675
+    [P1] Game   4/50:  WIN  len=  733
+    [P1] Game  31/50:  WIN  len=  740
+    [P1] Game  21/50:  WIN  len=  800
+    [P1] Game  45/50:  WIN  len=  813
+    [P1] Game   8/50:  WIN  len=  905
+    [P1] Game  43/50:  WIN  len=  905
+    [P1] Game  35/50: LOSS  len=  960
+    [P1] Game  18/50:  WIN  len=  965
+    [P1] Game  42/50: LOSS  len= 1060
+    [P1] Game  47/50:  WIN  len= 1145
+    [P1] Game  36/50:  WIN  len= 1165
+
+============================================================
+  RESULTS — UECD-Best vs WorkerRush
+============================================================
+  As P0:   47W /   3L /   0D  ( 94.0%)  avg_len=416
+  As P1:   47W /   3L /   0D  ( 94.0%)  avg_len=566
+  ────────────────────────────────────────────────────────
+  Total:   94W /   6L /   0D  ( 94.0%)
+============================================================

@@ -66,6 +66,10 @@ microrts-drl-uecd/
 │   ├── bots/                     # Vendored competition bots (sources/builds + RAISocketAI wheel)
 │   ├── tournament_configs/       # Tournament setup JSON files
 │   └── train.py  evaluate.py  run_tournament.py   # simple entry points
+├── data/                         # Curated artefacts shipped with the repo (not regenerated on clone)
+│   ├── recordings/               # 36 showcase game clips of UECD-Best vs the field
+│   ├── tournaments/              # Headline tournament results: single_map/ + multi_map/ (CSV + parsed JSON + PDFs)
+│   └── probes/                   # Generalisation probes (UECD-Best on non-training maps)
 ├── dissertation/                 # LaTeX thesis, figures, figure generators (figs/figs-python/), compiled PDF
 ├── cog-2026-paper/               # CoG 2026 short-paper submission
 ├── experiments/                  # SLURM jobs: single-map/ multi-map/ bc/ eval/ tournament/ bench/ ablation/
@@ -77,7 +81,9 @@ Python dependencies are declared once in `pyproject.toml` (core stack +
 `[tournament]` / `[dev]` extras); the setup scripts install them via
 `pip install -e ".[tournament]"`.
 
-Generated runs, recordings, and tournament CSVs live under `outputs/` (git-ignored).
+Generated runs, recordings, and tournament CSVs all land under `outputs/`
+(git-ignored). The subset that backs the dissertation and the CoG paper is
+curated under `data/`.
 
 ## Quick start
 

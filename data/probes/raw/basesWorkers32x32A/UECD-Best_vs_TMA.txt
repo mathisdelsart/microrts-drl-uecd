@@ -1,0 +1,132 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/Users/mathisdelsart/miniconda3/envs/microrts_agent/lib/python3.9/site-packages/torch/nn/modules/transformer.py:515: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/NestedTensorImpl.cpp:182.)
+  output = torch._nested_tensor_from_mask(
+Loaded: UECD-Best (4,758,233 params)
+
+============================================================
+  MicroRTS Evaluation
+============================================================
+  Agent:       UECD-Best (rl)
+  Opponent:    TMA (bot)
+  Mode:        rl_vs_bot
+  Device:      cpu
+  Maps:        1
+               - maps/closed_competition/basesWorkers32x32A.xml (max_steps=4000)
+  Games/pos:   50
+  Total games: 100
+  Actions:     stochastic
+============================================================
+
+  Map 1/1: basesWorkers32x32A  (max_steps=4000)
+  ------------------------------------------------------
+    [P0] Game  41/50:  WIN  len= 1676
+    [P0] Game  35/50: LOSS  len= 1781
+    [P0] Game  23/50: LOSS  len= 1850
+    [P0] Game  32/50:  WIN  len= 1865
+    [P0] Game   8/50:  WIN  len= 1871
+    [P0] Game  43/50: LOSS  len= 1915
+    [P0] Game  40/50:  WIN  len= 1945
+    [P0] Game  24/50:  WIN  len= 1947
+    [P0] Game  34/50: LOSS  len= 1963
+    [P0] Game   4/50: LOSS  len= 1984
+    [P0] Game   9/50: LOSS  len= 1986
+    [P0] Game  27/50: LOSS  len= 1986
+    [P0] Game  44/50:  WIN  len= 2007
+    [P0] Game  30/50:  WIN  len= 2011
+    [P0] Game  13/50: LOSS  len= 2016
+    [P0] Game  38/50:  WIN  len= 2042
+    [P0] Game  36/50: LOSS  len= 2047
+    [P0] Game  20/50: LOSS  len= 2053
+    [P0] Game  16/50: LOSS  len= 2057
+    [P0] Game   7/50: LOSS  len= 2071
+    [P0] Game   3/50: LOSS  len= 2075
+    [P0] Game   5/50: LOSS  len= 2105
+    [P0] Game  29/50: LOSS  len= 2106
+    [P0] Game  10/50: LOSS  len= 2111
+    [P0] Game  46/50: LOSS  len= 2119
+    [P0] Game  28/50: LOSS  len= 2124
+    [P0] Game   1/50: LOSS  len= 2127
+    [P0] Game  42/50: LOSS  len= 2140
+    [P0] Game   6/50: LOSS  len= 2146
+    [P0] Game  33/50: LOSS  len= 2156
+    [P0] Game   2/50: LOSS  len= 2167
+    [P0] Game  17/50: LOSS  len= 2176
+    [P0] Game  19/50: LOSS  len= 2208
+    [P0] Game  47/50: LOSS  len= 2212
+    [P0] Game  21/50: LOSS  len= 2227
+    [P0] Game  25/50: LOSS  len= 2255
+    [P0] Game  39/50: LOSS  len= 2261
+    [P0] Game  50/50: LOSS  len= 2278
+    [P0] Game  11/50: LOSS  len= 2280
+    [P0] Game  31/50: LOSS  len= 2284
+    [P0] Game  48/50: LOSS  len= 2313
+    [P0] Game  14/50: LOSS  len= 2353
+    [P0] Game  45/50: LOSS  len= 2363
+    [P0] Game  26/50: LOSS  len= 2367
+    [P0] Game  18/50: LOSS  len= 2370
+    [P0] Game  15/50: LOSS  len= 2399
+    [P0] Game  37/50: LOSS  len= 2565
+    [P0] Game  12/50: LOSS  len= 2632
+    [P0] Game  22/50: DRAW  len= 4000
+    [P0] Game  49/50: DRAW  len= 4000
+    [P1] Game  23/50:  WIN  len= 1349
+    [P1] Game  41/50:  WIN  len= 1417
+    [P1] Game  32/50:  WIN  len= 1448
+    [P1] Game  33/50: LOSS  len= 1917
+    [P1] Game  14/50: LOSS  len= 1945
+    [P1] Game  46/50: LOSS  len= 1954
+    [P1] Game  35/50: LOSS  len= 1962
+    [P1] Game   1/50: LOSS  len= 1992
+    [P1] Game  48/50: LOSS  len= 1993
+    [P1] Game  17/50: LOSS  len= 2010
+    [P1] Game   6/50: LOSS  len= 2017
+    [P1] Game  50/50: LOSS  len= 2018
+    [P1] Game  26/50: LOSS  len= 2023
+    [P1] Game  29/50: LOSS  len= 2028
+    [P1] Game  43/50: LOSS  len= 2028
+    [P1] Game  40/50: LOSS  len= 2045
+    [P1] Game  16/50: LOSS  len= 2055
+    [P1] Game  25/50: LOSS  len= 2069
+    [P1] Game   4/50: LOSS  len= 2080
+    [P1] Game  19/50: LOSS  len= 2103
+    [P1] Game   2/50: LOSS  len= 2104
+    [P1] Game  22/50: LOSS  len= 2104
+    [P1] Game  18/50: LOSS  len= 2109
+    [P1] Game  13/50: LOSS  len= 2134
+    [P1] Game  39/50: LOSS  len= 2135
+    [P1] Game  45/50: LOSS  len= 2139
+    [P1] Game  21/50: LOSS  len= 2157
+    [P1] Game   9/50: LOSS  len= 2160
+    [P1] Game  42/50: LOSS  len= 2161
+    [P1] Game  44/50: LOSS  len= 2179
+    [P1] Game  36/50: LOSS  len= 2183
+    [P1] Game   8/50: LOSS  len= 2195
+    [P1] Game  34/50: LOSS  len= 2221
+    [P1] Game  12/50: LOSS  len= 2245
+    [P1] Game  47/50: LOSS  len= 2248
+    [P1] Game   3/50: LOSS  len= 2253
+    [P1] Game  27/50: LOSS  len= 2261
+    [P1] Game  20/50: LOSS  len= 2264
+    [P1] Game  38/50: LOSS  len= 2268
+    [P1] Game  37/50: LOSS  len= 2284
+    [P1] Game   5/50: LOSS  len= 2288
+    [P1] Game  30/50: LOSS  len= 2291
+    [P1] Game  15/50: LOSS  len= 2315
+    [P1] Game   7/50: LOSS  len= 2328
+    [P1] Game  31/50: LOSS  len= 2336
+    [P1] Game  24/50: LOSS  len= 2352
+    [P1] Game  28/50: LOSS  len= 2389
+    [P1] Game  49/50: LOSS  len= 2390
+    [P1] Game  10/50: LOSS  len= 2435
+    [P1] Game  11/50: LOSS  len= 2548
+
+============================================================
+  RESULTS — UECD-Best vs TMA
+============================================================
+  As P0:    8W /  40L /   2D  ( 16.0%)  avg_len=2200
+  As P1:    3W /  47L /   0D  (  6.0%)  avg_len=2119
+  ────────────────────────────────────────────────────────
+  Total:   11W /  87L /   2D  ( 11.0%)
+============================================================
