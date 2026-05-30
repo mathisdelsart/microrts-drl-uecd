@@ -55,10 +55,13 @@ jobs:
           java-version: "17"
       # Smoke tests exercise CLI subcommands, the JNI bridge, every shipped
       # agent's loadability, end-to-end evaluate and a 256-step PPO train.
-      # Force CPU because GitHub runners have no GPU.
+      # Force CPU because GitHub runners have no GPU; install the CPU-only
+      # torch wheel first to skip ~3 GB of nvidia-* CUDA wheels that the
+      # default PyPI torch wheel would otherwise drag in transitively.
       - env:
           CUDA_VISIBLE_DEVICES: ""
         run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
           pip install -e ".[dev]"
           bash microrts_agent/microrts/build_bridge.sh
           pytest tests/
