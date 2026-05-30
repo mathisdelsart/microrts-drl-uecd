@@ -32,7 +32,7 @@ python -m microrts_agent.bc train \
 echo "=== Eval ==="
 for BOT in RandomBiasedAI WorkerRush LightRush CoacAI Mayari; do
     echo "  vs $BOT..."
-    python microrts_agent/evaluate.py \
+    python -m microrts_agent evaluate \
         --agent "$BC_RUN_DIR" --opponent "$BOT" \
         --nb_games 10 --maps maps/open_competition/basesWorkers16x16A.xml --max-steps 4000 \
         2>&1 | tee "${BC_RUN_DIR}/EVAL/bc_vs_${BOT}.txt"

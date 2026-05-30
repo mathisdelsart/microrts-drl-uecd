@@ -26,7 +26,7 @@ source $HOME/microrts-drl-uecd/cluster_venv/bin/activate
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-python microrts_agent/train.py \
+python -m microrts_agent train \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 100000000 \

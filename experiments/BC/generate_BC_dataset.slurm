@@ -158,7 +158,7 @@ for BOT in "${BOTS[@]}"; do
     echo "  Evaluating vs $BOT (10 games per position)..."
     OUTFILE="${BC_EVAL_DIR}/bc_vs_${BOT}.txt"
 
-    python microrts_agent/evaluate.py \
+    python -m microrts_agent evaluate \
         --agent "$BC_RUN_DIR" \
         --opponent "$BOT" \
         --nb_games 10 \

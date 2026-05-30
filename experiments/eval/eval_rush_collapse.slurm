@@ -61,7 +61,7 @@ echo "  Eval: ${LABEL} checkpoint vs ${BOT} (${NB_GAMES} games/position)"
 echo "  Array task: ${SLURM_ARRAY_TASK_ID} | $(date)"
 echo "============================================================"
 
-python microrts_agent/evaluate.py \
+python -m microrts_agent evaluate \
     --agent "$TMPDIR" \
     --opponent "$BOT" \
     --nb_games "$NB_GAMES" \

@@ -59,7 +59,7 @@ cd $HOME/microrts-drl-uecd
 python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"N/A\"}')"
 
 # Build training command
-CMD="python microrts_agent/train.py \
+CMD="python -m microrts_agent train \
     --architecture gridnet \
     --baseline \
     --total-timesteps 300000000 \

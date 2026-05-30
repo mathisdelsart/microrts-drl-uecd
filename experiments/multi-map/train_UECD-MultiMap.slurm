@@ -26,7 +26,7 @@ echo "  Multi-map small (<=16x16) — 100M steps"
 echo "  Seed: $SEED | Started: $(date)"
 echo "============================================================"
 
-python microrts_agent/train.py \
+python -m microrts_agent train \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 200000000 \

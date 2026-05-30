@@ -36,7 +36,7 @@ echo "  Fine-tune with RAISocketAI — resume from 240M → 400M"
 echo "  Started: $(date)"
 echo "============================================================"
 
-python microrts_agent/train.py \
+python -m microrts_agent train \
     --resume "$RUN_DIR" \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \

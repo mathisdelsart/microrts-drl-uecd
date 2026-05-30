@@ -18,7 +18,13 @@ from typing import Optional
 
 import numpy as np
 import torch
-from gymnasium.wrappers.monitoring.video_recorder import VideoRecorder  # type: ignore
+
+try:
+    from gymnasium.wrappers.monitoring.video_recorder import VideoRecorder  # type: ignore
+except ImportError:
+    # gymnasium >= 1.2 removed monitoring.video_recorder. Only --record needs
+    # it; everything else (incl. --help) keeps working without this symbol.
+    VideoRecorder = None  # type: ignore
 
 from microrts_agent.architectures.factory import load_agent_from_config
 from microrts_agent.envs.base_vec_env import get_base_env as _get_base_env
@@ -450,6 +456,12 @@ def play_batch_bot_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=Non
     # Create per-game recorders
     recorders = [None] * num_games
     if rec_dir:
+        if VideoRecorder is None:
+            raise RuntimeError(
+                "--record needs gymnasium.wrappers.monitoring.video_recorder.VideoRecorder, "
+                "removed in gymnasium >= 1.2. Pin gymnasium <= 1.1 or migrate to "
+                "gymnasium.wrappers.RecordVideo / gymnasium.utils.save_video."
+            )
         mname = map_short(map_path)
         label = "P1" if swap else "P0"
         for i in range(num_games):
@@ -540,6 +552,12 @@ def play_batch_rl_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=None
     # Create per-game recorders
     recorders = [None] * num_games
     if rec_dir:
+        if VideoRecorder is None:
+            raise RuntimeError(
+                "--record needs gymnasium.wrappers.monitoring.video_recorder.VideoRecorder, "
+                "removed in gymnasium >= 1.2. Pin gymnasium <= 1.1 or migrate to "
+                "gymnasium.wrappers.RecordVideo / gymnasium.utils.save_video."
+            )
         mname = map_short(map_path)
         label = "P1" if swap else "P0"
         for i in range(num_games):
