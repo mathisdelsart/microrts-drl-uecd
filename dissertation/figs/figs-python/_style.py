@@ -15,7 +15,34 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent.parent.parent  # repo root (microrts-drl-uecd/)
 FIGURES_DIR = Path(__file__).resolve().parent.parent / "figs-pdf"  # dissertation/figs/figs-pdf
-RUNS_DIR = ROOT / "outputs" / "runs"
+RUNS_DIR = ROOT / "outputs" / "runs"  # legacy outputs/ root, kept for user-trained runs
+
+# Candidate roots where a "run" can live, in priority order. The shipped
+# data/ tier comes first so figure scripts work out of the box on a fresh
+# clone; outputs/runs/ is the fallback used while the user is actively
+# training.
+_RUN_ROOTS = [
+    ROOT / "data" / "agents",
+    ROOT / "data" / "ablation" / "arch" / "agent",
+    ROOT / "data" / "ablation" / "feat" / "agent",
+    RUNS_DIR,
+]
+
+
+def _find_run_dir(run_name):
+    """Resolve a run name (or relative path) to its on-disk directory.
+
+    Tries the shipped data/ tier first, then falls back to outputs/runs/.
+    Returns the first existing candidate; if none match, returns the
+    outputs/runs/<run_name> path so the caller's FileNotFoundError is
+    informative.
+    """
+    for root in _RUN_ROOTS:
+        candidate = root / run_name
+        if candidate.exists():
+            return candidate
+    return RUNS_DIR / run_name
+
 
 FIGURES_DIR.mkdir(exist_ok=True)
 
@@ -85,7 +112,7 @@ def smooth(y, window=20):
 
 def load_eval(run_name):
     """Load a run's eval_results.csv as a DataFrame."""
-    return pd.read_csv(RUNS_DIR / run_name / "eval_results.csv")
+    return pd.read_csv(_find_run_dir(run_name) / "eval_results.csv")
 
 
 def overall_wr(df):
@@ -107,7 +134,7 @@ def parse_train_log(run_name, sample_every=500):
 
     Returns a DataFrame with columns: step, ret, len, wr_<Bot>... .
     """
-    path = RUNS_DIR / run_name / "train.log"
+    path = _find_run_dir(run_name) / "train.log"
     steps, rets, lens = [], [], []
     bot_wrs = {}
     count = 0

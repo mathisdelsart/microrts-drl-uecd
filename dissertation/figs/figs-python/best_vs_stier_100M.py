@@ -1,8 +1,8 @@
 """Best-config vs Top-features (100M): overall win-rate, eval + training.
 
 Compares two 100M single-map runs:
-  - single_map/AllFeatsRL-100M   (all features)
-  - single_map/TopFeatsRL-100M  (top features only)
+  - UECD-SingleMap-AllFeats  (all features; on-disk run name: AllFeatsRL-100M)
+  - UECD-SingleMap-TopFeats  (top features only; on-disk run name: TopFeatsRL-100M)
 
 Output: figures/best_vs_stier_100M.pdf
 """
@@ -24,11 +24,11 @@ from _style import (
 apply_style()
 plt.rcParams.update({"text.usetex": True, "text.latex.preamble": r"\usepackage{lmodern}"})
 
-best_eval = overall_wr(load_eval("single_map/AllFeatsRL-100M"))
-stier_eval = overall_wr(load_eval("single_map/TopFeatsRL-100M"))
+best_eval = overall_wr(load_eval("UECD-SingleMap-AllFeats"))
+stier_eval = overall_wr(load_eval("UECD-SingleMap-TopFeats"))
 
-best_train = parse_train_log("single_map/AllFeatsRL-100M", sample_every=200)
-stier_train = parse_train_log("single_map/TopFeatsRL-100M", sample_every=200)
+best_train = parse_train_log("UECD-SingleMap-AllFeats", sample_every=200)
+stier_train = parse_train_log("UECD-SingleMap-TopFeats", sample_every=200)
 
 wr_cols = [c for c in best_train.columns if c.startswith("wr_")]
 best_train["overall_wr"] = best_train[wr_cols].mean(axis=1)

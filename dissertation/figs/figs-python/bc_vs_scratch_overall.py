@@ -1,8 +1,8 @@
 """BC pre-training vs from-scratch: overall win-rate convergence.
 
 Data source: 10-game in-training evaluations against 5 opponents (10M intervals).
-  - BC+VF → PPO: outputs/runs/bc/bc_v3_finetune_100M_s1/train.log
-  - From scratch: outputs/runs/arch_ablation/arch_ablation_unet_entity_cbam_deep_s1/train.log
+  - BC+VF → PPO: UECD-BC-PPO/train.log (data/agents/)
+  - From scratch: unet_entity_cbam_deep_s1/train.log (data/ablation/arch/agent/)
 
 Output: figures/bc_vs_scratch_overall.pdf
 """
@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
 import pandas as pd
-from _style import FIGURES_DIR, RUNS_DIR, C, apply_style
+from _style import FIGURES_DIR, C, _find_run_dir, apply_style
 
 apply_style()
 plt.rcParams.update({"text.usetex": True, "text.latex.preamble": r"\usepackage{lmodern}"})
@@ -59,10 +59,8 @@ def smooth(y, window=30):
     return pd.Series(y).rolling(window, min_periods=1, center=True).mean().values
 
 
-bc_tr_s, bc_tr_wr = parse_in_training_wr(RUNS_DIR / "bc" / "bc_v3_finetune_100M_s1")
-fs_tr_s, fs_tr_wr = parse_in_training_wr(
-    RUNS_DIR / "arch_ablation" / "arch_ablation_unet_entity_cbam_deep_s1"
-)
+bc_tr_s, bc_tr_wr = parse_in_training_wr(_find_run_dir("UECD-BC-PPO"))
+fs_tr_s, fs_tr_wr = parse_in_training_wr(_find_run_dir("unet_entity_cbam_deep_s1"))
 
 
 # ── Plot ──
