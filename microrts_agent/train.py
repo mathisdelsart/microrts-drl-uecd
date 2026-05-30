@@ -65,8 +65,16 @@ def main():
 
     run_dir = RUNS_DIR / args.exp_name
     os.makedirs(run_dir, exist_ok=True)
-    sys.stdout = Tee(os.path.join(run_dir, "train.log"))
+    tee = Tee(os.path.join(run_dir, "train.log"))
+    sys.stdout = tee
+    try:
+        _run_training(args, run_dir)
+    finally:
+        sys.stdout = tee.stdout
+        tee.close()
 
+
+def _run_training(args, run_dir):
     writer = setup_tensorboard(args, run_dir)
     device = setup_device_and_seed(args)
 

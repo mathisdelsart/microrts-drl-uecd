@@ -839,17 +839,8 @@ def main():
 
     stop_uts_imass_server(uts_proc)
 
-    try:
-        from multiprocessing.resource_tracker import _resource_tracker
-
-        if _resource_tracker._pid is not None:
-            os.kill(_resource_tracker._pid, 9)
-    except Exception:
-        pass
-
     sys.stdout.flush()
     sys.stderr.flush()
-    os._exit(0)
 
 
 if __name__ == "__main__":

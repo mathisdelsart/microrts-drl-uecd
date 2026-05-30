@@ -85,12 +85,12 @@ def resume_checkpoint(args, agent, optimizer, device):
 
 
 def _open_log_file(filepath):
-    """Open the Tee log file. The Tee instance owns the handle and closes it."""
-    return open(filepath, "a")
+    """Open the Tee log file (line-buffered). The Tee instance owns the handle and closes it."""
+    return open(filepath, "a", buffering=1)
 
 
 class Tee:
-    """Duplicate stdout to both terminal and a log file."""
+    """Duplicate stdout to both terminal and a line-buffered log file."""
 
     def __init__(self, filepath):
         self.file = _open_log_file(filepath)
@@ -99,7 +99,6 @@ class Tee:
     def write(self, data):
         self.stdout.write(data)
         self.file.write(data)
-        self.file.flush()
 
     def flush(self):
         self.stdout.flush()
@@ -109,6 +108,15 @@ class Tee:
         if self.file and not self.file.closed:
             self.file.flush()
             self.file.close()
+
+    def __getattr__(self, name):
+        # Proxy unknown attrs (encoding, fileno, isatty, ...) to the wrapped stdout
+        # so libraries that introspect sys.stdout keep working under tee'd output.
+        try:
+            stdout = self.__dict__["stdout"]
+        except KeyError:
+            raise AttributeError(name) from None
+        return getattr(stdout, name)
 
     def __del__(self):
         self.close()
