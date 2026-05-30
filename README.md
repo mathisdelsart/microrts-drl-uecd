@@ -67,9 +67,10 @@ microrts-drl-uecd/
 │   ├── tournament_configs/       # Tournament setup JSON files
 │   └── train.py  evaluate.py  run_tournament.py   # simple entry points
 ├── data/                         # Curated artefacts shipped with the repo (not regenerated on clone)
-│   ├── recordings/               # 36 showcase game clips of UECD-Best vs the field
+│   ├── recordings/               # 36 showcase game clips of UECD-Best vs the field (also served from the supplementary site)
 │   ├── tournaments/              # Headline tournament results: single_map/ + multi_map/ (CSV + parsed JSON + PDFs)
-│   └── probes/                   # Generalisation probes (UECD-Best on non-training maps)
+│   ├── probes/                   # Generalisation probes (UECD-Best on non-training maps)
+│   └── bc_training/              # BC teacher dataset (RAISocketAI demonstrations vs RAISocketAI/CoacAI/Mayari)
 ├── dissertation/                 # LaTeX thesis, figures, figure generators (figs/figs-python/), compiled PDF
 ├── cog-2026-paper/               # CoG 2026 short-paper submission
 ├── experiments/                  # SLURM jobs: single-map/ multi-map/ bc/ eval/ tournament/ bench/ ablation/
