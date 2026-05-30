@@ -17,7 +17,8 @@ into this tree.
 | [`agents/`](agents/)           | All trained agents (5 single-map + 2 multi-map + GridNet baseline) in *medium* form: inference model + resume checkpoint + config + final eval + training log. ~685 MB total; `UECD-SingleMap-Best` carries an additional `lineage/` subdir reconstructing its full training history from step 0. |
 | [`rush_collapse/`](rush_collapse/) | Pre/post-collapse evaluation of `UECD-SingleMap-Rushed` (checkpoints at 150M and 300M, 1 000 games each against `CoacAI`, `Mayari`, `ObiBotKenobi`, `TMA`) — the data behind the dissertation's *rush collapse* / *out-of-distribution cost* sections. |
 | [`bc_baseline/`](bc_baseline/) | Win-rate evaluation of `UECD-BC` against the 5 base-pool bots (`RandomBiasedAI`, `WorkerRush`, `LightRush`, `CoacAI`, `Mayari`) — the **78 % baseline** of the dissertation's BC+VF→PPO vs from-scratch figure. |
-| [`ablation/arch/`](ablation/arch/) | Architecture ablation — 7 architectures × 3 seeds = 21 runs trained from scratch for 100 M steps on `basesWorkers16x16A`. Each run shipped in minimal tier (agent + config + eval + log); 105 cleaned 1 000-game evaluation dumps under `raw/`; aggregate `results.csv`. |
+| [`ablation/arch/`](ablation/arch/) | Architecture ablation — 7 architectures × 3 seeds = 21 runs trained from scratch for 100 M steps on `basesWorkers16x16A`. Each run shipped in minimal tier (agent + config + eval + log); 105 cleaned 1 000-game evaluation dumps under `eval/s{1,2,3}/`; aggregate `eval/results.csv`. |
+| [`ablation/feat/`](ablation/feat/) | Feature ablation — 21 individual feature additions + baseline, 3 seeds each (= 64 runs at 50 M steps on `basesWorkers16x16A`). Same `agent/` + `eval/` layout as the arch ablation. Headline: `extended_obs` lifts +19.3 pp, `hl_gauss` collapses −25.6 pp. |
 
 ## Links
 
