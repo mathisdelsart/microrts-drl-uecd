@@ -9,6 +9,7 @@
 *.ttf binary
 *.otf binary
 *.pkl binary
+*.mp4 binary
 
 # Vendored third-party code / data: exclude from GitHub language statistics.
 # The hand-written Java bridge in microrts_agent/microrts/src/ is NOT vendored — it counts.
@@ -20,3 +21,6 @@ microrts_agent/bots/** linguist-vendored
 # Thesis and paper are documentation (LaTeX), not project source languages.
 dissertation/** linguist-documentation
 cog-2026-paper/** linguist-documentation
+
+# Showcase game recordings are media, not source.
+recordings/** linguist-documentation
