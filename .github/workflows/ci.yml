@@ -23,6 +23,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+          cache: pip
       - run: pip install ruff==0.15.14
       - run: ruff check --output-format=github .
       - run: ruff format --check .
@@ -53,6 +54,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
