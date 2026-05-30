@@ -1,6 +1,6 @@
-# Recordings — BestRL-350M (single-map agent)
+# Recordings — UECD-Best (single-map agent)
 
-Showcase game recordings of `BestRL-350M`, the best agent trained on a single
+Showcase game recordings of `UECD-Best`, the best agent trained on a single
 map (16x16 `basesWorkers`), played against the full competition field plus
 several of our own ablation agents. 36 MP4 clips on the training map —
 18 opponents × P0/P1 mirrored viewpoints.
@@ -11,7 +11,7 @@ One directory per opponent:
 
 ```
 recordings/
-└── BestRL-350M_vs_<opponent>/
+└── UECD-Best_vs_<opponent>/
     ├── basesWorkers16x16A_P0_game01.mp4   # P0 viewpoint
     └── basesWorkers16x16A_P1_game01.mp4   # P1 viewpoint
 ```
@@ -24,8 +24,8 @@ point of view.
 | Category | Bots / agents |
 |----------|--------------|
 | Competition winners | `RAISocketAI`, `CoacAI`, `Mayari`, `Tiamat`, `StrategyTactics`, `MixedBot`, `TMA`, `Droplet`, `ObiBotKenobi`, `UtsImass` |
-| Scripted baselines | `POWorkerRush`, `POLightRush`, `RandomBiasedAI`, `NaiveMCTS` |
-| Our agents (ablations) | `GridNet-300M`, `AllFeatsRL-100M`, `TopFeatsRL-100M`, `PhasedRL-300M` |
+| Scripted baselines | `WorkerRush`, `LightRush`, `RandomBiasedAI`, `NaiveMCTS` |
+| Our agents (ablations) | `GridNet`, `UECD-AllFeats`, `UECD-TopFeats`, `UECD-Rushed` |
 
 ## Reproducing a recording
 
@@ -34,14 +34,17 @@ by the `evaluate` CLI with `--record-video`:
 
 ```bash
 python -m microrts_agent evaluate \
-    --agent outputs/runs/BestRL-350M \
+    --agent outputs/runs/single_map/BestRL-350M \
     --opponent RAISocketAI \
     --map basesWorkers16x16A.xml \
     --num-games 1 \
     --record-video
 ```
 
-See `python -m microrts_agent evaluate --help` for all flags.
+The on-disk run directory still uses its training-time identifier
+(`BestRL-350M`); only the public name in plots and shipped recordings was
+updated to `UECD-Best`. See `python -m microrts_agent evaluate --help` for
+all flags.
 
 ## More recordings
 
