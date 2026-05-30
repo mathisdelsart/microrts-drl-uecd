@@ -52,13 +52,8 @@ def build_opponent_config(args):
         n = args.num_bot_envs
         rpt = args.rush_per_type
 
-        # Baseline mode uses full-obs rush bots; normal mode uses partial-obs
-        if args.baseline:
-            rush_worker = "WorkerRushAI"
-            rush_light = "LightRushAI"
-        else:
-            rush_worker = "WorkerRush"
-            rush_light = "LightRush"
+        rush_worker = "WorkerRush"
+        rush_light = "LightRush"
 
         # 3 rush types (random, worker, light), each up to rush_per_type envs
         # Remaining envs go to hard bots (CoacAI + Mayari)
