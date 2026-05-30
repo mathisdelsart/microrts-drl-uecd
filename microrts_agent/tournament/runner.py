@@ -8,7 +8,7 @@ from pathlib import Path
 
 import torch
 
-from microrts_agent.paths import TOURNAMENT_RESULTS_DIR
+from microrts_agent.paths import TOURNAMENTS_DIR
 
 from .config import TournamentConfig, generate_matchups, group_matchups, select_chunk_groups
 from .csv_io import write_csv_header, write_game_result
@@ -46,12 +46,14 @@ def run_tournament(config: TournamentConfig, chunk: int = -1, total_chunks: int 
         return ""
 
     # Output directory
-    output_dir = str(TOURNAMENT_RESULTS_DIR / config.config_name)
+    output_dir = str(TOURNAMENTS_DIR / config.config_name)
     os.makedirs(output_dir, exist_ok=True)
 
-    # CSV path
+    # CSV path — chunked runs land under chunks/ for tidy merging later.
     if chunk >= 0:
-        csv_path = os.path.join(output_dir, f"chunk_{chunk}.csv")
+        chunks_dir = os.path.join(output_dir, "chunks")
+        os.makedirs(chunks_dir, exist_ok=True)
+        csv_path = os.path.join(chunks_dir, f"chunk_{chunk}.csv")
     else:
         csv_path = os.path.join(output_dir, "tournament.csv")
 

@@ -96,7 +96,7 @@ python microrts_agent/train.py \
     --num-bot-envs 16 \
     --num-selfplay-envs 16 \
     --num-latest-selfplay-envs 8 \
-    --opponent-list "POWorkerRush:2,POLightRush:2,CoacAI:3,Mayari:3,TMA:3,ObiBotKenobi:3" \
+    --opponent-list "WorkerRush:2,LightRush:2,CoacAI:3,Mayari:3,TMA:3,ObiBotKenobi:3" \
     --diverse-opponents False \
     --alternate-players True \
     --prioritized-sampling True \
@@ -151,7 +151,7 @@ python microrts_agent/train.py \
     --aux-opponent-modeling True \
     \
     --with-eval True \
-    --eval-bots RandomBiasedAI POWorkerRush POLightRush CoacAI Mayari ObiBotKenobi TMA RAISocketAI \
+    --eval-bots RandomBiasedAI WorkerRush LightRush CoacAI Mayari ObiBotKenobi TMA RAISocketAI \
     --eval-games 10 \
     --num-models 24 \
     --seed $SEED \

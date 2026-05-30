@@ -59,7 +59,7 @@ python microrts_agent/train.py \
     --max-steps 5000 \
     --num-bot-envs 12 \
     --num-selfplay-envs 0 \
-    --opponent-list "POWorkerRush:2,POLightRush:2,CoacAI:1,Mayari:1,TMA:2,ObiBotKenobi:2,RAISocketAI:2" \
+    --opponent-list "WorkerRush:2,LightRush:2,CoacAI:1,Mayari:1,TMA:2,ObiBotKenobi:2,RAISocketAI:2" \
     --alternate-players True \
     --prioritized-sampling True \
     --reward-weight 10.0 1.0 1.0 0.2 0.2 1.0 4.0 6.0 5.25 0.0 \

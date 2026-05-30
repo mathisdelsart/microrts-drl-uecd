@@ -148,7 +148,7 @@ python microrts_agent/train.py \
     --aux-opponent-modeling True \
     \
     --with-eval True \
-    --eval-bots RandomBiasedAI POWorkerRush POLightRush CoacAI Mayari ObiBotKenobi TMA RAISocketAI \
+    --eval-bots RandomBiasedAI WorkerRush LightRush CoacAI Mayari ObiBotKenobi TMA RAISocketAI \
     --eval-games 10 \
     --num-models 16 \
     --seed $SEED \

@@ -33,7 +33,7 @@ ARCHS=(
 )
 ARCH_NAMES=("gridnet" "impala" "unet" "impala_entity" "unet_entity" "unet_entity_cbam" "unet_entity_cbam_deep")
 
-BOTS=("RandomBiasedAI" "POWorkerRush" "POLightRush" "CoacAI" "Mayari")
+BOTS=("RandomBiasedAI" "WorkerRush" "LightRush" "CoacAI" "Mayari")
 
 # Decode array task ID: arch_idx = task / 5, bot_idx = task % 5
 ARCH_IDX=$(( SLURM_ARRAY_TASK_ID / 5 ))

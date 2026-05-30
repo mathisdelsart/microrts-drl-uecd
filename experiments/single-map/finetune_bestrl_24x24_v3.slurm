@@ -74,7 +74,7 @@ python microrts_agent/train.py \
     --selfplay-swap-interval 25 \
     --selfplay-pool-size 50 \
     --diverse-opponents True \
-    --opponent-list "POWorkerRush:1,POLightRush:1,CoacAI:1,Mayari:1,TMA:2,ObiBotKenobi:2,RAISocketAI:2" \
+    --opponent-list "WorkerRush:1,LightRush:1,CoacAI:1,Mayari:1,TMA:2,ObiBotKenobi:2,RAISocketAI:2" \
     --alternate-players True \
     --prioritized-sampling True \
     --reward-weight 10.0 1.0 1.0 0.2 0.2 1.0 4.0 6.0 5.25 0.0 \

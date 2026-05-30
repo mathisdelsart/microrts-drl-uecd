@@ -26,21 +26,25 @@ GOLD = "#FFC400"
 # ──────────────────────────────────────────────────────────────────────────
 
 
-def generate_game_theory(data, console, output_dir: Path, per_map_dir: Path = None):
+def generate_game_theory(data, console, output_dir: Path, individual_dir: Path = None):
     """
     Compute game-theoretic metrics and generate one PDF per metric
     + console summary.  Runs globally and per-map.
 
     Args:
-        per_map_dir: If provided, per-map plots are saved into existing
-                     subdirectories of this path (per_map/<MapName>/).
-                     If None, per-map analysis is skipped.
+        output_dir:     Where the global game-theoretic PDFs are written.
+                        (Typically ``<viz_root>/global/game-theoretic-metrics/``
+                        for multi-map tournaments, or
+                        ``<viz_root>/game-theoretic-metrics/`` for single-map.)
+        individual_dir: Parent of the per-map subdirs (``individual/``); each
+                        map gets a ``<map>/game-theoretic-metrics/`` directory
+                        created underneath. ``None`` skips per-map analysis.
     """
     # ---- Global analysis ----
     _run_analysis(data.games, data.ais, console, output_dir)
 
-    # ---- Per-map analysis (reuse existing per_map/ folders) ----
-    if per_map_dir is not None and len(data.maps) > 1:
+    # ---- Per-map analysis (one game-theoretic-metrics/ subdir per map) ----
+    if individual_dir is not None and len(data.maps) > 1:
         games_by_map = defaultdict(list)
         for game in data.games:
             games_by_map[game.map_name].append(game)
@@ -51,12 +55,13 @@ def generate_game_theory(data, console, output_dir: Path, per_map_dir: Path = No
         for map_name in sorted(games_by_map.keys()):
             map_games = games_by_map[map_name]
             short = Path(map_name).stem
-            map_dir = per_map_dir / short
+            map_gt_dir = individual_dir / short / "game-theoretic-metrics"
+            map_gt_dir.mkdir(parents=True, exist_ok=True)
 
             if console:
                 console.print(f"\n  [bold]{short}[/bold]")
 
-            _run_analysis(map_games, data.ais, console, map_dir)
+            _run_analysis(map_games, data.ais, console, map_gt_dir)
 
 
 # ──────────────────────────────────────────────────────────────────────────

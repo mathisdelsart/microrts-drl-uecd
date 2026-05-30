@@ -25,7 +25,7 @@ source $HOME/microrts-drl-uecd/cluster_venv/bin/activate
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-BOTS=("RandomBiasedAI" "POWorkerRush" "POLightRush" "CoacAI" "Mayari")
+BOTS=("RandomBiasedAI" "WorkerRush" "LightRush" "CoacAI" "Mayari")
 
 # List of agents to evaluate (add paths as runs finish)
 AGENTS=(

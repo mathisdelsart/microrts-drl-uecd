@@ -13,14 +13,14 @@
 # on basesWorkers16x16A.
 # ---------------------------------------------------------------------------
 # Goals:
-#   - Fix the POWorkerRush residual weakness (~50% WR on single-map)
-#   - Cover competition-bot coverage gaps (adds POWorkerRush, POLightRush,
+#   - Fix the WorkerRush residual weakness (~50% WR on single-map)
+#   - Cover competition-bot coverage gaps (adds WorkerRush, LightRush,
 #     and doubles RAISocketAI exposure)
 #   - Polish toward Condorcet-winner status on the 16x16 tournament
 #
 # Pool (8 bot envs + 16 self-play = 24 envs):
 #   CoacAI:1, Mayari:1, RAISocketAI:2, ObiBotKenobi:1, TMA:1,
-#   POWorkerRush:1, POLightRush:1
+#   WorkerRush:1, LightRush:1
 #   (UtsImass excluded -- server/preanalysis fragile on cluster)
 #
 # Safeguards:
@@ -62,7 +62,7 @@ python microrts_agent/train.py \
     --selfplay-save-interval 200 \
     --selfplay-swap-interval 25 \
     --selfplay-pool-size 50 \
-    --opponent-list "CoacAI:1,Mayari:1,RAISocketAI:2,ObiBotKenobi:1,TMA:1,POWorkerRush:1,POLightRush:1" \
+    --opponent-list "CoacAI:1,Mayari:1,RAISocketAI:2,ObiBotKenobi:1,TMA:1,WorkerRush:1,LightRush:1" \
     --alternate-players True \
     --prioritized-sampling True \
     --reward-weight 10.0 0.19 0.19 0.038 0.038 0.19 0.76 1.14 0.9975 0.0 \

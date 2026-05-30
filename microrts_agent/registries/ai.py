@@ -21,40 +21,28 @@ def passiveAI(utt):
     return PassiveAI()
 
 
-def workerRushAI(utt):
+def workerRush(utt):
     from ai.abstraction import WorkerRush  # type: ignore[import-not-found]
 
     return WorkerRush(utt)
 
 
-def lightRushAI(utt):
+def lightRush(utt):
     from ai.abstraction import LightRush  # type: ignore[import-not-found]
 
     return LightRush(utt)
 
 
-def POLightRush(utt):
-    from ai.abstraction.partialobservability import POLightRush  # type: ignore[import-not-found]
+def heavyRush(utt):
+    from ai.abstraction import HeavyRush  # type: ignore[import-not-found]
 
-    return POLightRush(utt)
-
-
-def POWorkerRush(utt):
-    from ai.abstraction.partialobservability import POWorkerRush  # type: ignore[import-not-found]
-
-    return POWorkerRush(utt)
+    return HeavyRush(utt)
 
 
-def POHeavyRush(utt):
-    from ai.abstraction.partialobservability import POHeavyRush  # type: ignore[import-not-found]
+def rangedRush(utt):
+    from ai.abstraction import RangedRush  # type: ignore[import-not-found]
 
-    return POHeavyRush(utt)
-
-
-def PORangedRush(utt):
-    from ai.abstraction.partialobservability import PORangedRush  # type: ignore[import-not-found]
-
-    return PORangedRush(utt)
+    return RangedRush(utt)
 
 
 def naiveMCTSAI(utt):
@@ -132,18 +120,16 @@ AI_MAPPING = {
     "RandomAI": randomAI,
     "RandomBiasedAI": randomBiasedAI,
     "PassiveAI": passiveAI,
-    "WorkerRushAI": workerRushAI,
-    "LightRushAI": lightRushAI,
+    "WorkerRush": workerRush,
+    "LightRush": lightRush,
+    "HeavyRush": heavyRush,
+    "RangedRush": rangedRush,
     "CoacAI": coacAI,
     "Mayari": mayari,
     "NaiveMCTS": naiveMCTSAI,
     "MixedBot": mixedBot,
     "Tiamat": tiamat,
     "Droplet": droplet,
-    "POLightRush": POLightRush,
-    "POWorkerRush": POWorkerRush,
-    "POHeavyRush": POHeavyRush,
-    "PORangedRush": PORangedRush,
     "ObiBotKenobi": obiBotKenobi,
     "StrategyTactics": strategyTactics,
     "TMA": tmaAI,
@@ -161,8 +147,8 @@ TOURNAMENT_BOT_NAMES = [
     "StrategyTactics",
     "TMA",
     "RandomBiasedAI",
-    "POLightRush",
-    "POWorkerRush",
+    "LightRush",
+    "WorkerRush",
     "RAISocketAI",
     "UtsImass",
 ]

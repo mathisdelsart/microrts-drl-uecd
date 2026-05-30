@@ -5,7 +5,7 @@ Tournament CSV I/O: write results, merge chunks, resolve results directories.
 import sys
 from pathlib import Path
 
-from microrts_agent.paths import TOURNAMENT_RESULTS_DIR
+from microrts_agent.paths import TOURNAMENTS_DIR
 
 
 def write_csv_header(f, config):
@@ -46,7 +46,7 @@ def resolve_results_dir(name_or_path: str) -> Path:
     p = Path(name_or_path)
     if p.is_dir():
         return p.resolve()
-    candidate = TOURNAMENT_RESULTS_DIR / name_or_path
+    candidate = TOURNAMENTS_DIR / name_or_path
     if candidate.is_dir():
         return candidate.resolve()
     print(f"ERROR: Results directory not found: {name_or_path}")
@@ -62,10 +62,11 @@ def ensure_tournament_csv(results_dir: Path) -> Path:
         print(f"  Found {csv_path.name}")
         return csv_path
 
-    # Auto-merge chunks
-    chunks = sorted(results_dir.glob("chunk_*.csv"))
+    # Auto-merge chunks (now under results_dir/chunks/)
+    chunks_dir = results_dir / "chunks"
+    chunks = sorted(chunks_dir.glob("chunk_*.csv")) if chunks_dir.is_dir() else []
     if not chunks:
-        print(f"ERROR: No tournament.csv or chunk_*.csv in {results_dir}")
+        print(f"ERROR: No tournament.csv or chunks/chunk_*.csv in {results_dir}")
         sys.exit(1)
 
     print(f"  No tournament.csv -- merging {len(chunks)} chunks...")

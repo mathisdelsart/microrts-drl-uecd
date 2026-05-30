@@ -22,7 +22,7 @@ export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
 AGENT="outputs/runs/best_single_map_100M_s1"
-BOTS=("RandomBiasedAI" "POWorkerRush" "POLightRush" "CoacAI" "Mayari")
+BOTS=("RandomBiasedAI" "WorkerRush" "LightRush" "CoacAI" "Mayari")
 BOT=${BOTS[$SLURM_ARRAY_TASK_ID]}
 
 EVAL_DIR="${AGENT}/EVAL"

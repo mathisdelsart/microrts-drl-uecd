@@ -167,7 +167,7 @@ echo "============================================================"
 
 mkdir -p "$BC_EVAL_DIR"
 
-BOTS=("RandomBiasedAI" "POWorkerRush" "POLightRush" "CoacAI" "Mayari")
+BOTS=("RandomBiasedAI" "WorkerRush" "LightRush" "CoacAI" "Mayari")
 
 for BOT in "${BOTS[@]}"; do
     echo ""

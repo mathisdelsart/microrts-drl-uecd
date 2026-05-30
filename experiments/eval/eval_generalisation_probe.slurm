@@ -13,7 +13,7 @@
 # Generalisation probe: UECD-Best on TwoBasesBarracks16x16 (held-out 16x16 map)
 # vs 8 opponents, ordered weakest -> strongest.
 # 50 P0 + 50 P1 = 100 stochastic games per bot.
-# Array: 0=RandomBiasedAI, 1=POWorkerRush, 2=POLightRush, 3=CoacAI,
+# Array: 0=RandomBiasedAI, 1=WorkerRush, 2=LightRush, 3=CoacAI,
 #        4=Mayari, 5=ObiBotKenobi, 6=TMA, 7=RAISocketAI
 #
 
@@ -26,7 +26,7 @@ cd $HOME/microrts-drl-uecd
 
 AGENT="outputs/runs/single_map/BestRL-350M"
 MAP="maps/open_competition/TwoBasesBarracks16x16.xml"
-BOTS=("RandomBiasedAI" "POWorkerRush" "POLightRush" "CoacAI" "Mayari" "ObiBotKenobi" "TMA" "RAISocketAI")
+BOTS=("RandomBiasedAI" "WorkerRush" "LightRush" "CoacAI" "Mayari" "ObiBotKenobi" "TMA" "RAISocketAI")
 BOT=${BOTS[$SLURM_ARRAY_TASK_ID]}
 
 EVAL_DIR="${AGENT}/EVAL_genprobe_TwoBasesBarracks"

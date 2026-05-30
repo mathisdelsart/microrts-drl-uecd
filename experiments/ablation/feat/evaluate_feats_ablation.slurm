@@ -54,7 +54,7 @@ FEAT_NAMES=(
     "buildtime_rewards" "hierarchical_mask" "autoregressive_hmask"
 )
 
-BOTS=("RandomBiasedAI" "POWorkerRush" "POLightRush" "CoacAI" "Mayari")
+BOTS=("RandomBiasedAI" "WorkerRush" "LightRush" "CoacAI" "Mayari")
 
 # Decode array task ID: feat_idx = task / 5, bot_idx = task % 5
 FEAT_IDX=$(( SLURM_ARRAY_TASK_ID / 5 ))

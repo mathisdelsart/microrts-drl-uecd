@@ -19,7 +19,7 @@
 #   genuine re-learning (not a polish).
 #
 # Pool (24 bot envs, no self-play until the agent is decent on this map):
-#   POWorkerRush:3, POLightRush:3, CoacAI:3, Mayari:3,
+#   WorkerRush:3, LightRush:3, CoacAI:3, Mayari:3,
 #   TMA:4, ObiBotKenobi:4, RAISocketAI:4
 #   -- RandomBiased skipped: BestRL already beats it trivially.
 #   -- Balanced: premium bots (TMA / Obi / RAI) get 50% of the envs so the
@@ -69,7 +69,7 @@ python microrts_agent/train.py \
     --max-steps 5000 \
     --num-bot-envs 24 \
     --num-selfplay-envs 0 \
-    --opponent-list "POWorkerRush:3,POLightRush:3,CoacAI:3,Mayari:3,TMA:4,ObiBotKenobi:4,RAISocketAI:4" \
+    --opponent-list "WorkerRush:3,LightRush:3,CoacAI:3,Mayari:3,TMA:4,ObiBotKenobi:4,RAISocketAI:4" \
     --alternate-players True \
     --prioritized-sampling True \
     --reward-weight 10.0 1.0 1.0 0.2 0.2 1.0 4.0 6.0 5.25 0.0 \
