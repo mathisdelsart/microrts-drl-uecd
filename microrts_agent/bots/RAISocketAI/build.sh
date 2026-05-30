@@ -3,5 +3,5 @@
 # No compilation needed: just copy the shipped JARs to jars/
 set -e
 
-mkdir -p ../../jars
-cp RAISocketAI.jar ../../jars/
+mkdir -p ../jars
+cp RAISocketAI.jar ../jars/
