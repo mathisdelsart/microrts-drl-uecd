@@ -1,0 +1,32 @@
+# Keep the Docker build context small.
+
+.git/
+.github/
+.vscode/
+.idea/
+
+# Heavy artefacts that the image doesn't need at build time (they're
+# either gitignored runtime outputs or thesis-side files).
+outputs/
+data/recordings/
+dissertation/
+cog-2026-paper/
+
+# Local caches.
+__pycache__/
+*.pyc
+*.pyo
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+
+# Python virtualenvs accidentally created locally.
+.venv/
+venv/
+cluster_venv/
+uts_imass_env/
+
+# Test artefacts.
+.coverage
+htmlcov/

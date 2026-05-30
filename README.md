@@ -127,6 +127,23 @@ python -m microrts_agent tournament --help
 On the HPC cluster, use `setup/cluster.sh` and the job scripts under
 `experiments/` (grouped by single-map/ multi-map/ BC/ eval/ tournament/ ablation/, with a shared `_setup_env.sh` preamble each script sources).
 
+### Docker (CPU only)
+
+For evaluation or quick experimentation without installing anything on the host,
+a `Dockerfile` ships a CPU-only image (Python 3.10 + Java 17 + the package + a
+prebuilt JNI bridge):
+
+```bash
+docker build -t microrts-drl-uecd .
+docker run --rm microrts-drl-uecd                              # prints CLI help
+docker run --rm microrts-drl-uecd evaluate \
+    --agent data/agents/UECD-SingleMap-Best \
+    --opponent CoacAI --nb_games 10 --max_steps 1000
+```
+
+The image is CPU-only by design (GitHub-style runners have no GPU). GPU
+training still uses the conda path above.
+
 ## Results
 
 Full experiments and analysis are in the dissertation (architecture and feature ablations,
