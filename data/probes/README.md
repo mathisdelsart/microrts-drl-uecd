@@ -33,12 +33,18 @@ Sorted by map, then by training-field difficulty (random → rush → competitio
 | `basesWorkers32x32A`    | Mayari         | 100 | 100% |  90% |  **95%** |
 | `basesWorkers32x32A`    | ObiBotKenobi   | 100 |  52% |  40% |  **46%** |
 | `basesWorkers32x32A`    | TMA            | 100 |  16% |   6% |  **11%** |
-| `basesWorkers32x32A`    | RAISocketAI    |  —  |  —   |  —   |   **—**  |
+| `basesWorkers32x32A`    | RAISocketAI    | 100 |   —  |   —  |  **95%** |
 
-> The RAISocketAI probe on `basesWorkers32x32A` produced no game data (the
-> log file under `outputs/generalisation_probe_BasesWorkers32x32/` contains
-> only the evaluator warm-up output, no `RESULTS` block). The row is left
-> empty here rather than omitted, so the gap is visible.
+> The `basesWorkers32x32A` × RAISocketAI row has only a total win rate, no
+> per-side breakdown. The raw stdout dump under
+> `outputs/generalisation_probe_BasesWorkers32x32/` was truncated at the
+> evaluator warm-up — no `RESULTS` block survived — so the per-side W/L
+> counts and average episode lengths are unrecoverable. The 95% total is
+> the canonical value used to produce the dissertation figure
+> (`dissertation/figs/figs-python/generalization_probes.py`); it was
+> captured at generation time from a stdout that no longer exists. All
+> other 15 rows are parsed directly from the surviving log files in
+> `raw/` and reproduce the dissertation table exactly.
 
 Full numerical data: [`results.csv`](results.csv).
 Per-game logs (W/L/draw, length) for each probe: [`raw/`](raw/).
