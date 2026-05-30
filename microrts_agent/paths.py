@@ -17,6 +17,11 @@ RUNS_DIR = OUTPUTS_DIR / "runs"
 RECORDINGS_DIR = OUTPUTS_DIR / "recordings"
 BENCHMARKS_DIR = OUTPUTS_DIR / "inference_bench"
 COMPARISONS_DIR = OUTPUTS_DIR / "comparisons"
-TOURNAMENTS_DIR = OUTPUTS_DIR / "tournaments"
+
+# Tournaments live at the repo root (tracked) rather than under outputs/
+# (git-ignored): the runner writes results here, and a curated subset of
+# subdirectories is shipped as part of the repo (currently single_map/,
+# multi_map/). recordings/ follows the same pattern.
+TOURNAMENTS_DIR = PROJECT_ROOT / "tournaments"
 
 TOURNAMENT_CONFIGS_DIR = AGENT_DIR / "tournament_configs"
