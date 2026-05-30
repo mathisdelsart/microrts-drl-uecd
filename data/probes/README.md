@@ -5,6 +5,11 @@ How well does the best single-map agent (`UECD-Best`, trained exclusively on
 probe plays 100 matches against a fixed opponent on a non-training map — 50
 games starting as Player 0, 50 starting as Player 1.
 
+This is the numerical source behind the *Generalisation* chapter of the
+dissertation: every win-rate dot on the dumbbell figure
+(`dissertation/figs/figs-python/generalization_probes.py`) comes from the
+table below.
+
 ## Maps tested
 
 | Map | Why |

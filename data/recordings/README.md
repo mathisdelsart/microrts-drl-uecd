@@ -5,6 +5,12 @@ map (16x16 `basesWorkers`), played against the full competition field plus
 several of our own ablation agents. 36 MP4 clips on the training map —
 18 opponents × P0/P1 mirrored viewpoints.
 
+These are the same clips embedded in the supplementary website
+([https://mathisdelsart.github.io/microrts-drl-uecd-website/](https://mathisdelsart.github.io/microrts-drl-uecd-website/),
+source repo: [`mathisdelsart/microrts-drl-uecd-website`](https://github.com/mathisdelsart/microrts-drl-uecd-website))
+— the site pulls them directly from this folder so that a public reader can
+watch a match without cloning anything.
+
 ## Layout
 
 One directory per opponent:
@@ -46,8 +52,8 @@ The on-disk run directory still uses its training-time identifier
 updated to `UECD-Best`. See `python -m microrts_agent evaluate --help` for
 all flags.
 
-## More recordings
+## More
 
-The full tournament archive (additional opponents, more games per match,
-larger maps) is on the [supplementary
-site](https://mathisdelsart.github.io/microrts-drl-uecd-website/).
+- 🌐 **Interactive viewer / extended archive:** <https://mathisdelsart.github.io/microrts-drl-uecd-website/>
+- 📦 **Site source:** <https://github.com/mathisdelsart/microrts-drl-uecd-website>
+- 📊 **Numerical tournament results behind these matches:** [`../tournaments/`](../tournaments/)
