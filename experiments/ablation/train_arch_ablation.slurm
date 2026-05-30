@@ -18,8 +18,8 @@
 #   Baseline hyperparams only (no advanced features).
 #
 # Usage:
-#   sbatch experiments/run_arch_ablation.slurm
-#   SEED=2 sbatch experiments/run_arch_ablation.slurm
+#   sbatch experiments/ablation/train_arch_ablation.slurm
+#   SEED=2 sbatch experiments/ablation/train_arch_ablation.slurm
 #
 
 SEED=${SEED:-1}

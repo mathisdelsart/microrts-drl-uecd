@@ -16,7 +16,7 @@
 #   Each job runs: python evaluate.py --agent <feat_dir> --opponent <bot> --nb_games 500
 #
 # Usage:
-#   sbatch experiments/feat_ablation/evaluate_feats_ablation.slurm
+#   sbatch experiments/ablation/evaluate_feats_ablation.slurm
 #
 
 SEED=${SEED:-1}
