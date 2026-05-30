@@ -47,7 +47,6 @@ Documentation = "https://mathisdelsart.github.io/microrts-drl-uecd-website/"
 dependencies = [
     "torch>=2.0",
     "numpy<2",
-    "gym==0.23.1",
     "stable-baselines3",
     "tensorboard",
     "JPype1",
@@ -57,7 +56,6 @@ dependencies = [
     "seaborn",
     "pandas",
     "rich",
-    "pettingzoo==1.24.3",
     "moviepy",
 ]
 
