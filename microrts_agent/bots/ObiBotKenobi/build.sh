@@ -8,7 +8,7 @@ if [ -x /usr/libexec/java_home ]; then
     export JAVA_HOME=$(/usr/libexec/java_home -v 17)
     export PATH=$JAVA_HOME/bin:$PATH
 fi
-MICRORTS_JAR="$(cd "$(dirname "$0")/../../.." && pwd)/microrts/microrts.jar"
+MICRORTS_JAR="$(cd "$(dirname "$0")/../.." && pwd)/microrts/microrts.jar"
 
 rm -rf build
 mkdir -p build/classes build/jar
@@ -29,5 +29,5 @@ jar cfm ../jar/ObiBotKenobi.jar ../META-INF/MANIFEST.MF *.class
 cd ../..
 
 # Deploy
-mkdir -p ../../jars
-cp build/jar/*.jar ../../jars/
+mkdir -p ../jars
+cp build/jar/*.jar ../jars/
