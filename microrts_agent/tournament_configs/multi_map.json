@@ -7,8 +7,8 @@
     "maps/open_competition/TwoBasesBarracks16x16.xml"
   ],
   "ais": [
-    "agent:../outputs/runs/multiple_map/UECD-MultiMap",
-    "agent:../outputs/runs/single_map/UECD-SingleMap-Best",
+    "agent:../data/agents/UECD-MultiMap",
+    "agent:../data/agents/UECD-SingleMap-Best",
     "RandomBiasedAI",
     "LightRush",
     "WorkerRush",
