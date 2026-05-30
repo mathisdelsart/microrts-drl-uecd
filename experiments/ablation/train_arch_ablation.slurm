@@ -53,7 +53,7 @@ if [ -d "$VENV_DIR" ]; then
     source "$VENV_DIR/bin/activate"
     echo "Using venv: $VENV_DIR"
 else
-    echo "ERROR: cluster_venv not found. Run setup_cluster_env.sh first."
+    echo "ERROR: cluster_venv not found. Run setup/cluster.sh first."
     exit 1
 fi
 
