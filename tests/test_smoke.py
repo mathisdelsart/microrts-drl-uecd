@@ -762,7 +762,10 @@ def test_citation_cff_valid():
 @pytest.mark.parametrize("toml_path", ["pyproject.toml", "ruff.toml"])
 def test_toml_file_parses(toml_path):
     """Every TOML config file at the repo root parses cleanly."""
-    import tomllib
+    try:
+        import tomllib  # stdlib on Python 3.11+
+    except ImportError:
+        import tomli as tomllib  # backport for Python 3.9 / 3.10
 
     path = REPO_ROOT / toml_path
     with open(path, "rb") as f:

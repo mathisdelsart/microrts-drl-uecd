@@ -48,7 +48,7 @@ tournament = [
     "moviepy",
     "pyvirtualdisplay",
 ]
-dev = ["ruff==0.15.14", "pytest>=8", "pytest-timeout>=2", "PyYAML"]
+dev = ["ruff==0.15.14", "pytest>=8", "pytest-timeout>=2", "PyYAML", "tomli; python_version < '3.11'"]
 
 # microrts_agent is the importable package (run via `python -m microrts_agent <cmd>`
 # after `pip install -e .`). The vendored competition bots and the Java engine are
