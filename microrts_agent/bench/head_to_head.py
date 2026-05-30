@@ -256,7 +256,7 @@ def generate_plot(rl_times, bot_times, meta, output_path):
 
     # CDF
     ax2.set_facecolor("white")
-    for i, (lbl, t_ms) in enumerate(zip(labels, data)):
+    for i, (lbl, t_ms) in enumerate(zip(labels, data, strict=False)):
         sorted_t = np.sort(t_ms)
         cdf = np.arange(1, len(sorted_t) + 1) / len(sorted_t)
         ax2.plot(sorted_t, cdf, color=colors[i], linewidth=2, label=lbl.split("\n")[0], alpha=0.85)

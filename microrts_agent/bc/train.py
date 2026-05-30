@@ -130,7 +130,7 @@ def compute_bc_vf_loss(agent, obs, actions, returns, action_nvec, vf_coef, devic
         bc_loss = torch.tensor(0.0, device=device)
     else:
         bc_loss = torch.tensor(0.0, device=device)
-        for i, (logit_i, nvec_i) in enumerate(zip(split_logits, action_nvec)):
+        for i, (logit_i, nvec_i) in enumerate(zip(split_logits, action_nvec, strict=False)):
             target_i = target[has_action, i].long().clamp(0, nvec_i - 1)
             logit_i = logit_i[has_action]
             bc_loss += nn.functional.cross_entropy(logit_i, target_i, reduction="sum")

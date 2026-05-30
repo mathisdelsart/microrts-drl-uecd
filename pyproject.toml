@@ -54,11 +54,12 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# Runtime deps for the RAISocketAI tournament bot. The bot's own wheel
-# (rl_algo_impls) is installed separately, with --no-deps, from
-# microrts_agent/bots/RAISocketAI/ — its pinned
-# dependency set conflicts with the core stack, so the setup scripts install
-# the wheel without deps and rely on the cherry-picked subset listed here.
+# Runtime deps required by the RAISocketAI tournament bot wheel. The wheel
+# (`rl_algo_impls`) is installed with `--no-deps` from
+# `microrts_agent/bots/RAISocketAI/` because its pinned set conflicts with
+# our core stack; the cherry-picked subset listed here is what the wheel
+# actually needs at runtime. None of these packages is imported by the
+# `microrts_agent/` source — they exist solely to satisfy the wheel.
 tournament = [
     "gymnasium==0.29.1",
     "psutil",

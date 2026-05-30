@@ -6,7 +6,6 @@ import os
 import subprocess
 import time
 from pathlib import Path
-from typing import Optional
 
 from microrts_agent.paths import AGENT_DIR, PROJECT_ROOT
 
@@ -72,7 +71,7 @@ def needs_uts_imass(config_or_names) -> bool:
     return any(name.lower().replace("_", "") == "utsimass" for name in names)
 
 
-def start_uts_imass_server() -> Optional[subprocess.Popen]:
+def start_uts_imass_server() -> subprocess.Popen | None:
     """Start UTS_Imass server.
 
     Local mode: kills any stale server first, starts fresh.
@@ -115,7 +114,7 @@ def start_uts_imass_server() -> Optional[subprocess.Popen]:
     return None
 
 
-def stop_uts_imass_server(proc: Optional[subprocess.Popen]):
+def stop_uts_imass_server(proc: subprocess.Popen | None):
     """Stop the UTS_Imass server.
 
     Only stops if we started it (proc is not None).

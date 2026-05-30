@@ -11,8 +11,6 @@ All public functions take a winrate_matrix (n x n numpy array where
 entry [i,j] is the win rate of agent i against agent j, in [0,1]).
 """
 
-from typing import Optional
-
 import numpy as np
 from scipy.optimize import linprog
 
@@ -65,7 +63,7 @@ def build_winrate_matrix(games, ai_names: list[str]) -> np.ndarray:
 # ---------------------------------------------------------------------------
 
 
-def condorcet_winner(winrate_matrix: np.ndarray, ai_names: list[str]) -> Optional[str]:
+def condorcet_winner(winrate_matrix: np.ndarray, ai_names: list[str]) -> str | None:
     """
     Condorcet winner: the agent that beats ALL others pairwise (>50%).
     Returns the name, or None if no such agent exists (intransitive cycle).

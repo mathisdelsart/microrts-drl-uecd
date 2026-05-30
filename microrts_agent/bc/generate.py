@@ -270,7 +270,7 @@ def main():
     print("  BC Data Generation")
     print("=" * 60)
     print(f"  Bot:          {args.bot}")
-    print(f"  Opponents:    {list(zip(args.opponents, args.games_per_opponent))}")
+    print(f"  Opponents:    {list(zip(args.opponents, args.games_per_opponent, strict=False))}")
     print(f"  Total games:  {total_games}")
     print(f"  Map:          {args.map}")
     print(f"  Max steps:    {args.max_steps}")
@@ -319,7 +319,7 @@ def main():
     saved_files = []
     t0 = time.time()
 
-    for opp_name, num_games in zip(args.opponents, args.games_per_opponent):
+    for opp_name, num_games in zip(args.opponents, args.games_per_opponent, strict=False):
         print(f"  Recording {num_games} games vs {opp_name}...")
         opp_factory = AI_MAPPING[opp_name]
 

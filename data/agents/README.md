@@ -182,11 +182,10 @@ gh release download tfevents-agent-archive --dir tfevents_archive
 tensorboard --logdir tfevents_archive
 ```
 
-The release grows incrementally: when new agents are triaged in (the
-`outputs/runs/arch_ablation/` and `outputs/runs/feat_ablation/` triage is
-still pending), their tfevents will be appended with `gh release upload
-tfevents-agent-archive <new files>`. The tag does **not** change, no
-existing URL breaks.
+The release is **frozen** at these 8 agent-level assets. Architecture and
+feature ablation runs (under [`../ablation/`](../ablation/)) are
+intentionally not included — their publishable artefact is the aggregate
+`eval/results.csv` per ablation tree, not the per-run training curve.
 
 ## See also
 
