@@ -734,10 +734,7 @@ def test_architecture_forward_pass(arch):
 )
 def test_yaml_file_parses(yaml_path):
     """Every checked-in YAML config file is valid YAML."""
-    try:
-        import yaml
-    except ImportError:
-        pytest.skip("PyYAML not installed in this environment")
+    yaml = pytest.importorskip("yaml")
     path = REPO_ROOT / yaml_path
     with open(path) as f:
         data = yaml.safe_load(f)
@@ -747,10 +744,7 @@ def test_yaml_file_parses(yaml_path):
 # ── 28. CITATION.cff is valid YAML + required fields ────────────────────
 def test_citation_cff_valid():
     """CITATION.cff parses + has the required fields per the CFF 1.2 schema."""
-    try:
-        import yaml
-    except ImportError:
-        pytest.skip("PyYAML not installed in this environment")
+    yaml = pytest.importorskip("yaml")
     with open(REPO_ROOT / "CITATION.cff") as f:
         cff = yaml.safe_load(f)
     for field in ("cff-version", "title", "type", "version", "authors", "url"):
@@ -915,10 +909,7 @@ def test_vendored_maps_are_valid_xml():
 def test_ci_workflow_declares_test_job():
     """The CI workflow has a `tests` job — guards against accidentally
     removing the smoke-test runner from .github/workflows/ci.yml."""
-    try:
-        import yaml
-    except ImportError:
-        pytest.skip("PyYAML not installed in this environment")
+    yaml = pytest.importorskip("yaml")
     with open(REPO_ROOT / ".github" / "workflows" / "ci.yml") as f:
         ci = yaml.safe_load(f)
     assert "tests" in ci["jobs"], "ci.yml has no 'tests' job"

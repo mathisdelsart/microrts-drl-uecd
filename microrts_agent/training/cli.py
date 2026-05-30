@@ -1004,7 +1004,9 @@ def compute_derived_args(args, eval_step_interval=10_000_000):
     # PAE: derive absolute cutoff from keep ratio
     pae_keep = args.pae_keep
     if pae_keep > 0:
-        if not (0.0 < pae_keep < 1.0):
+        # We already know pae_keep > 0 from the outer guard; only need to
+        # check the upper bound. Avoids the `0.0 < pae_keep` redundancy.
+        if pae_keep >= 1.0:
             import warnings
 
             warnings.warn(

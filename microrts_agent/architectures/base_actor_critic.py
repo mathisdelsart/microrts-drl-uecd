@@ -381,6 +381,15 @@ class GridActorCriticBase(nn.Module):
         hidden = self.encoder(x)
         action, logprob, entropy, masks = self._sample_action(hidden, action, invalid_action_masks)
 
+        # Pre-initialise logits to None so the (hl_gauss × value-head) branches
+        # below stay statically safe to a reader / linter: every later use is
+        # guarded by `self.hl_gauss` + the corresponding `*_value_heads` flag,
+        # which together imply the matching assignment, but that invariant is
+        # not provable from local control flow.
+        logits_shaped = None
+        logits_sparse = None
+        logits_cost = None
+
         # Compute critic logits once, reuse for both value extraction and HL-Gauss loss
         if self.hl_gauss:
             logits_shaped = self.critic_shaped(hidden)
