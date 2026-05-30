@@ -10,6 +10,38 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [{ name = "Mathis Delsart", email = "mathis.delsart@gmail.com" }]
+keywords = [
+    "reinforcement-learning",
+    "deep-reinforcement-learning",
+    "ppo",
+    "self-play",
+    "behavior-cloning",
+    "microrts",
+    "real-time-strategy",
+    "pytorch",
+    "masters-thesis",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Games/Entertainment :: Real Time Strategy",
+]
+
+[project.urls]
+Homepage = "https://github.com/mathisdelsart/microrts-drl-uecd"
+Repository = "https://github.com/mathisdelsart/microrts-drl-uecd"
+Issues = "https://github.com/mathisdelsart/microrts-drl-uecd/issues"
+Documentation = "https://mathisdelsart.github.io/microrts-drl-uecd-website/"
 
 # Core stack: training (PPO), evaluation, tournaments, plotting.
 dependencies = [
