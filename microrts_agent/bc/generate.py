@@ -113,6 +113,7 @@ def record_games(
     obs_list = []
     act_list = []
     rew_list = []
+    done_list = []
     chunk_files = []
     chunk_idx = 0
     flush_every = 50  # save to disk every N games to avoid OOM
@@ -168,12 +169,14 @@ def record_games(
                 obs = encode_standard(raw_obs)
                 action_grid = action_vector_to_grid(action_vecs_np, height, width, action_dims)
 
+                done = bool(response.done[0]) or game_steps >= max_steps
+
                 obs_list.append(obs)
                 act_list.append(action_grid)
                 rew_list.append(reward)
+                done_list.append(done)
 
-                done = bool(response.done[0])
-                if done or game_steps >= max_steps:
+                if done:
                     games_this_side += 1
                     games_completed += 1
                     elapsed = time.time() - t0
@@ -202,12 +205,14 @@ def record_games(
                             obs=np.stack(obs_list),
                             actions=np.stack(act_list),
                             rewards=np.array(rew_list, dtype=np.float32),
+                            dones=np.array(done_list, dtype=bool),
                         )
                         chunk_files.append(chunk_path)
                         chunk_idx += 1
                         obs_list.clear()
                         act_list.clear()
                         rew_list.clear()
+                        done_list.clear()
                     break
 
     # Flush any remaining data
@@ -218,11 +223,13 @@ def record_games(
             obs=np.stack(obs_list),
             actions=np.stack(act_list),
             rewards=np.array(rew_list, dtype=np.float32),
+            dones=np.array(done_list, dtype=bool),
         )
         chunk_files.append(chunk_path)
         obs_list.clear()
         act_list.clear()
         rew_list.clear()
+        done_list.clear()
 
     with contextlib.suppress(Exception):
         env.close()

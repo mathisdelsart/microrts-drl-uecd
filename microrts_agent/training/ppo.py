@@ -376,7 +376,15 @@ def ppo_update(
                     aux_loss_accum[name] += aloss.item()
                 aux_loss_count += 1
 
-            # BC teacher KL penalty: KL(π_teacher || π_agent)
+            # BC teacher penalty (single-sample importance-weight estimator).
+            # Actions come from the agent's rollout, so this is
+            #   E_{a ~ π_agent}[log π_teacher(a) − log π_agent(a)]
+            # which is the negative of the (k1) Monte-Carlo estimate of
+            # KL(π_agent ‖ π_teacher) on the agent's own samples — minimising
+            # it pulls π_agent toward π_teacher on states the agent visits.
+            # Note: this is NOT an unbiased estimate of the forward KL
+            # (KL(π_teacher ‖ π_agent)); estimating that would require sampling
+            # actions from π_teacher.
             bc_kl_loss = torch.tensor(0.0, device=b_obs.device)
             if bc_teacher is not None and bc_kl_coef > 0:
                 with torch.no_grad():
@@ -386,7 +394,6 @@ def ppo_update(
                         action=b_actions.long()[mb_inds],
                     )
                     teacher_logprob = teacher_out["logprob"]
-                # KL(teacher || agent) ≈ E[log π_teacher - log π_agent]
                 bc_kl_loss = (teacher_logprob - newlogprob).mean()
                 loss = loss + bc_kl_coef * bc_kl_loss
 

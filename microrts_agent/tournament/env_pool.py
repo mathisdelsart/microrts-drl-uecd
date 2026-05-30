@@ -313,7 +313,14 @@ class EnvPool:
                 f.name.endswith("_config.json") for f in map_dir.iterdir()
             )
             os.makedirs(map_dir, exist_ok=True)
-            rel_folder = str(map_dir.resolve().relative_to(Path.cwd()))
+            # UtsImass accepts either a relative or absolute folder path; prefer relative
+            # for log readability, fall back to absolute when CWD isn't a repo ancestor
+            # (e.g. SLURM $TMPDIR), where `relative_to(Path.cwd())` would raise ValueError.
+            abs_folder = map_dir.resolve()
+            try:
+                folder = str(abs_folder.relative_to(Path.cwd()))
+            except ValueError:
+                folder = str(abs_folder)
             if cached:
                 # Load cached data into fresh server thread (fast ~1s)
                 effective_budget = 1000
@@ -329,7 +336,7 @@ class EnvPool:
                 label = f"{budget / 1000:.0f}s budget"
             print(f"    Pre-analysis: {bot_name} on {map_stem} -- {label}")
             t0 = time.time()
-            ai.preGameAnalysis(gs, JLong(effective_budget), rel_folder)
+            ai.preGameAnalysis(gs, JLong(effective_budget), folder)
             elapsed = time.time() - t0
             print(f"    Pre-analysis done ({elapsed:.1f}s)")
             return

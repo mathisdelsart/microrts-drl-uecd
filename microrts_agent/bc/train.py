@@ -60,43 +60,59 @@ def parse_args():
 
 def load_data(file_paths):
     """Load and concatenate multiple .npz files."""
-    all_obs, all_actions, all_rewards = [], [], []
+    all_obs, all_actions, all_rewards, all_dones = [], [], [], []
+    any_missing_dones = False
     for path in file_paths:
         for f in sorted(glob.glob(path)):
             print(f"  Loading {f}")
             data = np.load(f)
+            n = len(data["obs"])
             all_obs.append(data["obs"])
             all_actions.append(data["actions"])
             if "rewards" in data:
                 all_rewards.append(data["rewards"])
             else:
                 # Backward compat: no rewards in old files, fill with zeros
-                all_rewards.append(np.zeros(len(data["obs"]), dtype=np.float32))
-            print(f"    {len(data['obs'])} samples")
+                all_rewards.append(np.zeros(n, dtype=np.float32))
+            if "dones" in data:
+                all_dones.append(data["dones"].astype(bool))
+            else:
+                # Backward compat: legacy chunks predate dones; signal so the caller
+                # can fall back to the reward-magnitude heuristic.
+                any_missing_dones = True
+                all_dones.append(np.zeros(n, dtype=bool))
+            print(f"    {n} samples")
     obs = np.concatenate(all_obs, axis=0)
     actions = np.concatenate(all_actions, axis=0)
     rewards = np.concatenate(all_rewards, axis=0)
+    dones = None if any_missing_dones else np.concatenate(all_dones, axis=0)
     print(f"  Total: {len(obs)} samples")
-    return obs, actions, rewards
+    if dones is None:
+        print(
+            "  WARNING: at least one chunk has no 'dones' key — falling back to "
+            "reward-magnitude heuristic for episode boundaries."
+        )
+    return obs, actions, rewards, dones
 
 
-def compute_returns(rewards, gamma=0.99):
+def compute_returns(rewards, gamma=0.99, dones=None):
     """Compute discounted reward-to-go for each timestep.
 
-    rewards is a flat array of weighted scalar rewards (w^T @ r_t).
-    Episode boundaries are detected by large absolute reward values
-    (the win/loss component = ±10 dominates at game end).
-    We compute returns backward, resetting at each episode boundary.
+    `rewards` is a flat array of weighted scalar rewards (w^T @ r_t).
+    `dones` (optional) is a parallel bool array; True marks the last step
+    of an episode. When provided, episode boundaries are taken from `dones`
+    and the function is robust to any reward weighting.
+
+    Backward-compat fallback (dones=None): detect boundaries by reward
+    magnitude — works only when the win/loss component dominates
+    (e.g. weight ≥ ~5).
     """
     returns = np.zeros_like(rewards)
     running_return = 0.0
     for t in reversed(range(len(rewards))):
-        # Detect episode boundary: win/loss reward component is ±10
-        # (weight=10 × ±1), so |reward| > 5 signals game end
-        if abs(rewards[t]) > 5.0:
-            running_return = rewards[t]
-        else:
-            running_return = rewards[t] + gamma * running_return
+        # Legacy heuristic fallback (dones=None) assumes |win/loss reward| > 5
+        is_boundary = bool(dones[t]) if dones is not None else abs(rewards[t]) > 5.0
+        running_return = rewards[t] if is_boundary else rewards[t] + gamma * running_return
         returns[t] = running_return
     return returns
 
@@ -156,11 +172,11 @@ def main():
 
     # Load data
     print("Loading data...")
-    obs, actions, rewards = load_data(args.data)
+    obs, actions, rewards, dones = load_data(args.data)
 
     # Compute discounted returns for value head training
     print(f"Computing discounted returns (gamma={args.gamma})...")
-    returns = compute_returns(rewards, gamma=args.gamma)
+    returns = compute_returns(rewards, gamma=args.gamma, dones=dones)
     print(f"  Returns range: [{returns.min():.3f}, {returns.max():.3f}]")
 
     # Infer dimensions

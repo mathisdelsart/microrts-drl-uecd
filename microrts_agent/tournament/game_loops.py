@@ -32,11 +32,13 @@ def play_bot_vs_bot_batch(
     env = env_pool.get_bot_env(map_path, max_steps)
 
     # Setup first N clients
+    # (Time budget is applied post-reset by configure_cloned_ai, since reset()
+    # internally clones the AI; setting timeBudgetMs on the wrapper here would
+    # be discarded.)
     for i in range(N):
         client = env.vec_client.botClients[i]
         client.ai1 = env_pool.get_bot_ai(ai1_name, map_path, env.real_utt)
         client.ai2 = env_pool.get_bot_ai(ai2_name, map_path, env.real_utt)
-        client.timeBudgetMs = config.time_budget
         if config.save_traces:
             client.startTrace()
         client.reset(JInt(0))
@@ -188,10 +190,11 @@ def play_agent_vs_bot_batch(
     base_env = env_pool._get_base_env(env)
 
     # Setup first N clients with real bot
+    # (Time budget is applied post-reset by configure_cloned_ai below; setting
+    # it here on the pre-clone wrapper would be discarded.)
     for i in range(N):
         client = base_env.vec_client.clients[i]
         client.ai2 = env_pool.get_bot_ai(bot_name, map_path, base_env.real_utt)
-        client.timeBudgetMs = config.time_budget
         if config.save_traces:
             client.startTrace()
 
@@ -221,8 +224,11 @@ def play_agent_vs_bot_batch(
                 t0 = time.perf_counter_ns()
                 actions = agent.predict_batch(obs, masks)
                 inference_ns = time.perf_counter_ns() - t0
-            n_active = sum(active)
-            per_game_ns = inference_ns // n_active if n_active > 0 else 0
+            # Divide the batched-inference cost by the initial env count N (not the
+            # live count) so each game's per-step share stays constant over the match.
+            # Dividing by n_active would charge the final survivor the full batch cost,
+            # even though GPU work doesn't shrink as games end.
+            per_game_ns = inference_ns // N
             for i in range(N):
                 if active[i]:
                     agent_time_ns[i] += per_game_ns
@@ -405,8 +411,6 @@ def play_agent_vs_agent_batch(
     # Detect obs config mismatches
     ext1 = cfg1.get("extended_obs", False)
     ext2 = cfg2.get("extended_obs", False)
-    cfg1.get("filtered_masks", False)
-    cfg2.get("filtered_masks", False)
     fs1 = cfg1.get("frame_stack", 0)
     fs2 = cfg2.get("frame_stack", 0)
     ro1 = cfg1.get("reserved_obs", False)
@@ -467,9 +471,10 @@ def play_agent_vs_agent_batch(
                 all_actions[0::2] = actions_p0
                 all_actions[1::2] = actions_p1
 
-            n_active = sum(active_games)
-            per1 = ns1 // n_active if n_active > 0 else 0
-            per2 = ns2 // n_active if n_active > 0 else 0
+            # See comment in play_agent_vs_bot_batch: divide by N (initial env count)
+            # to keep each game's per-step inference share stable over the match.
+            per1 = ns1 // N
+            per2 = ns2 // N
             for i in range(N):
                 if active_games[i]:
                     agent1_time_ns[i] += per1
