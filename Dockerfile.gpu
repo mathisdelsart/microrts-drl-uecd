@@ -1,0 +1,53 @@
+# GPU image for MicroRTS Deep-RL Agent (CUDA 12.4 + cuDNN, torch 2.5).
+#
+# Build:  docker build -f Dockerfile.gpu -t microrts-drl-uecd:gpu .
+# Run:    docker run --rm --gpus all microrts-drl-uecd:gpu                  # CLI help
+#         docker run --rm --gpus all microrts-drl-uecd:gpu evaluate \
+#             --agent data/agents/UECD-SingleMap-Best \
+#             --opponent CoacAI --nb_games 10 --max_steps 1000
+#         docker run --rm --gpus all -v $(pwd)/outputs:/app/outputs \
+#             microrts-drl-uecd:gpu train --exp-name docker-smoke \
+#             --total-timesteps 100000
+#
+# Compared to the CPU Dockerfile this image: (a) uses an NVIDIA CUDA base,
+# (b) installs the CUDA-enabled torch wheel (no `--index-url cpu` override),
+# and (c) requires `--gpus all` at run time. The CPU image stays the default
+# (~1 GB vs ~6 GB) and is sufficient for evaluation.
+FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
+
+# Avoid tzdata interactive prompt during apt install.
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Python 3.10 + Java 17 for the JNI bridge + microrts engine.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        python3.10 \
+        python3.10-venv \
+        python3-pip \
+        openjdk-17-jdk-headless \
+        ca-certificates \
+        bash \
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -sf /usr/bin/python3.10 /usr/local/bin/python \
+    && ln -sf /usr/bin/python3.10 /usr/local/bin/python3
+
+WORKDIR /app
+
+# Copy the repo. .dockerignore drops data/, outputs/, dissertation/,
+# cog-2026-paper/, .git/ etc. so the build context stays small.
+COPY . .
+
+# CUDA-enabled torch first so pip's resolver picks up the GPU wheel
+# (the default PyPI index serves CPU-only torch on Linux).
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cu124 \
+    && pip install --no-cache-dir -e ".[dev]"
+
+# Rebuild the Java<->Python bridge from src/ against the vendored microrts.jar.
+RUN bash microrts_agent/microrts/build_bridge.sh
+
+# Smoke-test the import path at build time so a broken image fails fast.
+# (Does NOT exercise CUDA; that needs a runtime with --gpus all.)
+RUN python -c "import microrts_agent; print('microrts_agent ready')"
+
+ENTRYPOINT ["python", "-m", "microrts_agent"]
+CMD ["--help"]

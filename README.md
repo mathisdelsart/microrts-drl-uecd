@@ -127,22 +127,49 @@ python -m microrts_agent tournament --help
 On the HPC cluster, use `setup/cluster.sh` and the job scripts under
 `experiments/` (grouped by single-map/ multi-map/ BC/ eval/ tournament/ ablation/, with a shared `_setup_env.sh` preamble each script sources).
 
-### Docker (CPU only)
+### Docker
 
-For evaluation or quick experimentation without installing anything on the host,
-a `Dockerfile` ships a CPU-only image (Python 3.10 + Java 17 + the package + a
-prebuilt JNI bridge):
+Two images are shipped. The default `Dockerfile` is CPU-only (~1 GB) and
+sufficient for evaluation; `Dockerfile.gpu` adds CUDA 12.4 + cuDNN (~6 GB)
+for training.
 
 ```bash
+# CPU image (Python 3.10 + Java 17 + CPU-only torch + prebuilt JNI bridge)
 docker build -t microrts-drl-uecd .
 docker run --rm microrts-drl-uecd                              # prints CLI help
 docker run --rm microrts-drl-uecd evaluate \
     --agent data/agents/UECD-SingleMap-Best \
     --opponent CoacAI --nb_games 10 --max_steps 1000
+
+# GPU image (CUDA 12.4, requires nvidia-container-toolkit + --gpus all)
+docker build -f Dockerfile.gpu -t microrts-drl-uecd:gpu .
+docker run --rm --gpus all microrts-drl-uecd:gpu train \
+    --exp-name docker-smoke --total-timesteps 100000
 ```
 
-The image is CPU-only by design (GitHub-style runners have no GPU). GPU
-training still uses the conda path above.
+The CPU image stays the default for evaluation; SLURM-style cluster training
+still uses the conda path above.
+
+### Reproducible installs (lock file)
+
+`requirements-lock.txt` pins every transitive dependency with SHA-256 hashes
+(generated via `uv pip compile --generate-hashes`). For a byte-reproducible
+install:
+
+```bash
+pip install -r requirements-lock.txt --require-hashes
+pip install -e . --no-deps
+```
+
+The plain `pip install -e ".[dev]"` path stays the recommended one for day-to-day
+development; the lock file is for archival reproducibility (the CoG paper, future
+researchers reproducing thesis results).
+
+### Demo notebook
+
+`examples/load_agent.ipynb` walks through loading `UECD-SingleMap-Best`,
+printing its training config, and playing one game against `RandomBiasedAI`
+from inside Jupyter. CPU-only, ~30 seconds end-to-end on a laptop.
 
 ## Results
 
