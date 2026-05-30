@@ -12,7 +12,7 @@
 # BC-PPO: Load BC warmstart, fine-tune with RL for 100M steps
 #
 # Compare with from-scratch training to measure BC warmstart benefit.
-# Same features as BEST_agent_single_map_300M.slurm but 100M steps.
+# Same feature stack as the single-map UECD agents but 100M steps.
 #
 # Usage:
 #   sbatch experiments/bc/bc_finetune_100M.slurm

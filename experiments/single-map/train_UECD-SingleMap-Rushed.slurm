@@ -25,8 +25,8 @@
 #   aux-opponent-modeling, gelu
 #
 # Usage:
-#   sbatch experiments/single-map/phased_single_map_300M.slurm
-#   SEED=2 sbatch experiments/single-map/phased_single_map_300M.slurm
+#   sbatch experiments/single-map/train_UECD-SingleMap-Rushed.slurm
+#   SEED=2 sbatch experiments/single-map/train_UECD-SingleMap-Rushed.slurm
 #
 
 SEED=${SEED:-1}
