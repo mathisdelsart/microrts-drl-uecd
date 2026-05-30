@@ -24,6 +24,19 @@ and enough to **audit what was trained** (`config.json`, `eval_results.csv`,
 | [`UECD-MultiMap`](UECD-MultiMap/)           | 200M ✅          | 80% | none                                              | Headline multi-map agent of the dissertation. |
 | [`UECD-MultiMap-Best`](UECD-MultiMap-Best/) | 330M / 400M     | 84% | 12 envs pool-only, pool=30, adaptive (hybrid)     | Longer run with stronger curricula; beats `UECD-MultiMap` on `CoacAI` / `Mayari`. |
 
+## Behaviour-cloning family (warm-started from `data/bc_training/`)
+
+| Run | Steps | Pool mean WR | Pipeline | Key role |
+|---|---:|---:|---|---|
+| [`UECD-BC`](UECD-BC/)         | n/a (supervised) | **78.0%** | BC-only (no RL phase) | The 78% horizontal reference line of the dissertation's BC+VF→PPO vs from-scratch figure. Numerical proof under [`../bc_baseline/`](../bc_baseline/). |
+| [`UECD-BC-PPO`](UECD-BC-PPO/) | 100M ✅          | **96%**    | BC → PPO fine-tune    | The BC+VF→PPO curve+markers of the same figure. Lifts the BC-only 78% pool baseline to near-perfect after 100M of PPO. |
+
+`UECD-BC` is the only agent here without `agent.pt + checkpoint.pt +
+train.log + eval_results.csv` — the BC training script writes only
+`agent.pt` and `config.json`. The 78% pool win-rate proof lives at
+[`../bc_baseline/`](../bc_baseline/) instead of `eval_results.csv`.
+`UECD-BC-PPO` is shipped in the standard medium-tier layout.
+
 ## Lineage — `UECD-SingleMap-Best`
 
 `UECD-SingleMap-Best` is the only agent in this folder whose `train.log`
@@ -72,6 +85,14 @@ To rebuild the full training history from step 0:
 1. Read `lineage/phase0-from-scratch/train.log` (covers 0 → 150M).
 2. Read `lineage/phase1-pool-broadening/train.log` (covers 150M → 240M).
 3. Read `UECD-SingleMap-Best/train.log` (covers 240M → 360M).
+
+`UECD-BC-PPO` is the second resume in this folder, but its lineage is
+trivial: it warm-starts from `UECD-BC/agent.pt` at PPO step 0, then
+runs PPO for 100M steps. There is no intermediate phase to ship.
+The BC training trajectory that produced `UECD-BC/agent.pt` is not
+preserved (the BC script writes no train.log or tfevents) — only the
+resulting model and its evaluation under [`../bc_baseline/`](../bc_baseline/)
+exist.
 
 Every other agent in this folder trains from scratch and is self-contained.
 
@@ -129,7 +150,7 @@ end of Phase 2) or `lineage/phase1-pool-broadening/checkpoint_240M.pt`
 
 - 📊 **Headline tournament results** using these agents: [`../tournaments/`](../tournaments/)
 - 🎯 **Generalisation probes** of `UECD-SingleMap-Best`: [`../probes/`](../probes/)
-- 🎓 **BC teacher dataset** (separate research line from the two-phase
-  fine-tuning of `UECD-SingleMap-Best`): [`../bc_training/`](../bc_training/)
+- 🎓 **BC teacher dataset** behind `UECD-BC` / `UECD-BC-PPO`: [`../bc_training/`](../bc_training/)
+- 🧪 **BC-only WR baseline** (the 78% line of the BC+VF→PPO figure): [`../bc_baseline/`](../bc_baseline/)
 - 🎬 **Showcase recordings** of `UECD-SingleMap-Best` vs the field:
   [`../recordings/`](../recordings/)
