@@ -18,7 +18,7 @@
 #   4-7: 300M checkpoint vs [TMA, ObiBotKenobi, CoacAI, Mayari]
 #
 # Usage:
-#   sbatch experiments/eval/eval_phased_rush_fragility.slurm
+#   sbatch experiments/eval/eval_rush_collapse.slurm
 #
 
 module load Python/3.11 2>/dev/null || module load Python/3.9
