@@ -4,8 +4,8 @@ Batch evaluation of a trained agent vs bots (or agent-vs-agent), always vectoriz
 Games run in parallel even with --record (recording switches render_client to each
 sub-env before capture).
 
-    python evaluate.py --agent outputs/runs/my_run --opponent CoacAI
-    python evaluate.py --agent outputs/runs/my_run --opponent CoacAI --record
+    python -m microrts_agent evaluate --agent data/agents/UECD-SingleMap-Best --opponent CoacAI
+    python -m microrts_agent evaluate --agent data/agents/UECD-SingleMap-Best --opponent CoacAI --record
 """
 
 import argparse

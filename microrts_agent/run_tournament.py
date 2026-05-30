@@ -1,10 +1,10 @@
 """
 MicroRTS Tournament — Run, Parse & Visualize.
 
-    python run_tournament.py run <name> [--chunk 0 --total-chunks 10]
-    python run_tournament.py parse <name>
-    python run_tournament.py viz <name>
-    python run_tournament.py analyze <name>   # parse + viz
+    python -m microrts_agent tournament run <name> [--chunk 0 --total-chunks 10]
+    python -m microrts_agent tournament parse <name>
+    python -m microrts_agent tournament viz <name>
+    python -m microrts_agent tournament analyze <name>   # parse + viz
 
 <name> resolves to tournament_configs/<name>.json (run)
 or outputs/tournaments/<name>/ (parse/viz/analyze).
