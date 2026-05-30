@@ -40,15 +40,19 @@ jobs:
       # cannot silently drift from the committed bridge.jar.
       - run: bash microrts_agent/microrts/build_bridge.sh
 
-  tests:
-    name: pytest (smoke)
+  tests-matrix:
+    name: pytest matrix
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.9"
+          python-version: ${{ matrix.python-version }}
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
@@ -65,3 +69,14 @@ jobs:
           pip install -e ".[dev]"
           bash microrts_agent/microrts/build_bridge.sh
           pytest tests/
+
+  # Aggregator job: keeps the `pytest (smoke)` required-check stable across
+  # matrix expansion. Succeeds iff every matrix entry above succeeds; the
+  # `needs:` chain causes it to skip (and thus fail the required-status gate)
+  # if any matrix entry fails.
+  tests:
+    name: pytest (smoke)
+    needs: tests-matrix
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "All pytest matrix entries passed."

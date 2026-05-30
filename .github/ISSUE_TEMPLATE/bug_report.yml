@@ -50,7 +50,7 @@ body:
     attributes:
       label: Environment
       description: OS, Python, Java, PyTorch, CUDA (if relevant). One line.
-      placeholder: "macOS 14.5, Python 3.9.18, Java 17.0.10, PyTorch 2.3.0, CPU only"
+      placeholder: "macOS 14.5, Python 3.11.7, Java 17.0.10, PyTorch 2.3.0, CPU only"
     validations:
       required: true
 
