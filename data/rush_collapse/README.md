@@ -92,4 +92,4 @@ python -m microrts_agent evaluate \
 
 - 🎓 **Trained agent** behind these checkpoints: [`../agents/UECD-SingleMap-Rushed/`](../agents/UECD-SingleMap-Rushed/)
 - 📊 **Tournament context** where the rush still scores 98 points overall: [`../tournaments/single_map/`](../tournaments/single_map/)
-- 🎯 **Generalisation probes** (analogous structure, different question): [`../probes/`](../probes/)
+- 🎯 **Generalisation probes** (analogous structure, different question): [`../generalization_probes/`](../generalization_probes/)

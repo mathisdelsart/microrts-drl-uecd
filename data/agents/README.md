@@ -149,7 +149,7 @@ end of Phase 2) or `lineage/phase1-pool-broadening/checkpoint_240M.pt`
 ## See also
 
 - 📊 **Headline tournament results** using these agents: [`../tournaments/`](../tournaments/)
-- 🎯 **Generalisation probes** of `UECD-SingleMap-Best`: [`../probes/`](../probes/)
+- 🎯 **Generalisation probes** of `UECD-SingleMap-Best`: [`../generalization_probes/`](../generalization_probes/)
 - 🎓 **BC teacher dataset** behind `UECD-BC` / `UECD-BC-PPO`: [`../bc_training/`](../bc_training/)
 - 🧪 **BC-only WR baseline** (the 78% line of the BC+VF→PPO figure): [`../bc_baseline/`](../bc_baseline/)
 - 🎬 **Showcase recordings** of `UECD-SingleMap-Best` vs the field:

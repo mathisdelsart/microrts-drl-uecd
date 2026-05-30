@@ -69,7 +69,7 @@ microrts-drl-uecd/
 ├── data/                         # Curated artefacts shipped with the repo (not regenerated on clone)
 │   ├── recordings/               # 36 showcase game clips of UECD-Best vs the field (also served from the supplementary site)
 │   ├── tournaments/              # Headline tournament results: single_map/ + multi_map/ (CSV + parsed JSON + PDFs)
-│   ├── probes/                   # Generalisation probes (UECD-Best on non-training maps)
+│   ├── generalization_probes/    # Generalisation probes (UECD-Best on non-training maps)
 │   ├── bc_training/              # BC teacher dataset (RAISocketAI demonstrations vs RAISocketAI/CoacAI/Mayari)
 │   └── agents/                   # Trained agents in medium form (5 single-map + 2 multi-map + GridNet baseline) — agent.pt + checkpoint.pt + config + eval + log
 ├── dissertation/                 # LaTeX thesis, figures, figure generators (figs/figs-python/), compiled PDF
