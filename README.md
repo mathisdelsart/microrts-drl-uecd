@@ -5,7 +5,7 @@
 ### A competitive real-time-strategy agent via deep reinforcement learning
 
 [![CI](https://github.com/mathisdelsart/microrts-drl-uecd/actions/workflows/ci.yml/badge.svg)](https://github.com/mathisdelsart/microrts-drl-uecd/actions/workflows/ci.yml)
-[![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![Algorithm](https://img.shields.io/badge/Algorithm-PPO-green.svg)](https://arxiv.org/abs/1707.06347)
 [![Built on MicroRTS](https://img.shields.io/badge/Built%20on-MicroRTS-orange.svg)](https://github.com/santiontanon/microrts)

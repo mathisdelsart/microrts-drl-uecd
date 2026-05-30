@@ -10,7 +10,7 @@
 #    - Plotting & visualization
 #
 #  Requirements:
-#    - Cluster with module system (Python 3.9+, Java 17+, CUDA)
+#    - Cluster with module system (Python 3.10+, Java 17+, CUDA)
 #    - Outbound HTTPS to github.com (to fetch the RAISocketAI wheel on first run;
 #      skip with SKIP_RAISOCKETAI=1 if the compute nodes have no outbound network)
 #

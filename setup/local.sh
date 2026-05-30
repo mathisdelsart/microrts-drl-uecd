@@ -22,7 +22,7 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 ENV_NAME="microrts_agent"
-PYTHON_VERSION="3.9"
+PYTHON_VERSION="3.10"
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"  # repo root (script lives in setup/)
 WHEEL_FILE="$PROJECT_DIR/microrts_agent/bots/RAISocketAI/rl_algo_impls-0.2.1-py3-none-any.whl"
 WHEEL_URL="https://github.com/mathisdelsart/microrts-drl-uecd/releases/download/assets-rai-v0.2.1/rl_algo_impls-0.2.1-py3-none-any.whl"
