@@ -10,7 +10,7 @@ several of our own ablation agents. 36 MP4 clips on the training map —
 One directory per opponent:
 
 ```
-recordings/
+data/recordings/
 └── UECD-Best_vs_<opponent>/
     ├── basesWorkers16x16A_P0_game01.mp4   # P0 viewpoint
     └── basesWorkers16x16A_P1_game01.mp4   # P1 viewpoint

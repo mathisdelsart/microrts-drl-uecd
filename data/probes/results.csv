@@ -1,0 +1,16 @@
+map,opponent,games,p0_wr,p0_avg_len,p1_wr,p1_avg_len,total_wr
+TwoBasesBarracks16x16,RandomBiasedAI,100,1.0,445,1.0,588,1.0
+TwoBasesBarracks16x16,WorkerRush,100,0.94,416,0.94,566,0.94
+TwoBasesBarracks16x16,LightRush,100,0.0,470,0.0,530,0.0
+TwoBasesBarracks16x16,CoacAI,100,0.94,442,0.76,642,0.85
+TwoBasesBarracks16x16,Mayari,100,0.7,474,0.6,805,0.65
+TwoBasesBarracks16x16,ObiBotKenobi,100,0.06,422,0.02,451,0.04
+TwoBasesBarracks16x16,TMA,100,0.08,493,0.0,603,0.04
+TwoBasesBarracks16x16,RAISocketAI,100,0.12,404,0.32,532,0.22
+basesWorkers32x32A,RandomBiasedAI,100,1.0,962,1.0,1043,1.0
+basesWorkers32x32A,WorkerRush,100,1.0,1090,1.0,1144,1.0
+basesWorkers32x32A,LightRush,100,0.92,1697,0.28,2297,0.6
+basesWorkers32x32A,CoacAI,100,1.0,1358,0.92,1813,0.96
+basesWorkers32x32A,Mayari,100,1.0,1236,0.9,1674,0.95
+basesWorkers32x32A,ObiBotKenobi,100,0.52,1960,0.4,2220,0.46
+basesWorkers32x32A,TMA,100,0.16,2200,0.06,2119,0.11

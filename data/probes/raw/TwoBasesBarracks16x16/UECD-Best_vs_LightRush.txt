@@ -1,0 +1,132 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/Users/mathisdelsart/miniconda3/envs/microrts_agent/lib/python3.9/site-packages/torch/nn/modules/transformer.py:515: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/NestedTensorImpl.cpp:182.)
+  output = torch._nested_tensor_from_mask(
+Loaded: UECD-Best (4,758,233 params)
+
+============================================================
+  MicroRTS Evaluation
+============================================================
+  Agent:       UECD-Best (rl)
+  Opponent:    LightRush (bot)
+  Mode:        rl_vs_bot
+  Device:      cpu
+  Maps:        1
+               - maps/open_competition/TwoBasesBarracks16x16.xml (max_steps=4000)
+  Games/pos:   50
+  Total games: 100
+  Actions:     stochastic
+============================================================
+
+  Map 1/1: TwoBasesBarracks16x16  (max_steps=4000)
+  ------------------------------------------------------
+    [P0] Game  15/50: LOSS  len=  310
+    [P0] Game   4/50: LOSS  len=  348
+    [P0] Game   3/50: LOSS  len=  388
+    [P0] Game   8/50: LOSS  len=  388
+    [P0] Game  11/50: LOSS  len=  388
+    [P0] Game  18/50: LOSS  len=  388
+    [P0] Game  20/50: LOSS  len=  388
+    [P0] Game  24/50: LOSS  len=  388
+    [P0] Game  31/50: LOSS  len=  388
+    [P0] Game  50/50: LOSS  len=  388
+    [P0] Game  30/50: LOSS  len=  390
+    [P0] Game  27/50: LOSS  len=  404
+    [P0] Game  12/50: LOSS  len=  413
+    [P0] Game  40/50: LOSS  len=  414
+    [P0] Game  46/50: LOSS  len=  415
+    [P0] Game  49/50: LOSS  len=  415
+    [P0] Game  28/50: LOSS  len=  423
+    [P0] Game   2/50: LOSS  len=  438
+    [P0] Game  22/50: LOSS  len=  438
+    [P0] Game  23/50: LOSS  len=  438
+    [P0] Game  26/50: LOSS  len=  438
+    [P0] Game  35/50: LOSS  len=  438
+    [P0] Game  39/50: LOSS  len=  438
+    [P0] Game   7/50: LOSS  len=  446
+    [P0] Game  17/50: LOSS  len=  449
+    [P0] Game  29/50: LOSS  len=  454
+    [P0] Game  41/50: LOSS  len=  454
+    [P0] Game  34/50: LOSS  len=  465
+    [P0] Game   1/50: LOSS  len=  471
+    [P0] Game  16/50: LOSS  len=  488
+    [P0] Game  25/50: LOSS  len=  488
+    [P0] Game  36/50: LOSS  len=  488
+    [P0] Game  42/50: LOSS  len=  488
+    [P0] Game  14/50: LOSS  len=  489
+    [P0] Game  45/50: LOSS  len=  489
+    [P0] Game  48/50: LOSS  len=  489
+    [P0] Game  21/50: LOSS  len=  499
+    [P0] Game   9/50: LOSS  len=  504
+    [P0] Game  13/50: LOSS  len=  504
+    [P0] Game  43/50: LOSS  len=  514
+    [P0] Game  44/50: LOSS  len=  515
+    [P0] Game  38/50: LOSS  len=  549
+    [P0] Game   6/50: LOSS  len=  556
+    [P0] Game  33/50: LOSS  len=  562
+    [P0] Game  10/50: LOSS  len=  581
+    [P0] Game  47/50: LOSS  len=  640
+    [P0] Game   5/50: LOSS  len=  646
+    [P0] Game  37/50: LOSS  len=  662
+    [P0] Game  19/50: LOSS  len=  666
+    [P0] Game  32/50: LOSS  len=  692
+    [P1] Game  16/50: LOSS  len=  343
+    [P1] Game  11/50: LOSS  len=  388
+    [P1] Game  33/50: LOSS  len=  388
+    [P1] Game  30/50: LOSS  len=  389
+    [P1] Game   5/50: LOSS  len=  391
+    [P1] Game  45/50: LOSS  len=  399
+    [P1] Game  36/50: LOSS  len=  425
+    [P1] Game   7/50: LOSS  len=  438
+    [P1] Game   8/50: LOSS  len=  438
+    [P1] Game  19/50: LOSS  len=  438
+    [P1] Game  43/50: LOSS  len=  438
+    [P1] Game  44/50: LOSS  len=  438
+    [P1] Game  28/50: LOSS  len=  441
+    [P1] Game  34/50: LOSS  len=  455
+    [P1] Game  32/50: LOSS  len=  458
+    [P1] Game   4/50: LOSS  len=  469
+    [P1] Game  40/50: LOSS  len=  471
+    [P1] Game  38/50: LOSS  len=  476
+    [P1] Game  35/50: LOSS  len=  478
+    [P1] Game   2/50: LOSS  len=  484
+    [P1] Game  13/50: LOSS  len=  488
+    [P1] Game  23/50: LOSS  len=  488
+    [P1] Game  18/50: LOSS  len=  496
+    [P1] Game  39/50: LOSS  len=  497
+    [P1] Game  25/50: LOSS  len=  499
+    [P1] Game  31/50: LOSS  len=  509
+    [P1] Game  29/50: LOSS  len=  518
+    [P1] Game  37/50: LOSS  len=  518
+    [P1] Game  21/50: LOSS  len=  519
+    [P1] Game  20/50: LOSS  len=  525
+    [P1] Game  14/50: LOSS  len=  526
+    [P1] Game  41/50: LOSS  len=  526
+    [P1] Game  47/50: LOSS  len=  532
+    [P1] Game  24/50: LOSS  len=  538
+    [P1] Game  15/50: LOSS  len=  543
+    [P1] Game  50/50: LOSS  len=  545
+    [P1] Game  48/50: LOSS  len=  560
+    [P1] Game  10/50: LOSS  len=  565
+    [P1] Game   9/50: LOSS  len=  573
+    [P1] Game  42/50: LOSS  len=  588
+    [P1] Game  46/50: LOSS  len=  604
+    [P1] Game  17/50: LOSS  len=  613
+    [P1] Game  27/50: LOSS  len=  618
+    [P1] Game  26/50: LOSS  len=  633
+    [P1] Game   3/50: LOSS  len=  641
+    [P1] Game  12/50: LOSS  len=  654
+    [P1] Game  49/50: LOSS  len=  725
+    [P1] Game  22/50: LOSS  len=  764
+    [P1] Game   6/50: LOSS  len=  824
+    [P1] Game   1/50: LOSS  len= 1228
+
+============================================================
+  RESULTS — UECD-Best vs LightRush
+============================================================
+  As P0:    0W /  50L /   0D  (  0.0%)  avg_len=470
+  As P1:    0W /  50L /   0D  (  0.0%)  avg_len=530
+  ────────────────────────────────────────────────────────
+  Total:    0W / 100L /   0D  (  0.0%)
+============================================================
