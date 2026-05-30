@@ -4,8 +4,9 @@ Trained checkpoints of every agent the thesis published or used as a baseline,
 shipped in *medium* form: enough to **load and re-use** an agent (`agent.pt`),
 enough to **resume training** (`checkpoint.pt`, includes optimiser state),
 and enough to **audit what was trained** (`config.json`, `eval_results.csv`,
-`train.log`). TensorBoard event files were not shipped — they live under
-`outputs/runs/<family>/<run>/` locally and are git-ignored.
+`train.log`). TensorBoard event files are too large for git (~200 MB to
+1.2 GB per agent) and are shipped separately as
+[release assets](#tensorboard-archives).
 
 ## Single-map agents (trained on `basesWorkers16x16A`)
 
@@ -145,6 +146,47 @@ python -m microrts_agent train \
 For `UECD-SingleMap-Best`, the resume points are: `checkpoint.pt` (= 360M,
 end of Phase 2) or `lineage/phase1-pool-broadening/checkpoint_240M.pt`
 (= 240M, end of Phase 1 / start of Phase 2).
+
+## TensorBoard archives
+
+The `events.out.tfevents.*` log of every agent in this folder lives as
+release assets on the [`tfevents-agent-archive`](https://github.com/mathisdelsart/microrts-drl-uecd/releases/tag/tfevents-agent-archive)
+tag. Each asset is named `<agent-dir-name>_<step-range>.tfevents` so a
+file lines up with its data/agents/ subdirectory at a glance.
+
+| Asset | Size | Agent |
+|---|---:|---|
+| `UECD-SingleMap-Best_0-360M.tfevents`     | 1.2 GB | [`UECD-SingleMap-Best/`](UECD-SingleMap-Best/) — three-phase fine-tune log (phase 0 + 1 + 2 cat-merged into one continuous TFRecord stream) |
+| `UECD-SingleMap-Rushed_0-300M.tfevents`   | 704 MB | [`UECD-SingleMap-Rushed/`](UECD-SingleMap-Rushed/) |
+| `UECD-MultiMap-Best_0-330M.tfevents`      | 711 MB | [`UECD-MultiMap-Best/`](UECD-MultiMap-Best/) |
+| `GridNet-SingleMap_0-300M.tfevents`       | 588 MB | [`GridNet-SingleMap/`](GridNet-SingleMap/) |
+| `UECD-MultiMap_0-200M.tfevents`           | 580 MB | [`UECD-MultiMap/`](UECD-MultiMap/) |
+| `UECD-BC-PPO_0-100M.tfevents`             | 229 MB | [`UECD-BC-PPO/`](UECD-BC-PPO/) |
+| `UECD-SingleMap-TopFeats_0-100M.tfevents` | 207 MB | [`UECD-SingleMap-TopFeats/`](UECD-SingleMap-TopFeats/) |
+| `UECD-SingleMap-AllFeats_0-100M.tfevents` | 206 MB | [`UECD-SingleMap-AllFeats/`](UECD-SingleMap-AllFeats/) |
+
+`UECD-BC` has no tfevents entry — the BC training script logs to stdout
+only, no TensorBoard events are written.
+
+### Download one agent's tfevents
+
+```bash
+gh release download tfevents-agent-archive -p UECD-SingleMap-Best_0-360M.tfevents
+tensorboard --logdir .
+```
+
+### Download all of them
+
+```bash
+gh release download tfevents-agent-archive --dir tfevents_archive
+tensorboard --logdir tfevents_archive
+```
+
+The release grows incrementally: when new agents are triaged in (the
+`outputs/runs/arch_ablation/` and `outputs/runs/feat_ablation/` triage is
+still pending), their tfevents will be appended with `gh release upload
+tfevents-agent-archive <new files>`. The tag does **not** change, no
+existing URL breaks.
 
 ## See also
 
