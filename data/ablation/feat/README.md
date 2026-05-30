@@ -88,9 +88,8 @@ for opp in RandomBiasedAI WorkerRush LightRush CoacAI Mayari; do
     python -m microrts_agent evaluate \
         --agent data/ablation/feat/agent/<feature>_s<N> \
         --opponent $opp \
-        --map maps/open_competition/basesWorkers16x16A.xml \
-        --num-games 500 \
-        --positions both
+        --maps maps/open_competition/basesWorkers16x16A.xml \
+        --nb_games 500
 done
 ```
 

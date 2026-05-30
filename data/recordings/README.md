@@ -36,21 +36,22 @@ point of view.
 ## Reproducing a recording
 
 The full set lives under `outputs/recordings/` (git-ignored) and is produced
-by the `evaluate` CLI with `--record-video`:
+by the `evaluate` CLI with `--record`:
 
 ```bash
 python -m microrts_agent evaluate \
-    --agent outputs/runs/single_map/UECD-Best \
+    --agent data/agents/UECD-SingleMap-Best \
     --opponent RAISocketAI \
-    --map basesWorkers16x16A.xml \
-    --num-games 1 \
-    --record-video
+    --maps maps/open_competition/basesWorkers16x16A.xml \
+    --nb_games 1 \
+    --record
 ```
 
-The on-disk run directory still uses its training-time identifier
-(`UECD-Best`); only the public name in plots and shipped recordings was
-updated to `UECD-Best`. See `python -m microrts_agent evaluate --help` for
-all flags.
+Each invocation plays `--nb_games` games as P0 and the same number as P1, so
+the example above generates one `*_P0_game01.mp4` and one `*_P1_game01.mp4`.
+The on-disk agent directory (`UECD-SingleMap-Best`) was renamed for shipping;
+the public-facing label used in this folder is the shorter `UECD-Best`. See
+`python -m microrts_agent evaluate --help` for all flags.
 
 ## More
 

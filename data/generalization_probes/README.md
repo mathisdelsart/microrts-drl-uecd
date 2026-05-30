@@ -55,18 +55,18 @@ Per-game logs (W/L/draw, length) for each probe: [`raw/`](raw/).
 
 ## Reproducing
 
-Each probe is a single `evaluate` invocation with `--positions both` so
-the agent plays both sides of the same matchup:
+Each probe is a single `evaluate` invocation; `evaluate` always plays each
+matchup as both P0 *and* P1 so the 50 below produces 100 games (50 P0 + 50 P1):
 
 ```bash
 python -m microrts_agent evaluate \
-    --agent outputs/runs/single_map/BestRL-350M \
+    --agent data/agents/UECD-SingleMap-Best \
     --opponent <opponent> \
-    --map maps/open_competition/<map>.xml \
-    --num-games 50 \
-    --positions both
+    --maps maps/open_competition/<map>.xml \
+    --nb_games 50
 ```
 
-The on-disk run directory still uses the training-time name `BestRL-350M`;
-only the public-facing labels here and in the raw logs were renamed to
-`UECD-Best` for consistency with the rest of the shipped artefacts.
+The shipped raw logs were originally captured under the training-time run
+name `BestRL-350M`; only the public-facing labels here and in the raw logs
+were renamed to `UECD-Best` for consistency with the rest of the shipped
+artefacts.
