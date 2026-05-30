@@ -3,6 +3,11 @@
 Solo Master's-thesis project, but it follows team-style conventions on purpose:
 a clean, reviewable history is part of the deliverable.
 
+External contributions are welcome. For substantial changes (new training
+features, new architectures, breaking API changes), please open an issue first
+to discuss the design — it avoids wasted work on both sides. Small fixes
+(typos, build issues, dead links, lint warnings) can be sent as a PR directly.
+
 ## Branch naming
 
 Format: `<type>/<short-kebab-case>`
