@@ -30,7 +30,7 @@ python -m microrts_agent.bc train \
 [ $? -ne 0 ] && { echo "ERROR: Train failed"; exit 1; }
 
 echo "=== Eval ==="
-for BOT in RandomBiasedAI POWorkerRush POLightRush CoacAI Mayari; do
+for BOT in RandomBiasedAI WorkerRush LightRush CoacAI Mayari; do
     echo "  vs $BOT..."
     python microrts_agent/evaluate.py \
         --agent "$BC_RUN_DIR" --opponent "$BOT" \

@@ -33,7 +33,7 @@ python microrts_agent/train.py \
     --map maps/open_competition/basesWorkers16x16A.xml \
     --max-steps 4000 \
     --num-bot-envs 24 \
-    --opponent-list "CoacAI:4,Mayari:4,ObiBotKenobi:3,TMA:3,StrategyTactics:3,Tiamat:2,MixedBot:2,POWorkerRush:1,POLightRush:1,RandomBiasedAI:1" \
+    --opponent-list "CoacAI:4,Mayari:4,ObiBotKenobi:3,TMA:3,StrategyTactics:3,Tiamat:2,MixedBot:2,WorkerRush:1,LightRush:1,RandomBiasedAI:1" \
     --alternate-players True \
     --prioritized-sampling True \
     --num-steps 512 \

@@ -51,8 +51,15 @@ def calculate_rankings(games, ais) -> list[tuple]:
 
 
 def clean_name(ai_name: str) -> str:
-    """Strip parenthesised suffixes from AI names and drop the 'PO' prefix
-    on the scripted rush bots (full-observability setting)."""
+    """Strip parenthesised suffixes from AI names and apply thesis display labels.
+
+    Historic CSVs (parsed_tournament.json files produced before the registry
+    rename) still reference ``POWorkerRush`` / ``POLightRush``; map them to
+    the current names for visual consistency. The agent renames cover the two
+    flagship runs as they appeared in the multi-map tournament, so they read
+    "UECD-SingleMap" and "UECD-MultiMap" in the rendered plots even though the
+    underlying run directories on disk keep their training-time identifiers.
+    """
     name = re.sub(r"\s*\(.*?\)", "", ai_name)
     rename = {
         "POWorkerRush": "WorkerRush",

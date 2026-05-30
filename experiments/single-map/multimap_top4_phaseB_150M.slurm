@@ -19,7 +19,7 @@
 #
 # Phase B changes vs Phase A:
 #   - Restrict opponent pool to strong bots only (CoacAI, Mayari, ObiBot,
-#     TMA, RAISocketAI). Drops weak rushes (POLightRush, POWorkerRush, etc.).
+#     TMA, RAISocketAI). Drops weak rushes (LightRush, WorkerRush, etc.).
 #   - Drop reward annealing (250M was the slope; B holds the line).
 #   - Lower LR (2.5e-4 -> 1e-4 -> 5e-5) and entropy (0.005 -> 0.001).
 #   - Cumulative --total-timesteps 400M (250M Phase A + 150M Phase B).

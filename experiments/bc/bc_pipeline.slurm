@@ -76,7 +76,7 @@ if [ -f "$BC_DATA" ]; then
 else
     python -m microrts_agent.bc generate \
         --bot RAISocketAI \
-        --opponents RAISocketAI CoacAI Mayari POWorkerRush POLightRush \
+        --opponents RAISocketAI CoacAI Mayari WorkerRush LightRush \
         --games-per-opponent 50 50 50 50 50 \
         --map "$MAP" \
         --output "$BC_DATA"
@@ -130,7 +130,7 @@ echo "============================================================"
 
 mkdir -p "$BC_EVAL_DIR"
 
-BOTS=("RandomBiasedAI" "POWorkerRush" "POLightRush" "CoacAI" "Mayari")
+BOTS=("RandomBiasedAI" "WorkerRush" "LightRush" "CoacAI" "Mayari")
 
 for BOT in "${BOTS[@]}"; do
     echo ""

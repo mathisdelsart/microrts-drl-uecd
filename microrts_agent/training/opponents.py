@@ -57,8 +57,8 @@ def build_opponent_config(args):
             rush_worker = "WorkerRushAI"
             rush_light = "LightRushAI"
         else:
-            rush_worker = "POWorkerRush"
-            rush_light = "POLightRush"
+            rush_worker = "WorkerRush"
+            rush_light = "LightRush"
 
         # 3 rush types (random, worker, light), each up to rush_per_type envs
         # Remaining envs go to hard bots (CoacAI + Mayari)

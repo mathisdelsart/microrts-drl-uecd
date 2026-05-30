@@ -75,7 +75,7 @@ def add_common_args(parser):
         "--opponent-list",
         type=str,
         default=None,
-        help='custom opponent distribution, e.g. "CoacAI:3,Mayari:3,POWorkerRush:2".'
+        help='custom opponent distribution, e.g. "CoacAI:3,Mayari:3,WorkerRush:2".'
         "Overrides --opponent and --diverse-opponents."
         "Sum of counts must equal --num-bot-envs.",
     )
@@ -586,12 +586,12 @@ def add_common_args(parser):
         type=str,
         default=[
             "RandomBiasedAI",
-            "POWorkerRush",
-            "POLightRush",
+            "WorkerRush",
+            "LightRush",
             "CoacAI",
             "Mayari",
         ],
-        help="bots to evaluate against (default: RandomBiasedAI POWorkerRush POLightRush CoacAI Mayari)",
+        help="bots to evaluate against (default: RandomBiasedAI WorkerRush LightRush CoacAI Mayari)",
     )
     parser.add_argument(
         "--eval-games",

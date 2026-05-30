@@ -70,7 +70,7 @@ python microrts_agent/train.py \
     --selfplay-swap-interval 25 \
     --selfplay-pool-size 50 \
     --diverse-opponents True \
-    --opponent-list "POWorkerRush:1,POLightRush:1,CoacAI:2,Mayari:2,TMA:2,ObiBotKenobi:2,RAISocketAI:2" \
+    --opponent-list "WorkerRush:1,LightRush:1,CoacAI:2,Mayari:2,TMA:2,ObiBotKenobi:2,RAISocketAI:2" \
     --alternate-players True \
     --prioritized-sampling True \
     --num-steps 512 \
@@ -97,7 +97,7 @@ python microrts_agent/train.py \
     --aux-opponent-modeling True \
     --gelu True \
     --with-eval True \
-    --eval-bots POWorkerRush POLightRush CoacAI Mayari TMA ObiBotKenobi RAISocketAI \
+    --eval-bots WorkerRush LightRush CoacAI Mayari TMA ObiBotKenobi RAISocketAI \
     --num-models 8 \
     --seed $SEED \
     --exp-name agent_b_16x16_cluster_100M_s${SEED}

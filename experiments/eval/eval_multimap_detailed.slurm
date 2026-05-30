@@ -31,7 +31,7 @@ MAPS=(
     "maps/open_competition/TwoBasesBarracks16x16.xml"
 )
 
-BOTS=("RandomBiasedAI" "POWorkerRush" "POLightRush" "CoacAI" "Mayari")
+BOTS=("RandomBiasedAI" "WorkerRush" "LightRush" "CoacAI" "Mayari")
 
 for MAP in "${MAPS[@]}"; do
     MAP_NAME=$(basename "$MAP" .xml)

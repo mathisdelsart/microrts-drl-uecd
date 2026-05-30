@@ -154,8 +154,8 @@ class AdaptiveOpponentScheduler:
 
     Difficulty tiers (ordered):
         Tier 0: RandomBiasedAI                   (random with heuristic bias)
-        Tier 1: POWorkerRush                     (basic rush strategy)
-        Tier 2: POLightRush                      (more effective rush)
+        Tier 1: WorkerRush                       (basic rush strategy)
+        Tier 2: LightRush                        (more effective rush)
         Tier 3: CoacAI / Mayari                  (competition-level, co-terminal)
         Tier 4: TMA / ObiBotKenobi / RAISocketAI (top tournament bots; terminal
                                                   tier — self-play pool activates
@@ -180,8 +180,8 @@ class AdaptiveOpponentScheduler:
 
     DIFFICULTY_TIERS = [
         ["RandomBiasedAI"],
-        ["POWorkerRush"],
-        ["POLightRush"],
+        ["WorkerRush"],
+        ["LightRush"],
         ["CoacAI", "Mayari"],
         ["TMA", "ObiBotKenobi", "RAISocketAI"],
     ]
