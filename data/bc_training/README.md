@@ -68,5 +68,8 @@ for opp in RAISocketAI CoacAI Mayari; do
 done
 ```
 
-The full pipeline (generation + BC training + PPO fine-tune + evaluation)
-is in `experiments/bc/bc_pipeline_v2.slurm`.
+The dataset generator script (the one that produced the six NPZ chunks in
+this directory) is [`experiments/BC/generate_BC_dataset.slurm`](../../experiments/BC/generate_BC_dataset.slurm).
+The BC training step is [`experiments/BC/train_UECD-BC.slurm`](../../experiments/BC/train_UECD-BC.slurm),
+and the PPO fine-tune that lifts the 78% BC baseline to ~96% is
+[`experiments/BC/train_UECD-BC-PPO.slurm`](../../experiments/BC/train_UECD-BC-PPO.slurm).

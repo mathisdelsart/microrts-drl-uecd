@@ -15,8 +15,8 @@
 # Same feature stack as the single-map UECD agents but 100M steps.
 #
 # Usage:
-#   sbatch experiments/bc/bc_finetune_100M.slurm
-#   SEED=2 sbatch experiments/bc/bc_finetune_100M.slurm
+#   sbatch experiments/BC/train_UECD-BC-PPO.slurm
+#   SEED=2 sbatch experiments/BC/train_UECD-BC-PPO.slurm
 #
 
 SEED=${SEED:-1}

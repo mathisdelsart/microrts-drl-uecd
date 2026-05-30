@@ -16,7 +16,7 @@
 #   Step 3: Evaluate
 #
 # Usage:
-#   sbatch experiments/bc/bc_pipeline_v2.slurm
+#   sbatch experiments/BC/generate_BC_dataset.slurm
 #
 
 SEED=${SEED:-1}
