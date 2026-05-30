@@ -95,7 +95,7 @@ done
 ```
 
 Generator SLURM (parallel array job over the features):
-[`experiments/ablation/feat/feats_ablation_50M.slurm`](../../../experiments/ablation/feat/feats_ablation_50M.slurm).
+[`experiments/ablation/train_feat_ablation.slurm`](../../../experiments/ablation/train_feat_ablation.slurm).
 
 ## See also
 

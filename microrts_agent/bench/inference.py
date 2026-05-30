@@ -1,8 +1,8 @@
 """
 Per-tick decision time benchmark (self-play).
 
-    python inference_bench.py --agents outputs/runs/gridnet_baseline_300M CoacAI
-    python inference_bench.py --agents outputs/runs/gridnet_baseline_300M --device cuda --deterministic
+    python -m microrts_agent bench inference --agents data/agents/GridNet-SingleMap CoacAI
+    python -m microrts_agent bench inference --agents data/agents/GridNet-SingleMap --device cuda --deterministic
 """
 
 import argparse

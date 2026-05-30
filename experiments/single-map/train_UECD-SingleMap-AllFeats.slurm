@@ -18,8 +18,8 @@
 #   B-tier: Autoregressive, SPP Critic
 #
 # Usage:
-#   sbatch experiments/single-map/best_single_map_100M.slurm
-#   SEED=2 sbatch experiments/single-map/best_single_map_100M.slurm
+#   sbatch experiments/single-map/train_UECD-SingleMap-AllFeats.slurm
+#   SEED=2 sbatch experiments/single-map/train_UECD-SingleMap-AllFeats.slurm
 #
 
 SEED=${SEED:-1}

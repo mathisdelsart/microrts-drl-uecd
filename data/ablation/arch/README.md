@@ -113,7 +113,7 @@ done
 ```
 
 Generator SLURM (parallel array job over the 7 architectures):
-[`experiments/ablation/arch/arch_ablation_100M.slurm`](../../../experiments/ablation/arch/arch_ablation_100M.slurm).
+[`experiments/ablation/train_arch_ablation.slurm`](../../../experiments/ablation/train_arch_ablation.slurm).
 
 ## See also
 

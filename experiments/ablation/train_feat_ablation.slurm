@@ -36,7 +36,7 @@
 #   21 = + autoregressive + hierarchical mask (combined)
 #
 # Usage:
-#   sbatch experiments/feat_ablation/feats_ablation_50M.slurm
+#   sbatch experiments/ablation/train_feat_ablation.slurm
 #
 
 SEED=${SEED:-1}

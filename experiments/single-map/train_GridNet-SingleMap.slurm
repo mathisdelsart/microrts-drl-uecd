@@ -17,13 +17,13 @@
 #
 # Usage:
 #   cd ~/microrts-drl-uecd
-#   sbatch experiments/gridnet_baseline_300M.slurm
+#   sbatch experiments/single-map/train_GridNet-SingleMap.slurm
 #
 #   # With a specific seed:
-#   SEED=42 sbatch experiments/gridnet_baseline_300M.slurm
+#   SEED=42 sbatch experiments/single-map/train_GridNet-SingleMap.slurm
 #
-#   # Resume from checkpoint:
-#   RESUME=outputs/runs/gridnet_baseline_300M sbatch experiments/gridnet_baseline_300M.slurm
+#   # Resume from checkpoint (the run dir name on disk is unchanged):
+#   RESUME=outputs/runs/gridnet_baseline_300M sbatch experiments/single-map/train_GridNet-SingleMap.slurm
 
 echo "=== Job Info ==="
 echo "Job ID:      $SLURM_JOB_ID"
@@ -49,7 +49,7 @@ if [ -d "$VENV_DIR" ]; then
     source "$VENV_DIR/bin/activate"
     echo "Using venv: $VENV_DIR"
 else
-    echo "ERROR: cluster_venv not found. Run setup_cluster_env.sh first."
+    echo "ERROR: cluster_venv not found. Run setup/cluster.sh first."
     exit 1
 fi
 

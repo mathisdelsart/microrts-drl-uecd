@@ -1,43 +1,35 @@
 #!/bin/bash
-#SBATCH --job-name=BEST_MM_300M
-#SBATCH --output=slurm-%j.out
-#SBATCH --error=slurm-%j.err
-#SBATCH --time=5-00:00:00
+#SBATCH --job-name=bc_ft_100M
+#SBATCH --output=slurm-bc-ft-%j.out
+#SBATCH --error=slurm-bc-ft-%j.err
+#SBATCH --time=3-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24
-#SBATCH --mem=48G
-#SBATCH --gres=gpu:1
+#SBATCH --mem=32G
+#SBATCH --gres=gpu:TeslaA40:1
 #SBATCH --partition=batch
 #
-# BEST AGENT — 300M steps, MULTI-MAP (5 maps <= 16x16), all best features
+# BC-PPO: Load BC warmstart, fine-tune with RL for 100M steps
 #
-# Architecture: UNet-Entity-CBAM-Deep (4.7M params, C=48)
-# Map pool (5 maps, padded to 16x16):
-#   - basesWorkers8x8A        (8x8)
-#   - FourBasesWorkers8x8     (8x8)
-#   - NoWhereToRun9x8         (9x8)
-#   - basesWorkers16x16A      (16x16)
-#   - TwoBasesBarracks16x16   (16x16)
-#
-# Multi-map features:
-#   - PLR (prioritized level replay) for smart map sampling
-#   - HL-Gauss + symlog for scale-invariant value estimation across maps
-#
-# Same 12 features as single-map BEST agent.
+# Compare with from-scratch training to measure BC warmstart benefit.
+# Same feature stack as the single-map UECD agents but 100M steps.
 #
 # Usage:
-#   sbatch experiments/multi-map/BEST_agent_multi_map_300M.slurm
-#   SEED=2 sbatch experiments/multi-map/BEST_agent_multi_map_300M.slurm
+#   sbatch experiments/BC/train_UECD-BC-PPO.slurm
+#   SEED=2 sbatch experiments/BC/train_UECD-BC-PPO.slurm
 #
 
 SEED=${SEED:-1}
+BC_MODEL="outputs/runs/bc/UECD-BC/agent.pt"
 
 echo "============================================================"
-echo "  BEST AGENT — 300M steps, MULTI-MAP (<= 16x16)"
+echo "  BC-PPO Fine-tuning — 100M steps, single map"
 echo "============================================================"
 echo "  Job ID:       $SLURM_JOB_ID"
 echo "  Seed:         $SEED"
+echo "  BC model:     $BC_MODEL"
 echo "  Node:         $SLURM_NODELIST"
+echo "  GPUs:         $CUDA_VISIBLE_DEVICES"
 echo "  Started:      $(date)"
 echo "============================================================"
 
@@ -63,33 +55,36 @@ cd $HOME/microrts-drl-uecd
 
 python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"N/A\"}')"
 
+# ── Check BC model exists ─────────────────────────────────────────────────
+
+if [ ! -f "$BC_MODEL" ]; then
+    echo "ERROR: BC model not found: $BC_MODEL"
+    echo "Run bc_pipeline.slurm first."
+    exit 1
+fi
+
+# ── Resume logic ──────────────────────────────────────────────────────────
+
+RESUME_FLAG=""
+RUN_DIR="outputs/runs/bc_v3_finetune_100M_s${SEED}"
+if [ -f "${RUN_DIR}/checkpoint.pt" ]; then
+    echo "  Resuming from $RUN_DIR"
+    RESUME_FLAG="--resume ${RUN_DIR}"
+fi
+
 # ── Training command ───────────────────────────────────────────────────────
 
 python microrts_agent/train.py \
+    $RESUME_FLAG \
+    --load-model "$BC_MODEL" \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
-    --total-timesteps 300000000 \
+    --total-timesteps 100000000 \
+    --map maps/open_competition/basesWorkers16x16A.xml \
     --max-steps 4000 \
-    \
-    --multi-map True \
-    --map-pool \
-        maps/open_competition/basesWorkers8x8A.xml \
-        maps/open_competition/FourBasesWorkers8x8.xml \
-        maps/open_competition/NoWhereToRun9x8.xml \
-        maps/open_competition/basesWorkers16x16A.xml \
-        maps/open_competition/TwoBasesBarracks16x16.xml \
-    --max-map-size 16 \
-    --map-switch-freq 50 \
-    --plr True \
-    \
-    --num-bot-envs 12 \
-    --num-selfplay-envs 12 \
-    --num-latest-selfplay-envs 6 \
-    --pfsp True \
+    --num-bot-envs 24 \
     --diverse-opponents True \
     --alternate-players True \
-    --prioritized-sampling True \
-    \
     --num-steps 512 \
     --update-epochs 2 \
     --n-minibatch 3 \
@@ -99,29 +94,14 @@ python microrts_agent/train.py \
     --max-grad-norm 0.5 \
     --learning-rate 2.5e-4 \
     --anneal-lr True \
+    --lr-warmup-updates 100 \
     --ent-coef 0.01 \
     --ent-coef-end 0.001 \
     --vf-coef 0.5 \
-    \
-    --extended-obs True \
-    --filtered-masks True \
-    --reserved-obs True \
-    --frame-stack 4 \
-    --spp-critic True \
-    --gelu True \
-    --autoregressive True \
-    --aux-contrastive True \
-    --aux-spatial True \
-    --adaptive-opponents True \
-    --hl-gauss True \
-    --aux-unit-count True \
-    --pae-keep 0.95 \
-    --augment-symmetry True \
-    \
     --with-eval True \
     --num-models 2 \
     --seed $SEED \
-    --exp-name BEST_agent_multi_map_300M_s${SEED}
+    --exp-name bc_v3_finetune_100M_s${SEED}
 
 EXIT_CODE=$?
 
