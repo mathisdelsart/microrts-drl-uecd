@@ -35,5 +35,5 @@ wheel installs into it directly, so no separate Python is needed.
 
 ```bash
 conda activate microrts_agent
-python -m microrts_agent tournament --config microrts_agent/tournament_configs/default.json
+python -m microrts_agent tournament run single_map
 ```

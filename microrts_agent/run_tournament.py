@@ -45,7 +45,9 @@ def main():
         help="Run a tournament from a JSON config",
         description="Run a full round-robin tournament. Iterations are vectorized.",
     )
-    p_run.add_argument("name", help="Config name (e.g. default) or path to JSON config")
+    p_run.add_argument(
+        "name", help="Config name (e.g. single_map, multi_map) or path to JSON config"
+    )
     p_run.add_argument(
         "--chunk", type=int, default=-1, help="Chunk index for SLURM parallelization (0-based)"
     )
@@ -59,7 +61,7 @@ def main():
         "merges them into tournament.csv first.",
     )
     p_parse.add_argument(
-        "results", help="Config name (e.g. final_competition) or full path to results dir"
+        "results", help="Config name (e.g. single_map, multi_map) or full path to results dir"
     )
 
     # ---- viz ----

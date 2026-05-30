@@ -14,6 +14,6 @@ Modules
 obs_adapter.py   Per-model observation adapter for agent-vs-agent evaluation
 paths.py         Canonical output paths (RUNS_DIR, RECORDINGS_DIR, ...)
 
-Entry points are the top-level scripts, run as `python -m microrts_agent.<name>`
-(e.g. train, evaluate, run_tournament).
+Entry points are the top-level scripts, run as `python -m microrts_agent <name>`
+(e.g. train, evaluate, tournament).
 """

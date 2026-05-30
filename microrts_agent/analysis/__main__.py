@@ -1,4 +1,4 @@
-"""CLI dispatcher: python -m microrts_agent.analysis {metrics|audit|params} [args...]"""
+"""CLI dispatcher: python -m microrts_agent analysis {metrics|audit|params} [args...]"""
 
 import importlib
 import sys
@@ -13,10 +13,10 @@ _COMMANDS = {
 def main():
     if len(sys.argv) < 2 or sys.argv[1] not in _COMMANDS:
         ok = len(sys.argv) >= 2 and sys.argv[1] in ("-h", "--help")
-        print(f"usage: python -m microrts_agent.analysis {{{'|'.join(_COMMANDS)}}} [args...]")
+        print(f"usage: python -m microrts_agent analysis {{{'|'.join(_COMMANDS)}}} [args...]")
         sys.exit(0 if ok else 2)
     cmd = sys.argv.pop(1)
-    sys.argv[0] = f"python -m microrts_agent.analysis {cmd}"
+    sys.argv[0] = f"python -m microrts_agent analysis {cmd}"
     importlib.import_module(_COMMANDS[cmd]).main()
 
 
