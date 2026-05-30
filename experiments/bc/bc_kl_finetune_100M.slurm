@@ -28,7 +28,7 @@ echo "  BC+KL Fine-tuning — 100M steps"
 echo "  Seed: $SEED | Started: $(date)"
 echo "============================================================"
 
-BC_MODEL="outputs/runs/bc_v3_s1/agent.pt"
+BC_MODEL="outputs/runs/bc/UECD-BC/agent.pt"
 
 python microrts_agent/train.py \
     --load-model "$BC_MODEL" \

@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Fine-tune BestRL-350M (single-map specialist) to 500M total steps
+# Fine-tune UECD-Best (single-map specialist) to 500M total steps
 # on basesWorkers16x16A.
 # ---------------------------------------------------------------------------
 # Goals:
@@ -44,12 +44,12 @@ export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
 echo "============================================================"
-echo "  Fine-tune BestRL-350M -> 500M (single-map, 10% shaped floor)"
+echo "  Fine-tune UECD-Best -> 500M (single-map, 10% shaped floor)"
 echo "  Seed: $SEED | Started: $(date)"
 echo "============================================================"
 
 python microrts_agent/train.py \
-    --load-model outputs/runs/single_map/BestRL-350M/agent.pt \
+    --load-model outputs/runs/single_map/UECD-SingleMap-Best/agent.pt \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 150000000 \

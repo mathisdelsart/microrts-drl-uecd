@@ -40,7 +40,7 @@ by the `evaluate` CLI with `--record-video`:
 
 ```bash
 python -m microrts_agent evaluate \
-    --agent outputs/runs/single_map/BestRL-350M \
+    --agent outputs/runs/single_map/UECD-Best \
     --opponent RAISocketAI \
     --map basesWorkers16x16A.xml \
     --num-games 1 \
@@ -48,7 +48,7 @@ python -m microrts_agent evaluate \
 ```
 
 The on-disk run directory still uses its training-time identifier
-(`BestRL-350M`); only the public name in plots and shipped recordings was
+(`UECD-Best`); only the public name in plots and shipped recordings was
 updated to `UECD-Best`. See `python -m microrts_agent evaluate --help` for
 all flags.
 

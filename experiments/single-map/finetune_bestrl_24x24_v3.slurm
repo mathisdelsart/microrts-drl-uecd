@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Cross-map fine-tune: BestRL-350M (basesWorkers16x16A) -> DoubleGame24x24
+# Cross-map fine-tune: UECD-Best (basesWorkers16x16A) -> DoubleGame24x24
 # V3 — Aggressive OOM mitigation (keeps arch-channels=48 to load checkpoint)
 # ---------------------------------------------------------------------------
 # v1 crash root cause:
@@ -32,7 +32,7 @@
 # Net effect: peak GPU memory during PPO update drops by ~5x. Should give
 # ample headroom to also accommodate value-head + aux-opponent-modeling backward.
 #
-# arch-channels=48 is REQUIRED to load BestRL-350M weights (cannot change).
+# arch-channels=48 is REQUIRED to load UECD-Best weights (cannot change).
 #
 # If V3 still OOMs (very unlikely):
 #   V4 — drop to --num-bot-envs 8 + --num-steps 256 + --n-minibatch 8
@@ -53,14 +53,14 @@ export PYTORCH_ALLOC_CONF=expandable_segments:True
 cd $HOME/microrts-drl-uecd
 
 echo "============================================================"
-echo "  Fine-tune BestRL-350M on DoubleGame24x24 (V3)"
+echo "  Fine-tune UECD-Best on DoubleGame24x24 (V3)"
 echo "  Seed: $SEED | Started: $(date)"
 echo "  Mem: 64G | Bot envs: 10 | Self-play: 2 | num-steps: 384 | n-minibatch: 6"
 echo "  PYTORCH_ALLOC_CONF=$PYTORCH_ALLOC_CONF"
 echo "============================================================"
 
 python microrts_agent/train.py \
-    --load-model outputs/runs/single_map/BestRL-350M/agent.pt \
+    --load-model outputs/runs/single_map/UECD-SingleMap-Best/agent.pt \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 150000000 \

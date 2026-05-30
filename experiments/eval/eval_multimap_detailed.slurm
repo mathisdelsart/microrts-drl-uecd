@@ -19,7 +19,7 @@ source $HOME/microrts-drl-uecd/cluster_venv/bin/activate
 export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
-AGENT="outputs/runs/multimap_small_200M_s1"
+AGENT="outputs/runs/UECD-MultiMap"
 EVAL_DIR="${AGENT}/EVAL_detailed"
 mkdir -p "$EVAL_DIR"
 

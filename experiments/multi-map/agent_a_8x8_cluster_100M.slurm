@@ -12,13 +12,13 @@
 # Agent A — 8x8/9x8 CLUSTER cross-map fine-tune
 # ---------------------------------------------------------------------------
 # Objective:
-#   Adapt BestRL-350M (16x16 specialist) to the small-map cluster. Although
+#   Adapt UECD-Best (16x16 specialist) to the small-map cluster. Although
 #   strategy regimes differ (rush dominates here vs army-building on 16x16),
 #   the agent already has the basics: movement, harvesting, combat, building.
 #   We re-purpose those fundamentals via aggressive fine-tuning rather than
 #   throwing them away with a from-scratch run.
 #
-# Zero-shot diagnostic of BestRL-350M on small maps:
+# Zero-shot diagnostic of UECD-Best on small maps:
 #   basesWorkers8x8A       : 16%  (poor — builds army instead of rushing)
 #   FourBasesWorkers8x8    : 53%  (coin flip — agent does *something*)
 #   NoWhereToRun9x8        : 29%  (poor — wall confuses it)
@@ -27,7 +27,7 @@
 # unlearn the army-build bias and develop rush behaviour.
 #
 # Strategy:
-#   - Load BestRL-350M weights (--load-model)
+#   - Load UECD-Best weights (--load-model)
 #   - 3 small maps: basesWorkers8x8A + FourBasesWorkers8x8 + NoWhereToRun9x8
 #   - Relearning-style hyperparams: higher LR (1e-4 -> 1e-5) than polish,
 #     standard entropy, full reward shaping range
@@ -44,12 +44,12 @@ export PYTHONUNBUFFERED=1
 cd $HOME/microrts-drl-uecd
 
 echo "============================================================"
-echo "  Agent A — 8x8/9x8 cluster fine-tune from BestRL-350M"
+echo "  Agent A — 8x8/9x8 cluster fine-tune from UECD-Best"
 echo "  Seed: $SEED | Started: $(date)"
 echo "============================================================"
 
 python microrts_agent/train.py \
-    --load-model outputs/runs/single_map/BestRL-350M/agent.pt \
+    --load-model outputs/runs/single_map/UECD-SingleMap-Best/agent.pt \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 100000000 \

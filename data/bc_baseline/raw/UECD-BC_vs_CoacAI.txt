@@ -1,0 +1,52 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Loaded: UECD-BC (4,722,491 params)
+
+============================================================
+  MicroRTS Evaluation
+============================================================
+  Agent:       UECD-BC (rl)
+  Opponent:    CoacAI (bot)
+  Mode:        rl_vs_bot
+  Device:      cuda
+  Maps:        1
+               - maps/16x16/basesWorkers16x16A.xml (max_steps=4000)
+  Games/pos:   10
+  Total games: 20
+  Actions:     stochastic
+============================================================
+
+  Map 1/1: basesWorkers16x16A  (max_steps=4000)
+  ------------------------------------------------------
+/home/mdelsart/MasterThesis/cluster_venv/lib/python3.9/site-packages/torch/nn/modules/transformer.py:508: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at /pytorch/aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+    [P0] Game   7/10:  WIN  len=  691
+    [P0] Game   2/10:  WIN  len=  805
+    [P0] Game   8/10:  WIN  len=  877
+    [P0] Game   9/10:  WIN  len= 1005
+    [P0] Game  10/10: LOSS  len= 1015
+    [P0] Game   6/10:  WIN  len= 1019
+    [P0] Game   5/10:  WIN  len= 1088
+    [P0] Game   1/10: LOSS  len= 1309
+    [P0] Game   4/10:  WIN  len= 1392
+    [P0] Game   3/10: LOSS  len= 1463
+    [P1] Game   9/10:  WIN  len=  450
+    [P1] Game   7/10:  WIN  len=  485
+    [P1] Game   8/10:  WIN  len=  485
+    [P1] Game   3/10:  WIN  len=  520
+    [P1] Game   2/10:  WIN  len=  591
+    [P1] Game   1/10:  WIN  len=  595
+    [P1] Game   6/10:  WIN  len=  605
+    [P1] Game   4/10:  WIN  len=  867
+    [P1] Game  10/10:  WIN  len= 1003
+    [P1] Game   5/10: LOSS  len= 2777
+
+============================================================
+  RESULTS — UECD-BC vs CoacAI
+============================================================
+  As P0:    7W /   3L /   0D  ( 70.0%)  avg_len=1066
+  As P1:    9W /   1L /   0D  ( 90.0%)  avg_len=838
+  ────────────────────────────────────────────────────────
+  Total:   16W /   4L /   0D  ( 80.0%)
+============================================================
