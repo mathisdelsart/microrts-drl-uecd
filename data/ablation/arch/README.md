@@ -32,20 +32,24 @@ the entity head adds 5.7 pp on top. CBAM on its own is noisier than SE
 (79.2 % vs 82.7 %) but stacking it deeper recovers and overshoots
 (86.2 %), validating the `UECD` choice. Full numerical data with
 per-seed and per-opponent breakdown lives in
-[`results.csv`](results.csv).
+[`eval/results.csv`](eval/results.csv).
 
-## Per-architecture training data
-
-One subdirectory per (architecture, seed) — 21 in total. Each carries the
-*minimal* tier (no resume checkpoint, no tfevents — the tfevents archives
-will live as release assets in a future update):
+## Layout
 
 ```
-data/ablation/arch/<arch>_s<seed>/
-├── agent.pt           # inference-ready policy state-dict
-├── config.json        # every CLI / hyperparameter the run was launched with
-├── eval_results.csv   # in-training eval (multiple steps, 10 games each)
-└── train.log          # end-to-end textual training log
+data/ablation/arch/
+├── README.md
+├── eval/
+│   ├── results.csv          # 105 rows: arch, seed, opponent, p0/p1 WR + avg_len, total_wr
+│   ├── s1/                  # 35 .txt = 7 archs × 5 opps for seed 1
+│   ├── s2/                  # 35 .txt for seed 2
+│   └── s3/                  # 35 .txt for seed 3
+└── agent/                   # 21 trained runs, minimal tier
+    └── <arch>_s<seed>/
+        ├── agent.pt         # inference-ready policy state-dict
+        ├── config.json      # every CLI / hyperparameter the run was launched with
+        ├── eval_results.csv # in-training eval (multiple steps, 10 games each)
+        └── train.log        # end-to-end textual training log
 ```
 
 `config.json` still uses the upstream architecture identifier
@@ -55,10 +59,10 @@ dissertation's display labels (`U-Net`, `U-Net-Entity-CBAM-Deep`).
 
 ## Final evaluation
 
-`raw/<arch>_s<seed>/<arch>_vs_<opponent>.txt` — 105 stdout dumps of the
+`eval/s<seed>/<arch>_vs_<opponent>.txt` — 105 stdout dumps of the
 `evaluate` CLI (one per architecture × seed × opponent), 1 000 games each.
 The aggregate `RESULTS` block at the bottom of every file is what
-[`results.csv`](results.csv) summarises:
+[`eval/results.csv`](eval/results.csv) summarises:
 
 | Column        | Meaning |
 |---|---|
@@ -93,7 +97,7 @@ For evaluation against the 5 base-pool bots:
 ```bash
 for opp in RandomBiasedAI WorkerRush LightRush CoacAI Mayari; do
     python -m microrts_agent evaluate \
-        --agent data/ablation/arch/<arch>_s<N> \
+        --agent data/ablation/arch/agent/<arch>_s<N> \
         --opponent $opp \
         --map maps/open_competition/basesWorkers16x16A.xml \
         --num-games 500 \
