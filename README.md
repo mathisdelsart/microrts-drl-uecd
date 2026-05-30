@@ -145,6 +145,22 @@ uvx ruff@0.15.14 check .      # lint
 uvx ruff@0.15.14 format .     # format
 ```
 
+## Citation
+
+If you use this code or any of the shipped artefacts in academic work,
+please cite the project ([`CITATION.cff`](CITATION.cff) is the source of truth):
+
+```bibtex
+@software{delsart_microrts_drl_uecd_2026,
+  author  = {Delsart, Mathis},
+  title   = {{MicroRTS Deep-RL Agent}},
+  year    = {2026},
+  version = {0.1.0},
+  url     = {https://github.com/mathisdelsart/microrts-drl-uecd},
+  note    = {Master's thesis, UCLouvain},
+}
+```
+
 ## License
 
 Released under the [MIT License](LICENSE) © 2026 Mathis Delsart.

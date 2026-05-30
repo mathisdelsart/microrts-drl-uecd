@@ -13,5 +13,3 @@ Note: The AI was developed using the microRTS version [88cdc76](https://github.c
 Add the `CoacAI.class` to the `AIs` array in `src/gui/frontend/FEStatePane.java`
 
 You can then run the `FrontEnd.java` and select the AI.
-
-![coac_in_action](docs/coac.gif)
