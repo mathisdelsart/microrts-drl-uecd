@@ -39,3 +39,26 @@ jobs:
       # Recompile src/ against the vendored microrts.jar so the bridge source
       # cannot silently drift from the committed bridge.jar.
       - run: bash microrts_agent/microrts/build_bridge.sh
+
+  tests:
+    name: pytest (smoke)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.9"
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+      # Smoke tests exercise CLI subcommands, the JNI bridge, every shipped
+      # agent's loadability, end-to-end evaluate and a 256-step PPO train.
+      # Force CPU because GitHub runners have no GPU.
+      - env:
+          CUDA_VISIBLE_DEVICES: ""
+        run: |
+          pip install -e ".[dev]"
+          bash microrts_agent/microrts/build_bridge.sh
+          pytest tests/
