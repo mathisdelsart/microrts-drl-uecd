@@ -48,11 +48,20 @@ tournament = [
     "moviepy",
     "pyvirtualdisplay",
 ]
-dev = ["ruff==0.15.14"]
+dev = ["ruff==0.15.14", "pytest>=8", "pytest-timeout>=2"]
 
-# microrts_agent is the importable package (run via `python -m microrts_agent.train`
+# microrts_agent is the importable package (run via `python -m microrts_agent <cmd>`
 # after `pip install -e .`). The vendored competition bots and the Java engine are
 # data/source trees, not Python packages, so they are excluded from discovery.
 [tool.setuptools.packages.find]
 include = ["microrts_agent*"]
 exclude = ["microrts_agent.bots*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+# Make tests work without `pip install -e .` by adding the repo root.
+pythonpath = ["."]
+# Per-test default timeout — catches CI hangs at <2× the slowest expected test.
+timeout = 300
+addopts = "-q --strict-markers"
