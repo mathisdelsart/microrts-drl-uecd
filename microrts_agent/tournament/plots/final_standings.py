@@ -1,7 +1,8 @@
-"""Final tournament standings — horizontal bar chart with W-T-L records.
+"""Final tournament standings — horizontal bar chart of total points.
 
 Agents ranked by total points (Win=1, Draw=0.5, Loss=0). Bar length = total score.
-Labels show the W-T-L record. Top 3 bars are highlighted with thicker edges.
+The bar gradient mirrors the head-to-head matrix (red→white→blue, 0→50%→100% WR
+of the agent's max-possible points). The champion bar carries a gold outline.
 Useful to see the overall tournament hierarchy at a glance.
 """
 
@@ -19,9 +20,6 @@ def plot_final_standings(data, console, output_path: Path):
     rankings = calculate_rankings(data.games, data.ais)
     ai_names = [clean_name(r[0]) for r in rankings]
     scores = [r[1] for r in rankings]
-    [r[2] for r in rankings]
-    [r[3] for r in rankings]
-    [r[4] for r in rankings]
 
     n = len(ai_names)
     fig, ax = plt.subplots(figsize=(12, 6.5))
@@ -53,7 +51,7 @@ def plot_final_standings(data, console, output_path: Path):
     bars[0].set_edgecolor("#FFC400")
     bars[0].set_linewidth(3.2)
 
-    # Score labels (right of bar) + W|D|L (inside bar when there's room)
+    # Score labels (right of bar)
     score_strs = [f"{int(s)}" if s == int(s) else f"{s:.1f}" for s in scores]
 
     for i, bar in enumerate(bars):
@@ -122,15 +120,25 @@ def plot_final_standings(data, console, output_path: Path):
     # the dashed grid lines below stop at the top of that bar.
     ax.set_ylim(n - 0.5, -0.4)
 
-    # X ticks at every 30 points across the [0, 180] range
+    # X ticks across the [0, games_per_agent] range — derive the step so we
+    # land on round numbers and end up with ~6-7 ticks regardless of tournament
+    # size (10 bots × 20 games = 180; multi-map has different totals).
     import matplotlib.ticker as mticker
 
-    tick_positions = list(range(0, 181, 30))
+    max_x = int(np.ceil(games_per_agent))
+    if max_x <= 0:
+        max_x = 1
+    # Pick a step that gives ~6 ticks (rounded to the nearest "nice" number).
+    raw_step = max_x / 6
+    step = (
+        max(1, int(round(raw_step / 10) * 10)) if raw_step >= 10 else max(1, int(round(raw_step)))
+    )
+    tick_positions = list(range(0, max_x + 1, step))
     ax.xaxis.set_major_locator(mticker.FixedLocator(tick_positions))
 
     # Vertical dashed reference lines (skip endpoints) — drawn behind bars.
     for x in tick_positions:
-        if x in (0, 180):
+        if x in (0, max_x):
             continue
         ax.vlines(
             x, -0.4, n - 0.5, linestyles="--", colors="#bbbbbb", linewidth=0.8, alpha=0.6, zorder=0
@@ -141,7 +149,9 @@ def plot_final_standings(data, console, output_path: Path):
     ax.spines["left"].set_linewidth(ax.spines["bottom"].get_linewidth())
     ax.spines["left"].set_color(ax.spines["bottom"].get_edgecolor())
 
-    ax.set_xlim(0, 188)
+    # Small right-side padding (~4%) so the score labels next to the top bars
+    # don't bump against the axis frame.
+    ax.set_xlim(0, max_x * 1.04 if max_x > 0 else 1)
 
     plt.tight_layout()
     plt.savefig(output_path, bbox_inches="tight", format="pdf", dpi=300)

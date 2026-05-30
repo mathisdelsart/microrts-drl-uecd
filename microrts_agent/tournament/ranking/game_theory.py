@@ -110,7 +110,13 @@ def regret_metrics(winrate_matrix: np.ndarray) -> tuple[np.ndarray, np.ndarray, 
         worst_matchup : index of the opponent causing worst regret
     """
     n = winrate_matrix.shape[0]
-    best_vs = winrate_matrix.max(axis=0)  # best achievable WR vs each opponent
+    # Mask the diagonal before taking the column-max: build_winrate_matrix
+    # fills it with 0.5 for the j-vs-j self-play cell, which would otherwise
+    # be reported as the "best achievable" WR vs j whenever no real agent
+    # actually exceeds 50% against j — inflating the regret for that column.
+    masked = winrate_matrix.astype(float, copy=True)
+    np.fill_diagonal(masked, -np.inf)
+    best_vs = masked.max(axis=0)  # best WR vs each opponent across real agents
 
     avg_regret = np.zeros(n)
     worst_regret = np.zeros(n)

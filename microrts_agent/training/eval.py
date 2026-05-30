@@ -282,26 +282,27 @@ def log_multimap_eval_results(
 ):
     """Print per-map tables + aggregate, write CSV + TB."""
 
-    # Per-map tables
-    for map_path in map_pool:
-        short = os.path.splitext(os.path.basename(map_path))[0]
-        results = per_map_results[map_path]
-        map_w, map_g = 0, 0
+    # Per-map tables. The CSV is opened once around both loops so we don't
+    # reopen it for every (map, bot) cell (8 maps × 5 bots = 40 opens/eval).
+    with open(eval_csv_path, "a") as csv_f:
+        for map_path in map_pool:
+            short = os.path.splitext(os.path.basename(map_path))[0]
+            results = per_map_results[map_path]
+            map_w, map_g = 0, 0
 
-        print(f"\n  -- {short} --")
-        for bot_name, stats in results.items():
-            w, losses, d, g = stats["wins"], stats["losses"], stats["draws"], stats["games"]
-            map_w += w
-            map_g += g
-            print(
-                f"  {bot_name:<18s} {g:>3d} {w:>3d} {losses:>3d} {d:>3d} "
-                f"{stats['win_rate'] * 100:>6.1f}%"
-            )
-            writer.add_scalar(
-                f"eval_map/{short}/{bot_name}/win_rate", stats["win_rate"], global_step
-            )
-            with open(eval_csv_path, "a") as f:
-                f.write(
+            print(f"\n  -- {short} --")
+            for bot_name, stats in results.items():
+                w, losses, d, g = stats["wins"], stats["losses"], stats["draws"], stats["games"]
+                map_w += w
+                map_g += g
+                print(
+                    f"  {bot_name:<18s} {g:>3d} {w:>3d} {losses:>3d} {d:>3d} "
+                    f"{stats['win_rate'] * 100:>6.1f}%"
+                )
+                writer.add_scalar(
+                    f"eval_map/{short}/{bot_name}/win_rate", stats["win_rate"], global_step
+                )
+                csv_f.write(
                     f"{global_step},{short},{bot_name},{w},{losses},{d},{g},"
                     f"{stats['win_rate']:.4f},"
                     f"{stats['wins_p0']},{stats['games_p0']},{stats['win_rate_p0']:.4f},"
@@ -309,8 +310,8 @@ def log_multimap_eval_results(
                     f"{stats['avg_return']:.4f},{stats['avg_length']:.1f}\n"
                 )
 
-        map_wr = map_w / map_g if map_g > 0 else 0
-        writer.add_scalar(f"eval_map/{short}/overall_win_rate", map_wr, global_step)
+            map_wr = map_w / map_g if map_g > 0 else 0
+            writer.add_scalar(f"eval_map/{short}/overall_win_rate", map_wr, global_step)
 
     # Aggregate across all maps
     print("\n  -- AGGREGATE (all maps) --")

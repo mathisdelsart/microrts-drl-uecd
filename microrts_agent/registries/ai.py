@@ -9,7 +9,7 @@ def randomBiasedAI(utt):
     return RandomBiasedAI()
 
 
-def randomAI(utt):
+def randomBiasedSingleUnitAI(utt):
     from ai import RandomBiasedSingleUnitAI  # type: ignore[import-not-found]
 
     return RandomBiasedSingleUnitAI()
@@ -117,7 +117,7 @@ def utsImass(utt):
 
 
 AI_MAPPING = {
-    "RandomAI": randomAI,
+    "RandomBiasedSingleUnitAI": randomBiasedSingleUnitAI,
     "RandomBiasedAI": randomBiasedAI,
     "PassiveAI": passiveAI,
     "WorkerRush": workerRush,
