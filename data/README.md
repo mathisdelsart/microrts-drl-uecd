@@ -14,6 +14,7 @@ into this tree.
 | [`tournaments/`](tournaments/) | Both canonical thesis tournaments (`single_map/` + `multi_map/`): tournament CSV, parsed JSON, chunked CSVs from the SLURM runner, and the full PDF visualisation tree (basic + game-theoretic metrics, global + per-map). |
 | [`probes/`](probes/) | Generalisation probes — UECD-Best (trained on `basesWorkers16x16A`) tested on two unseen maps against 8 opponents (100 games each). CSV summary + markdown table + cleaned per-probe stdout logs. |
 | [`bc_training/`](bc_training/) | The behaviour-cloning teacher dataset used to warm-start the BC+PPO pipeline: 6 NPZ chunks (~65 MB), `RAISocketAI` playing 100 games against each of {`RAISocketAI`, `CoacAI`, `Mayari`} on `basesWorkers16x16A`. |
+| [`agents/`](agents/)           | Trained multi-map agents (`UECD-MultiMap`, `UECD-MultiMap-Best`) in *medium* form: inference model + resume checkpoint + config + final eval + training log. ~220 MB. |
 
 ## Links
 

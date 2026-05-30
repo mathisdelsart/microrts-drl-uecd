@@ -31,6 +31,10 @@ outputs/
 *.safetensors
 wandb/
 
+# Curated shipped agents are tracked explicitly (override *.pt + *.log above)
+!data/agents/**/*.pt
+!data/agents/**/*.log
+
 # Report build artifacts (LaTeX)
 *.aux
 *.bbl

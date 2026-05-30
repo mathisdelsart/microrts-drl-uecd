@@ -11,7 +11,7 @@
 #SBATCH --array=0-15%16
 #
 # Round-robin tournament on the 5 open-competition maps <= 16x16,
-# INCLUDING multimap_small_200M_s1 (the 78.6% multi-map agent) on top of
+# INCLUDING UECD-MultiMap (the 78.6% multi-map agent) on top of
 # every other RL agent + scripted bot we have. 20 AIs total.
 #
 # 20 AIs × 19 others / 2 = 190 pairs × 5 maps × 2 iterations × 2 (P0/P1)

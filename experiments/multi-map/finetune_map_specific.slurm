@@ -20,7 +20,7 @@
 #
 
 SEED=${SEED:-1}
-BASE_MODEL="outputs/runs/multimap_small_200M_s1/agent.pt"
+BASE_MODEL="outputs/runs/UECD-MultiMap/agent.pt"
 
 MAPS=("maps/open_competition/basesWorkers8x8A.xml" "maps/open_competition/NoWhereToRun9x8.xml")
 MAP_NAMES=("8x8A" "NoWhereToRun9x8")

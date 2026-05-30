@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Multi-map fine-tuning V2 — resumes from best_multimap_400M_s1 @ ~325M
+# Multi-map fine-tuning V2 — resumes from UECD-MultiMap-Best @ ~325M
 # Target: fix worker-rush mode collapse observed in V1.
 #
 # Diagnosis from V1 (320M eval, 0% vs RAISocketAI):
