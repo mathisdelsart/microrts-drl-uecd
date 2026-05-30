@@ -68,11 +68,14 @@ for opp in RandomBiasedAI WorkerRush LightRush CoacAI Mayari; do
     python -m microrts_agent evaluate \
         --agent data/agents/UECD-BC \
         --opponent $opp \
-        --map maps/open_competition/basesWorkers16x16A.xml \
-        --num-games 10 \
-        --positions both
+        --maps maps/open_competition/basesWorkers16x16A.xml \
+        --nb_games 10
 done
 ```
+
+`evaluate` plays `--nb_games` games as P0 *and* the same number as P1 by
+default, so 10 here means 20 games per opponent (matching the 20-games column
+in the table above).
 
 ## See also
 

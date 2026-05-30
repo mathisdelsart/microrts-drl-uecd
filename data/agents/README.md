@@ -131,8 +131,8 @@ End-to-end via the CLI:
 python -m microrts_agent evaluate \
     --agent data/agents/UECD-SingleMap-Best \
     --opponent CoacAI \
-    --map basesWorkers16x16A.xml \
-    --num-games 100
+    --maps maps/open_competition/basesWorkers16x16A.xml \
+    --nb_games 100
 ```
 
 ## Resuming training

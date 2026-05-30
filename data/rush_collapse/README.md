@@ -75,18 +75,22 @@ for readability.
 
 ## Reproducing
 
-The agent at each stage is a checkpoint of `UECD-SingleMap-Rushed`
-(formerly `PhasedRL-300M`). Each opponent eval was launched as:
+The agent at each stage is a checkpoint of `UECD-SingleMap-Rushed` (formerly
+`PhasedRL-300M`). `evaluate` loads an agent from a directory containing
+`config.json` + `agent.pt`, so each stage was evaluated by copying the chosen
+checkpoint (`150006272.pt` for 150M, `299962368.pt` for 300M) into a temporary
+directory as `agent.pt` next to the run's `config.json`, then:
 
 ```bash
 python -m microrts_agent evaluate \
-    --agent outputs/runs/single_map/UECD-SingleMap-Rushed \
-    --checkpoint <step>.pt           # 150M -> 150006272.pt, 300M -> 299962368.pt
+    --agent "$TMPDIR" \
     --opponent <opponent> \
-    --map maps/open_competition/basesWorkers16x16A.xml \
-    --num-games 500 \
-    --positions both
+    --maps maps/open_competition/basesWorkers16x16A.xml \
+    --nb_games 500
 ```
+
+The full SLURM driver that materialises `$TMPDIR` for every (stage, opponent)
+combination is [`experiments/eval/eval_rush_collapse.slurm`](../../experiments/eval/eval_rush_collapse.slurm).
 
 ## See also
 

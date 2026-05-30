@@ -65,18 +65,18 @@ microrts-drl-uecd/
 │   │   └── build_bridge.sh       # Recompiles src/ -> lib/bridge.jar
 │   ├── bots/                     # Vendored competition bots (sources/builds + RAISocketAI wheel)
 │   ├── tournament_configs/       # Tournament setup JSON files
-│   └── train.py  evaluate.py  run_tournament.py   # simple entry points
+│   └── train.py  evaluate.py  run_tournament.py   # subcommand implementations dispatched by __main__.py
 ├── data/                         # Curated artefacts shipped with the repo (not regenerated on clone)
 │   ├── recordings/               # 36 showcase game clips of UECD-Best vs the field (also served from the supplementary site)
 │   ├── tournaments/              # Headline tournament results: single_map/ + multi_map/ (CSV + parsed JSON + PDFs)
 │   ├── generalization_probes/    # Generalisation probes (UECD-Best on non-training maps)
 │   ├── bc_training/              # BC teacher dataset (RAISocketAI demonstrations vs RAISocketAI/CoacAI/Mayari)
-│   └── agents/                   # Trained agents in medium form (5 single-map + 2 multi-map + GridNet baseline) — agent.pt + checkpoint.pt + config + eval + log
+│   └── agents/                   # Trained agents in medium form (4 single-map UECD + GridNet baseline + 2 multi-map + UECD-BC + UECD-BC-PPO = 9 agents) — agent.pt + checkpoint.pt + config + eval + log
 ├── dissertation/                 # LaTeX thesis, figures, figure generators (figs/figs-python/), compiled PDF
 ├── cog-2026-paper/               # CoG 2026 short-paper submission
-├── experiments/                  # SLURM jobs: single-map/ multi-map/ bc/ eval/ tournament/ bench/ ablation/
+├── experiments/                  # SLURM jobs: single-map/ multi-map/ BC/ eval/ tournament/ ablation/ + shared _setup_env.sh
 ├── setup/                       # env setup scripts (local.sh, cluster.sh)
-└── LICENSE  CONTRIBUTING.md  ruff.toml  pyproject.toml
+└── LICENSE  CONTRIBUTING.md  CITATION.cff  ACKNOWLEDGMENTS.md  CREDITS.md  CODE_OF_CONDUCT.md  ruff.toml  pyproject.toml
 ```
 
 Python dependencies are declared once in `pyproject.toml` (core stack +
@@ -117,15 +117,15 @@ python -m microrts_agent train --help        # all flags
 # 4. Monitor
 tensorboard --logdir outputs/runs/
 
-# 5. Evaluate a trained agent against a bot
-python -m microrts_agent evaluate --agent outputs/runs/<run> --opponent CoacAI
+# 5. Evaluate a trained agent against a bot (any of the shipped agents under data/agents/, or your own outputs/runs/<run>)
+python -m microrts_agent evaluate --agent data/agents/UECD-SingleMap-Best --opponent CoacAI
 
 # 6. Run a tournament
 python -m microrts_agent tournament --help
 ```
 
 On the HPC cluster, use `setup/cluster.sh` and the job scripts under
-`experiments/` (grouped by single-map/ multi-map/ bc/ eval/ tournament/ bench/ ablation/).
+`experiments/` (grouped by single-map/ multi-map/ BC/ eval/ tournament/ ablation/, with a shared `_setup_env.sh` preamble each script sources).
 
 ## Results
 
