@@ -20,7 +20,7 @@
 #
 
 SEED=${SEED:-1}
-BC_MODEL="outputs/runs/bc_v3_s1/agent.pt"
+BC_MODEL="outputs/runs/bc/UECD-BC/agent.pt"
 
 echo "============================================================"
 echo "  BC-PPO Fine-tuning — 100M steps, single map"
