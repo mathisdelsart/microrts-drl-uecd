@@ -16,6 +16,7 @@ into this tree.
 | [`bc_training/`](bc_training/) | The behaviour-cloning teacher dataset used to warm-start the BC+PPO pipeline: 6 NPZ chunks (~65 MB), `RAISocketAI` playing 100 games against each of {`RAISocketAI`, `CoacAI`, `Mayari`} on `basesWorkers16x16A`. |
 | [`agents/`](agents/)           | All trained agents (5 single-map + 2 multi-map + GridNet baseline) in *medium* form: inference model + resume checkpoint + config + final eval + training log. ~685 MB total; `UECD-SingleMap-Best` carries an additional `lineage/` subdir reconstructing its full training history from step 0. |
 | [`rush_collapse/`](rush_collapse/) | Pre/post-collapse evaluation of `UECD-SingleMap-Rushed` (checkpoints at 150M and 300M, 1 000 games each against `CoacAI`, `Mayari`, `ObiBotKenobi`, `TMA`) — the data behind the dissertation's *rush collapse* / *out-of-distribution cost* sections. |
+| [`bc_baseline/`](bc_baseline/) | Win-rate evaluation of `UECD-BC` against the 5 base-pool bots (`RandomBiasedAI`, `WorkerRush`, `LightRush`, `CoacAI`, `Mayari`) — the **78 % baseline** of the dissertation's BC+VF→PPO vs from-scratch figure. |
 
 ## Links
 

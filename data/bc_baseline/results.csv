@@ -1,0 +1,6 @@
+opponent,games,p0_wr,p0_avg_len,p1_wr,p1_avg_len,total_wr
+RandomBiasedAI,20,1.0,662,1.0,668,1.0
+WorkerRush,20,1.0,815,0.4,1081,0.7
+LightRush,20,1.0,676,0.8,1555,0.9
+CoacAI,20,0.7,1066,0.9,838,0.8
+Mayari,20,1.0,717,0.0,1054,0.5

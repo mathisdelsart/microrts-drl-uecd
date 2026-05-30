@@ -1,0 +1,52 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Loaded: UECD-BC (4,722,491 params)
+
+============================================================
+  MicroRTS Evaluation
+============================================================
+  Agent:       UECD-BC (rl)
+  Opponent:    Mayari (bot)
+  Mode:        rl_vs_bot
+  Device:      cuda
+  Maps:        1
+               - maps/16x16/basesWorkers16x16A.xml (max_steps=4000)
+  Games/pos:   10
+  Total games: 20
+  Actions:     stochastic
+============================================================
+
+  Map 1/1: basesWorkers16x16A  (max_steps=4000)
+  ------------------------------------------------------
+/home/mdelsart/MasterThesis/cluster_venv/lib/python3.9/site-packages/torch/nn/modules/transformer.py:508: UserWarning: The PyTorch API of nested tensors is in prototype stage and will change in the near future. We recommend specifying layout=torch.jagged when constructing a nested tensor, as this layout receives active development, has better operator coverage, and works with torch.compile. (Triggered internally at /pytorch/aten/src/ATen/NestedTensorImpl.cpp:178.)
+  output = torch._nested_tensor_from_mask(
+    [P0] Game   4/10:  WIN  len=  615
+    [P0] Game   2/10:  WIN  len=  650
+    [P0] Game   3/10:  WIN  len=  658
+    [P0] Game   8/10:  WIN  len=  661
+    [P0] Game  10/10:  WIN  len=  661
+    [P0] Game   1/10:  WIN  len=  736
+    [P0] Game   9/10:  WIN  len=  781
+    [P0] Game   6/10:  WIN  len=  795
+    [P0] Game   5/10:  WIN  len=  806
+    [P0] Game   7/10:  WIN  len=  811
+    [P1] Game   7/10: LOSS  len=  955
+    [P1] Game   4/10: LOSS  len=  979
+    [P1] Game   6/10: LOSS  len=  995
+    [P1] Game  10/10: LOSS  len=  995
+    [P1] Game   2/10: LOSS  len= 1023
+    [P1] Game   3/10: LOSS  len= 1035
+    [P1] Game   9/10: LOSS  len= 1088
+    [P1] Game   8/10: LOSS  len= 1110
+    [P1] Game   5/10: LOSS  len= 1165
+    [P1] Game   1/10: LOSS  len= 1198
+
+============================================================
+  RESULTS — UECD-BC vs Mayari
+============================================================
+  As P0:   10W /   0L /   0D  (100.0%)  avg_len=717
+  As P1:    0W /  10L /   0D  (  0.0%)  avg_len=1054
+  ────────────────────────────────────────────────────────
+  Total:   10W /  10L /   0D  ( 50.0%)
+============================================================
