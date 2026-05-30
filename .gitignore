@@ -5,13 +5,15 @@ build/
 out/
 *.class
 *.log
-*.aux
 __pycache__/
 *.pyc
 *.egg-info/
 .eggs/
 .vscode/
 .claude/
+
+# Competition-bot build deploy directory (microrts_agent/bots/build_all.sh output)
+microrts_agent/bots/jars/
 
 # All generated outputs (runs, recordings, tournament results, comparisons)
 outputs/
@@ -40,9 +42,8 @@ wandb/
 *.lot
 *.out
 *.run.xml
-*.toc
-/**/*.aux
 *.synctex.gz
+*.toc
 # LaTeX glossary / xelatex intermediates
 *.acn
 *.acr
