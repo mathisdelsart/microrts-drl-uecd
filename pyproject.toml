@@ -37,12 +37,6 @@ classifiers = [
     "Topic :: Games/Entertainment :: Real Time Strategy",
 ]
 
-[project.urls]
-Homepage = "https://github.com/mathisdelsart/microrts-drl-uecd"
-Repository = "https://github.com/mathisdelsart/microrts-drl-uecd"
-Issues = "https://github.com/mathisdelsart/microrts-drl-uecd/issues"
-Documentation = "https://mathisdelsart.github.io/microrts-drl-uecd-website/"
-
 # Core stack: training (PPO), evaluation, tournaments, plotting.
 dependencies = [
     "torch>=2.0",
@@ -79,6 +73,12 @@ tournament = [
     "pyvirtualdisplay",
 ]
 dev = ["ruff==0.15.14", "pytest>=8", "pytest-timeout>=2", "PyYAML", "tomli; python_version < '3.11'"]
+
+[project.urls]
+Homepage = "https://github.com/mathisdelsart/microrts-drl-uecd"
+Repository = "https://github.com/mathisdelsart/microrts-drl-uecd"
+Issues = "https://github.com/mathisdelsart/microrts-drl-uecd/issues"
+Documentation = "https://mathisdelsart.github.io/microrts-drl-uecd-website/"
 
 # microrts_agent is the importable package (run via `python -m microrts_agent <cmd>`
 # after `pip install -e .`). The vendored competition bots and the Java engine are
