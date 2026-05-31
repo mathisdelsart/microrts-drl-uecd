@@ -1,3 +1,12 @@
+<!--
+Reminders (see CONTRIBUTING.md for the full list):
+  - Conventional Commit title (feat: / fix: / docs: / chore: / ci: / refactor:)
+  - Branch prefix matches the title (feat/..., fix/..., ...)
+  - Squash-merge only; commit message becomes the PR title
+  - `uvx ruff@0.15.14 check . && format --check .` must be clean (no `# noqa`)
+  - `pytest tests/` must be green
+-->
+
 ## What
 
 <!-- What changed -->
