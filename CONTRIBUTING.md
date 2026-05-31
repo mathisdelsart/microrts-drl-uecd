@@ -5,7 +5,7 @@ a clean, reviewable history is part of the deliverable.
 
 External contributions are welcome. For substantial changes (new training
 features, new architectures, breaking API changes), please open an issue first
-to discuss the design — it avoids wasted work on both sides. Small fixes
+to discuss the design. It avoids wasted work on both sides. Small fixes
 (typos, build issues, dead links, lint warnings) can be sent as a PR directly.
 
 ## Branch naming
@@ -40,11 +40,13 @@ imperative present ("add", not "added"). The body explains the *why*; the
 
 1. Branch off `main`: `git checkout -b <type>/<name>`
 2. Commit, then push: `git push -u origin <branch>`
-3. Open a PR whose body covers:
+3. Open a PR. The body should cover the four sections below; the
+   [`.github/pull_request_template.md`](.github/pull_request_template.md)
+   pre-fills this skeleton automatically:
    - **What** changed
    - **Why** it is needed
-   - **Out of scope** — what the PR deliberately does not touch
-   - **Test plan** — how the change was verified
+   - **Out of scope**: what the PR deliberately does not touch
+   - **Test plan**: how the change was verified
 4. Self-review the diff in the **Files changed** tab: scope matches the title,
    no stray files, no debug leftovers.
 5. Squash & merge.
@@ -71,7 +73,7 @@ before merge.
 
 ## Merge strategy
 
-**Squash & merge** — one PR = one commit on `main`, linear history.
+**Squash & merge**: one PR is one commit on `main`, linear history.
 
 After merge:
 

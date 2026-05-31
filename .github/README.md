@@ -1,4 +1,4 @@
-# `.github/` — repository metadata
+# `.github/` (repository metadata)
 
 This directory holds files that GitHub interprets automatically: CI/CD pipelines,
 dependency policy, security policy, issue & PR templates. None of it ships in
@@ -40,11 +40,11 @@ Tells Dependabot to open *version-update* PRs on a schedule for:
   CVEs in the underlying image get caught.
 
 **What this file does NOT cover** (and shouldn't):
-- **Security alerts on pip deps** — handled by the repo-level Settings → "Code
+- **Security alerts on pip deps**: handled by the repo-level Settings → "Code
   security" toggles (Dependabot alerts + Dependabot security updates), enabled
   on 2026-05-30. PR #81 (Pillow 11.3.0 → 12.2.0) was opened by this channel
   after PR #80 shipped `requirements-lock.txt`.
-- **Pip version bumps** — intentionally off. The repo is a thesis-companion
+- **Pip version bumps**: intentionally off. The repo is a thesis-companion
   artefact in a mostly-frozen state; a continuous stream of `pip` PRs would
   be noise. CVEs still flow through the security-alerts channel above.
 
@@ -61,18 +61,18 @@ The full contributor guide lives in `../CONTRIBUTING.md`.
 
 ### `ISSUE_TEMPLATE/`
 Three files:
-- **`bug_report.yml`** — structured form (Summary / Reproduction / Expected /
+- **`bug_report.yml`**: structured form (Summary / Reproduction / Expected /
   Actual / Environment / Commit). Auto-labels with `bug`.
-- **`feature_request.yml`** — structured form (Problem / Proposal /
+- **`feature_request.yml`**: structured form (Problem / Proposal /
   Alternatives / Scope). Auto-labels with `enhancement`.
-- **`config.yml`** — meta-config:
-  - `blank_issues_enabled: false` — forces use of the templates above; no
+- **`config.yml`**: meta-config:
+  - `blank_issues_enabled: false`: forces use of the templates above; no
     free-form issues.
-  - `contact_links:` — adds a "Question about the dissertation or paper"
+  - `contact_links:` adds a "Question about the dissertation or paper"
     button that opens a mailto to the author instead of creating an issue
     (research questions don't belong in the bug tracker).
 
-### `workflows/` — GitHub Actions
+### `workflows/` (GitHub Actions)
 
 #### `ci.yml`
 Runs on every push to `main` and every PR. Four jobs:
@@ -82,7 +82,7 @@ Runs on every push to `main` and every PR. Four jobs:
 | `ruff (lint + format)`  | `ruff check` + `ruff format --check` (3.12)   | ~1 min           |
 | `java bridge (build)`   | Recompile `microrts/src/` → `bridge.jar`      | ~1 min           |
 | `pytest matrix (3.10/3.11/3.12)` | 3 parallel cells running the 115 smoke tests with CPU-only torch | ~3-4 min/cell |
-| `pytest (smoke)`        | Empty aggregator — `needs:` the matrix above  | <1 s             |
+| `pytest (smoke)`        | Empty aggregator; `needs:` the matrix above   | <1 s             |
 
 The aggregator pattern keeps a stable required-check name on the branch-
 protection rule across matrix expansion. `concurrency:` cancels superseded
@@ -117,12 +117,12 @@ outside the Settings UI).
 
 ## What is deliberately NOT here
 
-- **`FUNDING.yml`** — no donation button; not relevant for a thesis artefact.
-- **`CODEOWNERS`** — single-author project; auto-assigning reviewers is
+- **`FUNDING.yml`**: no donation button; not relevant for a thesis artefact.
+- **`CODEOWNERS`**: single-author project; auto-assigning reviewers is
   meaningless.
-- **A release workflow** — releases are tagged manually when needed; no
+- **A release workflow**: releases are tagged manually when needed; no
   artefact build / publish step is automated.
-- **`labeler.yml`** / auto-labelling — issue volume doesn't justify it.
+- **`labeler.yml`** / auto-labelling: issue volume doesn't justify it.
 
 Anything beyond what's listed in the tree above would be over-engineering for
 the lifecycle this repo is in.
