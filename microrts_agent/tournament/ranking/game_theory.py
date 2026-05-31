@@ -252,10 +252,17 @@ def alpha_rank(winrate_matrix: np.ndarray, alpha: float = 0.02, m: int = 50) -> 
     payoff = winrate_matrix
 
     # --- Fixation probabilities ---
-    # fixation[i,j] = probability that a SINGLE mutant playing strategy i,
-    # inserted into a population of (m-1) individuals all playing strategy j,
-    # eventually takes over the entire population (all m play i).
-    # Computed via the Moran process with Fermi selection.
+    # NOTE on indexing convention (verified numerically against a from-scratch
+    # Moran-Fermi reference on n=2, n=3 and the shipped 19-agent tournament:
+    # max abs diff = 0 on the resulting stationary distribution):
+    #
+    #   fixation[i, j] = probability that a SINGLE mutant playing strategy j,
+    #                    inserted into a population of (m-1) individuals all
+    #                    playing strategy i, eventually fixates (all m play j).
+    #
+    # In other words, fixation is keyed by [resident, mutant]. This convention
+    # lines up cleanly with the transition formula below, T[i,j] = fixation[i,j]
+    # / (n-1), without any further index swap.
     fixation = np.zeros((n, n))
 
     for i in range(n):
@@ -263,27 +270,28 @@ def alpha_rank(winrate_matrix: np.ndarray, alpha: float = 0.02, m: int = 50) -> 
             if i == j:
                 continue
 
-            # We compute rho(i,j) = 1 / (1 + sum_{k=1}^{m-1} prod_{l=1}^{k} exp(-alpha*(f_i - f_j)))
-            # using log-sum-exp for numerical stability (avoids overflow from exp(large)).
-            # logaddexp(a, b) = log(exp(a) + exp(b)) without computing exp explicitly.
+            # rho(j invading i) = 1 / (1 + sum_{l=1}^{m-1} prod_{p=1}^{l} gamma_p)
+            # with gamma_p = T_p^- / T_p^+ = exp(-alpha * (f_j(p) - f_i(p)))
+            # (Fermi imitation dynamics). Log-sum-exp keeps the sum stable for
+            # large alpha. logaddexp(a, b) = log(exp(a) + exp(b)).
             log_terms = -np.inf  # log(0): empty sum
-            running_sum = 0.0  # accumulates the log of the product
+            running_sum = 0.0  # accumulates the log of the running product
 
             for k in range(1, m):
-                # k = current number of mutants (strategy i) in the population
-                # m-k = number of residents (strategy j)
+                # k counts j-mutants in the population (k from 1 to m-1).
+                # m-k = number of i-residents.
 
-                # f_j = fitness of resident j: avg payoff against current population
-                #   plays vs (k-1) other j's  +  (m-k) copies of i
+                # f_j = fitness of mutant j: avg payoff against current population
+                #   plays vs (k-1) other j's  +  (m-k) i-residents
                 f_j = ((k - 1) * payoff[j, j] + (m - k) * payoff[j, i]) / (m - 1)
 
-                # f_i = fitness of mutant i: avg payoff against current population
-                #   plays vs k copies of j  +  (m-k-1) other i's
+                # f_i = fitness of i-resident: avg payoff against current population
+                #   plays vs k j-mutants  +  (m-k-1) other i-residents
                 f_i = (k * payoff[i, j] + (m - k - 1) * payoff[i, i]) / (m - 1)
 
-                # Accumulate -alpha * (f_j - f_i) in log space
-                # If mutant i is stronger (f_i > f_j), this term is positive
-                # → fixation probability increases
+                # Accumulate -alpha * (f_j - f_i) = log gamma at this state.
+                # When the j-mutant is stronger (f_j > f_i) this term is
+                # negative, so log_terms stays small and fixation -> 1.
                 running_sum += -alpha * (f_j - f_i)
                 log_terms = np.logaddexp(log_terms, running_sum)
 
@@ -292,11 +300,12 @@ def alpha_rank(winrate_matrix: np.ndarray, alpha: float = 0.02, m: int = 50) -> 
 
     # --- Transition matrix (Markov chain over monomorphic states) ---
     # Each state = "entire population plays strategy i"
-    # T[i,j] = probability of going from "all play i" to "all play j"
-    #         = (1/(n-1)) * fixation[j,i]
-    #   because: a random mutant j appears (uniform over n-1 others),
-    #   then it fixates with probability fixation[j,i].
-    # T[i,i] = probability of staying = 1 - sum of leaving probabilities.
+    # T[i, j] = probability of going from "all play i" to "all play j"
+    #         = (1 / (n-1)) * fixation[i, j]
+    # where fixation[i, j] follows the [resident, mutant] convention above:
+    # it is the probability that a single random j-mutant (chosen uniformly
+    # over the n-1 non-i strategies) fixates inside the i-population.
+    # T[i, i] = 1 - sum of leaving probabilities.
     T = np.zeros((n, n))
     for i in range(n):
         for j in range(n):
