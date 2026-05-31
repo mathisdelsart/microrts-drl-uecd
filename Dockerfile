@@ -31,7 +31,10 @@
 # Security note: image runs as root. Standard for ML research images, and
 # avoids UID/GID friction with bind-mounted host dirs. Switch to a non-root
 # USER if deploying as a long-running service.
-FROM python:3.10-slim
+# Pinned to the bookworm variant: Debian trixie (the current `:slim` default
+# as of late 2026) renamed `openjdk-17-jdk-headless` and the apt install
+# below fails. Bookworm still ships it and is also bumped by Dependabot.
+FROM python:3.10-slim-bookworm
 
 LABEL org.opencontainers.image.source="https://github.com/mathisdelsart/microrts-drl-uecd"
 LABEL org.opencontainers.image.description="Deep-RL agent for MicroRTS (UCLouvain master's thesis), CPU-only image."
