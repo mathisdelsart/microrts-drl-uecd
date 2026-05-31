@@ -130,7 +130,7 @@ On the HPC cluster, use `setup/cluster.sh` and the job scripts under
 ### Docker
 
 Two images are shipped. The default `Dockerfile` is CPU-only (~1 GB) and
-sufficient for evaluation; `Dockerfile.gpu` adds CUDA 12.4 + cuDNN (~6 GB)
+sufficient for evaluation; `Dockerfile.gpu` adds CUDA 12.9 + cuDNN (~6 GB)
 for training.
 
 ```bash
@@ -141,7 +141,7 @@ docker run --rm microrts-drl-uecd evaluate \
     --agent data/agents/UECD-SingleMap-Best \
     --opponent CoacAI --nb_games 10 --max_steps 1000
 
-# GPU image (CUDA 12.4, requires nvidia-container-toolkit + --gpus all)
+# GPU image (CUDA 12.9, requires nvidia-container-toolkit + --gpus all)
 docker build -f Dockerfile.gpu -t microrts-drl-uecd:gpu .
 docker run --rm --gpus all microrts-drl-uecd:gpu train \
     --exp-name docker-smoke --total-timesteps 100000

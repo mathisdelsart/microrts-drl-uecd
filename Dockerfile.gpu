@@ -1,4 +1,4 @@
-# GPU image for MicroRTS Deep-RL Agent (CUDA 12.4 + cuDNN, torch 2.5).
+# GPU image for MicroRTS Deep-RL Agent (CUDA 12.9 + cuDNN).
 #
 # Build:  docker build -f Dockerfile.gpu -t microrts-drl-uecd:gpu .
 # Run:    docker run --rm --gpus all microrts-drl-uecd:gpu                  # CLI help
@@ -38,8 +38,10 @@ WORKDIR /app
 COPY . .
 
 # CUDA-enabled torch first so pip's resolver picks up the GPU wheel
-# (the default PyPI index serves CPU-only torch on Linux).
-RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cu124 \
+# (the default PyPI index serves CPU-only torch on Linux). The cu129
+# wheel index matches the 12.9 base image; keep them aligned on every
+# nvidia/cuda minor bump.
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cu129 \
     && pip install --no-cache-dir -e ".[dev]"
 
 # Rebuild the Java<->Python bridge from src/ against the vendored microrts.jar.
