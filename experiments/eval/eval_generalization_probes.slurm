@@ -10,7 +10,7 @@
 #SBATCH --partition=batch
 #SBATCH --array=0-7
 #
-# Generalisation probe: UECD-Best on TwoBasesBarracks16x16 (held-out 16x16 map)
+# Generalisation probe: UECD-SingleMap-Best on TwoBasesBarracks16x16 (held-out 16x16 map)
 # vs 8 opponents, ordered weakest -> strongest.
 # 50 P0 + 50 P1 = 100 stochastic games per bot.
 # Array: 0=RandomBiasedAI, 1=WorkerRush, 2=LightRush, 3=CoacAI,
@@ -29,7 +29,7 @@ mkdir -p "$EVAL_DIR"
 OUTFILE="${EVAL_DIR}/$(printf '%d' $((SLURM_ARRAY_TASK_ID + 1)))_uecdbest_vs_${BOT}.txt"
 
 echo "============================================================"
-echo "  Generalisation probe: UECD-Best vs $BOT"
+echo "  Generalisation probe: UECD-SingleMap-Best vs $BOT"
 echo "  Map:   $MAP"
 echo "  Games: 50 P0 + 50 P1 = 100 stochastic"
 echo "  $(date)"

@@ -1,6 +1,6 @@
 """Smoke tests for microrts_agent.
 
-Each test is a fast non-regression check — it does not validate
+Each test is a fast non-regression check: it does not validate
 correctness in depth, only that the most critical code paths still
 load, parse, and run without crashing. Together they cover every class
 of regression that has bitten the repo recently:
@@ -94,7 +94,7 @@ def test_paths_constants_resolve():
     assert paths.AGENT_DIR == REPO_ROOT / "microrts_agent"
     assert paths.MICRORTS_DIR.exists()
     assert paths.TOURNAMENT_CONFIGS_DIR.exists()
-    # OUTPUTS_DIR and its subdirs are git-ignored — may or may not exist
+    # OUTPUTS_DIR and its subdirs are git-ignored: may or may not exist
     # on a fresh clone; only check their *parent* root resolves.
     assert paths.OUTPUTS_DIR == REPO_ROOT / "outputs"
 
@@ -327,7 +327,7 @@ def test_bc_chunks_schema():
         assert {"obs", "actions", "rewards"}.issubset(set(npz.files)), (
             f"{chunk.name}: missing keys (has {list(npz.files)})"
         )
-        # obs: (N, H, W, C) — sanity check the H, W match the 16x16 thesis map
+        # obs: (N, H, W, C): sanity check the H, W match the 16x16 thesis map
         assert npz["obs"].ndim == 4
         assert npz["obs"].shape[1:3] == (16, 16)
 
@@ -371,7 +371,7 @@ def test_map_registry_files_exist():
 )
 def test_bridge_java_class_resolvable(jvm, java_class):
     """Every Java class referenced by the Python side resolves on the
-    classpath — catches silent bridge-build / dependency drift."""
+    classpath: catches silent bridge-build / dependency drift."""
     cls = jvm.JClass(java_class)
     assert cls is not None
 
@@ -647,7 +647,7 @@ def test_architecture_forward_pass(arch):
     cls = ARCHITECTURE_REGISTRY[arch]
     model = cls(obs_channels=29, action_nvec=[6, 4, 4, 4, 4, 7, 49])
     model.eval()
-    # Obs is channels-last (N, H, W, C) — the engine emits float planes in
+    # Obs is channels-last (N, H, W, C): the engine emits float planes in
     # that layout and the architectures transpose internally before conv.
     obs = torch.randn(2, 16, 16, 29)
     masks = torch.ones(2, 16, 16, 78, dtype=torch.bool)
@@ -778,7 +778,7 @@ def test_ablation_feat_agent_loadable(ablation_run):
 )
 def test_jar_is_valid_zip(jar_path):
     """Every shipped .jar opens as a ZIP and contains at least one .class
-    file (MANIFEST.MF is technically optional in the JAR spec — some
+    file (MANIFEST.MF is technically optional in the JAR spec: some
     vendored bot JARs do not ship one). Catches a truncated / corrupt
     download."""
     import zipfile
@@ -846,7 +846,7 @@ def test_vendored_maps_are_valid_xml():
 
 # ── 37. CI workflow declares the pytest job ─────────────────────────────
 def test_ci_workflow_declares_test_job():
-    """The CI workflow has a `tests` job — guards against accidentally
+    """The CI workflow has a `tests` job: guards against accidentally
     removing the smoke-test runner from .github/workflows/ci.yml."""
     yaml = pytest.importorskip("yaml")
     with open(REPO_ROOT / ".github" / "workflows" / "ci.yml") as f:

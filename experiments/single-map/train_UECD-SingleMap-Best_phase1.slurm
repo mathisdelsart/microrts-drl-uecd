@@ -9,10 +9,10 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Fine-tune from phased_300M checkpoint at 150M
-# NO reward annealing (keep shaped rewards)
-# More self-play for diversity
-# Low LR to refine, not destroy
+# Fine-tune from the UECD-SingleMap-Rushed checkpoint at 150M.
+# NO reward annealing (keep shaped rewards).
+# More self-play for diversity.
+# Low LR to refine, not destroy.
 #
 SEED=${SEED:-1}
 

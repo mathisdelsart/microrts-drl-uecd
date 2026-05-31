@@ -3,7 +3,7 @@
 #  Setup DOCKER image(s) for MicroRTS Master Thesis project.
 #
 #  Builds the requested image(s) from the repo's Dockerfile(s) and runs a
-#  one-shot smoke test (`python -m microrts_agent --help`) inside.
+#  one-shot smoke test (`microrts-agent --help`) inside.
 #
 #  Usage:
 #    bash setup/docker.sh                  # CPU image (default)

@@ -10,7 +10,7 @@ import os
 import pytest
 
 _JARS = [
-    "lib/bridge.jar",  # FIRST — our compiled src/ overrides classes in microrts.jar
+    "lib/bridge.jar",  # FIRST: our compiled src/ overrides classes in microrts.jar
     "microrts.jar",
     "lib/bots/Coac.jar",
     "lib/bots/Droplet.jar",
