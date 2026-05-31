@@ -12,25 +12,25 @@ and enough to **audit what was trained** (`config.json`, `eval_results.csv`,
 
 | Run | Steps | Pool WR | Self-play | Key role |
 |---|---:|---:|---|---|
-| [`UECD-SingleMap-Best`](UECD-SingleMap-Best/)         | 350M ✅      | 100% | 16 envs                 | Final agent of the two-phase fine-tuning of the dissertation; **96.67% tournament WR**. |
-| [`UECD-SingleMap-Rushed`](UECD-SingleMap-Rushed/)     | 300M ✅      | 100% | 12 envs                 | Demonstrates the *rush-collapse* pathology (Section *Rush Collapse* in the dissertation). |
-| [`UECD-SingleMap-TopFeats`](UECD-SingleMap-TopFeats/) | 100M ✅      | 100% | none                    | Top-5 feature ablation: validates the feature cutoff at 100M. |
-| [`UECD-SingleMap-AllFeats`](UECD-SingleMap-AllFeats/) | 100M ✅      | 100% | none                    | All-features ablation: confirms the conditional features don't help at the same budget. |
-| [`GridNet-SingleMap`](GridNet-SingleMap/)             | 300M ✅      |  50% | none                    | Published baseline from Huang et al. (2021); the gap UECD must beat. |
+| [`UECD-SingleMap-Best`](UECD-SingleMap-Best/)         | 350M      | 100% | 16 envs                 | Final agent of the two-phase fine-tuning of the dissertation; **96.67% tournament WR**. |
+| [`UECD-SingleMap-Rushed`](UECD-SingleMap-Rushed/)     | 300M      | 100% | 12 envs                 | Demonstrates the *rush-collapse* pathology (Section *Rush Collapse* in the dissertation). |
+| [`UECD-SingleMap-TopFeats`](UECD-SingleMap-TopFeats/) | 100M      | 100% | none                    | Top-5 feature ablation: validates the feature cutoff at 100M. |
+| [`UECD-SingleMap-AllFeats`](UECD-SingleMap-AllFeats/) | 100M      | 100% | none                    | All-features ablation: confirms the conditional features don't help at the same budget. |
+| [`GridNet-SingleMap`](GridNet-SingleMap/)             | 300M      |  50% | none                    | Published baseline from Huang et al. (2021); the gap UECD must beat. |
 
 ## Multi-map agents (trained on the 5-map open-competition pool)
 
 | Run | Steps | Pool WR | Self-play | Key role |
 |---|---:|---:|---|---|
-| [`UECD-MultiMap`](UECD-MultiMap/)           | 200M ✅          | 80% | none                                              | Headline multi-map agent of the dissertation. |
-| [`UECD-MultiMap-Best`](UECD-MultiMap-Best/) | 325M ✅         | 84% | 12 envs pool-only, pool=30, adaptive (hybrid)     | Longer run with stronger curricula; beats `UECD-MultiMap` on `CoacAI` / `Mayari`. |
+| [`UECD-MultiMap`](UECD-MultiMap/)           | 200M          | 80% | none                                              | Headline multi-map agent of the dissertation. |
+| [`UECD-MultiMap-Best`](UECD-MultiMap-Best/) | 325M         | 84% | 12 envs pool-only, pool=30, adaptive (hybrid)     | Longer run with stronger curricula; beats `UECD-MultiMap` on `CoacAI` / `Mayari`. |
 
 ## Behaviour-cloning family (warm-started from `data/BC/training/`)
 
 | Run | Steps | Pool mean WR | Pipeline | Key role |
 |---|---:|---:|---|---|
 | [`UECD-BC`](UECD-BC/)         | n/a (supervised) | **78.0%** | BC-only (no RL phase) | The 78% horizontal reference line of the dissertation's BC+VF→PPO vs from-scratch figure. Numerical proof under [`../BC/baseline/`](../BC/baseline/). |
-| [`UECD-BC-PPO`](UECD-BC-PPO/) | 100M ✅          | **96%**    | BC → PPO fine-tune    | The BC+VF→PPO curve+markers of the same figure. Lifts the BC-only 78% pool baseline to near-perfect after 100M of PPO. |
+| [`UECD-BC-PPO`](UECD-BC-PPO/) | 100M          | **96%**    | BC → PPO fine-tune    | The BC+VF→PPO curve+markers of the same figure. Lifts the BC-only 78% pool baseline to near-perfect after 100M of PPO. |
 
 `UECD-BC` is the only agent here that does not carry the full medium tier
 (no `checkpoint.pt`, no `train.log`, no `eval_results.csv`): the BC training
