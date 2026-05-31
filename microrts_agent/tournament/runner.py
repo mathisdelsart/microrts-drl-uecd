@@ -49,7 +49,7 @@ def run_tournament(config: TournamentConfig, chunk: int = -1, total_chunks: int 
     output_dir = str(TOURNAMENTS_DIR / config.config_name)
     os.makedirs(output_dir, exist_ok=True)
 
-    # CSV path — chunked runs land under chunks/ for tidy merging later.
+    # CSV path: chunked runs land under chunks/ for tidy merging later.
     if chunk >= 0:
         chunks_dir = os.path.join(output_dir, "chunks")
         os.makedirs(chunks_dir, exist_ok=True)

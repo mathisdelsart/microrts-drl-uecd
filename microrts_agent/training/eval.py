@@ -98,7 +98,7 @@ def _run_eval_one_position(agent, eval_envs, eval_bot_names, games_per_bot, devi
 def run_evaluation(agent, eval_envs_p0, eval_envs_p1, eval_bot_names, games_per_bot, device):
     """Play games as P0 and P1, merge results. Returns per-bot stats dict.
 
-    games_per_bot: {bot: total_games} — split evenly between P0 and P1.
+    games_per_bot: {bot: total_games}: split evenly between P0 and P1.
     """
     games_p0 = {b: g // 2 for b, g in games_per_bot.items()}
     games_p1 = {b: g - games_p0[b] for b, g in games_per_bot.items()}

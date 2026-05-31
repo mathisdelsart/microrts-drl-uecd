@@ -4,7 +4,7 @@ Head-to-head per-tick decision time benchmark.
 Plays RL agent (P0) vs Java bot (P1) on the same game sequence, timing
 both sides on matched game states for a fair apples-to-apples comparison.
 
-    python -m microrts_agent bench head2head --agent data/agents/UECD-SingleMap-Best \\
+    microrts-agent bench head2head --agent data/agents/UECD-SingleMap-Best \\
                                               --opponent RAISocketAI \\
                                               --games 5
 """

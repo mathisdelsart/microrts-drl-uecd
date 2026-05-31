@@ -102,7 +102,7 @@ class MicroRTSBotVecEnv(BaseMicroRTSVecEnv):
 
     def reset(self):
         """Reset all envs.
-        Returns None — bot envs have no observations (both sides are Java AIs).
+        Returns None: bot envs have no observations (both sides are Java AIs).
         Tournament code resets clients individually via client.reset() for
         per-client setup (AI assignment, traces, preanalysis).
         """

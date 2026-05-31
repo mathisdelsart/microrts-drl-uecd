@@ -4,7 +4,7 @@ For each feature, instantiate UNet-Entity-CBAM-Deep with that feature enabled
 (all others disabled) and report param count + delta vs baseline.
 
 Usage:
-    python -m microrts_agent analysis params
+    microrts-agent analysis params
 """
 
 from microrts_agent.architectures.factory import _build_agent_kwargs

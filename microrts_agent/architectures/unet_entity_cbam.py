@@ -1,4 +1,4 @@
-"""Registry: "unet_entity_cbam" — UNet + Entity Transformer + CBAM (~3.0M at C=48).
+"""Registry: "unet_entity_cbam": UNet + Entity Transformer + CBAM (~3.0M at C=48).
 Same as unet_entity but replaces SE-only attention with CBAM (channel + spatial).
 
 CBAM (Woo et al. 2018): Convolutional Block Attention Module.
@@ -38,7 +38,7 @@ class ChannelAttention(nn.Module):
     Richer than SE which only uses avg pool.
 
     Input:  (B, C, H, W)
-    Output: (B, C, H, W)  — each channel rescaled by its importance weight.
+    Output: (B, C, H, W) : each channel rescaled by its importance weight.
     """
 
     def __init__(self, channels, reduction=16):
@@ -49,13 +49,13 @@ class ChannelAttention(nn.Module):
 
     def forward(self, x):
         # x: (B, C, H, W)
-        avg = F.adaptive_avg_pool2d(x, 1).flatten(1)  # (B, C) — average response per channel
-        mx = F.adaptive_max_pool2d(x, 1).flatten(1)  # (B, C) — peak response per channel
+        avg = F.adaptive_avg_pool2d(x, 1).flatten(1)  # (B, C): average response per channel
+        mx = F.adaptive_max_pool2d(x, 1).flatten(1)  # (B, C): peak response per channel
         # Shared MLP applied to both, then summed
         att = torch.sigmoid(
             self.fc2(F.relu(self.fc1(avg))) + self.fc2(F.relu(self.fc1(mx)))
-        )  # (B, C) — importance weight per channel
-        return x * att.unsqueeze(-1).unsqueeze(-1)  # (B, C, H, W) — broadcast multiply
+        )  # (B, C): importance weight per channel
+        return x * att.unsqueeze(-1).unsqueeze(-1)  # (B, C, H, W): broadcast multiply
 
 
 class SpatialAttention(nn.Module):
@@ -63,7 +63,7 @@ class SpatialAttention(nn.Module):
     Learns 'where on the map to focus'.
 
     Input:  (B, C, H, W)
-    Output: (B, C, H, W)  — each spatial position rescaled by its importance.
+    Output: (B, C, H, W) : each spatial position rescaled by its importance.
     """
 
     def __init__(self, kernel_size=7):
@@ -75,11 +75,11 @@ class SpatialAttention(nn.Module):
 
     def forward(self, x):
         # x: (B, C, H, W)
-        avg = x.mean(dim=1, keepdim=True)  # (B, 1, H, W) — mean across channels
-        mx = x.max(dim=1, keepdim=True)[0]  # (B, 1, H, W) — max across channels
-        cat = torch.cat([avg, mx], dim=1)  # (B, 2, H, W) — concat statistics
-        att = torch.sigmoid(self.conv(cat))  # (B, 1, H, W) — spatial saliency map
-        return x * att  # (B, C, H, W) — broadcast multiply
+        avg = x.mean(dim=1, keepdim=True)  # (B, 1, H, W): mean across channels
+        mx = x.max(dim=1, keepdim=True)[0]  # (B, 1, H, W): max across channels
+        cat = torch.cat([avg, mx], dim=1)  # (B, 2, H, W): concat statistics
+        att = torch.sigmoid(self.conv(cat))  # (B, 1, H, W): spatial saliency map
+        return x * att  # (B, C, H, W): broadcast multiply
 
 
 class CBAMResBlock(nn.Module):
@@ -91,7 +91,7 @@ class CBAMResBlock(nn.Module):
               -> Act(out + x)  [residual connection]
 
     Input:  (B, C, H, W)
-    Output: (B, C, H, W)  — same shape, spatial resolution unchanged.
+    Output: (B, C, H, W) : same shape, spatial resolution unchanged.
     """
 
     def __init__(self, channels, reduction=16, use_gelu=False):
@@ -106,9 +106,9 @@ class CBAMResBlock(nn.Module):
         # x: (B, C, H, W)
         out = self.act(self.conv1(x))  # (B, C, H, W)
         out = self.conv2(out)  # (B, C, H, W)
-        out = self.channel_att(out)  # (B, C, H, W) — channel-reweighted
-        out = self.spatial_att(out)  # (B, C, H, W) — spatially-reweighted
-        return self.act(out + x)  # (B, C, H, W) — residual + activation
+        out = self.channel_att(out)  # (B, C, H, W): channel-reweighted
+        out = self.spatial_att(out)  # (B, C, H, W): spatially-reweighted
+        return self.act(out + x)  # (B, C, H, W): residual + activation
 
 
 # ── UNet Encoder/Decoder with CBAM ──────────────────────────────────────
@@ -159,9 +159,9 @@ class CBAMUNetEncoder(nn.Module):
     def forward(self, x):
         # x: (B, H, W, C)
         x = self.input_proj(self.transpose_in(x))  # (B, ch1, H, W)
-        s1 = self.stage1(x)  # (B, ch1, H, W)       — skip1
-        s2 = self.stage2(self.down1(s1))  # (B, ch2, H/2, W/2)   — skip2
-        bot = self.bottleneck(self.down2(s2))  # (B, ch3, H/4, W/4)   — bottleneck
+        s1 = self.stage1(x)  # (B, ch1, H, W)      : skip1
+        s2 = self.stage2(self.down1(s1))  # (B, ch2, H/2, W/2)  : skip2
+        bot = self.bottleneck(self.down2(s2))  # (B, ch3, H/4, W/4)  : bottleneck
         return bot, s1, s2
 
 

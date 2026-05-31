@@ -53,7 +53,7 @@ def compute_multi_head_gae(heads, dones, next_done, num_steps, advantage_weights
     Following RAISocketAI's approach:
       1. Stack rewards/values/bootstrap into (T, N, H) tensors
       2. Single GAE pass with per-head gamma/lambda arrays
-      3. Return per-head advantages (T, N, H) — blending and normalization
+      3. Return per-head advantages (T, N, H): blending and normalization
          happen later in ppo_update so that each head can be normalized
          independently before being combined via advantage_weights.
 
@@ -310,7 +310,7 @@ def ppo_update(
 
             entropy_loss = entropy.mean()
 
-            # Value losses — one per active head
+            # Value losses: one per active head
             popart_shaped = agent.popart_shaped if popart else None
             v_loss = _value_loss_for_head(
                 new_values,
@@ -380,7 +380,7 @@ def ppo_update(
             # Actions come from the agent's rollout, so this is
             #   E_{a ~ π_agent}[log π_teacher(a) − log π_agent(a)]
             # which is the negative of the (k1) Monte-Carlo estimate of
-            # KL(π_agent ‖ π_teacher) on the agent's own samples — minimising
+            # KL(π_agent ‖ π_teacher) on the agent's own samples: minimising
             # it pulls π_agent toward π_teacher on states the agent visits.
             # Note: this is NOT an unbiased estimate of the forward KL
             # (KL(π_teacher ‖ π_agent)); estimating that would require sampling

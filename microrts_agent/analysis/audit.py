@@ -4,9 +4,9 @@ Reads TensorBoard event files to get the first/last event wall_time, then
 prints elapsed hours, total steps reached, and average SPS.
 
 Usage:
-    python -m microrts_agent analysis audit data/agents/UECD-SingleMap-Best
-    python -m microrts_agent analysis audit data/agents/*
-    python -m microrts_agent analysis audit --all
+    microrts-agent analysis audit data/agents/UECD-SingleMap-Best
+    microrts-agent analysis audit data/agents/*
+    microrts-agent analysis audit --all
 """
 
 from __future__ import annotations

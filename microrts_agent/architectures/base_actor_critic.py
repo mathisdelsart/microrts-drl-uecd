@@ -2,16 +2,16 @@
 Base class and shared utilities for all grid-based actor-critic architectures.
 
 Utils functions:
-  - layer_init     — orthogonal weight initialization (PPO standard)
-  - get_activation — switch GELU/ReLU via --gelu flag
+  - layer_init    : orthogonal weight initialization (PPO standard)
+  - get_activation: switch GELU/ReLU via --gelu flag
 
 Utils classes:
-  - CategoricalMasked   — categorical distribution with invalid action masking
-  - Transpose           — nn.Module wrapper for permute() in nn.Sequential
-  - SpatialPyramidPooling — multi-scale pooling for map-size-independent critic
+  - CategoricalMasked  : categorical distribution with invalid action masking
+  - Transpose          : nn.Module wrapper for permute() in nn.Sequential
+  - SpatialPyramidPooling: multi-scale pooling for map-size-independent critic
 
 Base class:
-  - GridActorCriticBase — abstract base with action sampling, value heads, predict
+  - GridActorCriticBase: abstract base with action sampling, value heads, predict
 """
 
 import numpy as np
@@ -68,8 +68,8 @@ class SpatialPyramidPooling(nn.Module):
     producing a fixed-size output regardless of input spatial dimensions.
     This allows a single critic to handle any map size without retraining.
 
-    Input:  (B, C, H, W)  — any spatial size
-    Output: (B, C * num_bins)  — fixed size
+    Input:  (B, C, H, W) : any spatial size
+    Output: (B, C * num_bins) : fixed size
 
     Default levels (1, 2, 4) -> 1 + 4 + 16 = 21 bins per channel.
     """

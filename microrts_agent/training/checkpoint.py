@@ -20,7 +20,7 @@ def setup_device_and_seed(args):
 
 
 def _atomic_save(obj, path):
-    """Write to .tmp then rename — survives SLURM job kills."""
+    """Write to .tmp then rename: survives SLURM job kills."""
     tmp = path + ".tmp"
     torch.save(obj, tmp)
     os.replace(tmp, path)

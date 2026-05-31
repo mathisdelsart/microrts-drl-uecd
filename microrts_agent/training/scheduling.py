@@ -17,7 +17,7 @@ import numpy as np
 import torch
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Opponent Tracking — per-bot WR, returns, lengths, importance weights
+# Opponent Tracking: per-bot WR, returns, lengths, importance weights
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -147,7 +147,7 @@ class OpponentTracker:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Adaptive Opponent Scheduling — automatic difficulty escalation
+# Adaptive Opponent Scheduling: automatic difficulty escalation
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -160,7 +160,7 @@ class AdaptiveOpponentScheduler:
         Tier 2: LightRush                        (more effective rush)
         Tier 3: CoacAI / Mayari                  (competition-level, co-terminal)
         Tier 4: TMA / ObiBotKenobi / RAISocketAI (top tournament bots; terminal
-                                                  tier — self-play pool activates
+                                                  tier: self-play pool activates
                                                   alongside once mastered)
 
     When WR against a bot type exceeds ``threshold`` over ``window`` games,
@@ -316,7 +316,7 @@ class AdaptiveOpponentScheduler:
     def check_promotions(self) -> list[tuple]:
         """Check if any bot type is mastered and return promotions.
 
-        Scans tiers 0..N-2 (skips the terminal tier — nothing to promote to).
+        Scans tiers 0..N-2 (skips the terminal tier: nothing to promote to).
         For each mastered type, keeps MIN_RETAIN envs on that type and
         promotes the rest to the next tier via round-robin.
 
@@ -361,7 +361,7 @@ class AdaptiveOpponentScheduler:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Checkpoint Pool — historical model storage for self-play (PFSP)
+# Checkpoint Pool: historical model storage for self-play (PFSP)
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -377,8 +377,8 @@ class CheckpointPool:
 
     Supports Prioritized Fictitious Self-Play (PFSP) sampling modes:
       - 'uniform': random selection (default)
-      - 'hard':    P(B) ∝ (1 - WR)^p — focus on opponents we lose against
-      - 'var':     P(B) ∝ WR*(1 - WR) + ε — focus on 50/50 matchups
+      - 'hard':    P(B) ∝ (1 - WR)^p: focus on opponents we lose against
+      - 'var':     P(B) ∝ WR*(1 - WR) + ε: focus on 50/50 matchups
 
     Reference: Vinyals et al. (2019), "Grandmaster level in StarCraft II"
     """
@@ -466,8 +466,8 @@ class CheckpointPool:
 
         PFSP modes:
           uniform: equal probability (backward-compatible default)
-          hard:    P(B) ∝ (1 - WR)^p — focus on opponents we lose against
-          var:     P(B) ∝ WR*(1 - WR) + 0.1 — focus on 50/50 matchups
+          hard:    P(B) ∝ (1 - WR)^p: focus on opponents we lose against
+          var:     P(B) ∝ WR*(1 - WR) + 0.1: focus on 50/50 matchups
         """
         pool = self._build_candidate_pool()
         if not pool:
@@ -488,7 +488,7 @@ class CheckpointPool:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Prioritized Level Replay — sample harder maps more often
+# Prioritized Level Replay: sample harder maps more often
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -537,7 +537,7 @@ class MapPLR:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Hyperparameter scheduling — interpolation functions
+# Hyperparameter scheduling: interpolation functions
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -650,7 +650,7 @@ def multi_phase_interpolate(current_step, phase_steps, phase_values):
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Central schedule dispatcher — called once per update
+# Central schedule dispatcher: called once per update
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -751,7 +751,7 @@ def compute_schedules(args, update, global_step):
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Importance weights — per-transition PPO weights from opponent difficulty
+# Importance weights: per-transition PPO weights from opponent difficulty
 # ═══════════════════════════════════════════════════════════════════════════
 
 

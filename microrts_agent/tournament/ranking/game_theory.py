@@ -113,7 +113,7 @@ def regret_metrics(winrate_matrix: np.ndarray) -> tuple[np.ndarray, np.ndarray, 
     # Mask the diagonal before taking the column-max: build_winrate_matrix
     # fills it with 0.5 for the j-vs-j self-play cell, which would otherwise
     # be reported as the "best achievable" WR vs j whenever no real agent
-    # actually exceeds 50% against j — inflating the regret for that column.
+    # actually exceeds 50% against j: inflating the regret for that column.
     masked = winrate_matrix.astype(float, copy=True)
     np.fill_diagonal(masked, -np.inf)
     best_vs = masked.max(axis=0)  # best WR vs each opponent across real agents
@@ -144,11 +144,11 @@ def regret_metrics(winrate_matrix: np.ndarray) -> tuple[np.ndarray, np.ndarray, 
 def nash_averaging(winrate_matrix: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """
     Nash equilibrium of the symmetric zero-sum meta-game
-    (Balduzzi et al., 2018 — "Re-evaluating Evaluation").
+    (Balduzzi et al., 2018: "Re-evaluating Evaluation").
 
     Treats the tournament as a game: each "player" picks an agent from the
     pool. The payoff is the win rate centered at 0.5 (so it's zero-sum).
-    We find the maximin mixed strategy — the optimal probability distribution
+    We find the maximin mixed strategy: the optimal probability distribution
     over agents that an adversary would use.
 
     More principled than raw win rate because it weights opponents by their
@@ -266,7 +266,7 @@ def alpha_rank(winrate_matrix: np.ndarray, alpha: float = 0.02, m: int = 50) -> 
             # We compute rho(i,j) = 1 / (1 + sum_{k=1}^{m-1} prod_{l=1}^{k} exp(-alpha*(f_i - f_j)))
             # using log-sum-exp for numerical stability (avoids overflow from exp(large)).
             # logaddexp(a, b) = log(exp(a) + exp(b)) without computing exp explicitly.
-            log_terms = -np.inf  # log(0) — empty sum
+            log_terms = -np.inf  # log(0): empty sum
             running_sum = 0.0  # accumulates the log of the product
 
             for k in range(1, m):

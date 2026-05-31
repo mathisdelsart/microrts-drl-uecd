@@ -1,6 +1,6 @@
-"""Registry: "gridnet" — Baseline encoder-decoder from Huang et al. 2021 (~838k params).
-Encoder: 4x Conv+MaxPool — spatial 16x16->1x1, channels 29->32->64->128->256.
-Decoder: 4x ConvTranspose — spatial 1x1->16x16, channels 256->128->64->32->78.
+"""Registry: "gridnet": Baseline encoder-decoder from Huang et al. 2021 (~838k params).
+Encoder: 4x Conv+MaxPool: spatial 16x16->1x1, channels 29->32->64->128->256.
+Decoder: 4x ConvTranspose: spatial 1x1->16x16, channels 256->128->64->32->78.
 Critic: Flatten(256) -> MLP. Fixed to 16x16 maps. No optional features.
 """
 
@@ -11,7 +11,7 @@ from .base_actor_critic import GridActorCriticBase, Transpose, layer_init
 
 class GridNetAgent(GridActorCriticBase):
     """Encoder-decoder GridNet from Huang et al. 2021 (best GridNet config).
-    Baseline only — no dual/triple heads, no aux tasks, no optional features."""
+    Baseline only: no dual/triple heads, no aux tasks, no optional features."""
 
     def __init__(self, obs_channels, action_nvec, **kwargs):
         super().__init__()

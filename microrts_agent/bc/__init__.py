@@ -1,4 +1,4 @@
 """Behaviour cloning: replay-data generation and BC+VF training.
 
-Run via: python -m microrts_agent bc {train|generate}
+Run via: microrts-agent bc {train|generate}
 """

@@ -1,8 +1,8 @@
 """
 PPO training for MicroRTS.
 
-    python -m microrts_agent train --total-timesteps 1000000
-    python -m microrts_agent train --architecture impala --ent-coef 0.05
+    microrts-agent train --total-timesteps 1000000
+    microrts-agent train --architecture impala --ent-coef 0.05
     tensorboard --logdir outputs/runs/
 """
 
@@ -368,10 +368,10 @@ def _run_training(args, run_dir):
             sp.on_episode_end(ds)  # flip SP sides when games end
 
         # ---- Compute advantages (GAE) ----
-        # advantages     (T, N) — how much better was this action vs average?
-        # returns        (T, N) — discounted shaped return targets
-        # returns_sparse (T, N) — win/loss return targets (or None)
-        # returns_cost   (T, N) — military cost targets (or None)
+        # advantages     (T, N): how much better was this action vs average?
+        # returns        (T, N): discounted shaped return targets
+        # returns_sparse (T, N): win/loss return targets (or None)
+        # returns_cost   (T, N): military cost targets (or None)
         advantages, returns, returns_sparse, returns_cost = compute_gae_from_rollout(
             agent,
             args,

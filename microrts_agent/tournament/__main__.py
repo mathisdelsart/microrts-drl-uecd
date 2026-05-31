@@ -1,10 +1,10 @@
 """
-MicroRTS Tournament — Run, Parse & Visualize.
+MicroRTS Tournament: Run, Parse & Visualize.
 
-    python -m microrts_agent tournament run <name> [--chunk 0 --total-chunks 10]
-    python -m microrts_agent tournament parse <name>
-    python -m microrts_agent tournament viz <name>
-    python -m microrts_agent tournament analyze <name>   # parse + viz
+    microrts-agent tournament run <name> [--chunk 0 --total-chunks 10]
+    microrts-agent tournament parse <name>
+    microrts-agent tournament viz <name>
+    microrts-agent tournament analyze <name>   # parse + viz
 
 <name> resolves to tournament_configs/<name>.json (run)
 or outputs/tournaments/<name>/ (parse/viz/analyze).
@@ -34,7 +34,7 @@ from microrts_agent.tournament import (
 
 def main():
     parser = argparse.ArgumentParser(
-        description="MicroRTS Tournament — Run, Parse & Visualize",
+        description="MicroRTS Tournament: Run, Parse & Visualize",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     sub = parser.add_subparsers(dest="command")
@@ -131,7 +131,7 @@ def _run_visualizer(results_dir):
 
 
 def _run_tournament(args):
-    """Execute the 'run' subcommand — run a tournament."""
+    """Execute the 'run' subcommand: run a tournament."""
     # Resolve config path
     config_path = args.name
     if not os.path.exists(config_path):

@@ -74,7 +74,7 @@ def compute_aux_losses(agent, hidden, aux_targets, active_tasks):
         losses["aux_opponent_modeling"] = _focal_cross_entropy(pred, target, mask, gamma=2.0)
 
     # Contrastive (InfoNCE): embeddings of consecutive steps should be similar
-    # logits (B, B) similarity matrix — diagonal = true pairs, rest = negatives
+    # logits (B, B) similarity matrix: diagonal = true pairs, rest = negatives
     if "contrastive" in active_tasks:
         z_anchor = agent.aux_contrastive(hidden)
         z_positive = aux_targets["contrastive_positive"]

@@ -181,7 +181,7 @@ public class JNIGridnetClient
      * Valid action mask for the given player.
      *
      * @param player  which player (0 or 1)
-     * @return int[H][W][mask_dim] — masks[y][x][0] = 1 means controllable unit at (y,x),
+     * @return int[H][W][mask_dim]: masks[y][x][0] = 1 means controllable unit at (y,x),
      *         remaining slots encode which action types/directions/targets are valid.
      */
     public int[][][] getMasks(int player) throws Exception

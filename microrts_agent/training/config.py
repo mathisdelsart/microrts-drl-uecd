@@ -45,7 +45,7 @@ def print_config_banner(args, run_dir, title="PPO", total_params=None):
     """Print all training config to console, grouped by category."""
     sep = "=" * 60
     print(f"\n{sep}")
-    print(f"  {title} + {args.architecture}  —  MicroRTS")
+    print(f"  {title} + {args.architecture} :  MicroRTS")
     print(f"{sep}")
 
     if args.baseline:

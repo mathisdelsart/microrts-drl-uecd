@@ -4,8 +4,8 @@ Batch evaluation of a trained agent vs bots (or agent-vs-agent), always vectoriz
 Games run in parallel even with --record (recording switches render_client to each
 sub-env before capture).
 
-    python -m microrts_agent evaluate --agent data/agents/UECD-SingleMap-Best --opponent CoacAI
-    python -m microrts_agent evaluate --agent data/agents/UECD-SingleMap-Best --opponent CoacAI --record
+    microrts-agent evaluate --agent data/agents/UECD-SingleMap-Best --opponent CoacAI
+    microrts-agent evaluate --agent data/agents/UECD-SingleMap-Best --opponent CoacAI --record
 """
 
 import argparse
@@ -259,7 +259,7 @@ def _print_rl_vs_rl_config(cfg):
     """
     ac, oc = cfg.agent_config, cfg.opponent_config
 
-    # Hard incompatibilities — crash early with clear message
+    # Hard incompatibilities: crash early with clear message
     if ac.get("partial_obs", False) != oc.get("partial_obs", False):
         raise ValueError(
             f"partial_obs mismatch: agent={ac.get('partial_obs')}, "
@@ -267,7 +267,7 @@ def _print_rl_vs_rl_config(cfg):
             f"Cannot mix fog-of-war and full observability in the same game."
         )
     if ac.get("filtered_masks", False) != oc.get("filtered_masks", False):
-        print("  NOTE: filtered_masks mismatch — per-model mask override active.")
+        print("  NOTE: filtered_masks mismatch: per-model mask override active.")
 
     print("\n  Env config comparison:")
     print(f"  {'Feature':<18s} {'Agent':>12s} {'Opponent':>12s}")
@@ -287,7 +287,7 @@ def _print_rl_vs_rl_config(cfg):
             has_mismatch = True
         print(f"  {key:<18s} {str(av):>12s} {str(ov):>12s}{tag}")
     if has_mismatch:
-        print("  (* = mismatch — handled by per-model ObsAdapter)")
+        print("  (* = mismatch: handled by per-model ObsAdapter)")
     print()
 
 
@@ -358,7 +358,7 @@ def print_header(cfg: SessionConfig):
 
 def print_summary(pos_stats: list[PositionStats], cfg: SessionConfig):
     print(f"\n{'=' * 60}")
-    print(f"  RESULTS — {cfg.agent_name} vs {cfg.opponent_name}")
+    print(f"  RESULTS: {cfg.agent_name} vs {cfg.opponent_name}")
     print(f"{'=' * 60}")
     total_w, total_l, total_d, total_g = 0, 0, 0, 0
     for s in pos_stats:
@@ -406,7 +406,7 @@ class _FrameRecorder:
     """Buffers per-tick frames from env.render() and writes one mp4 on save().
 
     Replaces the deprecated gym(nasium) VideoRecorder. The env passed to the
-    constructor is only used by callers as the rendering source — capture()
+    constructor is only used by callers as the rendering source: capture()
     must be called with the env in the right render_client state (the caller
     drives _switch_render_client between sub-envs).
     """
@@ -517,7 +517,7 @@ def play_batch_bot_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=Non
             if on_done:
                 on_done(i, results[i])
 
-    # Don't close vec_client — JVM cleanup is slow and a new env will be created for next position
+    # Don't close vec_client: JVM cleanup is slow and a new env will be created for next position
     return results
 
 
@@ -608,7 +608,7 @@ def play_batch_rl_vs_bot(cfg, map_path, max_steps, swap, num_games, rec_dir=None
             if on_done:
                 on_done(i, results[i])
 
-    # Don't close vec_client — JVM cleanup is slow and a new env will be created for next position
+    # Don't close vec_client: JVM cleanup is slow and a new env will be created for next position
     return results
 
 
@@ -620,7 +620,7 @@ def play_batch_rl_vs_rl(cfg, map_path, max_steps, swap, num_games, rec_dir=None,
     p1_config = cfg.agent_config if swap else cfg.opponent_config
 
     # Multi-map agents expect padded obs (fixed shape). Single-map agents don't.
-    # Mixing the two is incompatible — the obs shape can't satisfy both.
+    # Mixing the two is incompatible: the obs shape can't satisfy both.
     agent_mm = cfg.agent_config.get("multi_map", False)
     opp_mm = cfg.opponent_config.get("multi_map", False)
     if agent_mm and not opp_mm:
@@ -765,7 +765,7 @@ def play_batch_rl_vs_rl(cfg, map_path, max_steps, swap, num_games, rec_dir=None,
             if on_done:
                 on_done(k, results[k])
 
-    # Don't close vec_client — JVM cleanup is slow and a new env will be created for next position
+    # Don't close vec_client: JVM cleanup is slow and a new env will be created for next position
     return results
 
 

@@ -37,12 +37,12 @@ src/
 ```
 
 The package names (`ai.jni`, `ai.reward`, `ai.wrapper`, `tests`) are kept
-on purpose — they match the conventions of the upstream MicroRTS code so
+on purpose: they match the conventions of the upstream MicroRTS code so
 the bridge sources can sit alongside vendored Java classes at runtime.
 
 ## Observation contract
 
-`JNIAI.getObservation()` returns `int[13][H][W]` — 13 raw feature planes per
+`JNIAI.getObservation()` returns `int[13][H][W]`: 13 raw feature planes per
 cell, defined in `GameStateWrapper.numVectorObservationFeatureMaps`:
 
 | Plane | Meaning | Range |
@@ -59,7 +59,7 @@ cell, defined in `GameStateWrapper.numVectorObservationFeatureMaps`:
 Python's encoders turn this into the 29-channel "gridnet" stack and the
 73-channel "extended" stack consumed by the policies under
 `microrts_agent/architectures/`. The encoding logic is entirely Python-side
-— Java emits the raw planes only.
+, Java emits the raw planes only.
 
 ## Action contract
 
@@ -138,17 +138,17 @@ loop (the inner loop releases the GIL during JPype JNI calls, so the
 vectorised step actually overlaps Java work across envs in practice).
 
 If you change the bridge while a Python process is running, the JVM is
-already up — restart the Python process to pick up the new
+already up: restart the Python process to pick up the new
 `bridge.jar`. The `setup/*.sh` scripts always rebuild the bridge before
 activating the env so a fresh terminal session is always consistent.
 
 ## Where Python touches this
 
-- `microrts_agent/envs/`            — instantiates `JNIGridnetVecClient`, owns the lifecycle.
-- `microrts_agent/obs_adapter.py`   — encodes the 13-plane raw obs into the 29/73-channel stack.
-- `microrts_agent/registries/ai.py` — maps user-facing bot names ("CoacAI", "Mayari", …) to
+- `microrts_agent/envs/`           : instantiates `JNIGridnetVecClient`, owns the lifecycle.
+- `microrts_agent/obs_adapter.py`  : encodes the 13-plane raw obs into the 29/73-channel stack.
+- `microrts_agent/registries/ai.py`: maps user-facing bot names ("CoacAI", "Mayari", …) to
                                        the Java class to pass as `ai2`.
-- `microrts_agent/wrappers/`        — frame-stack, symmetry, action-mask filtering on top of
+- `microrts_agent/wrappers/`       : frame-stack, symmetry, action-mask filtering on top of
                                        the raw `Response`.
 
 If you add a new reward function: drop a `.java` in `ai/reward/`, rebuild

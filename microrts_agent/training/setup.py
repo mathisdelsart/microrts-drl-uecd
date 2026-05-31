@@ -14,7 +14,7 @@ import torch
 from microrts_agent.training.eval import create_eval_envs
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Eval setup — create envs + CSV once at training start
+# Eval setup: create envs + CSV once at training start
 # ═══════════════════════════════════════════════════════════════════════════
 
 _EVAL_CSV_HEADER = (
@@ -98,7 +98,7 @@ def setup_eval(args, run_dir):
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Auxiliary tasks — coefficient mapping, channel indexing, target extraction
+# Auxiliary tasks: coefficient mapping, channel indexing, target extraction
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -243,7 +243,7 @@ def build_aux_targets(
                 ],
                 dim=0,
             )
-            # Pre-compute positive embeddings (detached — no gradient through targets)
+            # Pre-compute positive embeddings (detached: no gradient through targets)
             targets["contrastive_positive"] = agent.aux_contrastive(
                 agent.encoder(shifted_obs)
             ).detach()
@@ -252,7 +252,7 @@ def build_aux_targets(
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Periodic evaluation — play games vs eval bots during training
+# Periodic evaluation: play games vs eval bots during training
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -325,7 +325,7 @@ def run_eval_block(
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# GAE from rollout — dispatch to single-head or multi-head GAE
+# GAE from rollout: dispatch to single-head or multi-head GAE
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -348,12 +348,12 @@ def compute_gae_from_rollout(
 
     Three modes depending on value head configuration:
       - Standard (1 head): single GAE on shaped rewards, advantages (T, N)
-      - Dual (2 heads):    per-head GAE, advantages (T, N, 2) — blending is
+      - Dual (2 heads):    per-head GAE, advantages (T, N, 2): blending is
                            done in ppo_update after per-head normalization
       - Triple (3 heads):  same with cost head added, advantages (T, N, 3)
 
     The bootstrap step (V(s_{T+1})) is computed here by passing next_obs
-    through the critic. Everything is in no_grad — these are targets, not
+    through the critic. Everything is in no_grad: these are targets, not
     part of the optimization graph.
 
     Returns:
@@ -415,7 +415,7 @@ def compute_gae_from_rollout(
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Multi-map switching — cycle maps during training
+# Multi-map switching: cycle maps during training
 # ═══════════════════════════════════════════════════════════════════════════
 
 

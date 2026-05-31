@@ -2,7 +2,7 @@
  * Bot-vs-bot bridge: 2 Java AIs play against each other (no RL agent).
  * Used by JNIGridnetVecClient for evaluation / tournament games.
  *
- * Unlike JNIGridnetClient, gameStep() takes NO actions from Python —
+ * Unlike JNIGridnetClient, gameStep() takes NO actions from Python,
  * both AIs decide autonomously. Python only calls gameStep(player)
  * to advance the game and read rewards/dones.
  *
@@ -189,7 +189,7 @@ public class JNIBotClient
 
     /**
      * Get the raw observation from the current game state.
-     * Returns int[F][H][W] — same format as JNIAI.getObservation().
+     * Returns int[F][H][W]: same format as JNIAI.getObservation().
      */
     public int[][][] getObservation(int player) {
         return gs.getVectorObservation(player);
@@ -197,7 +197,7 @@ public class JNIBotClient
 
     /**
      * Get the last action played by the given player as a vector.
-     * Returns int[numUnits][8] — same format as Python's action grid
+     * Returns int[numUnits][8]: same format as Python's action grid
      * (cellIdx, actionType, moveDir, harvestDir, returnDir, produceDir, produceType, attackTarget).
      * Returns empty array if no action was played yet.
      *
