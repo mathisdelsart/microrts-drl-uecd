@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=gridnet_baseline_300M
+#SBATCH --job-name=GridNet-SingleMap
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
 #SBATCH --time=48:00:00
@@ -23,7 +23,7 @@
 #   SEED=42 sbatch experiments/single-map/train_GridNet-SingleMap.slurm
 #
 #   # Resume from checkpoint (the run dir name on disk is unchanged):
-#   RESUME=outputs/runs/gridnet_baseline_300M sbatch experiments/single-map/train_GridNet-SingleMap.slurm
+#   RESUME=outputs/runs/GridNet-SingleMap_s1 sbatch experiments/single-map/train_GridNet-SingleMap.slurm
 
 echo "=== Job Info ==="
 echo "Job ID:      $SLURM_JOB_ID"
@@ -64,7 +64,7 @@ CMD="python -m microrts_agent train \
     --with-eval True \
     --num-models 2 \
     --seed $SEED \
-    --exp-name gridnet_baseline_300M_s${SEED}"
+    --exp-name GridNet-SingleMap_s${SEED}"
 
 # Resume from previous run if provided
 if [ -n "${RESUME:-}" ]; then

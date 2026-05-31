@@ -20,7 +20,7 @@
 #
 
 SEED=${SEED:-1}
-BC_MODEL="outputs/runs/bc/UECD-BC/agent.pt"
+BC_MODEL="outputs/runs/UECD-BC_s1/agent.pt"
 
 echo "============================================================"
 echo "  BC-PPO Fine-tuning — 100M steps, single map"
@@ -50,7 +50,7 @@ fi
 # ── Resume logic ──────────────────────────────────────────────────────────
 
 RESUME_FLAG=""
-RUN_DIR="outputs/runs/bc_v3_finetune_100M_s${SEED}"
+RUN_DIR="outputs/runs/UECD-BC-PPO_s${SEED}"
 if [ -f "${RUN_DIR}/checkpoint.pt" ]; then
     echo "  Resuming from $RUN_DIR"
     RESUME_FLAG="--resume ${RUN_DIR}"
@@ -85,7 +85,7 @@ python -m microrts_agent train \
     --with-eval True \
     --num-models 2 \
     --seed $SEED \
-    --exp-name bc_v3_finetune_100M_s${SEED}
+    --exp-name UECD-BC-PPO_s${SEED}
 
 EXIT_CODE=$?
 

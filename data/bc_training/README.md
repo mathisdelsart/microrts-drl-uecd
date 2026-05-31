@@ -47,7 +47,7 @@ python -m microrts_agent bc train \
     --data data/bc_training/bc_chunk_*.npz \
     --epochs 20 \
     --batch-size 256 \
-    --output outputs/runs/bc_warmstart
+    --output outputs/runs/UECD-BC_s1
 ```
 
 Then chain into PPO with the trained checkpoint as the warm-start (with or

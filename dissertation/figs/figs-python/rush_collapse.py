@@ -16,7 +16,7 @@ from _style import C, apply_style
 
 apply_style()
 
-RUN = "UECD-SingleMap-Rushed"  # on-disk run name: PhasedRL-300M (truncated to 150M for lineage)
+RUN = "UECD-SingleMap-Rushed"
 TB_CACHE_DIR = ROOT / "outputs" / "comparisons"
 
 df_eval = load_eval(RUN)

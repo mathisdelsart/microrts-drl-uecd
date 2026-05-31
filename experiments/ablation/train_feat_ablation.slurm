@@ -76,91 +76,91 @@ COMMON_ARGS="
 
 case $SLURM_ARRAY_TASK_ID in
     0)
-        NAME="feats_baseline_s${SEED}"
+        NAME="baseline_s${SEED}"
         EXTRA=""
         ;;
     1)
-        NAME="feats_extended_obs_s${SEED}"
+        NAME="extended_obs_s${SEED}"
         EXTRA="--extended-obs True"
         ;;
     2)
-        NAME="feats_triple_heads_s${SEED}"
+        NAME="triple_heads_s${SEED}"
         EXTRA="--triple-value-heads True --gamma-sparse 0.999 --gae-lambda-sparse 0.99 --gamma-cost 0.999 --gae-lambda-cost 0.99 --vf-coef-cost 0.2 --advantage-weights 0.8 0.01 0.19"
         ;;
     3)
-        NAME="feats_filtmask_resobs_s${SEED}"
+        NAME="filtmask_resobs_s${SEED}"
         EXTRA="--filtered-masks True --reserved-obs True"
         ;;
     4)
-        NAME="feats_bots_selfplay_pfsp_s${SEED}"
+        NAME="bots_selfplay_pfsp_s${SEED}"
         EXTRA="--num-bot-envs 12 --num-selfplay-envs 12 --num-latest-selfplay-envs 6 --pfsp True"
         ;;
     5)
-        NAME="feats_aux_spatial_s${SEED}"
+        NAME="aux_spatial_s${SEED}"
         EXTRA="--aux-spatial True"
         ;;
     6)
-        NAME="feats_aux_contrastive_s${SEED}"
+        NAME="aux_contrastive_s${SEED}"
         EXTRA="--aux-contrastive True"
         ;;
     7)
-        NAME="feats_aux_unit_count_s${SEED}"
+        NAME="aux_unit_count_s${SEED}"
         EXTRA="--aux-unit-count True"
         ;;
     8)
-        NAME="feats_framestack4_s${SEED}"
+        NAME="framestack4_s${SEED}"
         EXTRA="--frame-stack 4"
         ;;
     9)
-        NAME="feats_autoregressive_s${SEED}"
+        NAME="autoregressive_s${SEED}"
         EXTRA="--autoregressive True"
         ;;
     10)
-        NAME="feats_hl_gauss_s${SEED}"
+        NAME="hl_gauss_s${SEED}"
         EXTRA="--hl-gauss True"
         ;;
     11)
-        NAME="feats_gelu_s${SEED}"
+        NAME="gelu_s${SEED}"
         EXTRA="--gelu True"
         ;;
     12)
-        NAME="feats_adaptive_s${SEED}"
+        NAME="adaptive_s${SEED}"
         EXTRA="--adaptive-opponents True --opponent-list RandomBiasedAI:24 --diverse-opponents False"
         ;;
     13)
-        NAME="feats_priori_samp_s${SEED}"
+        NAME="priori_samp_s${SEED}"
         EXTRA="--prioritized-sampling True"
         ;;
     14)
-        NAME="feats_pae_s${SEED}"
+        NAME="pae_s${SEED}"
         EXTRA="--pae-keep 0.95"
         ;;
     15)
-        NAME="feats_spp_critic_s${SEED}"
+        NAME="spp_critic_s${SEED}"
         EXTRA="--spp-critic True"
         ;;
     16)
-        NAME="feats_opponent_modeling_s${SEED}"
+        NAME="opponent_modeling_s${SEED}"
         EXTRA="--aux-opponent-modeling True --aux-opponent-modeling-coef 0.01"
         ;;
     17)
-        NAME="feats_popart_s${SEED}"
+        NAME="popart_s${SEED}"
         EXTRA="--popart True"
         ;;
     18)
-        NAME="feats_augment_symmetry_s${SEED}"
+        NAME="augment_symmetry_s${SEED}"
         EXTRA="--augment-symmetry True"
         ;;
     19)
-        NAME="feats_buildtime_rewards_s${SEED}"
+        NAME="buildtime_rewards_s${SEED}"
         EXTRA="--reward-unit-build-time True"
         ;;
     20)
-        NAME="feats_hierarchical_mask_s${SEED}"
+        NAME="hierarchical_mask_s${SEED}"
         EXTRA="--hierarchical-mask True"
         ;;
     21)
-        NAME="feats_autoregressive_hmask_s${SEED}"
+        NAME="autoregressive_hmask_s${SEED}"
         EXTRA="--autoregressive True --hierarchical-mask True"
         ;;
 esac
