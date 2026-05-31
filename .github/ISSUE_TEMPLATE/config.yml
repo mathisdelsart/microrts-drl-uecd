@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Question about the dissertation or paper
+  - name: Question or discussion
+    url: https://github.com/mathisdelsart/microrts-drl-uecd/discussions
+    about: Open-ended questions, ideas, and how-to threads belong in Discussions (publicly searchable for the next person with the same question).
+  - name: Email the author (research-specific)
     url: mailto:mathis.delsart@gmail.com
-    about: For questions about the research itself, please email the author directly.
+    about: For questions specifically about the dissertation content or the CoG paper.

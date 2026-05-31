@@ -6,7 +6,7 @@ version: 2
 # on a schedule (e.g. "actions/checkout v6 → v7 is available").
 #
 # Security alerts and security-update PRs (e.g. the Pillow CVE bump in #81)
-# are NOT configured here — they come from the repo-level Settings → Code
+# are NOT configured here, they come from the repo-level Settings → Code
 # security toggles ("Dependabot alerts" + "Dependabot security updates"),
 # enabled on 2026-05-30. Those fire automatically for every ecosystem that
 # GitHub can scan from a committed manifest (`pyproject.toml`,
@@ -34,7 +34,7 @@ updates:
   # Major bumps are intentionally ignored: bumping `python:3.10-slim` to a
   # newer Python series silently moves us outside the CI matrix (3.10/3.11/3.12)
   # and may break under the `numpy<2` pin; bumping `nvidia/cuda` across majors
-  # creates a mismatch with the torch wheel target (`--index-url .../whl/cu124`
+  # creates a mismatch with the torch wheel target (`--index-url .../whl/cu129`
   # in Dockerfile.gpu). Either move needs a coordinated, manual PR. Patch /
   # minor bumps (security and bugfix) still flow through.
   - package-ecosystem: "docker"

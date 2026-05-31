@@ -26,9 +26,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [python]
+        # Java covers the hand-written JNI bridge under
+        # microrts_agent/microrts/src/. The vendored MicroRTS engine
+        # (microrts.jar) and the competition bots are excluded via
+        # linguist-vendored in .gitattributes, so CodeQL only analyzes
+        # our own sources.
+        language: [python, java]
     steps:
       - uses: actions/checkout@v6
+
+      # Java needs a JDK so build_bridge.sh can compile the bridge sources
+      # against microrts.jar; CodeQL traces the javac invocation.
+      - if: matrix.language == 'java'
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
       - uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
@@ -36,6 +50,12 @@ jobs:
           # plus the broader code-quality set; appropriate for a
           # research artefact that gets occasional contributors.
           queries: security-and-quality
+
+      # For Java: build the bridge so CodeQL has a real compilation to
+      # analyze. Python is interpreted, no build step needed.
+      - if: matrix.language == 'java'
+        run: bash microrts_agent/microrts/build_bridge.sh
+
       - uses: github/codeql-action/analyze@v4
         with:
           category: "/language:${{ matrix.language }}"

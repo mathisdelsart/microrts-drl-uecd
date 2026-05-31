@@ -12,7 +12,7 @@ body:
     attributes:
       label: Summary
       description: One sentence describing what is broken.
-      placeholder: "`python -m microrts_agent train ...` crashes with KeyError on the second rollout."
+      placeholder: "`microrts-agent train ...` crashes with KeyError on the second rollout."
     validations:
       required: true
 
@@ -23,7 +23,7 @@ body:
       description: The exact command(s), any non-default flags, and the map/bot/architecture you used.
       placeholder: |
         ```bash
-        python -m microrts_agent train --map basesWorkers16x16A.xml --opponent CoacAI ...
+        microrts-agent train --map basesWorkers16x16A.xml --opponent CoacAI ...
         ```
       render: bash
     validations:
