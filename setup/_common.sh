@@ -1,5 +1,5 @@
 #!/bin/bash
-# Shared helpers for setup/local.sh, setup/cluster.sh, setup/docker.sh.
+# Shared helpers for setup/local.sh and setup/cluster.sh.
 #
 # Sourced: never executed directly. The sourcing script is expected to
 # already have set PROJECT_DIR. Helpers print status with the standard

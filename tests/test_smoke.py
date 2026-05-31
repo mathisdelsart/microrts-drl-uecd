@@ -297,7 +297,6 @@ def test_ppo_one_update(tmp_path):
         "setup/_common.sh",
         "setup/local.sh",
         "setup/cluster.sh",
-        "setup/docker.sh",
         "experiments/_setup_env.sh",
         "microrts_agent/microrts/build_bridge.sh",
     ],
@@ -537,7 +536,6 @@ def test_bc_generate_then_train(tmp_path):
     [
         "setup/local.sh",
         "setup/cluster.sh",
-        "setup/docker.sh",
         "microrts_agent/microrts/build_bridge.sh",
     ],
 )
@@ -796,7 +794,6 @@ def test_jar_is_valid_zip(jar_path):
         "setup/_common.sh",
         "setup/local.sh",
         "setup/cluster.sh",
-        "setup/docker.sh",
         "microrts_agent/microrts/build_bridge.sh",
     ],
 )

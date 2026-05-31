@@ -10,7 +10,7 @@ version: 2
 # security toggles ("Dependabot alerts" + "Dependabot security updates"),
 # enabled on 2026-05-30. Those fire automatically for every ecosystem that
 # GitHub can scan from a committed manifest (`pyproject.toml`,
-# `requirements-lock.txt`, `Dockerfile*`), independent of this file.
+# `requirements-lock.txt`), independent of this file.
 #
 # Pip *version* bumps are intentionally NOT tracked here: the repo ships as
 # a thesis-companion artefact that is mostly frozen, and a stream of
@@ -26,23 +26,3 @@ updates:
       interval: "monthly"
     commit-message:
       prefix: "ci"
-
-  # Base images of Dockerfile + Dockerfile.gpu. OS-level CVEs (glibc, openssl,
-  # ...) ride on the base image, so even a frozen Python stack benefits from
-  # tracking the underlying `python:3.10-slim` / `nvidia/cuda:...` tags.
-  #
-  # Major bumps are intentionally ignored: bumping `python:3.10-slim` to a
-  # newer Python series silently moves us outside the CI matrix (3.10/3.11/3.12)
-  # and may break under the `numpy<2` pin; bumping `nvidia/cuda` across majors
-  # creates a mismatch with the torch wheel target (`--index-url .../whl/cu129`
-  # in Dockerfile.gpu). Either move needs a coordinated, manual PR. Patch /
-  # minor bumps (security and bugfix) still flow through.
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "monthly"
-    commit-message:
-      prefix: "chore(docker)"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]

@@ -51,11 +51,6 @@ keeping it under `.github/` declutters the root.
 Tells Dependabot to open *version-update* PRs on a schedule for:
 - **`github-actions`** (monthly): bumps `actions/checkout@vN`,
   `actions/setup-python@vN`, etc. used in the workflows.
-- **`docker`** (monthly): bumps the base image tags in `Dockerfile` and
-  `Dockerfile.gpu` (`python:3.10-slim`, `nvidia/cuda:12.9.2-...`) so OS-level
-  CVEs in the underlying image get caught. Major bumps are ignored: the
-  matrix range (`numpy<2`, Python 3.10/3.11/3.12, CUDA wheel index) requires
-  a manual coordinated PR.
 
 **What this file does NOT cover** (and shouldn't):
 - **Security alerts on pip deps**: handled by the repo-level Settings -> "Code

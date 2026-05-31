@@ -42,7 +42,7 @@ exact names; they are grouped by section comment):
   max-steps 200) and a 256-step PPO `train` both reach the end of the
   loop and write to `outputs/`.
 - **Shell scripts**: bash syntax of `setup/local.sh`, `setup/cluster.sh`,
-  `setup/docker.sh`, `setup/_common.sh`, `microrts_agent/microrts/build_bridge.sh`.
+  `setup/_common.sh`, `microrts_agent/microrts/build_bridge.sh`.
   Shebang + executable bit on the three top-level setup scripts.
 - **BC dataset**: every `.npz` chunk under
   [`../data/BC/training/`](../data/BC/training/) has the expected
