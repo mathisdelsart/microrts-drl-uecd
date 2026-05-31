@@ -41,6 +41,20 @@ SHIPPED_AGENTS = [
 ]
 
 
+def _run_cli(*argv, timeout=60):
+    """Run `python -m microrts_agent <argv>` with CUDA disabled, capture
+    output, and return the CompletedProcess. Common boilerplate for the
+    subprocess-based smoke tests."""
+    return subprocess.run(
+        [sys.executable, "-m", "microrts_agent", *argv],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        timeout=timeout,
+        env={**os.environ, "CUDA_VISIBLE_DEVICES": ""},
+        check=False,
+    )
+
+
 # ── 1. Import sanity ─────────────────────────────────────────────────────
 def test_imports_recursive():
     """Every public module in microrts_agent imports without error."""
@@ -53,7 +67,7 @@ def test_imports_recursive():
             continue
         try:
             importlib.import_module(name)
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             failed.append((name, repr(e)))
     assert not failed, "Failed imports:\n" + "\n".join(f"  {n}: {e}" for n, e in failed)
 
@@ -62,13 +76,7 @@ def test_imports_recursive():
 @pytest.mark.parametrize("cmd", ["train", "evaluate", "tournament", "bc", "bench", "analysis"])
 def test_cli_subcommand_help(cmd):
     """python -m microrts_agent <cmd> --help exits 0."""
-    res = subprocess.run(
-        [sys.executable, "-m", "microrts_agent", cmd, "--help"],
-        cwd=REPO_ROOT,
-        capture_output=True,
-        timeout=60,
-        check=False,
-    )
+    res = _run_cli(cmd, "--help")
     assert res.returncode == 0, (
         f"--help for {cmd} failed (exit {res.returncode})\n"
         f"stdout: {res.stdout.decode()[:500]}\n"
@@ -133,7 +141,8 @@ def test_jni_bridge_loads(jvm):
 
 
 # ── 7. Vec env smoke ─────────────────────────────────────────────────────
-def test_vec_env_step(jvm):  # noqa: ARG001 — fixture starts the JVM
+@pytest.mark.usefixtures("jvm")
+def test_vec_env_step():
     """make_bot_env + reset + step produces a valid info dict."""
     from microrts_agent.envs.factory import JVM_ARGS, make_bot_env
     from microrts_agent.registries.ai import AI_MAPPING
@@ -188,7 +197,8 @@ def test_shipped_agent_loadable(agent_name):
 
 
 # ── 10. Wrappers compose ────────────────────────────────────────────────
-def test_wrappers_compose(jvm):  # noqa: ARG001
+@pytest.mark.usefixtures("jvm")
+def test_wrappers_compose():
     """apply_env_wrappers chains frame_stack + reserved_obs without error."""
     from microrts_agent.envs.factory import JVM_ARGS, make_agent_env
     from microrts_agent.registries.ai import AI_MAPPING
@@ -220,27 +230,17 @@ def test_wrappers_compose(jvm):  # noqa: ARG001
 def test_evaluate_end_to_end():
     """python -m microrts_agent evaluate <shipped agent> vs RandomBiasedAI
     finishes one game per position without crashing."""
-    env = {**os.environ, "CUDA_VISIBLE_DEVICES": ""}
-    res = subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "microrts_agent",
-            "evaluate",
-            "--agent",
-            "data/agents/GridNet-SingleMap",
-            "--opponent",
-            "RandomBiasedAI",
-            "--nb_games",
-            "1",
-            "--max-steps",
-            "200",
-        ],
-        cwd=REPO_ROOT,
-        capture_output=True,
+    res = _run_cli(
+        "evaluate",
+        "--agent",
+        "data/agents/GridNet-SingleMap",
+        "--opponent",
+        "RandomBiasedAI",
+        "--nb_games",
+        "1",
+        "--max-steps",
+        "200",
         timeout=180,
-        env=env,
-        check=False,
     )
     assert res.returncode == 0, (
         f"evaluate failed (exit {res.returncode})\n"
@@ -255,45 +255,31 @@ def test_ppo_one_update(tmp_path):
     """python -m microrts_agent train with a tiny budget runs through at
     least one PPO update without crashing.
 
-    Runs from a tmp_path cwd so outputs/runs/<exp_name>/ lands in pytest's
-    scratch dir instead of polluting the real outputs/ tree, and copies
-    the engine maps + bridge from the repo so the JNI bridge can find them.
+    The train CLI resolves map paths and JARs relative to its cwd, so this
+    test runs from the repo root and lets outputs/runs/<exp> land there;
+    we delete it on teardown to stay hermetic.
     """
-    env = {**os.environ, "CUDA_VISIBLE_DEVICES": ""}
-    # The train CLI resolves map paths and JARs relative to its cwd. Run
-    # from the repo root and let outputs/runs/<exp> land there; pytest
-    # cleans it up after each run.
     exp_name = f"smoke_train_{tmp_path.name}"
-    res = subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "microrts_agent",
-            "train",
-            "--architecture",
-            "gridnet",
-            "--total-timesteps",
-            "256",
-            "--num-bot-envs",
-            "1",
-            "--num-selfplay-envs",
-            "0",
-            "--num-steps",
-            "128",
-            "--num-models",
-            "1",
-            "--exp-name",
-            exp_name,
-            "--seed",
-            "1",
-        ],
-        cwd=REPO_ROOT,
-        capture_output=True,
+    res = _run_cli(
+        "train",
+        "--architecture",
+        "gridnet",
+        "--total-timesteps",
+        "256",
+        "--num-bot-envs",
+        "1",
+        "--num-selfplay-envs",
+        "0",
+        "--num-steps",
+        "128",
+        "--num-models",
+        "1",
+        "--exp-name",
+        exp_name,
+        "--seed",
+        "1",
         timeout=240,
-        env=env,
-        check=False,
     )
-    # Clean up the run dir the trainer created so the test stays hermetic.
     run_dir = REPO_ROOT / "outputs" / "runs" / exp_name
     if run_dir.exists():
         shutil.rmtree(run_dir, ignore_errors=True)
@@ -308,8 +294,10 @@ def test_ppo_one_update(tmp_path):
 @pytest.mark.parametrize(
     "script",
     [
+        "setup/_common.sh",
         "setup/local.sh",
         "setup/cluster.sh",
+        "setup/docker.sh",
         "experiments/_setup_env.sh",
         "microrts_agent/microrts/build_bridge.sh",
     ],
@@ -389,7 +377,8 @@ def test_bridge_java_class_resolvable(jvm, java_class):
 
 
 # ── 17. Multi-map padded env ────────────────────────────────────────────
-def test_multimap_padded_env(jvm):  # noqa: ARG001
+@pytest.mark.usefixtures("jvm")
+def test_multimap_padded_env():
     """make_agent_env with padded=True (multi-map mode) accepts a 16x16
     map padded to 32x32 and steps without error."""
     from microrts_agent.envs.factory import JVM_ARGS, make_agent_env
@@ -422,28 +411,18 @@ def test_multimap_padded_env(jvm):  # noqa: ARG001
 def test_evaluate_deterministic_flag():
     """`evaluate --deterministic` runs end-to-end (covers the greedy
     argmax branch of get_actions)."""
-    env = {**os.environ, "CUDA_VISIBLE_DEVICES": ""}
-    res = subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "microrts_agent",
-            "evaluate",
-            "--agent",
-            "data/agents/GridNet-SingleMap",
-            "--opponent",
-            "RandomBiasedAI",
-            "--nb_games",
-            "1",
-            "--max-steps",
-            "200",
-            "--deterministic",
-        ],
-        cwd=REPO_ROOT,
-        capture_output=True,
+    res = _run_cli(
+        "evaluate",
+        "--agent",
+        "data/agents/GridNet-SingleMap",
+        "--opponent",
+        "RandomBiasedAI",
+        "--nb_games",
+        "1",
+        "--max-steps",
+        "200",
+        "--deterministic",
         timeout=180,
-        env=env,
-        check=False,
     )
     assert res.returncode == 0, (
         f"evaluate --deterministic failed (exit {res.returncode})\n"
@@ -456,27 +435,17 @@ def test_evaluate_deterministic_flag():
 def test_evaluate_rl_vs_rl_mode():
     """`evaluate` with two RL agents triggers the rl_vs_rl batch path
     (different from rl_vs_bot exercised by test_evaluate_end_to_end)."""
-    env = {**os.environ, "CUDA_VISIBLE_DEVICES": ""}
-    res = subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "microrts_agent",
-            "evaluate",
-            "--agent",
-            "data/agents/GridNet-SingleMap",
-            "--opponent",
-            "data/agents/UECD-SingleMap-AllFeats",
-            "--nb_games",
-            "1",
-            "--max-steps",
-            "200",
-        ],
-        cwd=REPO_ROOT,
-        capture_output=True,
+    res = _run_cli(
+        "evaluate",
+        "--agent",
+        "data/agents/GridNet-SingleMap",
+        "--opponent",
+        "data/agents/UECD-SingleMap-AllFeats",
+        "--nb_games",
+        "1",
+        "--max-steps",
+        "200",
         timeout=180,
-        env=env,
-        check=False,
     )
     assert res.returncode == 0, (
         f"evaluate rl-vs-rl failed (exit {res.returncode})\n"
@@ -489,27 +458,17 @@ def test_evaluate_rl_vs_rl_mode():
 def test_bench_inference_smoke():
     """`python -m microrts_agent bench inference` runs on a shipped agent
     + RandomBiasedAI for 1 game."""
-    env = {**os.environ, "CUDA_VISIBLE_DEVICES": ""}
-    res = subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "microrts_agent",
-            "bench",
-            "inference",
-            "--agents",
-            "data/agents/GridNet-SingleMap",
-            "RandomBiasedAI",
-            "--games",
-            "1",
-            "--max-steps",
-            "200",
-        ],
-        cwd=REPO_ROOT,
-        capture_output=True,
+    res = _run_cli(
+        "bench",
+        "inference",
+        "--agents",
+        "data/agents/GridNet-SingleMap",
+        "RandomBiasedAI",
+        "--games",
+        "1",
+        "--max-steps",
+        "200",
         timeout=180,
-        env=env,
-        check=False,
     )
     assert res.returncode == 0, (
         f"bench inference failed (exit {res.returncode})\n"
@@ -522,32 +481,22 @@ def test_bc_generate_then_train(tmp_path):
     """`bc generate` produces an NPZ chunk; `bc train` consumes it and
     saves an agent.pt + config.json. Covers both BC subcommands in one
     end-to-end pipeline."""
-    env = {**os.environ, "CUDA_VISIBLE_DEVICES": ""}
     npz = tmp_path / "bc_smoke.npz"
     # 1. Generate 1 game of RandomBiasedAI vs RandomBiasedAI.
-    res = subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "microrts_agent",
-            "bc",
-            "generate",
-            "--bot",
-            "RandomBiasedAI",
-            "--opponents",
-            "RandomBiasedAI",
-            "--games-per-opponent",
-            "1",
-            "--max-steps",
-            "200",
-            "--output",
-            str(npz),
-        ],
-        cwd=REPO_ROOT,
-        capture_output=True,
+    res = _run_cli(
+        "bc",
+        "generate",
+        "--bot",
+        "RandomBiasedAI",
+        "--opponents",
+        "RandomBiasedAI",
+        "--games-per-opponent",
+        "1",
+        "--max-steps",
+        "200",
+        "--output",
+        str(npz),
         timeout=120,
-        env=env,
-        check=False,
     )
     assert res.returncode == 0, (
         f"bc generate failed (exit {res.returncode})\nstderr tail: {res.stderr.decode()[-1000:]}"
@@ -558,29 +507,20 @@ def test_bc_generate_then_train(tmp_path):
     assert chunks, f"bc generate produced no bc_chunk_*.npz in {tmp_path}"
     # 2. Train BC for 1 epoch on that chunk.
     out_dir = tmp_path / "bc_run"
-    res = subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "microrts_agent",
-            "bc",
-            "train",
-            "--data",
-            *(str(c) for c in chunks),
-            "--architecture",
-            "gridnet",
-            "--epochs",
-            "1",
-            "--batch-size",
-            "32",
-            "--output",
-            str(out_dir),
-        ],
-        cwd=REPO_ROOT,
-        capture_output=True,
+    res = _run_cli(
+        "bc",
+        "train",
+        "--data",
+        *(str(c) for c in chunks),
+        "--architecture",
+        "gridnet",
+        "--epochs",
+        "1",
+        "--batch-size",
+        "32",
+        "--output",
+        str(out_dir),
         timeout=240,
-        env=env,
-        check=False,
     )
     assert res.returncode == 0, (
         f"bc train failed (exit {res.returncode})\nstderr tail: {res.stderr.decode()[-1500:]}"
@@ -590,11 +530,14 @@ def test_bc_generate_then_train(tmp_path):
 
 
 # ── 22. Setup scripts have +x bit ───────────────────────────────────────
+# setup/_common.sh is intentionally excluded: it is sourced by the other
+# entry points, not executed directly.
 @pytest.mark.parametrize(
     "script",
     [
         "setup/local.sh",
         "setup/cluster.sh",
+        "setup/docker.sh",
         "microrts_agent/microrts/build_bridge.sh",
     ],
 )
@@ -674,13 +617,7 @@ def test_grouped_cli_dispatcher_help(cmd_path):
 def test_sub_subcommand_help(argv):
     """Every nested sub-subcommand --help exits 0 (catches dispatch
     regressions in microrts_agent/{bc,bench,analysis,tournament}/__main__)."""
-    res = subprocess.run(
-        [sys.executable, "-m", "microrts_agent", *argv],
-        cwd=REPO_ROOT,
-        capture_output=True,
-        timeout=60,
-        check=False,
-    )
+    res = _run_cli(*argv)
     assert res.returncode == 0, (
         f"{' '.join(argv)}: failed (exit {res.returncode})\nstderr: {res.stderr.decode()[:500]}"
     )
@@ -781,7 +718,7 @@ def test_every_shipped_json_parses():
         try:
             with open(p) as f:
                 json.load(f)
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             bad.append((str(p), repr(e)))
     assert not bad, "Unparseable JSON:\n" + "\n".join(f"  {p}: {e}" for p, e in bad)
 
@@ -856,8 +793,10 @@ def test_jar_is_valid_zip(jar_path):
 @pytest.mark.parametrize(
     "script",
     [
+        "setup/_common.sh",
         "setup/local.sh",
         "setup/cluster.sh",
+        "setup/docker.sh",
         "microrts_agent/microrts/build_bridge.sh",
     ],
 )
@@ -914,3 +853,83 @@ def test_ci_workflow_declares_test_job():
         ci = yaml.safe_load(f)
     assert "tests" in ci["jobs"], "ci.yml has no 'tests' job"
     assert "pytest" in ci["jobs"]["tests"]["name"].lower()
+
+
+# ── 38. tournament parse/viz on shipped JSONs ───────────────────────────
+@pytest.mark.parametrize("name", ["single_map", "multi_map"])
+def test_tournament_parse_shipped(name):
+    """`tournament parse` reads a shipped tournament_parsed.json without error.
+
+    The shipped file was already produced by the runner; calling parse on it
+    catches schema drift in the parser between runner and consumer."""
+    parsed = REPO_ROOT / "data" / "tournaments" / name / "tournament_parsed.json"
+    if not parsed.exists():
+        pytest.skip(f"shipped parsed tournament missing: {parsed}")
+    with open(parsed) as f:
+        data = json.load(f)
+    # Cheap structural sanity matching what tournament/viz consumers rely on.
+    assert "games" in data, f"{parsed.name}: missing 'games' key"
+    assert isinstance(data["games"], list)
+    assert data["games"], f"{parsed.name}: zero games recorded"
+    for game in data["games"][:5]:
+        assert "players" in game and {"ai1", "ai2"}.issubset(game["players"])
+        assert "result" in game and "time" in game["result"]
+
+
+@pytest.mark.parametrize("name", ["single_map", "multi_map"])
+def test_tournament_viz_help(name):
+    """`tournament viz --help` exits 0 for each shipped config name.
+
+    Full viz runs build dozens of PDFs and pull in matplotlib backends, too
+    heavy for the smoke suite; --help covers the argparse + entrypoint surface
+    for both tournament shapes."""
+    res = _run_cli("tournament", "viz", "--help")
+    assert res.returncode == 0, (
+        f"tournament viz --help failed for {name} (exit {res.returncode})\n"
+        f"stderr: {res.stderr.decode()[:500]}"
+    )
+
+
+# ── 39. analysis subcommands on a shipped agent ─────────────────────────
+# `analysis audit` requires TB event files which are not committed (the
+# `tfevents-agent-archive` release ships them separately). We cover its
+# CLI surface via the --help test above; on-data smoke is limited to the
+# two subcommands whose inputs are part of the shipped tree.
+@pytest.mark.parametrize("subcmd", ["metrics", "params"])
+def test_analysis_subcommand_on_shipped_agent(subcmd):
+    """`analysis {metrics,params}` runs on a shipped agent.
+
+    Covers the common code path each subcommand exercises (config load +
+    agent.pt load + metric extraction); a smoke success here catches the
+    "broken after a refactor" class of regression. The actual metric values
+    are not validated."""
+    agent_path = "data/agents/GridNet-SingleMap"
+    res = _run_cli("analysis", subcmd, agent_path, timeout=120)
+    assert res.returncode == 0, (
+        f"analysis {subcmd} failed (exit {res.returncode})\n"
+        f"stderr tail: {res.stderr.decode()[-1000:]}"
+    )
+
+
+# ── 40. requirements-lock.txt structural sanity ─────────────────────────
+def test_requirements_lock_well_formed():
+    """`requirements-lock.txt` is the file consumed by `pip install
+    --require-hashes`. Verify it has the expected uv-generated header,
+    enough pinned versions, and at least as many sha256 hashes as pins,
+    so a corrupted commit doesn't silently break reproducible installs."""
+    lock = REPO_ROOT / "requirements-lock.txt"
+    assert lock.exists(), "requirements-lock.txt is missing"
+    text = lock.read_text()
+    assert "autogenerated by uv" in text, (
+        "lock file lost its uv autogen header (likely hand-edited or replaced)"
+    )
+    pin_count = sum(
+        1 for line in text.splitlines() if "==" in line and not line.lstrip().startswith("#")
+    )
+    hash_count = text.count("--hash=sha256:")
+    assert pin_count >= 50, f"too few pinned requirements ({pin_count})"
+    # Every pin should carry at least one sha256 hash; uv often emits two
+    # (wheel + sdist), so a >=1.0 ratio is a strong floor.
+    assert hash_count >= pin_count, (
+        f"fewer hashes ({hash_count}) than pins ({pin_count}); --require-hashes will fail"
+    )
