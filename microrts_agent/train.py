@@ -244,6 +244,7 @@ def _run_training(args, run_dir):
     next_done = torch.zeros(args.num_envs).to(device)
     win_buffer = deque(maxlen=100)
     total_episodes = 0
+    update = starting_update - 1  # in case the loop never iterates (resume past end)
 
     for update in range(starting_update, args.num_updates + 1):
         # Update LR, entropy, advantage weights, reward weights, VF coefs

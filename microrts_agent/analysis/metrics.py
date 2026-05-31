@@ -488,7 +488,6 @@ def plot_adaptive_opponents(tb_data, out_dir):
 
     fig, ax = plt.subplots(figsize=(12, 5))
     colors = get_colors(len(adaptive_tags))
-    tb_data[adaptive_tags[0]][0]
 
     # Build common step grid and interpolate all series onto it
     all_step_sets = [np.asarray(tb_data[tag][0]) for tag in adaptive_tags]

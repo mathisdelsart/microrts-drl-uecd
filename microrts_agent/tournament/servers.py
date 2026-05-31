@@ -152,7 +152,11 @@ def run_uts_imass_preanalysis(ai, map_path: str, gs, budget_ms: int = 3600000):
     map_dir = UTS_IMASS_TRAINING_DIR / map_stem
     cached = map_dir.is_dir() and any(f.name.endswith("_config.json") for f in map_dir.iterdir())
     os.makedirs(map_dir, exist_ok=True)
-    rel_folder = str(map_dir.resolve().relative_to(Path.cwd()))
+    abs_folder = map_dir.resolve()
+    try:
+        rel_folder = str(abs_folder.relative_to(Path.cwd()))
+    except ValueError:
+        rel_folder = str(abs_folder)
 
     UTS_MIN_BUDGET_MS = 300_000
     if cached:
