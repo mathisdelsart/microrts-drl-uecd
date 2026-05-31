@@ -48,6 +48,18 @@
                     },
                     {
                         "context": "pytest (smoke)"
+                    },
+                    {
+                        "context": "pre-commit (all hooks)"
+                    },
+                    {
+                        "context": "Analyze (python)"
+                    },
+                    {
+                        "context": "Analyze (java)"
+                    },
+                    {
+                        "context": "Review dependency changes"
                     }
                 ]
             }
