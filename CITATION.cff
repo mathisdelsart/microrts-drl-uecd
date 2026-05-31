@@ -48,6 +48,12 @@ url: "https://mathisdelsart.github.io/microrts-drl-uecd-website/"
 repository-code: "https://github.com/mathisdelsart/microrts-drl-uecd"
 license: MIT
 identifiers:
+  - type: doi
+    value: "10.5281/zenodo.20481385"
+    description: "Zenodo archive of v0.1.0 (this version)"
+  - type: doi
+    value: "10.5281/zenodo.20481384"
+    description: "Zenodo concept DOI (always resolves to the latest version)"
   - type: url
     value: "https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/dissertation/dissertation.pdf"
     description: "Master's thesis PDF (full text)"
