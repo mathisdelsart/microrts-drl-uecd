@@ -9,7 +9,7 @@
 # GPU note: this image ships CPU-only torch (no nvidia-* wheels). For GPU
 # training, swap the `torch --index-url ...` line for the default
 # CUDA-enabled wheel and add a CUDA base image.
-FROM python:3.10-slim
+FROM python:3.14-slim
 
 # Java 17 for the JNI bridge + microrts engine.
 RUN apt-get update \
