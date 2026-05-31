@@ -80,6 +80,8 @@ install_python_deps
 echo ""
 install_raisocketai_wheel
 echo ""
+install_pre_commit_hooks
+echo ""
 verify_install
 
 echo "Setup complete! Activate with:"

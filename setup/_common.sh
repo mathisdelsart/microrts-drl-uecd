@@ -55,12 +55,31 @@ build_bridge() {
 
 # ── Python dependencies ──────────────────────────────────────────────────────
 
-# Install the core stack + the [tournament] extra in editable mode. Bumps pip
-# first so resolver-related issues with old pip versions don't appear.
+# Install the core stack + the [dev] and [tournament] extras in editable mode.
+# Bumps pip first so resolver-related issues with old pip versions don't appear.
+# [dev] adds ruff/pytest/pre-commit/tomli (a few extra MB, harmless on cluster).
 install_python_deps() {
-    echo "=== Installing Python dependencies (pip install -e .[tournament]) ==="
+    echo "=== Installing Python dependencies (pip install -e .[dev,tournament]) ==="
     pip install --upgrade pip
-    pip install -e "${PROJECT_DIR}[tournament]"
+    pip install -e "${PROJECT_DIR}[dev,tournament]"
+}
+
+# Activate the pre-commit hooks in the developer's local .git/hooks/ so commits
+# run ruff/format/yaml/toml/json checks automatically. Skipped gracefully when
+# not in a git repo (e.g. tarball checkout) or when pre-commit isn't on PATH
+# (e.g. SKIP_DEV_EXTRAS in a future variant). Only meaningful on local dev.
+install_pre_commit_hooks() {
+    echo "=== Activating pre-commit hooks ==="
+    if [ ! -d "$PROJECT_DIR/.git" ]; then
+        echo "Skipping: not a git repository ($PROJECT_DIR/.git not found)."
+        return
+    fi
+    if ! command -v pre-commit &>/dev/null; then
+        echo "Skipping: pre-commit not on PATH (expected from the [dev] extra)."
+        return
+    fi
+    (cd "$PROJECT_DIR" && pre-commit install) || \
+        echo "WARNING: pre-commit install failed (non-fatal, hooks not active)."
 }
 
 

@@ -57,9 +57,13 @@ dependencies = [
 # Runtime deps required by the RAISocketAI tournament bot wheel. The wheel
 # (`rl_algo_impls`) is installed with `--no-deps` from
 # `microrts_agent/bots/RAISocketAI/` because its pinned set conflicts with
-# our core stack; the cherry-picked subset listed here is what the wheel
-# actually needs at runtime. None of these packages is imported by the
-# `microrts_agent/` source — they exist solely to satisfy the wheel.
+# our core stack. The cherry-picked subset listed here is what the wheel
+# needs at runtime. Most of these packages are not imported by the
+# `microrts_agent/` source. The one exception is `gymnasium==0.29.1`: our
+# code imports it too, but the strict pin lives here because the wheel is
+# the side that requires the exact version (our core code works on a
+# wider range, and otherwise receives gymnasium transitively via
+# stable-baselines3).
 tournament = [
     "gymnasium==0.29.1",
     "psutil",
@@ -77,12 +81,12 @@ dev = [
     "ruff==0.15.14",
     "pytest>=8",
     "pytest-timeout>=2",
+    "pre-commit>=3",
     "PyYAML",
     "tomli; python_version < '3.11'",
 ]
 
 [project.urls]
-Homepage = "https://github.com/mathisdelsart/microrts-drl-uecd"
 Repository = "https://github.com/mathisdelsart/microrts-drl-uecd"
 Issues = "https://github.com/mathisdelsart/microrts-drl-uecd/issues"
 Website = "https://mathisdelsart.github.io/microrts-drl-uecd-website/"
@@ -104,6 +108,6 @@ testpaths = ["tests"]
 python_files = "test_*.py"
 # Make tests work without `pip install -e .` by adding the repo root.
 pythonpath = ["."]
-# Per-test default timeout — catches CI hangs at <2× the slowest expected test.
+# Per-test default timeout, catches CI hangs at <2x the slowest expected test.
 timeout = 300
 addopts = "-q --strict-markers"

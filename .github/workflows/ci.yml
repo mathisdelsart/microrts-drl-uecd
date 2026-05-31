@@ -28,6 +28,21 @@ jobs:
       - run: ruff check --output-format=github .
       - run: ruff format --check .
 
+  pre-commit:
+    name: pre-commit (all hooks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      # Runs every hook in .pre-commit-config.yaml against the full tree.
+      # Catches what local hooks would catch (yaml/toml/json validity, trailing
+      # whitespace, eof newlines, merge conflicts, oversized files), even when
+      # a contributor commits with --no-verify or skips installing the hooks.
+      - uses: pre-commit/action@v3.0.1
+
   bridge:
     name: java bridge (build)
     runs-on: ubuntu-latest
