@@ -19,10 +19,12 @@ RAI_BOT_JAR="$PROJECT_DIR/microrts_agent/microrts/lib/bots/RAISocketAI.jar"
 # committed bridge.jar still lets people run agents without a JDK).
 check_java() {
     if ! command -v java &>/dev/null; then
-        echo "ERROR: Java not found. Install Java 17+ (JDK)."
+        echo "ERROR: Java not found. Need Java 17+ (JDK) for the JNI bridge."
+        echo "  HPC cluster (CECI etc.): module load Java/17.0.6"
+        echo "    (run \`module avail Java\` to see what's actually available)"
+        echo "  Linux (root): sudo apt install openjdk-17-jdk"
         echo "  macOS: brew install openjdk@17"
-        echo "  Linux: sudo apt install openjdk-17-jdk"
-        return 1
+        exit 1
     fi
     echo "Java:  $(java -version 2>&1 | head -1)"
 }
