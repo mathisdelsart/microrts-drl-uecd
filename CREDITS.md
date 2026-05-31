@@ -22,7 +22,7 @@ the upstream repository and/or contact the original authors.
 | StrategyTactics | N. Barriga | <https://github.com/nbarriga/microRTSbot> | none stated |
 | TMA (Tactical Manager AI) | A. Mazza | <https://github.com/MazzaAlessandro/TMA> | none stated |
 | ObiBotKenobi | Jannis42 | <https://github.com/Jannis42/MicroRTSObiBotKenobi> | none stated |
-| UTS_Imass | UTS iMass team | <https://github.com/narsue/UTS_Imass> | Apache-2.0 |
+| UTS_Imass | narsue | <https://github.com/narsue/UTS_Imass> | Apache-2.0 |
 
 ## Engine
 
