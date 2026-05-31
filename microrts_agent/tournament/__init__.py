@@ -9,7 +9,7 @@ Tournament infrastructure: configuration, execution, and analysis.
   - runner:      Tournament orchestration
   - parser:      Post-hoc CSV parsing (TournamentParser)
   - visualizer:  Result visualisation (TournamentVisualizer, TournamentData) + plots/
-  - game_theory: Game-theoretic metrics (Nash, alpha-rank, ...)
+  - ranking/:    Game-theoretic metrics (Nash, alpha-rank, regret, ...) under ranking/
 """
 
 from .config import TournamentConfig, generate_matchups, group_matchups, select_chunk_groups

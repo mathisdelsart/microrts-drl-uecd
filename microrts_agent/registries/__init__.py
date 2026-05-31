@@ -2,7 +2,7 @@
 Lookup tables that map string names to Java bots and map paths.
 
 ai.py:
-  Each function (e.g. workerRushAI, coacAI) is a factory that takes a
+  Each function (e.g. workerRush, coacAI) is a factory that takes a
   UnitTypeTable and returns a Java AI instance via JPype. The imports
   inside each function are Java packages resolved at runtime through
   the JVM classpath: they are NOT Python modules.

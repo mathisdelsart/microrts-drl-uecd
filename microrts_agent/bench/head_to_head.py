@@ -71,16 +71,19 @@ def benchmark_h2h(
     )
     suppress_java_output()
 
-    # Configure the Java bot's time budget
-    try:
-        from microrts_agent.tournament.game_loops import _configure_ai_with_budget
+    # Configure the Java bot's time budget. Mirrors EnvPool.configure_cloned_ai:
+    # set the budget on AIWithComputationBudget subclasses, then wrap any
+    # InterruptibleAI in ContinuingAI so it survives the per-tick deadline.
+    import jpype
 
-        client = env.vec_client.clients[0]
-        client.ai2 = _configure_ai_with_budget(client.ai2, time_budget)
-    except Exception:
-        # Simpler fallback: just set time budget directly if available
-        with contextlib.suppress(Exception):
-            env.vec_client.clients[0].ai2.setTimeBudget(time_budget)
+    aiwcb_cls = jpype.JClass("ai.core.AIWithComputationBudget")
+    interruptible_cls = jpype.JClass("ai.core.InterruptibleAI")
+    continuing_cls = jpype.JClass("ai.core.ContinuingAI")
+    client = env.vec_client.clients[0]
+    if isinstance(client.ai2, aiwcb_cls):
+        client.ai2.setTimeBudget(time_budget)
+    if isinstance(client.ai2, interruptible_cls):
+        client.ai2 = continuing_cls(client.ai2)
 
     # Warmup
     obs = torch.as_tensor(env.reset()).to(device)
@@ -134,8 +137,6 @@ def benchmark_h2h(
 
         if dones[0]:
             games_done += 1
-            np.mean(rl_times[-len(rl_times) :]) * 1000 if rl_times else 0
-            # Compute last-game stats
             print(
                 f"    Game {games_done}/{num_games}: "
                 f"RL mean={np.mean(rl_times) * 1000:.3f} ms, "
