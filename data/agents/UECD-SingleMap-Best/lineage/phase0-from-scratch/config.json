@@ -2,7 +2,7 @@
   "architecture": "unet_entity_cbam_deep",
   "arch_channels": 48,
   "constant_channels": false,
-  "exp_name": "phased_single_map_300M_s1",
+  "exp_name": "phase0-from-scratch",
   "seed": 1,
   "opponent": "coacAI",
   "diverse_opponents": true,
@@ -103,8 +103,8 @@
   "with_eval": true,
   "eval_bots": [
     "RandomBiasedAI",
-    "POWorkerRush",
-    "POLightRush",
+    "WorkerRush",
+    "LightRush",
     "CoacAI",
     "Mayari"
   ],

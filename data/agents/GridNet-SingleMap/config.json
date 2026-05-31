@@ -2,7 +2,7 @@
   "architecture": "gridnet",
   "arch_channels": null,
   "constant_channels": false,
-  "exp_name": "gridnet_baseline_300M_s1",
+  "exp_name": "GridNet-SingleMap",
   "seed": 1,
   "opponent": "coacAI",
   "diverse_opponents": true,
@@ -88,8 +88,8 @@
   "with_eval": true,
   "eval_bots": [
     "RandomBiasedAI",
-    "POWorkerRush",
-    "POLightRush",
+    "WorkerRush",
+    "LightRush",
     "CoacAI",
     "Mayari"
   ],

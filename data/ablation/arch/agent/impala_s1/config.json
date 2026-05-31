@@ -1,7 +1,7 @@
 {
   "architecture": "impala",
   "arch_channels": null,
-  "exp_name": "arch_ablation_impala_s1",
+  "exp_name": "impala_s1",
   "seed": 1,
   "opponent": "coacAI",
   "diverse_opponents": true,
@@ -86,8 +86,8 @@
   "with_eval": true,
   "eval_bots": [
     "RandomBiasedAI",
-    "POWorkerRush",
-    "POLightRush",
+    "WorkerRush",
+    "LightRush",
     "CoacAI",
     "Mayari"
   ],
