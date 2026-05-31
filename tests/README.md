@@ -75,25 +75,9 @@ pytest tests/ -k "evaluate_end_to_end" -v
 pytest tests/ -k "not jvm and not end_to_end and not evaluate and not train"
 ```
 
-## CI gate
+## CI
 
-The suite is required for merge into `main` via the **`pytest (smoke)`**
-status check (an aggregator over a `tests-matrix` job that runs the
-suite on Python 3.10, 3.11 and 3.12 in parallel with `fail-fast: false`).
-A red cell on any matrix entry blocks the merge.
-
-The matrix is defined in [`../.github/workflows/ci.yml`](../.github/workflows/ci.yml).
-The aggregator name is what the protected-branch ruleset
-([`../.github/rulesets/protect-main.json`](../.github/rulesets/protect-main.json))
-expects, so adding more matrix cells does not require touching the
-ruleset.
-
-## Adding a test
-
-Stick with the single-file style: append the test to
-[`test_smoke.py`](test_smoke.py) under the matching section comment.
-Use `_run_cli(*argv, timeout=...)` for any test that calls
-`microrts-agent`; it handles env, cwd, capture, timeout and check
-uniformly. Use the `jvm` fixture (or `@pytest.mark.usefixtures("jvm")`)
-for anything that touches the Java side. Keep per-test wall time
-**under 60 s** so the suite stays under the CI 5-min default.
+The suite runs in CI as the **`pytest (smoke)`** status check, an
+aggregator over a matrix that exercises the suite on Python 3.10, 3.11
+and 3.12 in parallel. The matrix is defined in
+[`../.github/workflows/ci.yml`](../.github/workflows/ci.yml).

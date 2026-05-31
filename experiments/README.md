@@ -108,22 +108,10 @@ SEED=2 sbatch experiments/single-map/train_UECD-SingleMap-Rushed.slurm
 ```
 
 `squeue --me`, `sacct -X --format=JobID,JobName,State,Elapsed`, etc.,
-follow standard SLURM conventions. Logs land in
-`slurm-<job>-<id>.{out,err}` next to the submitting directory.
-
-## Conventions
-
-- **`--exp-name`** values inside the scripts match the directory name
-  shipped under [`../data/agents/`](../data/agents/) /
-  [`../data/ablation/`](../data/ablation/). Re-running a script
-  produces `outputs/runs/<name>_s<SEED>/` that maps 1:1 to the shipped
-  artefact.
-- The repo's CLI is invoked as **`microrts-agent <cmd>`** (the
-  console-script entry point), not the longer `python -m
-  microrts_agent <cmd>` form.
-- Module-load names vary across CECI sites. The fallback chain in
-  [`_setup_env.sh`](_setup_env.sh) handles Lyra, Manneback and
-  Hercules as of 2026; new sites may need a third fallback.
-- `SLURM partition`, `time`, `mem` and `cpus-per-task` were tuned for
-  Lyra. Adjust the `#SBATCH` header if the target cluster has
-  different queue limits.
+follow standard SLURM usage. Logs land in
+`slurm-<job>-<id>.{out,err}` next to the submitting directory. The
+`--exp-name` inside each script matches the directory shipped under
+[`../data/agents/`](../data/agents/) /
+[`../data/ablation/`](../data/ablation/), so re-running a script
+produces `outputs/runs/<name>_s<SEED>/` that maps 1:1 to the shipped
+artefact.

@@ -68,15 +68,9 @@ microrts-agent train \
     ...
 ```
 
-## Notes
+## Related shipped artefacts
 
-- The teacher is invoked through `RAISocketAI` (or any bot in
-  `AI_MAPPING`); the rollout uses the same JNI bridge as training so
-  per-step latency stays under the bot's time budget.
-- The shipped `UECD-BC-PPO` agent at
-  [`../../data/agents/UECD-BC-PPO/`](../../data/agents/UECD-BC-PPO/) is
-  the 3-stage product: dataset (`data/BC/training/`) -> BC train
-  (`UECD-BC`) -> PPO fine-tune (`UECD-BC-PPO`).
-- The BC-only baseline at [`../../data/BC/baseline/`](../../data/BC/baseline/)
-  is the horizontal line of the BC+VF -> PPO figure in the
-  dissertation.
+- Teacher dataset: [`../../data/BC/training/`](../../data/BC/training/).
+- BC-only baseline (78 % pool WR): [`../../data/BC/baseline/`](../../data/BC/baseline/).
+- BC + PPO final agent: [`../../data/agents/UECD-BC-PPO/`](../../data/agents/UECD-BC-PPO/)
+  (3-stage product: teacher dataset -> BC train -> PPO fine-tune).

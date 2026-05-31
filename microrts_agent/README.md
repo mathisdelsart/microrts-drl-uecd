@@ -55,20 +55,9 @@ dispatches to sub-subcommands (`tournament run|parse|viz|analyze`,
 
 ## Output layout
 
-All commands that produce artefacts write under `outputs/`
-(gitignored). Curated, shipped artefacts live under
-[`../data/`](../data/) and are never overwritten by the CLI. The
-constants in [`paths.py`](paths.py) are the only source of truth for
-where things land.
+All commands that produce artefacts write under `outputs/` (gitignored).
+Curated, shipped artefacts live under [`../data/`](../data/). The
+constants in [`paths.py`](paths.py) define where things land.
 
-## Style conventions
-
-- The CLI is invoked as `microrts-agent <cmd>` everywhere
-  (docstrings, READMEs, SLURM scripts, notebooks). The dotted form
-  `python -m microrts_agent.<cmd>` works but is **not** the canonical
-  form.
-- Architectures, wrappers and envs are wired through their respective
-  `factory.py` modules: no module under the package directly
-  instantiates a sibling's class without going through the factory.
-- The package is import-safe: importing `microrts_agent` does **not**
-  start the JVM. The JVM is started lazily on first vec-env construction.
+Importing `microrts_agent` does not start the JVM; the JVM is started
+lazily on first vec-env construction.

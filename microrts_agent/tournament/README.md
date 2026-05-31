@@ -62,20 +62,9 @@ microrts-agent tournament analyze single_map
   config defines the AIs, maps, games, chunk scheduling).
 - `outputs/tournaments/<name>/` for `parse`/`viz`/`analyze`.
 
-## Conventions
-
-- The runner is **resumable**: rows are appended one at a time and the
-  next invocation skips already-completed matchups by reading
-  `tournament.csv`. Killing a tournament mid-run is safe.
-- Per-step inference accounting in `game_loops` divides batched
-  inference cost by the **initial** env count, not the active count.
-  This keeps each game's per-step share stable as siblings finish.
-- The diagonal of the win-rate matrix (self-play) is **masked** in
-  `ranking/game_theory.regret_metrics` before computing column-max, so
-  "best achievable" reflects the best real opponent, not the 0.5
-  self-play cell.
-- `final_standings` x-axis ticks + 50%-WR reference line are derived
-  from `games_per_agent` rather than hardcoded to 180.
+The runner is resumable: rows are appended one at a time and the next
+invocation skips already-completed matchups by reading
+`tournament.csv`.
 
 ## See also
 

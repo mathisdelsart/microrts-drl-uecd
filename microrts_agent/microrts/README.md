@@ -43,20 +43,13 @@ The two canonical map families are:
   larger sizes including 24x24 and 32x32.
 
 The registry [`../registries/maps.py`](../registries/maps.py) exposes
-these as `COMPETITION_OPEN_MAPS` / `COMPETITION_CLOSED_MAPS`, in the
-fixed enumeration order that the multi-map scheduler relies on.
+these as `COMPETITION_OPEN_MAPS` / `COMPETITION_CLOSED_MAPS`.
 
-## Notes
+The classpath used by Python (in
+[`../envs/base_vec_env.py`](../envs/base_vec_env.py)) is `microrts.jar`
++ everything under `lib/` + every vendored bot JAR under
+[`../bots/<Bot>/`](../bots/).
 
-- The **prebuilt** `lib/bridge.jar` is committed for convenience, but
-  `src/` is the source of truth. After any edit to `src/`, rebuild
-  with `build_bridge.sh` before running Python.
-- The classpath used by Python (in
-  [`../envs/base_vec_env.py`](../envs/base_vec_env.py)) is
-  `microrts.jar` + everything under `lib/` + every vendored bot JAR
-  under [`../bots/<Bot>/`](../bots/). Tests verify this is consistent
-  with the JARs actually present on disk.
-- Detailed reference for every field the bridge exchanges with Python
-  (observation channels, action heads, mask layout, reward signals) is
-  in [`src/README.md`](src/README.md). Read that one when changing
-  anything that crosses the language boundary.
+Detailed reference for every field the bridge exchanges with Python
+(observation channels, action heads, mask layout, reward signals) is in
+[`src/README.md`](src/README.md).

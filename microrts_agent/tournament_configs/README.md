@@ -51,17 +51,7 @@ microrts-agent tournament analyze single_map     # parse + viz in one
 See [`../tournament/README.md`](../tournament/README.md) for the full
 sub-subcommand reference.
 
-## Notes
-
-- The two configs **must** keep these exact names: every test in
-  [`../../tests/test_smoke.py`](../../tests/test_smoke.py) hardcodes
-  them, and the SLURM scripts under
-  [`../../experiments/tournament/`](../../experiments/tournament/) call
-  `microrts-agent tournament run single_map` / `... multi_map`.
-- Eight obsolete configs were dropped in PR #51 (`final_competition`,
-  `default`, ...). Do not re-introduce one-off configs here; keep
-  experiments local or under `outputs/` until they prove their worth.
-- Tournament outputs land under `outputs/tournaments/` (gitignored).
-  The two shipped directories under
-  [`../../data/tournaments/`](../../data/tournaments/) are manual
-  snapshots, not auto-generated.
+Tournament outputs land under `outputs/tournaments/` (gitignored). The
+shipped directories at
+[`../../data/tournaments/`](../../data/tournaments/) are curated
+snapshots of the thesis tournaments.

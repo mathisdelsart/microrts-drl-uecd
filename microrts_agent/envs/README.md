@@ -44,9 +44,7 @@ during the call so they do run in parallel.
   bots.
 
 The factory honours every relevant flag from the run's config
-(map list, max-steps, num envs, reward weights, render flag, ...). Code
-that needs to add an env-side knob should plumb it through the factory,
-not bypass it.
+(map list, max-steps, num envs, reward weights, render flag, ...).
 
 ## Note on map shapes
 

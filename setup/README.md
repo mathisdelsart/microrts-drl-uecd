@@ -84,14 +84,3 @@ microrts-agent evaluate --agent data/agents/UECD-SingleMap-Best \
 If those three pass, the install is solid. See
 [`examples/00_navigate.ipynb`](../examples/00_navigate.ipynb) for a
 notebook walkthrough of the install + CLI tour.
-
-## Notes for maintainers
-
-- The three top-level scripts must all source `_common.sh` rather than
-  reimplementing the helpers; the shared helpers are the source of truth.
-- `_common.sh` constants (`WHEEL_URL`, `WHEEL_SHA256`) are checked into git
-  on purpose so the RAISocketAI wheel is hash-verified at install time.
-  Bump them together when the wheel is regenerated.
-- The Python version window (3.10 or 3.11) is dictated by the RAISocketAI
-  `rl_algo_impls` wheel's `<3.12` upper bound; relax it only if the wheel
-  is also rebuilt or `SKIP_RAISOCKETAI=1` is the documented contract.
