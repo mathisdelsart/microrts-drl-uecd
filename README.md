@@ -76,7 +76,7 @@ microrts-drl-uecd/
 ├── cog-2026-paper/               # CoG 2026 short-paper submission
 ├── experiments/                  # SLURM jobs: single-map/ multi-map/ BC/ eval/ tournament/ ablation/ + shared _setup_env.sh
 ├── setup/                       # env setup scripts (local.sh, cluster.sh)
-└── LICENSE  CONTRIBUTING.md  CITATION.cff  ACKNOWLEDGMENTS.md  CREDITS.md  CODE_OF_CONDUCT.md  ruff.toml  pyproject.toml
+└── LICENSE  CITATION.cff  ACKNOWLEDGMENTS.md  CREDITS.md  ruff.toml  pyproject.toml  (CONTRIBUTING.md / CODE_OF_CONDUCT.md live under .github/)
 ```
 
 Python dependencies are declared once in `pyproject.toml` (core stack +
@@ -181,7 +181,7 @@ and the [supplementary site](https://mathisdelsart.github.io/microrts-drl-uecd-w
 ## Development
 
 Conventions (branch naming, Conventional Commits, PR workflow, squash-merge) are in
-[`CONTRIBUTING.md`](CONTRIBUTING.md). Code is linted and formatted with
+[`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md). Code is linted and formatted with
 [ruff](https://docs.astral.sh/ruff/) (config in `ruff.toml`), enforced in CI.
 
 ```bash

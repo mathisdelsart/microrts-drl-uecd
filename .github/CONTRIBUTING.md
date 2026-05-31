@@ -41,7 +41,7 @@ imperative present ("add", not "added"). The body explains the *why*; the
 1. Branch off `main`: `git checkout -b <type>/<name>`
 2. Commit, then push: `git push -u origin <branch>`
 3. Open a PR. The body should cover the four sections below; the
-   [`.github/pull_request_template.md`](.github/pull_request_template.md)
+   [`pull_request_template.md`](pull_request_template.md)
    pre-fills this skeleton automatically:
    - **What** changed
    - **Why** it is needed
