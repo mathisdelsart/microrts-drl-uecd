@@ -2,7 +2,7 @@
 
 LaTeX source of the master's thesis:
 
-> **Deep Reinforcement Learning for Competitive Agents in MicroRTS**
+> **Deep Reinforcement Learning for Competitive Agents in MicroRTS: Architecture, Training, and Tournament Evaluation**
 > Mathis Delsart, UCLouvain (EPL), 2026.
 
 The compiled PDF is shipped at [`dissertation.pdf`](dissertation.pdf).
@@ -22,7 +22,7 @@ The compiled PDF is shipped at [`dissertation.pdf`](dissertation.pdf).
 | [`figs/figs-tex/`](figs/figs-tex/) | Standalone LaTeX `.tex` figures (TikZ, pgfplots). |
 | [`figs/figs-python/`](figs/figs-python/) | Python scripts that regenerate PDF plots from `data/`. |
 | [`figs/figs-pdf/`](figs/figs-pdf/) | 30 generated PDFs (the compiled figures used by the thesis). |
-| [`fonts/`](fonts/) | Proprietary fonts (Cambria Math, Tahoma, Bookman Old Style, Courier New). Kept by design; cleanup is reactive only. |
+| [`fonts/`](fonts/) | Proprietary fonts used by the thesis (Cambria Math, Tahoma, Bookman Old Style, Courier New). |
 | [`poster/`](poster/) | Defence poster PDF. |
 | [`references.bib`](references.bib) | Biblatex bibliography. |
 
@@ -90,13 +90,6 @@ trying, in order:
 scripts re-run on a fresh clone without any local
 `outputs/runs/` from a previous training.
 
-## Notes
-
-- Every figure that depends on training metrics resolves through the
-  canonical run names (`UECD-SingleMap-Best`, `UECD-MultiMap`,
-  `UECD-BC-PPO`, ...) shipped under [`../data/agents/`](../data/agents/).
-- The proprietary fonts under [`fonts/`](fonts/) are vendored by
-  deliberate user decision. Do not touch them.
-- The thesis is **frozen** as a PDF. Source changes are accepted for
-  typo fixes; structural changes only happen as separate PRs with a
-  clear motivation.
+Figures that depend on training metrics resolve through the run names
+shipped under [`../data/agents/`](../data/agents/) (e.g.
+`UECD-SingleMap-Best`, `UECD-MultiMap`, `UECD-BC-PPO`).

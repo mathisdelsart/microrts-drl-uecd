@@ -57,16 +57,3 @@ Every training run writes under `outputs/runs/<exp-name>_s<seed>/`:
 
 The 9 shipped agents at [`../../data/agents/`](../../data/agents/) are
 manual snapshots of selected `outputs/runs/` directories.
-
-## Notes
-
-- `cli.py` is the **only** module that touches argparse. Adding a new
-  flag means adding it there + threading the resolved value through
-  `train.py`'s call sites; do not add ad-hoc argparse calls elsewhere.
-- `Tee` (in [`checkpoint.py`](checkpoint.py)) wraps stdout for the
-  duration of the training loop. It is line-buffered and proxies
-  `encoding`/`fileno`/`isatty` to the underlying stdout so that
-  libraries that introspect `sys.stdout` (`moviepy`, `tqdm`) still
-  behave.
-- The training loop is wrapped in `try/finally` (in `train.py`) so that
-  an exception in the loop never leaves the log truncated.

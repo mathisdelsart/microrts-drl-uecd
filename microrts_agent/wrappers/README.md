@@ -27,20 +27,12 @@ env = apply_env_wrappers(env, cfg)      # this module
 ```
 
 Order matters:
-- `StatsRecorder` must wrap the raw env so it sees the original
-  per-episode dynamics before any obs transformation.
-- `FrameStack` must precede `ReservedObs` so the reserved binary
-  channel is appended **once**, after stacking, not stacked itself.
-- `SymmetryAugmentation` is outermost so each base sample expands into
-  4 symmetric samples downstream.
-
-## When NOT to use the factory
-
-Tests that exercise a single wrapper in isolation can instantiate
-directly: `from microrts_agent.wrappers.frame_stack import FrameStack`.
-Production code (training, evaluation, tournament) must go through
-`apply_env_wrappers` so the obs-shape contract stays consistent with
-what the saved `config.json` advertises.
+- `StatsRecorder` wraps the raw env so it sees the original per-episode
+  dynamics before any obs transformation.
+- `FrameStack` precedes `ReservedObs` so the reserved binary channel is
+  appended once after stacking, not stacked itself.
+- `SymmetryAugmentation` is outermost so each base sample expands into 4
+  symmetric samples downstream.
 
 ## See also
 

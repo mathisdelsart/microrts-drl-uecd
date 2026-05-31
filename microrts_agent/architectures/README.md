@@ -46,26 +46,4 @@ agent = load_agent_from_config("data/agents/UECD-SingleMap-Best/config.json")
 `load_agent_from_config` reads the run's `config.json`, dispatches to the
 right architecture class, restores the optional features
 (`autoregressive`, `hl_gauss`, `popart`, `aux_tasks`, `dual_value_heads`,
-`triple_value_heads`, ...), and loads `agent.pt` from the same
-directory. The path is the **canonical** way to load a checkpoint from
-outside the package; never instantiate an architecture class directly
-from the loader's perspective.
-
-## Adding a new architecture
-
-1. Add a `my_arch.py` module subclassing `BaseActorCritic`.
-2. Register it in `factory.py`:
-   ```python
-   ARCHITECTURE_REGISTRY["my_arch"] = MyArchAgent
-   ```
-3. Extend the smoke test (`tests/test_smoke.py::test_architecture_forward_pass`)
-   by re-running the suite; it iterates over `ARCHITECTURE_REGISTRY`
-   automatically.
-4. Wire the architecture's flags into [`../training/cli.py`](../training/cli.py)
-   if it needs new arguments.
-
-The CBAM block and the entity transformer in
-[`unet_entity_cbam_deep.py`](unet_entity_cbam_deep.py) are the
-recommended starting point for any new variant: their factor count
-(48 channels x depth 6) is balanced against the 8 GB GPU budget the
-ablations were run on.
+`triple_value_heads`, ...), and loads `agent.pt` from the same directory.

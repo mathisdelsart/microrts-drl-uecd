@@ -19,8 +19,7 @@ inspection.
 `metrics` writes PDFs under:
 - `<run_dir>/analysis/` for runs that live under `outputs/runs/`.
 - `outputs/analysis/<exp-name>/` for runs that live under `data/`
-  (because `data/` is curated by hand and must not be touched by
-  automated tools).
+  (keeps the curated `data/` snapshots untouched).
 
 `audit` and `params` print to stdout only.
 

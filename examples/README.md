@@ -17,13 +17,12 @@ on one subcommand and assume the install is good.
 | [`05_bench.ipynb`](05_bench.ipynb) | Self-play decision-time benchmark + head-to-head benchmark | `bench {inference,head2head}` |
 | [`06_analysis.ipynb`](06_analysis.ipynb) | PDF plots + audit + param-count table + inline train.log curves | `analysis {metrics,audit,params}` |
 
-## Prerequisites
+## How to run
 
 Every notebook starts with a markdown cell saying "Prereq:
-[`00_navigate.ipynb`](00_navigate.ipynb) must be green". This is
-intentional: the sanity check (Java + bridge.jar + `microrts-agent` on
-PATH) is centralised in notebook 00, and 01-06 dive straight into the
-task.
+[`00_navigate.ipynb`](00_navigate.ipynb) must be green": the sanity check
+(Java + bridge.jar + `microrts-agent` on PATH) is centralised there, and
+01-06 dive straight into the task.
 
 Before launching Jupyter, run one of:
 
@@ -35,47 +34,9 @@ bash setup/cluster.sh && source cluster_venv/bin/activate # CECI HPC
 Then `jupyter lab` from the repo root so the relative paths used in the
 notebooks (`../setup/...`, `data/agents/...`, etc.) resolve correctly.
 
-## Conventions
-
-All seven notebooks share the same style:
-
-- **Canonical CLI**: `microrts-agent <cmd>` everywhere (the
-  `[project.scripts]` console-script alias). Never `python -m
-  microrts_agent`.
-- **Canonical flags** match the actual argparser: `--max-steps`
-  (hyphen), `--nb_games` (underscore), `--load-model`, etc.
-- **Canonical paths**: shipped agents are at `data/agents/<name>` with
-  no `_sN` seed suffix (only ablation runs under `data/ablation/` have
-  it).
-- **0 em-dash, 0 emoji** in any markdown or code cell.
-- **`subprocess.run(cmd, cwd=str(PROJECT_ROOT), capture_output=True,
-  text=True, timeout=...)`** for every CLI invocation; the result is
-  printed via `print(result.stdout[-1500:])` to keep the cell output
-  bounded.
-- Each notebook ends with a "Next steps" section pointing to related
-  notebooks and the SLURM scripts under
-  [`../experiments/`](../experiments/) for production-scale
-  reproduction.
-
-## What is intentionally NOT here
-
-- **No Docker walkthrough notebook**: Docker is best driven from the
-  terminal (the notebook would just shell out to `docker build` / `docker
-  run`). Use the [`Dockerfile`](../Dockerfile) header recipes or
-  [`bash setup/docker.sh`](../setup/docker.sh) instead.
-- **No thesis-scale reproduction**: each notebook uses tiny budgets
-  (1 game eval, 1 M-step train, 3-AI tournament) so a single run fits
-  in minutes. The SLURM scripts under
-  [`../experiments/`](../experiments/) reproduce the thesis numbers.
-- **No saved cell outputs**: notebooks ship with outputs cleared by
-  convention. The CI smoke tests don't execute notebooks; running them
-  manually after a fresh `setup/local.sh` is the verification path.
-
-## Outputs land in `outputs/`
+## Where outputs land
 
 Anything the notebooks produce (trained agents, BC checkpoints, mini
 tournament results) goes to `outputs/runs/` or `outputs/tournaments/`,
-both gitignored. Curated shipped artefacts (the 9 agents in
-[`data/agents/`](../data/agents/), the 19-AI tournament in
-[`data/tournaments/single_map/`](../data/tournaments/single_map/), etc.)
-are never modified by the notebooks.
+both gitignored. Shipped artefacts under
+[`../data/`](../data/) are the curated, hand-picked snapshots.
