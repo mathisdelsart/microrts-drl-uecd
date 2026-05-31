@@ -6,8 +6,8 @@ AIs
 	UECD-TopFeats
 	UECD-AllFeats
 	RandomBiasedAI
-	POLightRush
-	POWorkerRush
+	LightRush
+	WorkerRush
 	NaiveMCTS
 	CoacAI
 	Mayari
