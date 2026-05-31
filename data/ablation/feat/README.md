@@ -7,15 +7,15 @@ each = 64 trained runs** with two known holes documented below. The
 ablation isolates the marginal contribution of every architectural,
 representational, or training feature considered by the thesis before
 they get composed in the top-5 selection used by
-`UECD-SingleMap-TopFeats`.
+[`UECD-SingleMap-TopFeats`](../../agents/UECD-SingleMap-TopFeats/).
 
 ### Known holes
 
-- **`triple_heads`** — only seed 1 trained to completion on the cluster
+- **`triple_heads`**: only seed 1 trained to completion on the cluster
   (seeds 2 and 3 jobs died). Eval was nonetheless run for all three
   seeds (presumably from intermediate cluster checkpoints that are no
   longer recoverable), so the feature has **1 agent dir + 15 eval rows**.
-- **`buildtime_rewards`** — all three seeds trained, but the formal
+- **`buildtime_rewards`**: all three seeds trained, but the formal
   1 000-game eval was never launched. The feature has **3 agent dirs +
   0 eval rows** and is therefore absent from the headline table below.
 
@@ -49,7 +49,7 @@ deviation when added on top.
 | `gelu`                 | 66.3 % |  +1.2 pp |
 | `framestack4`          | 65.3 % |  +0.3 pp |
 | `autoregressive_hmask` | 65.1 % |  +0.1 pp |
-| **`baseline`**         | **65.1 %** | — |
+| **`baseline`**         | **65.1 %** | n/a |
 | `autoregressive`       | 63.7 % |  −1.3 pp |
 | `aux_spatial`          | 63.3 % |  −1.8 pp |
 | `spp_critic`           | 63.2 % |  −1.8 pp |
@@ -57,14 +57,14 @@ deviation when added on top.
 | `augment_symmetry`     | 57.5 % |  −7.6 pp |
 | `hl_gauss`             | 39.5 % | **−25.6 pp** |
 
-The top-band (≥ +10 pp lift) — `extended_obs`, `filtmask_resobs`,
-`priori_samp` (MCW), `opponent_modeling` — is exactly the set carried
-forward into `UECD-SingleMap-TopFeats` (the *top-5* configuration
-validated at 100 M steps in the architecture ablation chapter). The
-bottom-band tells a clearer story: `hl_gauss` (HL-Gauss value
-classification, −25.6 pp) catastrophically destabilises training at
-this budget, and `augment_symmetry` (symmetry-augmented rollouts,
-−7.6 pp) hurts — neither survives into the published recipe.
+The top-band (≥ +10 pp lift), `extended_obs`, `filtmask_resobs`,
+`priori_samp` (MCW), `opponent_modeling`, is exactly the set carried
+forward into [`UECD-SingleMap-TopFeats`](../../agents/UECD-SingleMap-TopFeats/)
+(the *top-5* configuration validated at 100 M steps in the architecture
+ablation chapter). The bottom-band tells a clearer story: `hl_gauss`
+(HL-Gauss value classification, −25.6 pp) catastrophically destabilises
+training at this budget, and `augment_symmetry` (symmetry-augmented
+rollouts, −7.6 pp) hurts: neither survives into the published recipe.
 
 Full per-seed and per-opponent breakdown lives in
 [`eval/results.csv`](eval/results.csv).
@@ -72,20 +72,20 @@ Full per-seed and per-opponent breakdown lives in
 ## Reproducing one feature-seed combination
 
 ```bash
-python -m microrts_agent train \
+microrts-agent train \
     --architecture unet_entity_cbam_deep \
     --<feature>             # e.g. --extended-obs True
     --seed <N> \
     --total-timesteps 50000000 \
     --map maps/open_competition/basesWorkers16x16A.xml \
-    --exp-name feats_<feature>_s<N>
+    --exp-name <feature>_s<N>
 ```
 
 For evaluation against the 5 base-pool bots (1 000 games per matchup):
 
 ```bash
 for opp in RandomBiasedAI WorkerRush LightRush CoacAI Mayari; do
-    python -m microrts_agent evaluate \
+    microrts-agent evaluate \
         --agent data/ablation/feat/agent/<feature>_s<N> \
         --opponent $opp \
         --maps maps/open_competition/basesWorkers16x16A.xml \
@@ -95,12 +95,14 @@ done
 
 Generator SLURM (parallel array job over the features):
 [`experiments/ablation/train_feat_ablation.slurm`](../../../experiments/ablation/train_feat_ablation.slurm).
+Evaluation driver:
+[`experiments/ablation/evaluate_feats_ablation.slurm`](../../../experiments/ablation/evaluate_feats_ablation.slurm).
 
 ## See also
 
-- 🏗 **Architecture ablation** (validates the backbone choice before this
+- **Architecture ablation** (validates the backbone choice before this
   feature ablation builds on it): [`../arch/`](../arch/)
-- 🤖 **The top-5 selection** trained 2× longer: [`../../agents/UECD-SingleMap-TopFeats/`](../../agents/UECD-SingleMap-TopFeats/)
-- 🤖 **The all-features selection** for comparison: [`../../agents/UECD-SingleMap-AllFeats/`](../../agents/UECD-SingleMap-AllFeats/)
-- 📈 **Dissertation chapter** on the training system (Chapter 9 of
-  `dissertation/dissertation.pdf`).
+- **The top-5 selection** trained 2× longer: [`../../agents/UECD-SingleMap-TopFeats/`](../../agents/UECD-SingleMap-TopFeats/)
+- **The all-features selection** for comparison: [`../../agents/UECD-SingleMap-AllFeats/`](../../agents/UECD-SingleMap-AllFeats/)
+- **Dissertation chapter** on the training system (Chapter 9 of
+  [`dissertation/dissertation.pdf`](../../../dissertation/dissertation.pdf)).

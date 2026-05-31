@@ -8,14 +8,14 @@ robustness metrics (Nash, alpha-rank, Copeland, regret).
 
 ## The two canonical tournaments
 
-### `single_map/` — single-map evaluation (`basesWorkers16x16A`)
+### `single_map/`: single-map evaluation (`basesWorkers16x16A`)
 
 19 AIs (5 UECD agents + 14 bots), iterations = 5, on the 16×16 training map.
 This is the primary tournament reported in the dissertation: it isolates
 agent strength on the map each agent was actually trained on, separating
 quality of play from generalisation.
 
-### `multi_map/` — multi-map evaluation (5 open-competition maps)
+### `multi_map/`: multi-map evaluation (5 open-competition maps)
 
 16 AIs (2 UECD agents + 14 bots), iterations = 5, on the official IEEE-CoG
 open-competition 5-map suite (`basesWorkers8x8A`, `FourBasesWorkers8x8`,
@@ -46,25 +46,31 @@ data/tournaments/<name>/
 ## Reproducing
 
 The two configs that generated these tournaments live at
-`microrts_agent/tournament_configs/single_map.json` and
-`microrts_agent/tournament_configs/multi_map.json`. To reproduce the
-single-map tournament:
+[`microrts_agent/tournament_configs/single_map.json`](../../microrts_agent/tournament_configs/single_map.json)
+and
+[`microrts_agent/tournament_configs/multi_map.json`](../../microrts_agent/tournament_configs/multi_map.json).
+To reproduce the single-map tournament:
 
 ```bash
 # 1. Run the tournament (writes to outputs/tournaments/single_map/)
-python -m microrts_agent tournament run single_map
+microrts-agent tournament run single_map
 
 # 2. Parse + visualise
-python -m microrts_agent tournament analyze single_map
+microrts-agent tournament analyze single_map
 ```
 
-`outputs/tournaments/` is `.gitignore`'d — the runner always writes there,
+`outputs/tournaments/` is `.gitignore`'d: the runner always writes there,
 the shipped subset under `data/tournaments/` is a manual snapshot.
+
+SLURM drivers used to produce the shipped data:
+[`experiments/tournament/tournament_single_map.slurm`](../../experiments/tournament/tournament_single_map.slurm)
+and
+[`experiments/tournament/tournament_multi_map.slurm`](../../experiments/tournament/tournament_multi_map.slurm).
 
 ## Where else these results appear
 
-- 📄 **Dissertation:** chapter on Results — final standings, generalisation,
+- **Dissertation:** chapter on Results: final standings, generalisation,
   head-to-head matrices, game-theoretic robustness all draw on these PDFs.
-- 📝 **CoG 2026 short paper:** uses the `multi_map/` head-to-head matrix
+- **CoG 2026 short paper:** uses the `multi_map/` head-to-head matrix
   and final standings.
-- 🌐 **Supplementary site:** [interactive tournament dashboard, recordings, analyses](https://mathisdelsart.github.io/microrts-drl-uecd-website/).
+- **Supplementary site:** [interactive tournament dashboard, recordings, analyses](https://mathisdelsart.github.io/microrts-drl-uecd-website/).
