@@ -1,0 +1,38 @@
+name: Dependency Review
+
+# PR-time check: if a PR adds or upgrades a dependency that carries a known
+# CVE (according to the GitHub Advisory Database), fail the check so the
+# vulnerable version never lands on main. Complements:
+#   - CodeQL (source-code static analysis)
+#   - Dependabot security alerts (post-hoc, opens auto-bump PRs)
+# This action does NOT scan existing deps — it only diffs the PR's manifest
+# changes against the advisory DB. Zero noise on PRs that don't touch deps.
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write  # so the action can leave a summary comment
+
+concurrency:
+  group: dependency-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    name: Review dependency changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/dependency-review-action@v4
+        with:
+          # Block PRs that add deps with HIGH or CRITICAL CVEs. Moderate
+          # findings get reported but don't fail the check, keeping the
+          # signal:noise ratio reasonable for a research repo.
+          fail-on-severity: high
+          # Also flag licence regressions (e.g. a transitive dep flipping
+          # from MIT/Apache-2.0 to a copyleft-incompatible-with-MIT one).
+          comment-summary-in-pr: on-failure

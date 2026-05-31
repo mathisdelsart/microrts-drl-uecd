@@ -1,8 +1,38 @@
 version: 2
+
+# What this file controls vs. what is controlled elsewhere
+# ──────────────────────────────────────────────────────────────
+# Each `updates:` entry below tells Dependabot to open *version-bump* PRs
+# on a schedule (e.g. "actions/checkout v6 → v7 is available").
+#
+# Security alerts and security-update PRs (e.g. the Pillow CVE bump in #81)
+# are NOT configured here — they come from the repo-level Settings → Code
+# security toggles ("Dependabot alerts" + "Dependabot security updates"),
+# enabled on 2026-05-30. Those fire automatically for every ecosystem that
+# GitHub can scan from a committed manifest (`pyproject.toml`,
+# `requirements-lock.txt`, `Dockerfile*`), independent of this file.
+#
+# Pip *version* bumps are intentionally NOT tracked here: the repo ships as
+# a thesis-companion artefact that is mostly frozen, and a stream of
+# weekly pip-bump PRs would be noise. CVEs in pip deps still flow through
+# the security-alerts channel above (proven by #81).
+
 updates:
-  # Keep the GitHub Actions used in CI up to date (low-noise; pinned ruff is
-  # managed manually, so only the actions ecosystem is tracked here).
+  # GitHub Actions used by ci.yml / codeql.yml / dependency-review.yml.
+  # Low volume: a handful of bumps per year at most.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
+    commit-message:
+      prefix: "ci"
+
+  # Base images of Dockerfile + Dockerfile.gpu. OS-level CVEs (glibc, openssl,
+  # ...) ride on the base image, so even a frozen Python stack benefits from
+  # tracking the underlying `python:3.10-slim` / `nvidia/cuda:...` tags.
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "chore(docker)"
