@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**[Mathis Delsart](https://github.com/mathisdelsart)** · Master's thesis · [UCLouvain](https://uclouvain.be/) · 2026
+**[Mathis Delsart](https://github.com/mathisdelsart)** · Master's thesis · [UCLouvain](https://uclouvain.be/) · 2026 · [DOI: 10.5281/zenodo.20481385](https://doi.org/10.5281/zenodo.20481385)
 
 <p>
   <a href="https://github.com/mathisdelsart/microrts-drl-uecd/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/mathisdelsart/microrts-drl-uecd/ci.yml?branch=main&style=for-the-badge&label=CI&color=0d0208&labelColor=4a0d2b" alt="CI" /></a>
@@ -162,6 +162,7 @@ please cite the project ([`CITATION.cff`](CITATION.cff) is the source of truth):
   title   = {{Deep Reinforcement Learning for Competitive Agents in MicroRTS: Architecture, Training, and Tournament Evaluation}},
   year    = {2026},
   version = {0.1.0},
+  doi     = {10.5281/zenodo.20481385},
   url     = {https://github.com/mathisdelsart/microrts-drl-uecd/releases/tag/v0.1.0},
   note    = {Master's thesis, UCLouvain},
 }
