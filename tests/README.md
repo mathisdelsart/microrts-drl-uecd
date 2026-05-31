@@ -1,6 +1,6 @@
 # `tests/`
 
-Pytest smoke suite for the repo. **127 tests** collected, runs in ~90 s in
+Pytest smoke suite for the repo. **124 tests** collected, runs in ~90 s in
 CI and ~140 s locally on a laptop. The suite is intentionally a smoke
 gate, not a unit-test corpus: it answers "does the project import,
 dispatch, train one rollout, evaluate one game, and parse the shipped
@@ -15,7 +15,7 @@ artefacts?" on every push.
 
 ## What is covered
 
-The 127 tests fall into the following groups (see the source for the
+The 124 tests fall into the following groups (see the source for the
 exact names; they are grouped by section comment):
 
 - **Imports + dispatcher**: recursive import of `microrts_agent`, every

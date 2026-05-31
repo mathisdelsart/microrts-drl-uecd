@@ -59,7 +59,7 @@ also boostraps `uts_imass_env/` (Python 3.6) for the UTS_Imass bot.
 
 ```bash
 microrts-agent --help                          # CLI tour
-pytest tests/                                  # 115 smoke tests (~90s)
+pytest tests/                                  # 124 smoke tests (~90s)
 microrts-agent evaluate --agent data/agents/UECD-SingleMap-Best \
     --opponent CoacAI --maps maps/open_competition/basesWorkers16x16A.xml \
     --nb_games 1 --max-steps 4000
