@@ -2,7 +2,7 @@
 # ──────────────────────────────────────────────────────────────────────────────
 #  Setup CLUSTER environment for MicroRTS Master Thesis project.
 #
-#  Creates a venv at ~/microrts-drl-uecd/cluster_venv with all dependencies for:
+#  Creates a venv at $PROJECT_DIR/cluster_venv with all dependencies for:
 #    - Training (PPO + GridNet, GPU-accelerated)
 #    - Evaluation & benchmarking
 #    - Tournament (bot-vs-bot, agent-vs-bot, agent-vs-agent)
@@ -12,22 +12,21 @@
 #  Requirements:
 #    - Cluster with module system (Python 3.10+, Java 17+, CUDA)
 #    - Outbound HTTPS to github.com (to fetch the RAISocketAI wheel on first run;
-#      skip with SKIP_RAISOCKETAI=1 if the compute nodes have no outbound network)
+#      skip with SKIP_RAISOCKETAI=1 if compute nodes have no outbound network)
 #
 #  Usage:
 #    ssh lyra
 #    cd ~/microrts-drl-uecd && bash setup/cluster.sh
 #
 #  Activate:
-#    source ~/microrts-drl-uecd/cluster_venv/bin/activate
+#    source $PROJECT_DIR/cluster_venv/bin/activate
 # ──────────────────────────────────────────────────────────────────────────────
+set -e
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"  # repo root (script lives in setup/)
 VENV_DIR="$PROJECT_DIR/cluster_venv"
-WHEEL_FILE="$PROJECT_DIR/microrts_agent/bots/RAISocketAI/rl_algo_impls-0.2.1-py3-none-any.whl"
-WHEEL_URL="https://github.com/mathisdelsart/microrts-drl-uecd/releases/download/assets-rai-v0.2.1/rl_algo_impls-0.2.1-py3-none-any.whl"
-WHEEL_SHA256="1e0a60133f4b96fa95f4331e258fd20495d2209d88c319116ac1bd19431e71d1"
-MICRORTS_JAR="$PROJECT_DIR/microrts_agent/microrts/microrts.jar"
+# shellcheck source=setup/_common.sh
+source "$PROJECT_DIR/setup/_common.sh"
 
 echo "========================================"
 echo "  MicroRTS Cluster Environment Setup"
@@ -37,134 +36,66 @@ echo "  Venv:     $VENV_DIR"
 echo "========================================"
 echo ""
 
-# ── 1. Load cluster modules ──────────────────────────────────────────────────
-
+# ── Cluster modules (operator-driven, not loaded by this script) ─────────────
 echo "=== Loading modules ==="
-echo "(Skipped — load modules manually before running this script)"
-# module load Python/3.9.6-GCCcore-11.2.0
+echo "(Skipped, load modules manually before running this script)"
+# module load Python/3.10
 # module load Java/17.0.6
 # module load CUDA/12.1.1
 
-JAVA_VER=$(java -version 2>&1 | head -1)
-echo "Java:  $JAVA_VER"
+check_java
+check_microrts_jar
+build_bridge
 
-if [ ! -f "$MICRORTS_JAR" ]; then
-    echo "WARNING: microrts.jar not found at $MICRORTS_JAR"
-    echo "  The Java engine is vendored in microrts_agent/microrts/."
-fi
-
-# ── Build the Java<->Python bridge (bridge.jar) ──────────────────────────────
-# Always rebuild from src/ so we never run a possibly-stale committed jar.
-echo ""
-echo "=== Building Java bridge (bridge.jar) ==="
-if command -v javac &>/dev/null; then
-    bash "$PROJECT_DIR/microrts_agent/microrts/build_bridge.sh"
-else
-    echo "WARNING: javac (JDK) not found — falling back to the committed bridge.jar."
-    echo "  Install a JDK and run: bash microrts_agent/microrts/build_bridge.sh"
-fi
-
-# ── 2. Create venv ───────────────────────────────────────────────────────────
-
+# ── Venv ─────────────────────────────────────────────────────────────────────
 if [ -d "$VENV_DIR" ]; then
     echo ""
     echo "Venv already exists at $VENV_DIR"
-    source "$VENV_DIR/bin/activate"
 else
     echo "Creating venv at $VENV_DIR..."
     python3 -m venv "$VENV_DIR"
-    source "$VENV_DIR/bin/activate"
 fi
-
+# shellcheck source=/dev/null
+source "$VENV_DIR/bin/activate"
 echo "Python: $(python --version) @ $(which python)"
 echo ""
 
-# ── 3. Python dependencies (single source of truth: pyproject.toml) ──────────
-# Core stack + the [tournament] extra (RAISocketAI's cherry-picked runtime deps).
-
-echo "=== Installing Python dependencies (pip install -e .[tournament]) ==="
-pip install --upgrade pip
-pip install -e "${PROJECT_DIR}[tournament]"
-
+# ── Python deps + RAISocketAI wheel ──────────────────────────────────────────
+install_python_deps
+echo ""
+install_raisocketai_wheel
 echo ""
 
-# ── 4. RAISocketAI tournament bot wheel ──────────────────────────────────────
-# Installed separately with --no-deps: its pinned dependency set conflicts with
-# the core stack (the [tournament] extra above provides the compatible subset).
-# The wheel (~225 MB) is too large for git and is hosted as a GitHub Release
-# asset; downloaded on first run and verified against a pinned SHA-256.
-# Skip with: SKIP_RAISOCKETAI=1 bash setup/cluster.sh
-
-echo "=== Installing RAISocketAI wheel ==="
-if [ "${SKIP_RAISOCKETAI:-0}" = "1" ]; then
-    echo "Skipping RAISocketAI install (SKIP_RAISOCKETAI=1)."
-    echo "  Tournament bots RAISocketAI/RAISocketAIBestModels won't work,"
-    echo "  but all other features still do."
-else
-    if [ ! -f "$WHEEL_FILE" ]; then
-        echo "Downloading RAISocketAI wheel (~225 MB) from GitHub Releases..."
-        if ! curl -L --fail --progress-bar "$WHEEL_URL" -o "$WHEEL_FILE"; then
-            echo "ERROR: download failed from $WHEEL_URL"
-            echo "  If the compute node has no outbound network, re-run with"
-            echo "  SKIP_RAISOCKETAI=1 or transfer the wheel manually:"
-            echo "    scp rl_algo_impls-0.2.1-py3-none-any.whl $(hostname):$WHEEL_FILE"
-            rm -f "$WHEEL_FILE"
-            exit 1
-        fi
-        if command -v sha256sum &>/dev/null; then
-            actual=$(sha256sum "$WHEEL_FILE" | awk '{print $1}')
-        else
-            actual=$(shasum -a 256 "$WHEEL_FILE" | awk '{print $1}')
-        fi
-        if [ "$actual" != "$WHEEL_SHA256" ]; then
-            echo "ERROR: SHA-256 mismatch for $WHEEL_FILE"
-            echo "  expected: $WHEEL_SHA256"
-            echo "  got:      $actual"
-            rm -f "$WHEEL_FILE"
-            exit 1
-        fi
-        echo "SHA-256 verified."
-    fi
-    echo "Installing rl_algo_impls wheel (--no-deps to avoid conflicts)..."
-    pip install --no-deps --force-reinstall "$WHEEL_FILE"
-fi
-
-echo ""
-
-# ── 5. UTS_Imass Python 3.6 environment (optional) ───────────────────────────
-
+# ── UTS_Imass Python 3.6 environment (optional, cluster-only) ────────────────
+# UTS_Imass uses BL_JPS path-finding compiled against Python 3.6; we keep a
+# dedicated venv for it so the main env stays on 3.10+. Two discovery paths:
+# the cluster's `module load Python/3.6`, or a micromamba install we bootstrap.
 echo "=== UTS_Imass Setup (requires Python 3.6) ==="
-
 UTS_PY36="$PROJECT_DIR/uts_imass_env/bin/python"
 MICROMAMBA="$HOME/.local/bin/micromamba"
 
 if [ -x "$UTS_PY36" ]; then
     echo "UTS_Imass Python 3.6 already exists: $UTS_PY36"
 else
-    # 1. Try module load Python/3.6
-    PY36_MOD=""
-    for mod_name in $(module avail Python/3.6 2>&1 | grep -oE 'Python/3\.6[^ )]*' | head -1); do
-        PY36_MOD="$mod_name"
-    done
+    PY36_MOD=$(module avail Python/3.6 2>&1 | grep -oE 'Python/3\.6[^ )]*' | head -1)
 
     if [ -n "$PY36_MOD" ]; then
         echo "Found Python 3.6 module: $PY36_MOD"
         module load "$PY36_MOD" 2>/dev/null
         python3 -m venv "$PROJECT_DIR/uts_imass_env"
         echo "Created UTS_Imass env via module"
-        module load Python/3.11 2>/dev/null || module load Python/3.9 2>/dev/null || true
+        module load Python/3.11 2>/dev/null || module load Python/3.10 2>/dev/null || true
+        # shellcheck source=/dev/null
         source "$VENV_DIR/bin/activate"
     else
-        # 2. Fallback: use micromamba to install Python 3.6
         echo "No Python/3.6 module found. Using micromamba to install Python 3.6..."
-
         if [ ! -x "$MICROMAMBA" ]; then
             echo "Downloading micromamba..."
             mkdir -p "$HOME/.local/bin"
-            curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj -C "$HOME/.local/bin/" --strip-components=1 bin/micromamba
+            curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest \
+                | tar -xvj -C "$HOME/.local/bin/" --strip-components=1 bin/micromamba
             chmod +x "$MICROMAMBA"
         fi
-
         echo "Creating Python 3.6 environment..."
         "$MICROMAMBA" create -p "$PROJECT_DIR/uts_imass_env" python=3.6 -c conda-forge -y
 
@@ -174,71 +105,22 @@ else
             echo "WARNING: Failed to install Python 3.6 via micromamba."
             echo "  UTS_Imass will not work. This is optional."
         fi
-
-        # Re-activate main venv
+        # shellcheck source=/dev/null
         source "$VENV_DIR/bin/activate"
     fi
 fi
-
 echo ""
 
-# ── 6. Verification ──────────────────────────────────────────────────────────
+# ── Verification ─────────────────────────────────────────────────────────────
+verify_install
 
-echo "========================================"
-echo "  Verification"
-echo "========================================"
-
-PASS=0
-FAIL=0
-
-check() {
-    if python -c "$2" 2>/dev/null; then
-        echo "  OK  $1"
-        ((PASS++))
-    else
-        echo "  FAIL  $1"
-        ((FAIL++))
-    fi
-}
-
-check "PyTorch"       "import torch; print(f'    v{torch.__version__}, CUDA: {torch.cuda.is_available()}')"
-check "NumPy"         "import numpy"
-check "Gym 0.23"      "import gym; assert gym.__version__.startswith('0.23')"
-check "SB3"           "import stable_baselines3"
-check "TensorBoard"   "from torch.utils.tensorboard import SummaryWriter"
-check "JPype1"        "import jpype"
-check "Pillow"        "from PIL import Image"
-check "Matplotlib"    "import matplotlib"
-check "Seaborn"       "import seaborn"
-check "Pandas"        "import pandas"
-check "Rich"          "import rich"
-check "PettingZoo"    "import pettingzoo"
-if [ "${SKIP_RAISOCKETAI:-0}" != "1" ]; then
-    check "rl_algo_impls" "import rl_algo_impls"
+# Cluster-only: also check the UTS_Imass python is callable.
+if [ -x "$UTS_PY36" ]; then
+    echo "  OK    UTS_Imass Python 3.6"
+else
+    echo "  FAIL  UTS_Imass (Python 3.6 not found)"
 fi
-check "Gymnasium"     "import gymnasium"
-check "wandb"         "import wandb"
-
-# Java & microrts
 echo ""
-[ -f "$MICRORTS_JAR" ] && echo "  OK  microrts.jar" && ((PASS++)) || { echo "  FAIL  microrts.jar not found"; ((FAIL++)); }
-
-JAR="$PROJECT_DIR/microrts_agent/microrts/lib/bots/RAISocketAI.jar"
-[ -f "$JAR" ] && echo "  OK  RAISocketAI.jar" && ((PASS++)) || { echo "  FAIL  RAISocketAI.jar not found"; ((FAIL++)); }
-
-# UTS_Imass
-[ -x "$UTS_PY36" ] && echo "  OK  UTS_Imass Python 3.6" && ((PASS++)) || { echo "  FAIL  UTS_Imass (Python 3.6 not found)"; ((FAIL++)); }
-
-echo ""
-echo "========================================"
-echo "  Results: $PASS passed, $FAIL failed"
-echo "========================================"
-echo ""
-
-if [ "$FAIL" -gt 0 ]; then
-    echo "Some checks failed. Review the output above."
-    exit 1
-fi
 
 echo "Setup complete! Activate with:"
 echo ""
