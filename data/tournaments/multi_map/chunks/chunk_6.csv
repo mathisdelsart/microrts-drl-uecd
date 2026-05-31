@@ -1,10 +1,10 @@
 tournaments.RoundRobinTournament
 AIs
-	multimap_small_200M_s1
-	BestRL-350M
+	UECD-MultiMap
+	UECD-SingleMap-Best
 	RandomBiasedAI
-	POLightRush
-	POWorkerRush
+	LightRush
+	WorkerRush
 	NaiveMCTS
 	CoacAI
 	Mayari
