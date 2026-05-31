@@ -19,10 +19,12 @@ RAI_BOT_JAR="$PROJECT_DIR/microrts_agent/microrts/lib/bots/RAISocketAI.jar"
 # committed bridge.jar still lets people run agents without a JDK).
 check_java() {
     if ! command -v java &>/dev/null; then
-        echo "ERROR: Java not found. Install Java 17+ (JDK)."
+        echo "ERROR: Java not found. Need Java 17+ (JDK) for the JNI bridge."
+        echo "  HPC cluster (CECI etc.): module load Java/17.0.6"
+        echo "    (run \`module avail Java\` to see what's actually available)"
+        echo "  Linux (root): sudo apt install openjdk-17-jdk"
         echo "  macOS: brew install openjdk@17"
-        echo "  Linux: sudo apt install openjdk-17-jdk"
-        return 1
+        exit 1
     fi
     echo "Java:  $(java -version 2>&1 | head -1)"
 }
@@ -58,7 +60,19 @@ build_bridge() {
 # Install the core stack + the [dev] and [tournament] extras in editable mode.
 # Bumps pip first so resolver-related issues with old pip versions don't appear.
 # [dev] adds ruff/pytest/pre-commit/tomli (a few extra MB, harmless on cluster).
+#
+# If TORCH_INDEX_URL is set (typical on HPC where the GPU driver dictates
+# which CUDA wheel works), torch + torchvision are pre-installed from that
+# index before resolving the rest of the deps. Default PyPI torch wheels
+# can hit "NVIDIA driver too old" errors on older cluster drivers; setting
+# this explicitly (e.g. cu121 on a cluster with CUDA 12.x driver) sidesteps
+# the problem.
 install_python_deps() {
+    if [ -n "${TORCH_INDEX_URL:-}" ]; then
+        echo "=== Pre-installing torch from $TORCH_INDEX_URL ==="
+        pip install --upgrade pip
+        pip install torch torchvision --index-url "$TORCH_INDEX_URL"
+    fi
     echo "=== Installing Python dependencies (pip install -e .[dev,tournament]) ==="
     pip install --upgrade pip
     pip install -e "${PROJECT_DIR}[dev,tournament]"

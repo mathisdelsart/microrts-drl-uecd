@@ -25,6 +25,17 @@ set -e
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"  # repo root (script lives in setup/)
 VENV_DIR="$PROJECT_DIR/cluster_venv"
+
+# Default to a torch wheel that matches typical CECI GPU drivers (Lyra, etc.,
+# all support CUDA >=12.1 as of 2026). PyPI's default torch wheel is built
+# against a much newer CUDA runtime and triggers "NVIDIA driver too old" at
+# import time on most CECI nodes. Override on different sites with e.g.
+#   TORCH_INDEX_URL=https://download.pytorch.org/whl/cu118 bash setup/cluster.sh
+# Or to use PyPI's default (CPU-only / latest CUDA), explicitly unset:
+#   TORCH_INDEX_URL= bash setup/cluster.sh
+: "${TORCH_INDEX_URL:=https://download.pytorch.org/whl/cu121}"
+export TORCH_INDEX_URL
+
 # shellcheck source=setup/_common.sh
 source "$PROJECT_DIR/setup/_common.sh"
 
@@ -37,11 +48,32 @@ echo "========================================"
 echo ""
 
 # ── Cluster modules (operator-driven, not loaded by this script) ─────────────
-echo "=== Loading modules ==="
-echo "(Skipped, load modules manually before running this script)"
-# module load Python/3.10
-# module load Java/17.0.6
-# module load CUDA/12.1.1
+echo "=== Cluster modules (load BEFORE running this script) ==="
+echo ""
+echo "Discover what's available on your CECI site (names drift across sites):"
+echo "  module avail Java"
+echo "  module avail Python"
+echo "  module avail CUDA"
+echo ""
+echo "Then load. Working example on Lyra (CECI HPC) as of 2026:"
+echo "  module load Java/17.0.6                          # JDK 17 for the JNI bridge"
+echo "  module load Python/3.11.3-GCCcore-12.3.0         # 3.11 (Lyra has no 3.10; RAISocketAI wheel pins <3.12)"
+echo "  module load CUDA/12.1.1                          # only if training on GPU"
+echo ""
+echo "On other CECI sites the toolchain suffix may differ ('Python/3.10'"
+echo "instead of 'Python/3.11.3-GCCcore-12.3.0'). Always cross-check with"
+echo "'module avail <X>' above and pick what's there."
+echo ""
+echo "Sanity check after loading:"
+echo "  java -version          # should print 17.x"
+echo "  python3 --version      # should print 3.10.x or 3.11.x"
+echo "  nvidia-smi             # if on a GPU node, should print the card"
+echo ""
+echo "torch CUDA wheel: pulling from $TORCH_INDEX_URL"
+echo "  (override with TORCH_INDEX_URL=... bash setup/cluster.sh if your"
+echo "   site's driver needs a different cuXXX wheel; see nvidia-smi)"
+echo "========================================"
+echo ""
 
 check_java
 check_microrts_jar
