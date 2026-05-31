@@ -44,7 +44,7 @@ and merges them on the fly. To re-train from the shipped data:
 
 ```bash
 microrts-agent bc train \
-    --data data/bc_training/bc_chunk_*.npz \
+    --data data/BC/training/bc_chunk_*.npz \
     --epochs 20 \
     --batch-size 256 \
     --output outputs/runs/UECD-BC_s1

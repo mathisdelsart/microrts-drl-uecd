@@ -8,7 +8,7 @@ line** in the dissertation's BC+VF→PPO vs *from scratch* figure
 
 The model was trained by behaviour cloning only: no RL phase, no
 value-function head update past the supervised loss. The dataset is the
-v3 BC teacher set shipped under [`../bc_training/`](../bc_training/)
+v3 BC teacher set shipped under [`../training/`](../training/)
 (`RAISocketAI` demonstrating against `RAISocketAI`, `CoacAI`, `Mayari`,
 100 games each, 313 394 transitions).
 
@@ -75,6 +75,6 @@ in the table above).
 
 ## See also
 
-- **Teacher dataset** behind the BC weights: [`../bc_training/`](../bc_training/)
+- **Teacher dataset** behind the BC weights: [`../training/`](../training/)
 - **The next-step agent** (BC + 100 M of PPO): [`../agents/UECD-BC-PPO/`](../agents/UECD-BC-PPO/)
 - **Dissertation figure** comparing BC-only / BC+PPO / from-scratch: [`../../dissertation/figs/figs-python/bc_vs_scratch_overall.py`](../../dissertation/figs/figs-python/bc_vs_scratch_overall.py)

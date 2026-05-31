@@ -10,7 +10,7 @@ where L_BC is the per-unit cross-entropy loss (scaled by 1/num_active_units)
 and L_VF is the standard value function MSE loss on reward-to-go.
 
 Usage:
-    microrts-agent bc train --data data/bc_training/bc_chunk_*.npz \
+    microrts-agent bc train --data data/BC/training/bc_chunk_*.npz \
                                       --architecture unet_entity_cbam_deep --gelu --epochs 30
 """
 
