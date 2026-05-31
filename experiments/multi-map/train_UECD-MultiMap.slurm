@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=mmap100M
-#SBATCH --output=slurm-mmap-%j.out
-#SBATCH --error=slurm-mmap-%j.err
+#SBATCH --job-name=train_UECD-MultiMap
+#SBATCH --output=slurm-train_UECD-MultiMap-%j.out
+#SBATCH --error=slurm-train_UECD-MultiMap-%j.err
 #SBATCH --time=3-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24
@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Multi-map training on small maps (<=16x16): 100M steps
+# Multi-map training on small maps (<=16x16): 200M steps
 # S-tier features + padded observations
 #
 SEED=${SEED:-1}

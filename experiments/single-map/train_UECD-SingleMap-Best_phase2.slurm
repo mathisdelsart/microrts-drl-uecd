@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=ft_rai160M
-#SBATCH --output=slurm-ft-rai-%j.out
-#SBATCH --error=slurm-ft-rai-%j.err
+#SBATCH --job-name=train_UECD-SingleMap-Best_phase2
+#SBATCH --output=slurm-train_UECD-SingleMap-Best_phase2-%j.out
+#SBATCH --error=slurm-train_UECD-SingleMap-Best_phase2-%j.err
 #SBATCH --time=5-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24

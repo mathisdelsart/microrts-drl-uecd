@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=phased300M
-#SBATCH --output=slurm-phased-%j.out
-#SBATCH --error=slurm-phased-%j.err
+#SBATCH --job-name=train_UECD-SingleMap-Rushed
+#SBATCH --output=slurm-train_UECD-SingleMap-Rushed-%j.out
+#SBATCH --error=slurm-train_UECD-SingleMap-Rushed-%j.err
 #SBATCH --time=5-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24

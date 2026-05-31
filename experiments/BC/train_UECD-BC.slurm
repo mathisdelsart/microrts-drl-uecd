@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=bc_te
-#SBATCH --output=slurm-bc-te-%j.out
-#SBATCH --error=slurm-bc-te-%j.err
+#SBATCH --job-name=train_UECD-BC
+#SBATCH --output=slurm-train_UECD-BC-%j.out
+#SBATCH --error=slurm-train_UECD-BC-%j.err
 #SBATCH --time=2:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12

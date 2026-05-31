@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=arch_ablation_100M
-#SBATCH --output=slurm-%j_%a.out
-#SBATCH --error=slurm-%j_%a.err
+#SBATCH --job-name=train_arch_ablation
+#SBATCH --output=slurm-train_arch_ablation-%j_%a.out
+#SBATCH --error=slurm-train_arch_ablation-%j_%a.err
 #SBATCH --time=24:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12

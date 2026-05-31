@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=gen_probe
-#SBATCH --output=slurm-genprobe-%A_%a.out
-#SBATCH --error=slurm-genprobe-%A_%a.err
+#SBATCH --job-name=eval_generalization_probes
+#SBATCH --output=slurm-eval_generalization_probes-%A_%a.out
+#SBATCH --error=slurm-eval_generalization_probes-%A_%a.err
 #SBATCH --time=04:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8

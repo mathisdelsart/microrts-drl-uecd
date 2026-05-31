@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=bc_v2
-#SBATCH --output=slurm-bc-v2-%j.out
-#SBATCH --error=slurm-bc-v2-%j.err
+#SBATCH --job-name=generate_BC_dataset
+#SBATCH --output=slurm-generate_BC_dataset-%j.out
+#SBATCH --error=slurm-generate_BC_dataset-%j.err
 #SBATCH --time=4:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12
@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# BC+VF Pipeline v2: full 10-reward training (matching PPO critic)
+# BC+VF Pipeline: full 10-reward training (matching PPO critic).
 #
 #   Step 1: Generate BC data with 10 reward components
 #   Step 2: Train BC+VF (actor + critic together)
@@ -22,7 +22,7 @@
 SEED=${SEED:-1}
 
 echo "============================================================"
-echo "  BC+VF Pipeline v2: Full rewards, critic pre-training"
+echo "  BC+VF Pipeline: Full rewards, critic pre-training"
 echo "============================================================"
 echo "  Job ID:   $SLURM_JOB_ID"
 echo "  Seed:     $SEED"
@@ -155,7 +155,7 @@ done
 
 echo ""
 echo "============================================================"
-echo "  BC+VF PIPELINE v2 COMPLETE"
+echo "  BC+VF PIPELINE COMPLETE"
 echo "============================================================"
 echo "  Data:      $DATA_RR $DATA_RC $DATA_RM"
 echo "  BC model:  ${BC_RUN_DIR}/agent.pt"

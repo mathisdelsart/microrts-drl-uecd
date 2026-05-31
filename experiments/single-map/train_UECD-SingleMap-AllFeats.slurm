@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=best_100M
-#SBATCH --output=slurm-best100M-%j.out
-#SBATCH --error=slurm-best100M-%j.err
+#SBATCH --job-name=train_UECD-SingleMap-AllFeats
+#SBATCH --output=slurm-train_UECD-SingleMap-AllFeats-%j.out
+#SBATCH --error=slurm-train_UECD-SingleMap-AllFeats-%j.err
 #SBATCH --time=3-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24
@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# BEST agent: 100M steps, single map, all positive features from 3-seed ablation
+# AllFeats ablation: 100M steps, single map, all positive features from 3-seed ablation
 #
 # Architecture: UNet-Entity-CBAM-Deep (4.72M params)
 # Features (from 3-seed ablation summary, sorted by mean delta):
@@ -25,7 +25,7 @@
 SEED=${SEED:-1}
 
 echo "============================================================"
-echo "  BEST Agent: 100M steps, all positive features"
+echo "  AllFeats: 100M steps, all positive features"
 echo "============================================================"
 echo "  Job ID:       $SLURM_JOB_ID"
 echo "  Seed:         $SEED"

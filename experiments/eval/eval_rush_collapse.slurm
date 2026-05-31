@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=eval_rush
-#SBATCH --output=slurm-eval-rush-%A_%a.out
-#SBATCH --error=slurm-eval-rush-%A_%a.err
+#SBATCH --job-name=eval_rush_collapse
+#SBATCH --output=slurm-eval_rush_collapse-%A_%a.out
+#SBATCH --error=slurm-eval_rush_collapse-%A_%a.err
 #SBATCH --time=24:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8

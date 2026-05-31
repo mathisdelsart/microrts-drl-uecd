@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=feats_abl
-#SBATCH --output=slurm-%j_%a.out
-#SBATCH --error=slurm-%j_%a.err
+#SBATCH --job-name=train_feat_ablation
+#SBATCH --output=slurm-train_feat_ablation-%j_%a.out
+#SBATCH --error=slurm-train_feat_ablation-%j_%a.err
 #SBATCH --time=1-12:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12

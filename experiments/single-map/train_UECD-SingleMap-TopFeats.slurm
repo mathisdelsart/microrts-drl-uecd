@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=stier100M
-#SBATCH --output=slurm-stier-%j.out
-#SBATCH --error=slurm-stier-%j.err
+#SBATCH --job-name=train_UECD-SingleMap-TopFeats
+#SBATCH --output=slurm-train_UECD-SingleMap-TopFeats-%j.out
+#SBATCH --error=slurm-train_UECD-SingleMap-TopFeats-%j.err
 #SBATCH --time=3-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24

@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=best_mm400M
-#SBATCH --output=slurm-bestmm-%j.out
-#SBATCH --error=slurm-bestmm-%j.err
+#SBATCH --job-name=train_UECD-MultiMap-Best
+#SBATCH --output=slurm-train_UECD-MultiMap-Best-%j.out
+#SBATCH --error=slurm-train_UECD-MultiMap-Best-%j.err
 #SBATCH --time=5-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=32
