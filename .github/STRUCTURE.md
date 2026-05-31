@@ -9,6 +9,8 @@ the Python package; it only affects how the repo behaves on GitHub itself.
 ```
 .github/
 ├── STRUCTURE.md                    # this file
+├── CONTRIBUTING.md                 # branch naming, Conventional Commits, PR workflow
+├── CODE_OF_CONDUCT.md              # Contributor Covenant 2.1
 ├── SECURITY.md                     # security disclosure policy
 ├── dependabot.yml                  # Dependabot version-update config
 ├── pull_request_template.md        # auto-filled when opening a PR
@@ -26,6 +28,18 @@ the Python package; it only affects how the repo behaves on GitHub itself.
 ```
 
 ## File-by-file
+
+### `CONTRIBUTING.md`
+Contributor guide: branch naming convention (`<type>/<short-name>`),
+Conventional Commits, PR workflow with the four-section template body, and
+the squash-merge rule. GitHub recognises this file in `.github/`, the repo
+root, or `docs/`; keeping it under `.github/` declutters the root and groups
+it with the rest of the repo-metadata files.
+
+### `CODE_OF_CONDUCT.md`
+Contributor Covenant 2.1 (verbatim). Same placement rationale as
+`CONTRIBUTING.md`: GitHub picks it up from `.github/` just as well as from
+the repo root.
 
 ### `SECURITY.md`
 Disclosure policy. Says: open a public GitHub issue for security-relevant
