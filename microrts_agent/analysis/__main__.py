@@ -13,8 +13,7 @@ _COMMANDS = {
 _HELP = """\
 microrts-agent analysis: training-run analysis utilities.
 
-USAGE
-  microrts-agent analysis <subcommand> [options]
+usage: microrts-agent analysis <subcommand> [options]
 
 SUBCOMMANDS
 

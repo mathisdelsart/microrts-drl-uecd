@@ -26,8 +26,7 @@ _COMMANDS = {
 _HELP = """\
 microrts-agent: MicroRTS Deep-RL Agent CLI (UCLouvain master's thesis).
 
-USAGE
-  microrts-agent <command> [options]
+usage: microrts-agent <command> [options]
 
 COMMANDS
 

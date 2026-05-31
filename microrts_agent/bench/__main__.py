@@ -12,8 +12,7 @@ _COMMANDS = {
 _HELP = """\
 microrts-agent bench: inference decision-time benchmarks.
 
-USAGE
-  microrts-agent bench <subcommand> [options]
+usage: microrts-agent bench <subcommand> [options]
 
 SUBCOMMANDS
 

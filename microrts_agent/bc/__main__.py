@@ -12,8 +12,7 @@ _COMMANDS = {
 _HELP = """\
 microrts-agent bc: Behaviour cloning toolchain.
 
-USAGE
-  microrts-agent bc <subcommand> [options]
+usage: microrts-agent bc <subcommand> [options]
 
 SUBCOMMANDS
 
