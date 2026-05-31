@@ -34,7 +34,7 @@ class ReservedPositionObs(VecEnvWrapper):
         """Query Java for reserved positions -> (B, H, W, 1) binary float32."""
         planes = np.zeros(
             (self.num_envs, self.obs_height, self.obs_width, 1), dtype=np.float32
-        )  # (B, H, W, 1) — all zeros, fill actual region below
+        )  # (B, H, W, 1): all zeros, fill actual region below
         base_env = self._base_env
         n_sp = base_env.num_selfplay_envs
 

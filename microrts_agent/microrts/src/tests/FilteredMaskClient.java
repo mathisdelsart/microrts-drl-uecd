@@ -47,7 +47,7 @@ public class FilteredMaskClient
         }
 
         // Build ResourceUsage from pending actions of this player only.
-        // Enemy pending actions should not block our moves — the engine
+        // Enemy pending actions should not block our moves: the engine
         // resolves inter-player destination conflicts at cycle time.
         ResourceUsage baseRU = new ResourceUsage();
         for (UnitActionAssignment uaa : gs.getUnitActions().values())
@@ -129,7 +129,7 @@ public class FilteredMaskClient
      * moving to or being produced.
      *
      * @param gs the current GameState
-     * @return int[height][width] — 1 = reserved, 0 = free
+     * @return int[height][width]: 1 = reserved, 0 = free
      */
     public static int[][] getReservedPositions(GameState gs)
     {

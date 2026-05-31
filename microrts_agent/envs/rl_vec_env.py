@@ -31,7 +31,7 @@ class MicroRTSRLVecEnv(BaseMicroRTSVecEnv):
         reward_weight,  # np.array(10,): weights for the 10 reward functions
         cycle_maps,  # list[str]: maps to rotate on episode end ([] = disabled)
         jvm_args,  # list[str]: extra JVM arguments (e.g. ["-Xmx4g"])
-        player,  # int: 0 or 1 — which side the RL agent controls
+        player,  # int: 0 or 1: which side the RL agent controls
         alternate_players=False,  # bool: flip player on episode end (P0↔P1)
         filtered_masks=False,  # bool: destination-aware action mask filtering
         extended_obs=False,  # bool: 13-feature extended obs (action params + ETA)
@@ -393,7 +393,7 @@ class MicroRTSRLVecEnv(BaseMicroRTSVecEnv):
             raw_obs_int = self._last_raw_obs_int
 
         if self.num_planes:
-            # Standard obs path already initialized — reuse existing encoding
+            # Standard obs path already initialized: reuse existing encoding
             return self._encode_obs_batch(raw_obs_int)
 
         # Extended-obs env: num_planes is empty -> compute standard encoding
@@ -498,11 +498,11 @@ class MicroRTSRLVecEnv(BaseMicroRTSVecEnv):
         actions = actions.reshape((self.num_envs, self.height * self.width, -1))  # (N, H*W, 7)
         actions = np.concatenate(
             (self.source_unit_idxs, actions), 2
-        )  # (N, H*W, 8) — prepend cell index
+        )  # (N, H*W, 8): prepend cell index
         actions = actions[
             np.where(self.source_unit_mask == 1)
-        ]  # (~total_units, 8) — keep only cells with units
-        action_counts_per_env = self.source_unit_mask.sum(1)  # (N,) — how many units per env
+        ]  # (~total_units, 8): keep only cells with units
+        action_counts_per_env = self.source_unit_mask.sum(1)  # (N,): how many units per env
 
         # Convert numpy -> Java 3D array: int[env][unit][8]
         py_actions = [None] * len(action_counts_per_env)
@@ -521,15 +521,15 @@ class MicroRTSRLVecEnv(BaseMicroRTSVecEnv):
     def step_wait(self):
         """Execute one game step.
         Returns: (obs, reward, done, infos)
-            obs:    (N, H, W, C)  float32 — encoded observations
-            reward: (N,)          float32 — weighted scalar reward per env
-            done:   (N,)          bool    — episode ended?
-            infos:  list[dict]            — raw_rewards(10,) + player per env
+            obs:    (N, H, W, C)  float32: encoded observations
+            reward: (N,)          float32: weighted scalar reward per env
+            done:   (N,)          bool   : episode ended?
+            infos:  list[dict]           : raw_rewards(10,) + player per env
         """
         # 1. Java advances all games by one tick
         responses = self.vec_client.gameStep(self.actions, self._get_player_list())
-        reward = np.array(responses.reward)  # (N, 10) — 10 raw reward components
-        done = np.array(responses.done)  # (N, 1) — Java uses 2D
+        reward = np.array(responses.reward)  # (N, 10): 10 raw reward components
+        done = np.array(responses.done)  # (N, 1): Java uses 2D
         raw_obs = np.array(responses.observation)  # (N, num_features, H, W) int
         self._last_raw_obs_int = raw_obs  # cache for encode_standard_from_raw()
         # extended obs needs per-client JNI calls; standard is a direct batch encode
@@ -557,8 +557,8 @@ class MicroRTSRLVecEnv(BaseMicroRTSVecEnv):
 
     def get_action_mask(self):
         """Get valid action masks for all envs. Called once per step BEFORE agent acts.
-        Returns: (N, H*W, 78) int — per-cell mask of valid sub-actions
-        Side effect: sets self.source_unit_mask (N, H*W) — 1 where cell has a unit
+        Returns: (N, H*W, 78) int: per-cell mask of valid sub-actions
+        Side effect: sets self.source_unit_mask (N, H*W): 1 where cell has a unit
         """
         if self.filtered_masks:
             # Filtered path: destination-aware masks, 1 JNI call per client (slower)

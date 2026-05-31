@@ -2,7 +2,7 @@
  * Self-play bridge: 2 RL agents on the same map (P0 vs P1).
  * Used by JNIGridnetVecClient for selfplay environments.
  *
- * Unlike JNIGridnetClient, there is no bot — both players are controlled
+ * Unlike JNIGridnetClient, there is no bot: both players are controlled
  * by Python. gameStep() takes TWO action arrays (one per player).
  *
  * Each player gets its own JNIAI instance, masks, rewards, dones, and Response.

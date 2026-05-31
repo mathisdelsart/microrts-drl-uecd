@@ -1,6 +1,6 @@
-"""Registry: "impala" — IMPALA-CNN with 3-stage ResBlock encoder (~1M params).
-Encoder: 3x [Conv+MaxPool+ResBlockx2] — spatial H->H/8, channels C->32->64->128.
-Decoder: 3x ConvTranspose — spatial H/8->H, channels 128->64->32->78.
+"""Registry: "impala": IMPALA-CNN with 3-stage ResBlock encoder (~1M params).
+Encoder: 3x [Conv+MaxPool+ResBlockx2]: spatial H->H/8, channels C->32->64->128.
+Decoder: 3x ConvTranspose: spatial H/8->H, channels 128->64->32->78.
 Critic: AdaptiveAvgPool -> MLP (any map size). Supports all optional features via **kwargs.
 Exports reusable builders: build_impala_encoder, build_impala_actor, build_adaptive_critic.
 """

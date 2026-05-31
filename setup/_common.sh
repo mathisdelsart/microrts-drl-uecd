@@ -1,7 +1,7 @@
 #!/bin/bash
 # Shared helpers for setup/local.sh, setup/cluster.sh, setup/docker.sh.
 #
-# Sourced — never executed directly. The sourcing script is expected to
+# Sourced: never executed directly. The sourcing script is expected to
 # already have set PROJECT_DIR. Helpers print status with the standard
 # "OK / FAIL / WARNING" prefixes so the parent script's output stays uniform.
 

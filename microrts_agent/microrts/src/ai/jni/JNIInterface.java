@@ -18,7 +18,7 @@ public interface JNIInterface
     /** Reset internal state between episodes. */
     void reset();
 
-    /** Compute reward delta (legacy — not used, we use RewardFunctionInterface[]). */
+    /** Compute reward delta (legacy: not used, we use RewardFunctionInterface[]). */
     double computeReward(int maxplayer, int minplayer, GameState gs) throws Exception;
 
     /** Return extra info string (unused in practice). */

@@ -1,5 +1,5 @@
 """
-Tournament Visualizer — Orchestrator
+Tournament Visualizer: Orchestrator
 
 Loads tournament data and delegates to individual plot modules in plots/.
 
@@ -83,7 +83,7 @@ def _filter_by_map(data: TournamentData, map_name: str) -> TournamentData:
 
 
 class TournamentVisualizer:
-    """Thin orchestrator — delegates to plot modules in plots/.
+    """Thin orchestrator: delegates to plot modules in plots/.
 
     Output layout (under ``output_dir`` = ``<results_dir>/visualizations/``):
 

@@ -1,6 +1,6 @@
 """Passthrough wrapper that records per-episode raw + discounted returns.
 On done: sums all step rewards into info["microrts_stats"] for TensorBoard logging.
-Does NOT change game behaviour — only observes.
+Does NOT change game behaviour: only observes.
 """
 
 import numpy as np

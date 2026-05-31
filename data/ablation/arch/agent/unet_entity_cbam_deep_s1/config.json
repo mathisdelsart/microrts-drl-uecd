@@ -1,7 +1,7 @@
 {
   "architecture": "impala_unet_entity_cbam_v2",
   "arch_channels": 48,
-  "exp_name": "arch_ablation_cbam_v2_c48_lr2.5e-4_s1",
+  "exp_name": "unet_entity_cbam_deep_s1",
   "seed": 1,
   "opponent": "coacAI",
   "diverse_opponents": true,
@@ -86,8 +86,8 @@
   "with_eval": true,
   "eval_bots": [
     "RandomBiasedAI",
-    "POWorkerRush",
-    "POLightRush",
+    "WorkerRush",
+    "LightRush",
     "CoacAI",
     "Mayari"
   ],

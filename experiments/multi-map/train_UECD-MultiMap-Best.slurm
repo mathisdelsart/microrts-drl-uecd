@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# BEST multi-map agent — 400M steps, 5 maps (<= 16x16)
+# BEST multi-map agent: 400M steps, 5 maps (<= 16x16)
 #
 # Stacks every ablation-positive feature with a RAI-matched phased schedule
 # and adaptive opponent curriculum that escalates from RandomBiasedAI all
@@ -44,7 +44,7 @@
 SEED=${SEED:-1}
 
 echo "============================================================"
-echo "  BEST multi-map 400M — seed $SEED | Started: $(date)"
+echo "  BEST multi-map 400M: seed $SEED | Started: $(date)"
 echo "============================================================"
 
 source "$(dirname "$0")/../_setup_env.sh"
@@ -58,7 +58,7 @@ if [ -f "${RUN_DIR}/checkpoint.pt" ]; then
     RESUME_FLAG="--resume ${RUN_DIR}"
 fi
 
-python -m microrts_agent train \
+microrts-agent train \
     $RESUME_FLAG \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \

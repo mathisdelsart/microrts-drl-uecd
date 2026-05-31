@@ -10,7 +10,7 @@ where L_BC is the per-unit cross-entropy loss (scaled by 1/num_active_units)
 and L_VF is the standard value function MSE loss on reward-to-go.
 
 Usage:
-    python -m microrts_agent bc train --data data/bc_training/bc_chunk_*.npz \
+    microrts-agent bc train --data data/bc_training/bc_chunk_*.npz \
                                       --architecture unet_entity_cbam_deep --gelu --epochs 30
 """
 
@@ -89,7 +89,7 @@ def load_data(file_paths):
     print(f"  Total: {len(obs)} samples")
     if dones is None:
         print(
-            "  WARNING: at least one chunk has no 'dones' key — falling back to "
+            "  WARNING: at least one chunk has no 'dones' key: falling back to "
             "reward-magnitude heuristic for episode boundaries."
         )
     return obs, actions, rewards, dones
@@ -104,7 +104,7 @@ def compute_returns(rewards, gamma=0.99, dones=None):
     and the function is robust to any reward weighting.
 
     Backward-compat fallback (dones=None): detect boundaries by reward
-    magnitude — works only when the win/loss component dominates
+    magnitude: works only when the win/loss component dominates
     (e.g. weight ≥ ~5).
     """
     returns = np.zeros_like(rewards)
@@ -359,7 +359,7 @@ def main():
     print(f"Final model:   {args.output}/agent_final.pt")
     print("\nTo fine-tune with RL:")
     print(
-        f"  python -m microrts_agent train --load-model {args.output}/agent.pt --architecture {args.architecture} ..."
+        f"  microrts-agent train --load-model {args.output}/agent.pt --architecture {args.architecture} ..."
     )
 
 

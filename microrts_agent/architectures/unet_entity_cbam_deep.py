@@ -1,4 +1,4 @@
-"""Registry: "unet_entity_cbam_deep" — UNet-Entity-CBAM Deep (~4.7M at C=48).
+"""Registry: "unet_entity_cbam_deep": UNet-Entity-CBAM Deep (~4.7M at C=48).
 
 Changes vs unet_entity_cbam:
   - Deeper: 2+3+4+3+2 = 14 CBAM-ResBlocks (matching RAISocketAI's depth)
@@ -30,12 +30,12 @@ class SpatialSelfAttention(nn.Module):
     """Multi-head self-attention over spatial positions at the bottleneck.
 
     Each (h, w) position is treated as a token. For a 16x16 map downsampled 4x,
-    this gives 4x4 = 16 tokens — O(256) attention, negligible compute.
+    this gives 4x4 = 16 tokens: O(256) attention, negligible compute.
 
     Uses pre-norm (LayerNorm before attention) and residual connection.
 
     Input:  (B, C, H, W)
-    Output: (B, C, H, W)  — same shape, enriched with global spatial context.
+    Output: (B, C, H, W) : same shape, enriched with global spatial context.
     """
 
     def __init__(self, channels, nhead=4):
@@ -56,7 +56,7 @@ class SpatialSelfAttention(nn.Module):
 
         # Reshape spatial dims to sequence: (B, C, H, W) -> (B, N, C)
         tokens = x.flatten(2).transpose(1, 2)  # (B, N, C)
-        tokens_normed = self.norm(tokens)  # (B, N, C) — pre-norm
+        tokens_normed = self.norm(tokens)  # (B, N, C): pre-norm
 
         # QKV projection: (B, N, C) -> (B, N, 3*C) -> (3, B, nhead, N, head_dim)
         qkv = self.qkv(tokens_normed).reshape(B, N, 3, self.nhead, self.head_dim)
@@ -70,7 +70,7 @@ class SpatialSelfAttention(nn.Module):
 
         # Project + residual
         out = self.proj(out)  # (B, N, C)
-        tokens = tokens + out  # (B, N, C) — residual connection
+        tokens = tokens + out  # (B, N, C): residual connection
 
         # Reshape back: (B, N, C) -> (B, C, H, W)
         return tokens.transpose(1, 2).reshape(B, C, H, W)
@@ -83,7 +83,7 @@ class CBAMUNetEncoderV2(nn.Module):
     """3-stage encoder with CBAM + spatial self-attention at bottleneck.
 
     blocks_config: tuple of (stage1, stage2, bottleneck) block counts.
-    Default (2, 3, 4) — more blocks at bottleneck where spatial dims are smallest.
+    Default (2, 3, 4): more blocks at bottleneck where spatial dims are smallest.
 
     Flow:
       obs (B,H,W,C) -> transpose -> (B,C,H,W)
@@ -142,10 +142,10 @@ class CBAMUNetEncoderV2(nn.Module):
     def forward(self, x):
         # x: (B, H, W, C)
         x = self.input_proj(self.transpose_in(x))  # (B, ch1, H, W)
-        s1 = self.stage1(x)  # (B, ch1, H, W)       — skip1
-        s2 = self.stage2(self.down1(s1))  # (B, ch2, H/2, W/2)   — skip2
+        s1 = self.stage1(x)  # (B, ch1, H, W)      : skip1
+        s2 = self.stage2(self.down1(s1))  # (B, ch2, H/2, W/2)  : skip2
         bot = self.bottleneck(self.down2(s2))  # (B, ch3, H/4, W/4)
-        bot = self.bottleneck_attention(bot)  # (B, ch3, H/4, W/4)   — + global context
+        bot = self.bottleneck_attention(bot)  # (B, ch3, H/4, W/4)  : + global context
         return bot, s1, s2
 
 

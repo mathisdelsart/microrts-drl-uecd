@@ -22,7 +22,7 @@
 SEED=${SEED:-1}
 
 echo "============================================================"
-echo "  BC+VF Pipeline v2 — Full rewards, critic pre-training"
+echo "  BC+VF Pipeline v2: Full rewards, critic pre-training"
 echo "============================================================"
 echo "  Job ID:   $SLURM_JOB_ID"
 echo "  Seed:     $SEED"
@@ -55,12 +55,12 @@ mkdir -p "$BC_DATA_DIR"
 
 echo ""
 echo "============================================================"
-echo "  STEP 1/3 — Generating BC replay data (full rewards, RAI perspective)"
+echo "  STEP 1/3: Generating BC replay data (full rewards, RAI perspective)"
 echo "============================================================"
 
 if [ ! -f "$DATA_RR" ]; then
     echo "  [1/3] RAISocketAI vs RAISocketAI (100 games)..."
-    python -m microrts_agent.bc generate \
+    microrts-agent bc generate \
         --bot RAISocketAI --opponents RAISocketAI \
         --games-per-opponent 100 \
         --map "$MAP" --output "$DATA_RR"
@@ -71,7 +71,7 @@ fi
 
 if [ ! -f "$DATA_RC" ]; then
     echo "  [2/3] RAISocketAI vs CoacAI (100 games)..."
-    python -m microrts_agent.bc generate \
+    microrts-agent bc generate \
         --bot RAISocketAI --opponents CoacAI \
         --games-per-opponent 100 \
         --map "$MAP" --output "$DATA_RC"
@@ -82,7 +82,7 @@ fi
 
 if [ ! -f "$DATA_RM" ]; then
     echo "  [3/3] RAISocketAI vs Mayari (100 games)..."
-    python -m microrts_agent.bc generate \
+    microrts-agent bc generate \
         --bot RAISocketAI --opponents Mayari \
         --games-per-opponent 100 \
         --map "$MAP" --output "$DATA_RM"
@@ -100,10 +100,10 @@ echo "  Step 1 complete: $(date)"
 
 echo ""
 echo "============================================================"
-echo "  STEP 2/3 — Training BC+VF"
+echo "  STEP 2/3: Training BC+VF"
 echo "============================================================"
 
-python -m microrts_agent.bc train \
+microrts-agent bc train \
     --data ${BC_DATA_DIR}/bc_chunk_RAISocketAI_*.npz ${BC_DATA_DIR}/bc_chunk_CoacAI_*.npz ${BC_DATA_DIR}/bc_chunk_Mayari_*.npz \
     --architecture unet_entity_cbam_deep \
     --gelu \
@@ -130,7 +130,7 @@ echo "  $(date)"
 
 echo ""
 echo "============================================================"
-echo "  STEP 3/3 — Evaluating BC+VF agent"
+echo "  STEP 3/3: Evaluating BC+VF agent"
 echo "============================================================"
 
 mkdir -p "$BC_EVAL_DIR"
@@ -142,7 +142,7 @@ for BOT in "${BOTS[@]}"; do
     echo "  Evaluating vs $BOT (10 games per position)..."
     OUTFILE="${BC_EVAL_DIR}/bc_vs_${BOT}.txt"
 
-    python -m microrts_agent evaluate \
+    microrts-agent evaluate \
         --agent "$BC_RUN_DIR" \
         --opponent "$BOT" \
         --nb_games 10 \

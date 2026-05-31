@@ -2,7 +2,7 @@
  * The RL agent's representation on the Java side.
  * Implements JNIInterface so JNIGridnetClient can call it uniformly.
  *
- * This is NOT a real AI — it doesn't decide anything. It just:
+ * This is NOT a real AI: it doesn't decide anything. It just:
  *   1. Converts Python's int[][] action grid into a Java PlayerAction
  *   2. Extracts raw observations from the GameState
  *
@@ -24,8 +24,8 @@ public class JNIAI extends AIWithComputationBudget implements JNIInterface
     int maxAttackRadius;  // diameter = attackRange * 2 + 1 (for attack target grid)
 
     /**
-     * @param timeBudget  time budget in ms — unused, passed to parent
-     * @param iterBudget  iterations budget — unused, passed to parent
+     * @param timeBudget  time budget in ms: unused, passed to parent
+     * @param iterBudget  iterations budget: unused, passed to parent
      * @param utt         the UTT (defines unit types, attack ranges, etc.)
      */
     public JNIAI(int timeBudget, int iterBudget, UnitTypeTable utt)
@@ -40,7 +40,7 @@ public class JNIAI extends AIWithComputationBudget implements JNIInterface
      *
      * @param player     player id (0 or 1)
      * @param gs         current game state
-     * @param actions    int[numUnits][8] — each row:
+     * @param actions    int[numUnits][8]: each row:
      *                   [cellIdx, actionType, moveDir, harvestDir,
      *                    returnDir, produceDir, produceType, attackTarget]
      * @return PlayerAction ready to be issued via gs.issueSafe()
@@ -59,7 +59,7 @@ public class JNIAI extends AIWithComputationBudget implements JNIInterface
 
     /**
      * Extract raw observations from the game state.
-     * Returns int[13][H][W] — see GameStateWrapper.getVectorObservation() for
+     * Returns int[13][H][W]: see GameStateWrapper.getVectorObservation() for
      * the full feature map (HP, resources, owner, unitType, actions, ETA, terrain).
      *
      * This is what Python receives as "raw obs" before encoding into 29ch or 73ch.
@@ -75,11 +75,11 @@ public class JNIAI extends AIWithComputationBudget implements JNIInterface
 
     // --- Stubs required by AI / JNIInterface but not used for RL ---
 
-    /** Not used — rewards are computed by RewardFunctionInterface[] in JNIGridnetClient. */
+    /** Not used: rewards are computed by RewardFunctionInterface[] in JNIGridnetClient. */
     @Override
     public double computeReward(int maxplayer, int minplayer, GameState gs) { return 0.0; }
 
-    /** Not used — RL agent receives actions from Python, not from this method. */
+    /** Not used: RL agent receives actions from Python, not from this method. */
     @Override
     public PlayerAction getAction(int player, GameState gs) { return null; }
 

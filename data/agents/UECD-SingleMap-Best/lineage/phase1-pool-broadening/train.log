@@ -1,10 +1,10 @@
   WARNING: could not restore RNG state (RNG state must be a torch.ByteTensor), continuing with fresh RNG
-Resumed from outputs/runs/finetune_from_150M_s1/checkpoint.pt (update=12208, global_step=150,011,904)
+Resumed from outputs/runs/phase1-pool-broadening/checkpoint.pt (update=12208, global_step=150,011,904)
 
 ============================================================
   PPO + unet_entity_cbam_deep  —  MicroRTS
 ============================================================
-  Exp name:     finetune_from_150M_s1
+  Exp name:     phase1-pool-broadening
   Seed:         1
   Architecture: unet_entity_cbam_deep (channels=48) [GELU] (4,758,233 params)
   Opponents:    CUSTOM (CoacAI:2,Mayari:2,ObiBotKenobi:2,TMA:2)
@@ -40,14 +40,14 @@ Resumed from outputs/runs/finetune_from_150M_s1/checkpoint.pt (update=12208, glo
   PFSP:         mode=hard, p=1.0
   Device:       cuda
   Checkpoints:  5
-  Run dir:      /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
-  Resume from:  outputs/runs/finetune_from_150M_s1
+  Run dir:      /home/users/m/d/mdelsart/MasterThesis/outputs/runs/phase1-pool-broadening
+  Resume from:  outputs/runs/phase1-pool-broadening
   Eval every:   ~10.0M steps (813 updates)
-  Eval bots:    RandomBiasedAI, POWorkerRush, POLightRush, CoacAI, Mayari (10 games each)
+  Eval bots:    RandomBiasedAI, WorkerRush, LightRush, CoacAI, Mayari (10 games each)
 ============================================================
 
 Device: cuda
-Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1/config.json
+Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/phase1-pool-broadening/config.json
 
   step=150,028,584  1 eps: Mayar:1W P0  ret= 139.17  len=  695  WR[warming up...]
   step=150,029,664  1 eps: SelfP:1L P0  ret= 107.77  len=  740  WR[warming up...]
@@ -5812,8 +5812,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    117.20      630
-  POWorkerRush        10   8   0   2   80.0%    60%   100%    180.32     1487
-  POLightRush         10  10   0   0  100.0%   100%   100%    196.02      882
+  WorkerRush        10   8   0   2   80.0%    60%   100%    180.32     1487
+  LightRush         10  10   0   0  100.0%   100%   100%    196.02      882
   CoacAI              10  10   0   0  100.0%   100%   100%    181.92      986
   Mayari              10  10   0   0  100.0%   100%   100%    182.80      866
   ----------------------------------------------------------------------
@@ -12065,8 +12065,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    108.56      585
-  POWorkerRush        10  10   0   0  100.0%   100%   100%    159.18      850
-  POLightRush         10  10   0   0  100.0%   100%   100%    195.92      872
+  WorkerRush        10  10   0   0  100.0%   100%   100%    159.18      850
+  LightRush         10  10   0   0  100.0%   100%   100%    195.92      872
   CoacAI              10  10   0   0  100.0%   100%   100%    167.58      867
   Mayari              10  10   0   0  100.0%   100%   100%    170.50      811
   ----------------------------------------------------------------------
@@ -18551,8 +18551,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    116.00      619
-  POWorkerRush        10  10   0   0  100.0%   100%   100%    155.66      820
-  POLightRush         10  10   0   0  100.0%   100%   100%    192.30      854
+  WorkerRush        10  10   0   0  100.0%   100%   100%    155.66      820
+  LightRush         10  10   0   0  100.0%   100%   100%    192.30      854
   CoacAI              10  10   0   0  100.0%   100%   100%    184.68      964
   Mayari              10  10   0   0  100.0%   100%   100%    164.40      774
   ----------------------------------------------------------------------
@@ -25200,8 +25200,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    108.80      587
-  POWorkerRush        10  10   0   0  100.0%   100%   100%    150.28      791
-  POLightRush         10  10   0   0  100.0%   100%   100%    208.04      945
+  WorkerRush        10  10   0   0  100.0%   100%   100%    150.28      791
+  LightRush         10  10   0   0  100.0%   100%   100%    208.04      945
   CoacAI              10  10   0   0  100.0%   100%   100%    177.12      919
   Mayari              10  10   0   0  100.0%   100%   100%    166.80      789
   ----------------------------------------------------------------------
@@ -31816,8 +31816,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    119.00      636
-  POWorkerRush        10  10   0   0  100.0%   100%   100%    156.02      782
-  POLightRush         10  10   0   0  100.0%   100%   100%    176.30      808
+  WorkerRush        10  10   0   0  100.0%   100%   100%    156.02      782
+  LightRush         10  10   0   0  100.0%   100%   100%    176.30      808
   CoacAI              10  10   0   0  100.0%   100%   100%    185.20      954
   Mayari              10  10   0   0  100.0%   100%   100%    179.10      834
   ----------------------------------------------------------------------
@@ -38288,8 +38288,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    127.20      690
-  POWorkerRush        10   9   1   0   90.0%    80%   100%    135.46      760
-  POLightRush         10  10   0   0  100.0%   100%   100%    193.86      868
+  WorkerRush        10   9   1   0   90.0%    80%   100%    135.46      760
+  LightRush         10  10   0   0  100.0%   100%   100%    193.86      868
   CoacAI              10  10   0   0  100.0%   100%   100%    167.72      874
   Mayari              10  10   0   0  100.0%   100%   100%    169.50      805
   ----------------------------------------------------------------------
@@ -44619,8 +44619,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    109.70      589
-  POWorkerRush        10  10   0   0  100.0%   100%   100%    150.46      790
-  POLightRush         10  10   0   0  100.0%   100%   100%    182.20      814
+  WorkerRush        10  10   0   0  100.0%   100%   100%    150.46      790
+  LightRush         10  10   0   0  100.0%   100%   100%    182.20      814
   CoacAI              10  10   0   0  100.0%   100%   100%    160.82      834
   Mayari              10  10   0   0  100.0%   100%   100%    170.58      814
   ----------------------------------------------------------------------
@@ -51020,8 +51020,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    114.00      622
-  POWorkerRush        10   9   1   0   90.0%    80%   100%    139.50      819
-  POLightRush         10  10   0   0  100.0%   100%   100%    206.40      919
+  WorkerRush        10   9   1   0   90.0%    80%   100%    139.50      819
+  LightRush         10  10   0   0  100.0%   100%   100%    206.40      919
   CoacAI              10  10   0   0  100.0%   100%   100%    172.10      892
   Mayari              10  10   0   0  100.0%   100%   100%    166.80      786
   ----------------------------------------------------------------------
@@ -57371,8 +57371,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    118.80      640
-  POWorkerRush        10   9   1   0   90.0%    80%   100%    155.60      982
-  POLightRush         10  10   0   0  100.0%   100%   100%    202.42      908
+  WorkerRush        10   9   1   0   90.0%    80%   100%    155.60      982
+  LightRush         10  10   0   0  100.0%   100%   100%    202.42      908
   CoacAI              10  10   0   0  100.0%   100%   100%    167.40      892
   Mayari              10  10   0   0  100.0%   100%   100%    165.40      772
   ----------------------------------------------------------------------
@@ -63727,8 +63727,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    105.68      578
-  POWorkerRush        10   9   1   0   90.0%    80%   100%    135.44      741
-  POLightRush         10  10   0   0  100.0%   100%   100%    180.80      820
+  WorkerRush        10   9   1   0   90.0%    80%   100%    135.44      741
+  LightRush         10  10   0   0  100.0%   100%   100%    180.80      820
   CoacAI              10  10   0   0  100.0%   100%   100%    160.12      841
   Mayari              10  10   0   0  100.0%   100%   100%    160.60      767
   ----------------------------------------------------------------------
@@ -70248,8 +70248,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%    108.50      595
-  POWorkerRush        10  10   0   0  100.0%   100%   100%    149.72      853
-  POLightRush         10  10   0   0  100.0%   100%   100%    168.70      783
+  WorkerRush        10  10   0   0  100.0%   100%   100%    149.72      853
+  LightRush         10  10   0   0  100.0%   100%   100%    168.70      783
   CoacAI              10  10   0   0  100.0%   100%   100%    166.80      907
   Mayari              10  10   0   0  100.0%   100%   100%    162.32      792
   ----------------------------------------------------------------------
@@ -76774,8 +76774,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10  10   0   0  100.0%   100%   100%     96.82      566
-  POWorkerRush        10  10   0   0  100.0%   100%   100%    136.26      788
-  POLightRush         10  10   0   0  100.0%   100%   100%    127.00      700
+  WorkerRush        10  10   0   0  100.0%   100%   100%    136.26      788
+  LightRush         10  10   0   0  100.0%   100%   100%    127.00      700
   CoacAI              10   8   2   0   80.0%    60%   100%    129.50      874
   Mayari              10  10   0   0  100.0%   100%   100%    139.60      795
   ----------------------------------------------------------------------
@@ -83839,8 +83839,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10   8   1   1   80.0%    60%   100%     41.58     1286
-  POWorkerRush        10   4   6   0   40.0%    40%    40%     56.32     1046
-  POLightRush         10  10   0   0  100.0%   100%   100%     44.92      369
+  WorkerRush        10   4   6   0   40.0%    40%    40%     56.32     1046
+  LightRush         10  10   0   0  100.0%   100%   100%     44.92      369
   CoacAI              10   6   4   0   60.0%    20%   100%     37.02      670
   Mayari              10   0  10   0    0.0%     0%     0%     21.66     1100
   ----------------------------------------------------------------------
@@ -91171,8 +91171,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10   9   1   0   90.0%    80%   100%     35.24      740
-  POWorkerRush        10   3   7   0   30.0%     0%    60%     30.76      812
-  POLightRush         10  10   0   0  100.0%   100%   100%     39.30      343
+  WorkerRush        10   3   7   0   30.0%     0%    60%     30.76      812
+  LightRush         10  10   0   0  100.0%   100%   100%     39.30      343
   CoacAI              10   6   3   1   60.0%    20%   100%     32.12      903
   Mayari              10   0  10   0    0.0%     0%     0%     17.90     1053
   ----------------------------------------------------------------------
@@ -98502,8 +98502,8 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
   Bot                  G   W   L   D     WR%    P0%    P1%   Avg Ret  Avg Len
   ----------------------------------------------------------------------
   RandomBiasedAI      10   9   0   1   90.0%    80%   100%     37.02      779
-  POWorkerRush        10   0  10   0    0.0%     0%     0%     17.72      908
-  POLightRush         10  10   0   0  100.0%   100%   100%     37.82      345
+  WorkerRush        10   0  10   0    0.0%     0%     0%     17.72      908
+  LightRush         10  10   0   0  100.0%   100%   100%     37.82      345
   CoacAI              10   6   4   0   60.0%    20%   100%     31.20      610
   Mayari              10   0  10   0    0.0%     0%     0%     11.22      975
   ----------------------------------------------------------------------
@@ -98706,5 +98706,5 @@ Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1
 Training complete!
   Total steps:    299,999,232
   Total episodes: 98,579
-  Final model:    /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_from_150M_s1/agent.pt
+  Final model:    /home/users/m/d/mdelsart/MasterThesis/outputs/runs/phase1-pool-broadening/agent.pt
   Win rates:      CoacAI=70%  Mayari=0%  ObiBotKenobi=24%  SelfPlay=10%  SelfPlayLatest=30%  TMA=44%

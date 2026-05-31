@@ -2,7 +2,7 @@
   "architecture": "unet_entity_cbam_deep",
   "arch_channels": 48,
   "constant_channels": false,
-  "exp_name": "feats_popart_s1",
+  "exp_name": "popart_s1",
   "seed": 1,
   "opponent": "coacAI",
   "diverse_opponents": true,
@@ -90,8 +90,8 @@
   "with_eval": false,
   "eval_bots": [
     "RandomBiasedAI",
-    "POWorkerRush",
-    "POLightRush",
+    "WorkerRush",
+    "LightRush",
     "CoacAI",
     "Mayari"
   ],

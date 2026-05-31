@@ -1,4 +1,4 @@
-"""Final tournament standings — horizontal bar chart of total points.
+"""Final tournament standings: horizontal bar chart of total points.
 
 Agents ranked by total points (Win=1, Draw=0.5, Loss=0). Bar length = total score.
 The bar gradient mirrors the head-to-head matrix (red→white→blue, 0→50%→100% WR
@@ -120,7 +120,7 @@ def plot_final_standings(data, console, output_path: Path):
     # the dashed grid lines below stop at the top of that bar.
     ax.set_ylim(n - 0.5, -0.4)
 
-    # X ticks across the [0, games_per_agent] range — derive the step so we
+    # X ticks across the [0, games_per_agent] range: derive the step so we
     # land on round numbers and end up with ~6-7 ticks regardless of tournament
     # size (10 bots × 20 games = 180; multi-map has different totals).
     import matplotlib.ticker as mticker
@@ -136,7 +136,7 @@ def plot_final_standings(data, console, output_path: Path):
     tick_positions = list(range(0, max_x + 1, step))
     ax.xaxis.set_major_locator(mticker.FixedLocator(tick_positions))
 
-    # Vertical dashed reference lines (skip endpoints) — drawn behind bars.
+    # Vertical dashed reference lines (skip endpoints): drawn behind bars.
     for x in tick_positions:
         if x in (0, max_x):
             continue

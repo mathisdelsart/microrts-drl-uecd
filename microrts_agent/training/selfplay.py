@@ -139,7 +139,7 @@ class SelfPlayManager:
     def get_opponent_actions(self, next_obs, invalid_masks):
         """Compute actions for pool-SP opponent envs using the historical model.
 
-        Latest-SP envs don't need this — they use the training agent's actions
+        Latest-SP envs don't need this: they use the training agent's actions
         directly (both sides see the same weights).
 
         Returns (env_indices, actions) or ([], None) if no pool SP.

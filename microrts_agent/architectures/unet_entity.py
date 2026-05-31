@@ -1,4 +1,4 @@
-"""Registry: "unet_entity" — UNet + Entity Transformer (~2.9M at C=48).
+"""Registry: "unet_entity": UNet + Entity Transformer (~2.9M at C=48).
 Combines the spatial preservation of UNet (skip connections, SE-ResBlocks)
 with the entity-relational reasoning of the Entity Transformer.
 
@@ -24,7 +24,7 @@ from .unet import UNetDecoder, UNetEncoder, build_unet_critic
 
 class _UNetEntityEncoderDecoder(nn.Module):
     """UNet encoder-decoder with Entity Transformer and dual scatter.
-    Output: (B, ch1, H, W) — same as pure UNet encoder-decoder."""
+    Output: (B, ch1, H, W): same as pure UNet encoder-decoder."""
 
     def __init__(
         self,

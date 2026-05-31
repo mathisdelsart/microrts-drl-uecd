@@ -10,7 +10,7 @@
 #SBATCH --partition=gpu
 #SBATCH --array=0-7%8
 #
-# Round-robin tournament on basesWorkers16x16A — single-map headline of the
+# Round-robin tournament on basesWorkers16x16A: single-map headline of the
 # dissertation. Reproduces data/tournaments/single_map/.
 #
 # 19 AIs (5 RL + 14 scripted) x 1 map x 5 iterations = 1710 games total,
@@ -23,7 +23,7 @@
 #   sbatch experiments/tournament/tournament_single_map.slurm
 #
 # Parse + visualise once all chunks are done:
-#   python -m microrts_agent tournament analyze single_map
+#   microrts-agent tournament analyze single_map
 
 source "$(dirname "$0")/../_setup_env.sh"
 
@@ -34,7 +34,7 @@ echo "  ~213 games per chunk"
 echo "  Started: $(date)"
 echo "============================================================"
 
-python -m microrts_agent tournament run single_map \
+microrts-agent tournament run single_map \
     --chunk $SLURM_ARRAY_TASK_ID \
     --total-chunks 8
 

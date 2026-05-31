@@ -220,7 +220,7 @@ class EnvPool:
         partial_obs = agent_cfg.get("partial_obs", False) if agent_cfg else False
 
         if agent_cfg2 is not None:
-            # Use richest config from both agents — adapters handle per-model differences
+            # Use richest config from both agents: adapters handle per-model differences
             fm1 = agent_cfg.get("filtered_masks", False) if agent_cfg else False
             fm2 = agent_cfg2.get("filtered_masks", False)
             filtered_masks = fm1 or fm2
@@ -229,7 +229,7 @@ class EnvPool:
             eo2 = agent_cfg2.get("extended_obs", False)
             extended_obs = eo1 or eo2
 
-            # Do NOT apply wrappers — adapters handle frame_stack/reserved_obs per-model
+            # Do NOT apply wrappers: adapters handle frame_stack/reserved_obs per-model
             frame_stack = 0
             reserved_obs = False
         else:
@@ -269,7 +269,7 @@ class EnvPool:
         if agent_cfg2 is None:
             # Single-agent config: apply wrappers as before
             env = self._apply_wrappers(env, agent_cfg)
-        # When agent_cfg2 is provided, skip wrappers — adapters handle them
+        # When agent_cfg2 is provided, skip wrappers: adapters handle them
         self._redirect_java_output()
         self._selfplay_envs[key] = env
         return env

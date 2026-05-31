@@ -12,7 +12,7 @@ class SymmetryAugmentation(VecEnvWrapper):
     def __init__(self, env):
 
         super().__init__(env)
-        # Padded (observation) dimensions — fixed for the agent's lifetime
+        # Padded (observation) dimensions: fixed for the agent's lifetime
         self.pad_height, self.pad_width = env.observation_space.shape[:2]
         self._obs_channels = env.observation_space.shape[2]
 
@@ -158,7 +158,7 @@ class SymmetryAugmentation(VecEnvWrapper):
             # Permute directional one-hot channels in extended obs
             if self._obs_dir_groups:
                 perm = self._obs_ch_perm[fs]
-                region = result[i, :h, :w, :]  # (h, w, C) — basic indexing only
+                region = result[i, :h, :w, :]  # (h, w, C): basic indexing only
                 for grp in self._obs_dir_groups:
                     orig = region[:, :, grp].copy()  # (h, w, 5)
                     region[:, :, grp] = orig[:, :, perm]
@@ -198,7 +198,7 @@ class SymmetryAugmentation(VecEnvWrapper):
     def _unflip_actions(self, actions):
         """Unflip actual map region in actions before sending to base env.
 
-        actions shape: (B, pad_H * pad_W * num_action_params) — flattened.
+        actions shape: (B, pad_H * pad_W * num_action_params): flattened.
         """
         h, w = self._actual_dims()
         pH, pW = self.pad_height, self.pad_width
@@ -241,7 +241,7 @@ class SymmetryAugmentation(VecEnvWrapper):
         if name == "get_action_mask":
             if already_found:
                 return f"{type(self).__module__}.{type(self).__name__}"
-            return None  # No ambiguity — this wrapper owns get_action_mask
+            return None  # No ambiguity: this wrapper owns get_action_mask
         return super().getattr_depth_check(name, already_found)
 
     # ------------------------------------------------------------------

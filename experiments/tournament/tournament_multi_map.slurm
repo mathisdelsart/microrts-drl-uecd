@@ -24,7 +24,7 @@
 #   sbatch experiments/tournament/tournament_multi_map.slurm
 #
 # Parse + visualise once all chunks are done:
-#   python -m microrts_agent tournament analyze multi_map
+#   microrts-agent tournament analyze multi_map
 
 source "$(dirname "$0")/../_setup_env.sh"
 
@@ -35,7 +35,7 @@ echo "  ~750 games per chunk"
 echo "  Started: $(date)"
 echo "============================================================"
 
-python -m microrts_agent tournament run multi_map \
+microrts-agent tournament run multi_map \
     --chunk $SLURM_ARRAY_TASK_ID \
     --total-chunks 8
 

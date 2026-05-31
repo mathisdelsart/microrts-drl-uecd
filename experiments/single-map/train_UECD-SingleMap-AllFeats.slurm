@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# BEST agent — 100M steps, single map, all positive features from 3-seed ablation
+# BEST agent: 100M steps, single map, all positive features from 3-seed ablation
 #
 # Architecture: UNet-Entity-CBAM-Deep (4.72M params)
 # Features (from 3-seed ablation summary, sorted by mean delta):
@@ -25,7 +25,7 @@
 SEED=${SEED:-1}
 
 echo "============================================================"
-echo "  BEST Agent — 100M steps, all positive features"
+echo "  BEST Agent: 100M steps, all positive features"
 echo "============================================================"
 echo "  Job ID:       $SLURM_JOB_ID"
 echo "  Seed:         $SEED"
@@ -51,7 +51,7 @@ fi
 
 # ── Training command ───────────────────────────────────────────────────────
 
-python -m microrts_agent train \
+microrts-agent train \
     $RESUME_FLAG \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \

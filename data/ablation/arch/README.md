@@ -13,7 +13,7 @@ CoG paper).
 
 | Path | What |
 |---|---|
-| [`agent/`](agent/) | The 21 trained runs (7 architectures × 3 seeds). Each `agent/<arch>_s<N>/` carries the *minimal* tier needed to **load the model and inspect its training**: `agent.pt` (inference state-dict), `config.json` (launch hyperparameters), `eval_results.csv` (in-training eval at multiple steps), `train.log` (end-to-end textual log). No resume checkpoint, no TensorBoard events — these are ablation runs and no one resumes from them. |
+| [`agent/`](agent/) | The 21 trained runs (7 architectures × 3 seeds). Each `agent/<arch>_s<N>/` carries the *minimal* tier needed to **load the model and inspect its training**: `agent.pt` (inference state-dict), `config.json` (launch hyperparameters), `eval_results.csv` (in-training eval at multiple steps), `train.log` (end-to-end textual log). No resume checkpoint, no TensorBoard events: these are ablation runs and no one resumes from them. |
 | [`eval/`](eval/) | The **formal post-training evaluation** of every run against the 5 base-pool bots (`RandomBiasedAI`, `WorkerRush`, `LightRush`, `CoacAI`, `Mayari`), **1 000 games per matchup**. [`eval/results.csv`](eval/results.csv) is the aggregate (105 rows: arch × seed × opponent → P0/P1 win rate and episode length). [`eval/s{1,2,3}/`](eval/) hold the cleaned per-run stdout dumps (`<arch>_vs_<opponent>.txt`, 35 files per seed). |
 
 ## Headline results
@@ -24,13 +24,13 @@ Mean pool WR averaged over 3 seeds × 5 base-pool bots
 
 | Architecture                              | Mean WR | Δ vs `GridNet`  | Role |
 |---|---:|---:|---|
-| `gridnet`                                 | 64.8 %  | —               | Baseline. Encoder-decoder, fixed 16×16 map size. |
+| `gridnet`                                 | 64.8 %  | n/a             | Baseline. Encoder-decoder, fixed 16×16 map size. |
 | `impala`                                  | 68.7 %  | +3.9 pp         | IMPALA residual encoder; decouples from map size. |
 | `impala_entity`                           | 74.9 %  | +10.1 pp        | Parallel entity Transformer over unit tokens. |
 | `unet`                                    | 77.0 %  | +12.2 pp        | U-Net skip connections + SE channel attention. |
 | `unet_entity`                             | 82.7 %  | +17.9 pp        | Combines U-Net + entity Transformer. |
 | `unet_entity_cbam`                        | 79.2 %  | +14.4 pp        | Replaces SE attention with CBAM (channel + spatial). |
-| `unet_entity_cbam_deep` *(UECD)*          | **86.2 %** | **+21.4 pp** | Deeper CBAM stack — the final thesis architecture. |
+| `unet_entity_cbam_deep` *(UECD)*          | **86.2 %** | **+21.4 pp** | Deeper CBAM stack: the final thesis architecture. |
 
 The progressive refinement of the backbone (`GridNet` → `IMPALA-CNN` →
 `U-Net`) lifts pool WR from 64.8 % to 77.0 %. Adding the entity
@@ -66,7 +66,7 @@ dissertation's display labels (`U-Net`, `U-Net-Entity-CBAM-Deep`).
 
 ## Final evaluation
 
-`eval/s<seed>/<arch>_vs_<opponent>.txt` — 105 stdout dumps of the
+`eval/s<seed>/<arch>_vs_<opponent>.txt`: 105 stdout dumps of the
 `evaluate` CLI (one per architecture × seed × opponent), 1 000 games each.
 The aggregate `RESULTS` block at the bottom of every file is what
 [`eval/results.csv`](eval/results.csv) summarises:
@@ -83,27 +83,22 @@ The aggregate `RESULTS` block at the bottom of every file is what
 | `p1_avg_len`  | average game length as P1 |
 | `total_wr`    | overall win rate (1 000 games) |
 
-Bot names in raw dumps normalised to the canonical labels (no `PO`
-prefix). The agent label inside each dump was the on-cluster run name at
-evaluation time; cleaned to `<arch>_s<N>` for naming consistency with
-the directory.
-
 ## Reproducing one architecture-seed combination
 
 ```bash
-python -m microrts_agent train \
+microrts-agent train \
     --architecture <arch>  \
     --seed <N> \
     --total-timesteps 100000000 \
     --map maps/open_competition/basesWorkers16x16A.xml \
-    --exp-name arch_ablation_<arch>_s<N>
+    --exp-name <arch>_s<N>
 ```
 
 For evaluation against the 5 base-pool bots:
 
 ```bash
 for opp in RandomBiasedAI WorkerRush LightRush CoacAI Mayari; do
-    python -m microrts_agent evaluate \
+    microrts-agent evaluate \
         --agent data/ablation/arch/agent/<arch>_s<N> \
         --opponent $opp \
         --maps maps/open_competition/basesWorkers16x16A.xml \
@@ -113,12 +108,14 @@ done
 
 Generator SLURM (parallel array job over the 7 architectures):
 [`experiments/ablation/train_arch_ablation.slurm`](../../../experiments/ablation/train_arch_ablation.slurm).
+Evaluation driver:
+[`experiments/ablation/evaluate_arch_ablation.slurm`](../../../experiments/ablation/evaluate_arch_ablation.slurm).
 
 ## See also
 
-- 🏗 **The final architecture** (UECD trained for 350M with two-phase
+- **The final architecture** (UECD trained for 350M with two-phase
   fine-tuning): [`../../agents/UECD-SingleMap-Best/`](../../agents/UECD-SingleMap-Best/)
-- 📊 **Tournament context** where these architectures compete against
+- **Tournament context** where these architectures compete against
   the wider field: [`../../tournaments/`](../../tournaments/)
-- 📈 **Dissertation chapter** on architectures (Chapter 8 of
-  `dissertation/dissertation.pdf`).
+- **Dissertation chapter** on architectures (Chapter 8 of
+  [`dissertation/dissertation.pdf`](../../../dissertation/dissertation.pdf)).

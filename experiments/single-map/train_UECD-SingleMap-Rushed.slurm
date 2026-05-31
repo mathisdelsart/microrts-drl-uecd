@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Phased training — 300M steps, single map, RAISocketAI-inspired schedule
+# Phased training: 300M steps, single map, RAISocketAI-inspired schedule
 #
 # Phase 1 (0-100M):   24 bots, shaped rewards dominant, high LR, high entropy
 #                      → learn fundamentals (gather, build, rush defence)
@@ -32,7 +32,7 @@
 SEED=${SEED:-1}
 
 echo "============================================================"
-echo "  Phased Training — 300M steps, single map"
+echo "  Phased Training: 300M steps, single map"
 echo "============================================================"
 echo "  Job ID:   $SLURM_JOB_ID"
 echo "  Seed:     $SEED"
@@ -56,7 +56,7 @@ fi
 
 # ── Training command ───────────────────────────────────────────────────────
 
-python -m microrts_agent train \
+microrts-agent train \
     $RESUME_FLAG \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \

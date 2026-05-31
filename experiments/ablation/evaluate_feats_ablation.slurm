@@ -10,7 +10,7 @@
 #SBATCH --partition=batch
 #SBATCH --array=0-109
 #
-# FEATURE EVALUATION — 500 games per position (1000 total) per bot
+# FEATURE EVALUATION: 500 games per position (1000 total) per bot
 #
 #   22 features × 5 bots = 110 jobs (array 0-109)
 #   Each job runs: python evaluate.py --agent <feat_dir> --opponent <bot> --nb_games 500
@@ -65,7 +65,7 @@ FEAT_NAME=${FEAT_NAMES[$FEAT_IDX]}
 BOT=${BOTS[$BOT_IDX]}
 
 echo "============================================================"
-echo "  FEATURE EVALUATION — 1000 games (500 P0 + 500 P1)"
+echo "  FEATURE EVALUATION: 1000 games (500 P0 + 500 P1)"
 echo "============================================================"
 echo "  Job ID:       $SLURM_JOB_ID (array task $SLURM_ARRAY_TASK_ID)"
 echo "  Feature:      $FEAT_NAME"
@@ -85,7 +85,7 @@ OUTDIR="outputs/runs/feat_ablation/EVAL/s${SEED}"
 mkdir -p "$OUTDIR"
 OUTFILE="$OUTDIR/${FEAT_NAME}_vs_${BOT}.txt"
 
-python -m microrts_agent evaluate \
+microrts-agent evaluate \
     --agent "$AGENT_DIR" \
     --opponent "$BOT" \
     --nb_games 500 \

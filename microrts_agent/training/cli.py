@@ -215,7 +215,7 @@ def add_common_args(parser):
         "--gae-lambda-sparse",
         type=float,
         default=0.99,
-        help="GAE lambda for sparse value head — higher = longer horizon (default: 0.99)",
+        help="GAE lambda for sparse value head: higher = longer horizon (default: 0.99)",
     )
     parser.add_argument(
         "--vf-coef-sparse",
@@ -403,7 +403,7 @@ def add_common_args(parser):
         nargs="?",
         const=True,
         help="zero log_prob/entropy of inactive sub-actions given action_type "
-        "(default: auto — enabled when --autoregressive is set)",
+        "(default: auto: enabled when --autoregressive is set)",
     )
 
     # Auxiliary tasks

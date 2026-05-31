@@ -1,4 +1,4 @@
-"""Game length distribution by AI — boxplot ordered by final rankings.
+"""Game length distribution by AI: boxplot ordered by final rankings.
 
 One boxplot per agent showing the distribution of game durations (in frames).
 Short games suggest decisive play or early rushes; long games suggest defensive styles.

@@ -65,7 +65,7 @@ microrts-drl-uecd/
 │   │   └── build_bridge.sh       # Recompiles src/ -> lib/bridge.jar
 │   ├── bots/                     # Vendored competition bots (sources/builds + RAISocketAI wheel)
 │   ├── tournament_configs/       # Tournament setup JSON files
-│   └── train.py  evaluate.py  run_tournament.py   # subcommand implementations dispatched by __main__.py
+│   └── train.py  evaluate.py                      # subcommand implementations dispatched by __main__.py
 ├── data/                         # Curated artefacts shipped with the repo (not regenerated on clone)
 │   ├── recordings/               # 36 showcase game clips of UECD-Best vs the field (also served from the supplementary site)
 │   ├── tournaments/              # Headline tournament results: single_map/ + multi_map/ (CSV + parsed JSON + PDFs)

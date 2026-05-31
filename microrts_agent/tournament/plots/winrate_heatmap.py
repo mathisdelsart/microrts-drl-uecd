@@ -54,7 +54,7 @@ def plot_per_map_winrates(data, console, output_path: Path):
 
     winrate = np.where(games_count > 0, 100 * wins / games_count, np.nan)
 
-    # Overall win rate per agent (true ratio over all maps, not a row mean) —
+    # Overall win rate per agent (true ratio over all maps, not a row mean),
     # appended as a trailing column set apart from the per-map block.
     total_games = games_count.sum(axis=1)
     overall = np.where(total_games > 0, 100 * wins.sum(axis=1) / total_games, np.nan)

@@ -27,11 +27,11 @@ if [ ! -f "${RUN_DIR}/checkpoint.pt" ]; then
 fi
 
 echo "============================================================"
-echo "  Fine-tune with RAISocketAI — resume from 240M → 400M"
+echo "  Fine-tune with RAISocketAI: resume from 240M → 400M"
 echo "  Started: $(date)"
 echo "============================================================"
 
-python -m microrts_agent train \
+microrts-agent train \
     --resume "$RUN_DIR" \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \

@@ -1,10 +1,10 @@
   WARNING: could not restore RNG state (RNG state must be a torch.ByteTensor), continuing with fresh RNG
-Resumed from outputs/runs/finetune_raisocket_160M_s1/checkpoint.pt (update=19529, global_step=239,972,352)
+Resumed from outputs/runs/UECD-SingleMap-Best/checkpoint.pt (update=19529, global_step=239,972,352)
 
 ============================================================
   PPO + unet_entity_cbam_deep  —  MicroRTS
 ============================================================
-  Exp name:     finetune_raisocket_160M_s1
+  Exp name:     UECD-SingleMap-Best
   Seed:         1
   Architecture: unet_entity_cbam_deep (channels=48) [GELU] (4,758,233 params)
   Opponents:    CUSTOM (RAISocketAI:4,CoacAI:1,Mayari:1,ObiBotKenobi:1,TMA:1)
@@ -40,14 +40,14 @@ Resumed from outputs/runs/finetune_raisocket_160M_s1/checkpoint.pt (update=19529
   PFSP:         mode=hard, p=1.0
   Device:       cuda
   Checkpoints:  16
-  Run dir:      /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_raisocket_160M_s1
-  Resume from:  outputs/runs/finetune_raisocket_160M_s1
+  Run dir:      /home/users/m/d/mdelsart/MasterThesis/outputs/runs/UECD-SingleMap-Best
+  Resume from:  outputs/runs/UECD-SingleMap-Best
   Eval every:   ~10.0M steps (813 updates)
   Eval bots:    RAISocketAI, CoacAI, Mayari, ObiBotKenobi, TMA (10 games each)
 ============================================================
 
 Device: cuda
-Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/finetune_raisocket_160M_s1/config.json
+Config: /home/users/m/d/mdelsart/MasterThesis/outputs/runs/UECD-SingleMap-Best/config.json
 
   step=239,989,272  1 eps: RAISo:1L P0  ret=  86.40  len=  705  WR[warming up...]
   step=239,989,368  1 eps: RAISo:1L P0  ret=  87.60  len=  709  WR[warming up...]

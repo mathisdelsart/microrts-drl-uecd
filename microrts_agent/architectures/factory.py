@@ -2,9 +2,9 @@
 Unified architecture creation for MicroRTS PPO agents.
 
 All agent instantiation must go through this factory:
-  - ARCHITECTURE_REGISTRY    — name -> class mapping
-  - create_agent()           — from CLI args (training)
-  - load_agent_from_config() — from saved config.json (eval, resume)
+  - ARCHITECTURE_REGISTRY   : name -> class mapping
+  - create_agent()          : from CLI args (training)
+  - load_agent_from_config(): from saved config.json (eval, resume)
 
 The actual architecture classes live in microrts_agent/architectures/ and should
 not be imported directly by external code.
@@ -118,7 +118,7 @@ def create_agent(args, obs_channels, action_nvec, device):
 
 def load_agent_from_config(run_dir, device="cpu", checkpoint_name="agent.pt"):
     """Load an agent from a run directory using its config.json.
-    Returns (agent, config) tuple — agent is in eval mode.
+    Returns (agent, config) tuple: agent is in eval mode.
     """
     config_path = os.path.join(run_dir, "config.json")
     if not os.path.exists(config_path):

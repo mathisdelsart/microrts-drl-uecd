@@ -1,4 +1,4 @@
-"""Registry: "impala_entity" — IMPALA + Entity Transformer (~1.35M params).
+"""Registry: "impala_entity": IMPALA + Entity Transformer (~1.35M params).
 Inherits IMPALAAgent, replaces encoder with IMPALAEntityEncoder.
 Parallel paths: IMPALA (spatial H->H/8, ch C->128) + full-res CNN (ch C->64, no spatial loss).
 Units detected from obs -> Transformer (2L, 4H) -> scatter-add to IMPALA H/8 bottleneck.
@@ -109,7 +109,7 @@ def scatter_entities_to_grid(deltas, ent_mask, positions, target_grid, ds_factor
 
 class IMPALAEntityEncoder(nn.Module):
     """IMPALA CNN (8x compress) + full-res Entity Transformer merged via scatter-add.
-    Output: (B, 128, H/8, W/8) — same shape as pure IMPALA encoder."""
+    Output: (B, 128, H/8, W/8): same shape as pure IMPALA encoder."""
 
     def __init__(
         self,

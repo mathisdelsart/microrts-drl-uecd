@@ -5,9 +5,9 @@ Records (observation, action_grid) tuples from the perspective of --bot.
 Supports multiple opponents in a single run for diverse training data.
 
 Usage:
-    python -m microrts_agent bc generate --bot RAISocketAI --opponents RAISocketAI CoacAI Mayari WorkerRush LightRush \
+    microrts-agent bc generate --bot RAISocketAI --opponents RAISocketAI CoacAI Mayari WorkerRush LightRush \
                                          --games-per-opponent 1000 500 500 500 500
-    python -m microrts_agent bc generate --bot RAISocketAI  # defaults: RAISocketAI vs itself, 1000 games
+    microrts-agent bc generate --bot RAISocketAI  # defaults: RAISocketAI vs itself, 1000 games
 """
 
 import argparse
@@ -319,7 +319,7 @@ def main():
     with contextlib.suppress(Exception):
         temp_env.close()
 
-    # Record games for each opponent — save per-opponent to avoid OOM
+    # Record games for each opponent: save per-opponent to avoid OOM
     output_dir = os.path.dirname(args.output)
     os.makedirs(output_dir, exist_ok=True)
 
@@ -366,7 +366,7 @@ def main():
     for f in saved_files:
         print(f"    {f}")
     print("\nTo train BC+VF:")
-    print(f"  python -m microrts_agent bc train --data {' '.join(saved_files)} ...")
+    print(f"  microrts-agent bc train --data {' '.join(saved_files)} ...")
 
 
 if __name__ == "__main__":

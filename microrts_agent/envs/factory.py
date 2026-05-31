@@ -1,6 +1,6 @@
 """Environment factory. All env creation goes through here.
-make_agent_env() — RL agent vs bot/self-play (training, eval)
-make_bot_env()   — bot vs bot (tournaments)
+make_agent_env(): RL agent vs bot/self-play (training, eval)
+make_bot_env()  : bot vs bot (tournaments)
 """
 
 import re
@@ -49,7 +49,7 @@ def make_agent_env(
     extended_obs: bool,
 ):
     """Create a MicroRTSRLVecEnv (or Padded variant).
-    All parameters are required — no hidden defaults.
+    All parameters are required: no hidden defaults.
     """
     if not isinstance(reward_weight, np.ndarray):
         reward_weight = np.array(reward_weight)

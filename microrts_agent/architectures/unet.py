@@ -1,4 +1,4 @@
-"""Registry: "unet" — U-shaped encoder-decoder with SE attention (~2.5M at C=48).
+"""Registry: "unet": U-shaped encoder-decoder with SE attention (~2.5M at C=48).
 Encoder: spatial H->H/2->H/4, channels C->2C->4C. Decoder: H/4->H/2->H with U-Net skip-add.
 SE-ResBlocks (channel attention) at every stage, learnable Conv stride-2 downsampling.
 Actor: direct Conv 3x3 at full-res. Channels configurable via --arch-channels.
@@ -67,8 +67,8 @@ class UNetEncoder(nn.Module):
 
     def forward(self, x):
         x = self.input_proj(self.transpose_in(x))  # (B, ch1, H, W)
-        s1 = self.stage1(x)  # (B, ch1, H, W)      — skip1
-        s2 = self.stage2(self.down1(s1))  # (B, ch2, H/2, W/2)  — skip2
+        s1 = self.stage1(x)  # (B, ch1, H, W)     : skip1
+        s2 = self.stage2(self.down1(s1))  # (B, ch2, H/2, W/2) : skip2
         bot = self.bottleneck(self.down2(s2))  # (B, ch3, H/4, W/4)
         return bot, s1, s2
 

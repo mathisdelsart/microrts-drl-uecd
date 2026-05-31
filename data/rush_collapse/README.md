@@ -1,15 +1,15 @@
-# Rush collapse — UECD-SingleMap-Rushed at 150M vs 300M
+# Rush collapse: UECD-SingleMap-Rushed at 150M vs 300M
 
 Empirical evidence for the *rush collapse* pathology described in the
 dissertation: the discount factor + near-terminal-only reward + policy
 control over episode length together select for a shortcut policy that
 ends games as fast as possible. The pre-collapse checkpoint (step
 **150M**, balanced policy) and the post-collapse checkpoint (step
-**300M**, all-in worker rush) of `UECD-SingleMap-Rushed` are evaluated
-against the same four opponents — two **in-training** (`CoacAI`,
-`Mayari`) and two **held-out CoG competitors** (`ObiBotKenobi`, `TMA`)
-— so the difference attributable to the strategy change is isolated
-from learning progress.
+**300M**, all-in worker rush) of [`UECD-SingleMap-Rushed`](../agents/UECD-SingleMap-Rushed/)
+are evaluated against the same four opponents: two **in-training**
+(`CoacAI`, `Mayari`) and two **held-out CoG competitors**
+(`ObiBotKenobi`, `TMA`), so the difference attributable to the strategy
+change is isolated from learning progress.
 
 Each evaluation plays **1 000 games** (500 as P0, 500 as P1) on
 `basesWorkers16x16A.xml` at the stochastic-action protocol used
@@ -30,16 +30,16 @@ elsewhere in the thesis.
 
 ## How to read this
 
-**On in-training opponents (`CoacAI`, `Mayari`):**
-the two checkpoints are indistinguishable on win rate (98–100% for both);
-the only signature of the strategy change is the **3× drop in episode
-length** (~900 → ~300 frames), the fingerprint of a successful worker rush.
+**On in-training opponents (`CoacAI`, `Mayari`):** the two checkpoints
+are indistinguishable on win rate (98 to 100% for both); the only
+signature of the strategy change is the **3× drop in episode length**
+(~900 to ~300 frames), the fingerprint of a successful worker rush.
 
-**On held-out opponents (`ObiBotKenobi`, `TMA`):**
-the picture inverts completely. WR collapses from 56–70% at 150M to near
-zero (0–1.5%) at 300M, while episode lengths fall from ~1 300 to
-~700–950 frames — well above the ~300 frames of a successful rush. The
-rush is attempted but **fails**: the early worker aggression that broke
+**On held-out opponents (`ObiBotKenobi`, `TMA`):** the picture inverts
+completely. WR collapses from 56 to 70% at 150M to near zero (0 to
+1.5%) at 300M, while episode lengths fall from ~1 300 to ~700 to ~950
+frames, well above the ~300 frames of a successful rush. The rush is
+attempted but **fails**: the early worker aggression that broke
 CoacAI / Mayari is dismantled by opponents with more robust early-game
 defences.
 
@@ -53,16 +53,20 @@ collapses against everything else.
 
 The dissertation's remedy is a **10% shaped-reward floor** maintained
 throughout training, preserving a dense per-step gradient strong enough
-to anchor the optimiser to balanced play and dominate the discounted-
-terminal one. Every subsequent run (`UECD-SingleMap-AllFeats`,
-`UECD-SingleMap-TopFeats`, `UECD-SingleMap-Best`, both `UECD-MultiMap`
-variants) carries that 10% floor as a result of this experiment.
+to anchor the optimiser to balanced play and dominate the discounted
+terminal one. Every subsequent run
+([`UECD-SingleMap-AllFeats`](../agents/UECD-SingleMap-AllFeats/),
+[`UECD-SingleMap-TopFeats`](../agents/UECD-SingleMap-TopFeats/),
+[`UECD-SingleMap-Best`](../agents/UECD-SingleMap-Best/), both
+[`UECD-MultiMap`](../agents/UECD-MultiMap/) /
+[`UECD-MultiMap-Best`](../agents/UECD-MultiMap-Best/) variants) carries
+that 10% floor as a result of this experiment.
 
 ## Files
 
 | Path | What |
 |---|---|
-| [`results.csv`](results.csv) | 8 rows, one per (stage, opponent) — the table above as machine-readable CSV |
+| [`results.csv`](results.csv) | 8 rows, one per (stage, opponent): the table above as machine-readable CSV |
 | [`raw/150M/`](raw/150M/)     | 4 cleaned stdout dumps of the 150M evaluator runs |
 | [`raw/300M/`](raw/300M/)     | 4 cleaned stdout dumps of the 300M evaluator runs |
 
@@ -70,19 +74,20 @@ Each raw file is the full evaluator log (per-game W/L/length lines + the
 aggregate `RESULTS` block at the bottom). The agent label in the raw
 files was `tmp.XXX` at training time (each evaluator spawned the loaded
 snapshot under a temporary identifier); it has been replaced with
-`UECD-SingleMap-Rushed-at-150M` / `UECD-SingleMap-Rushed-at-300M`
-for readability.
+`UECD-SingleMap-Rushed-at-150M` / `UECD-SingleMap-Rushed-at-300M` for
+readability.
 
 ## Reproducing
 
-The agent at each stage is a checkpoint of `UECD-SingleMap-Rushed` (formerly
-`PhasedRL-300M`). `evaluate` loads an agent from a directory containing
-`config.json` + `agent.pt`, so each stage was evaluated by copying the chosen
-checkpoint (`150006272.pt` for 150M, `299962368.pt` for 300M) into a temporary
+The agent at each stage is a checkpoint of
+[`UECD-SingleMap-Rushed`](../agents/UECD-SingleMap-Rushed/). `evaluate`
+loads an agent from a directory containing `config.json` + `agent.pt`,
+so each stage was evaluated by copying the chosen checkpoint
+(`150006272.pt` for 150M, `299962368.pt` for 300M) into a temporary
 directory as `agent.pt` next to the run's `config.json`, then:
 
 ```bash
-python -m microrts_agent evaluate \
+microrts-agent evaluate \
     --agent "$TMPDIR" \
     --opponent <opponent> \
     --maps maps/open_competition/basesWorkers16x16A.xml \
@@ -94,6 +99,6 @@ combination is [`experiments/eval/eval_rush_collapse.slurm`](../../experiments/e
 
 ## See also
 
-- 🎓 **Trained agent** behind these checkpoints: [`../agents/UECD-SingleMap-Rushed/`](../agents/UECD-SingleMap-Rushed/)
-- 📊 **Tournament context** where the rush still scores 98 points overall: [`../tournaments/single_map/`](../tournaments/single_map/)
-- 🎯 **Generalisation probes** (analogous structure, different question): [`../generalization_probes/`](../generalization_probes/)
+- **Trained agent** behind these checkpoints: [`../agents/UECD-SingleMap-Rushed/`](../agents/UECD-SingleMap-Rushed/)
+- **Tournament context** where the rush still scores 98 points overall: [`../tournaments/single_map/`](../tournaments/single_map/)
+- **Generalisation probes** (analogous structure, different question): [`../generalization_probes/`](../generalization_probes/)

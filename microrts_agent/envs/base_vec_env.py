@@ -51,7 +51,7 @@ class BaseMicroRTSVecEnv(ABC):
         self.render_mode = "rgb_array"
 
         # JARs to add to the classpath (relative to microrts/)
-        # bridge.jar FIRST — our compiled src/ overrides classes in microrts.jar
+        # bridge.jar FIRST: our compiled src/ overrides classes in microrts.jar
         _JARS = [
             "lib/bridge.jar",
             "microrts.jar",
@@ -83,7 +83,7 @@ class BaseMicroRTSVecEnv(ABC):
                 jvm_args = []
             jpype.startJVM(*jvm_args, convertStrings=False)
 
-        # UnitTypeTable — needed by every env instance (not just the first)
+        # UnitTypeTable: needed by every env instance (not just the first)
         from rts.units import UnitTypeTable  # type: ignore[import]
 
         self.real_utt = UnitTypeTable()
@@ -140,7 +140,7 @@ class BaseMicroRTSVecEnv(ABC):
     def close(self):
         """Shut down Java client (GUI windows, sockets).
 
-        Does NOT shut down the JVM — JPype cannot restart it, so other env
+        Does NOT shut down the JVM: JPype cannot restart it, so other env
         instances (eval, selfplay) would become unusable.  The JVM is cleaned
         up automatically when the process exits.
         """
