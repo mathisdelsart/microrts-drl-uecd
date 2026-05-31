@@ -7,13 +7,11 @@ Data source: 10-game in-training evaluations against 5 opponents (10M intervals)
 Output: figures/bc_vs_scratch_overall.pdf
 """
 
-import re
-
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
-import pandas as pd
-from _style import FIGURES_DIR, C, _find_run_dir, apply_style
+from _data import FIGURES_DIR, parse_train_log, smooth
+from _style import C, apply_style
 
 apply_style()
 plt.rcParams.update({"text.usetex": True, "text.latex.preamble": r"\usepackage{lmodern}"})
@@ -25,42 +23,19 @@ from_scratch = np.array([0, 6, 28, 68, 66, 76, 84, 92, 88, 94]) / 100.0
 bc_only_wr = 0.78  # BC+VF only, no RL
 
 
-# ── In-training WR (parsed from per-episode train.log lines) ──
-PATTERN = re.compile(
-    r"step=([\d,]+)\s+\d+ eps:.*"
-    r"ret=\s*([\d.]+)\s+len=\s*(\d+)\s+"
-    r"WR\[(.+?)\]"
-)
+def _mean_in_training_wr(run_name, sample_every=200):
+    """Collapse per-episode per-bot WR from train.log to a single overall mean WR per sample."""
+    log = parse_train_log(run_name, sample_every=sample_every)
+    if log.empty:
+        return np.array([]), np.array([])
+    wr_cols = [c for c in log.columns if c.startswith("wr_")]
+    steps_m = log["step"].to_numpy() / 1e6
+    mean_wr = log[wr_cols].mean(axis=1).to_numpy()
+    return steps_m, mean_wr
 
 
-def parse_in_training_wr(run_path, sample_every=200):
-    steps_l, wrs_l = [], []
-    count = 0
-    with open(run_path / "train.log") as f:
-        for line in f:
-            m = PATTERN.search(line)
-            if not m:
-                continue
-            count += 1
-            if count % sample_every != 0:
-                continue
-            step = int(m.group(1).replace(",", ""))
-            per_bot = [
-                float(tok.split("=")[1].replace("%", "")) / 100.0 for tok in m.group(4).split()
-            ]
-            if not per_bot:
-                continue
-            steps_l.append(step / 1e6)
-            wrs_l.append(np.mean(per_bot))
-    return np.array(steps_l), np.array(wrs_l)
-
-
-def smooth(y, window=30):
-    return pd.Series(y).rolling(window, min_periods=1, center=True).mean().values
-
-
-bc_tr_s, bc_tr_wr = parse_in_training_wr(_find_run_dir("UECD-BC-PPO"))
-fs_tr_s, fs_tr_wr = parse_in_training_wr(_find_run_dir("unet_entity_cbam_deep_s1"))
+bc_tr_s, bc_tr_wr = _mean_in_training_wr("UECD-BC-PPO")
+fs_tr_s, fs_tr_wr = _mean_in_training_wr("unet_entity_cbam_deep_s1")
 
 
 # ── Plot ──

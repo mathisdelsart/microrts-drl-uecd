@@ -11,17 +11,8 @@ Output: figures/rush_collapse.pdf
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import pandas as pd
-from _style import (
-    FIGURES_DIR,
-    ROOT,
-    C,
-    M,
-    apply_style,
-    load_eval,
-    overall_wr,
-    parse_train_log,
-    smooth,
-)
+from _data import FIGURES_DIR, ROOT, M, load_eval, overall_wr, parse_train_log, smooth
+from _style import C, apply_style
 
 apply_style()
 
