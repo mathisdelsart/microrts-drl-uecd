@@ -1,6 +1,6 @@
 # `tests/`
 
-Pytest smoke suite for the repo. **127 tests** collected, runs in ~90 s in
+Pytest smoke suite for the repo. **124 tests** collected, runs in ~90 s in
 CI and ~140 s locally on a laptop. The suite is intentionally a smoke
 gate, not a unit-test corpus: it answers "does the project import,
 dispatch, train one rollout, evaluate one game, and parse the shipped
@@ -15,7 +15,7 @@ artefacts?" on every push.
 
 ## What is covered
 
-The 127 tests fall into the following groups (see the source for the
+The 124 tests fall into the following groups (see the source for the
 exact names; they are grouped by section comment):
 
 - **Imports + dispatcher**: recursive import of `microrts_agent`, every
@@ -42,7 +42,7 @@ exact names; they are grouped by section comment):
   max-steps 200) and a 256-step PPO `train` both reach the end of the
   loop and write to `outputs/`.
 - **Shell scripts**: bash syntax of `setup/local.sh`, `setup/cluster.sh`,
-  `setup/docker.sh`, `setup/_common.sh`, `microrts_agent/microrts/build_bridge.sh`.
+  `setup/_common.sh`, `microrts_agent/microrts/build_bridge.sh`.
   Shebang + executable bit on the three top-level setup scripts.
 - **BC dataset**: every `.npz` chunk under
   [`../data/BC/training/`](../data/BC/training/) has the expected

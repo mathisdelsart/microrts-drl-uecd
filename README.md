@@ -1,17 +1,38 @@
 <div align="center">
 
-# MicroRTS Deep-RL Agent
+# Deep Reinforcement Learning for Competitive Agents in MicroRTS
 
-### A competitive real-time-strategy agent via deep reinforcement learning
+### Architecture, Training, and Tournament Evaluation
+
+**[Mathis Delsart](https://orcid.org/0009-0005-1136-9203)** · Master's thesis · [UCLouvain](https://uclouvain.be/) · 2026
 
 [![CI](https://github.com/mathisdelsart/microrts-drl-uecd/actions/workflows/ci.yml/badge.svg)](https://github.com/mathisdelsart/microrts-drl-uecd/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/mathisdelsart/microrts-drl-uecd?label=release&color=success)](https://github.com/mathisdelsart/microrts-drl-uecd/releases)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/LICENSE)
+[![Master's Thesis](https://img.shields.io/badge/Master's%20Thesis-UCLouvain-9cf.svg)](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/dissertation/dissertation.pdf)
+
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![Algorithm](https://img.shields.io/badge/Algorithm-PPO-green.svg)](https://arxiv.org/abs/1707.06347)
 [![Built on MicroRTS](https://img.shields.io/badge/Built%20on-MicroRTS-orange.svg)](https://github.com/santiontanon/microrts)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-*Master's thesis (UCLouvain): building a MicroRTS agent that targets and surpasses the competition winner RAISocketAI.*
+</div>
+
+<table align="center">
+<tr>
+<td width="50%"><img src="https://raw.githubusercontent.com/mathisdelsart/microrts-drl-uecd-website/main/videos/UECD-Best_vs_RAISocketAI_P0.gif" width="100%" alt="UECD-Best vs RAISocketAI"></td>
+<td width="50%"><img src="https://raw.githubusercontent.com/mathisdelsart/microrts-drl-uecd-website/main/videos/UECD-Best_vs_CoacAI_P0.gif" width="100%" alt="UECD-Best vs CoacAI"></td>
+</tr>
+<tr>
+<td align="center"><b>UECD-Best vs RAISocketAI</b> (IEEE-CoG competition winner)</td>
+<td align="center"><b>UECD-Best vs CoacAI</b></td>
+</tr>
+</table>
+
+<div align="center">
+
+> A deep-RL agent for MicroRTS fusing a U-Net spatial encoder with an entity-level Transformer (**UECD**). Trained on a **9.47-GPU-day academic budget**, it tops a 19-agent IEEE-CoG-style tournament at **96.67%** pool win rate and beats the reigning competition winner **RAISocketAI** in **65.7%** of head-to-head games. Fully released and installable from `pip install -e .`.
 
 </div>
 
@@ -19,184 +40,112 @@
 
 ## About
 
-This project trains a deep-RL agent for [MicroRTS](https://github.com/santiontanon/microrts), a
-minimalist real-time-strategy game used as a research benchmark. The agent is optimised with PPO
-over a hand-written **Java↔Python bridge**, a curriculum of scripted opponents and self-play, and a
-family of convolutional / U-Net / entity-attention policies. The goal is to beat **RAISocketAI**,
-the winner of the IEEE-CoG MicroRTS competition.
+Real-time strategy (RTS) games are among the most demanding benchmarks for
+sequential decision-making: players gather resources, coordinate many units,
+and plan over long horizons under real-time and combinatorial-action
+constraints. AlphaStar reached Grandmaster level in StarCraft II at the cost
+of hundreds of accelerators running for weeks, beyond academic reach;
+**MicroRTS** distills these difficulties onto small grid maps while keeping
+training tractable on a modest budget, and has been the subject of an annual
+competition since 2017.
 
-- 📄 **Dissertation:** [`dissertation/dissertation.pdf`](dissertation/dissertation.pdf)
-- 📝 **Short paper (CoG 2026, under review):** [`cog-2026-paper/`](cog-2026-paper/)
-- 🌐 **Supplementary site** (tournament results, game recordings, analyses): <https://mathisdelsart.github.io/microrts-drl-uecd-website/>
+This master's thesis investigates deep reinforcement learning for MicroRTS,
+guided by **two questions**: *which architectural and algorithmic design
+decisions most improve a MicroRTS agent*, and *whether one competitive with
+the strongest prior competition entries can be trained within an academic
+compute budget*. Starting from the Gym-microRTS GridNet baseline and taking
+**RAISocketAI** (the first DRL winner of the competition) as reference,
+every design decision is ablated individually before being combined.
 
-## Highlights
+**Contributions:**
+- A reproducible **CoG-style tournament framework** over twelve maps and
+  fifteen reference agents under five ranking metrics.
+- An extended, modular **Java/Python environment stack** with composable
+  wrappers and vectorized self-play.
+- The **UECD architecture** fusing multi-scale convolution, entity-level
+  Transformer reasoning, and bottleneck self-attention.
+- A **modular PPO pipeline** whose mechanisms are ablated individually.
+- A formal analysis of a **discount-induced reward collapse** under
+  shaped-to-sparse annealing.
 
-- **Architectures**: GridNet baseline, IMPALA-CNN, and U-Net policies with SE / CBAM attention,
-  an entity Transformer, and a map-size-invariant critic (Spatial Pyramid Pooling).
-- **Environment stack**: vectorised MicroRTS via JNI: standard + extended observations, action
-  masking (incl. destination-aware filtering), self-play, multi-map training with Prioritised
-  Level Replay, and 10 shaped reward components.
-- **Training**: PPO with dual/triple value heads, PopArt normalisation, HL-Gauss value
-  classification, auxiliary tasks, adaptive opponent curricula, and a behaviour-cloning warm-start
-  (BC+VF then PPO with a KL teacher penalty).
-- **Evaluation**: round-robin tournament engine against the competition bots, game-theoretic
-  robustness metrics, generalisation probes, and inference benchmarks.
+**Results.** The resulting agent, **UECD-Best**, combines these under a
+two-phase opponent-curriculum fine-tuning schedule. On `basesWorkers16x16A`
+it tops a 19-agent round-robin tournament (**96.67% win rate**, first on
+four of five metrics) and wins **65.7% of its head-to-head games against
+RAISocketAI**, using **9.47 GPU-days** and about **350M steps**, below the
+**23.6 GPU-days and 500M steps** RAISocketAI reports for its small-map
+subset. A second agent, **UECD-MultiMap**, trained across five layouts of
+three different sizes, spreads competence evenly with no per-map collapse,
+showing that the padded environment and a prioritized-level-replay
+curriculum make cross-layout training feasible.
 
-## Repository structure
+The open-source pipeline released with this thesis offers a DRL substrate
+for future generalist agents and hybrid DRL/LLM systems.
 
-```
-microrts-drl-uecd/
-├── microrts_agent/               # Importable package, unified CLI: microrts-agent <command>
-│   ├── envs/                     # Vectorised MicroRTS envs (base, rl, padded, bot) + factory
-│   ├── architectures/            # Policies (gridnet, impala, unet, *_entity, *_cbam) + features/ + factory
-│   ├── training/                 # PPO core, schedules, self-play, in-training eval, logging
-│   ├── tournament/               # Round-robin engine, parser/visualizer, ranking/ (game-theory metrics), plots/
-│   ├── registries/               # Bot registry (ai.py) + map registry (maps.py)
-│   ├── wrappers/                 # Composable VecEnv wrappers (frame-stack, symmetry, ...) + factory
-│   ├── obs_adapter.py            # ObsAdapter for agent-vs-agent evaluation
-│   ├── paths.py                  # Canonical output paths
-│   ├── bc/                       # Behaviour cloning:    microrts-agent bc {train|generate}
-│   ├── bench/                    # Inference benchmarks: microrts-agent bench {inference|head2head}
-│   ├── analysis/                 # Run analysis tools:   microrts-agent analysis {metrics|audit|params}
-│   ├── microrts/                 # Java engine + Java<->Python bridge
-│   │   ├── microrts.jar          # MicroRTS engine (vendored)
-│   │   ├── lib/{bots/*.jar, bridge.jar}
-│   │   ├── src/                  # Bridge sources (JNI, reward functions, game wrapper)
-│   │   └── build_bridge.sh       # Recompiles src/ -> lib/bridge.jar
-│   ├── bots/                     # Vendored competition bots (sources/builds + RAISocketAI wheel)
-│   ├── tournament_configs/       # Tournament setup JSON files
-│   └── train.py  evaluate.py                      # subcommand implementations dispatched by __main__.py
-├── data/                         # Curated artefacts shipped with the repo (not regenerated on clone)
-│   ├── recordings/               # 36 showcase game clips of UECD-Best vs the field (also served from the supplementary site)
-│   ├── tournaments/              # Headline tournament results: single_map/ + multi_map/ (CSV + parsed JSON + PDFs)
-│   ├── generalization_probes/    # Generalisation probes (UECD-Best on non-training maps)
-│   ├── BC/                       # BC teacher dataset under training/ + 78% BC-only proof under baseline/
-│   └── agents/                   # Trained agents in medium form (4 single-map UECD + GridNet baseline + 2 multi-map + UECD-BC + UECD-BC-PPO = 9 agents) with agent.pt + checkpoint.pt + config + eval + log
-├── dissertation/                 # LaTeX thesis, figures, figure generators (figs/figs-python/), compiled PDF
-├── cog-2026-paper/               # CoG 2026 short-paper submission
-├── experiments/                  # SLURM jobs: single-map/ multi-map/ BC/ eval/ tournament/ ablation/ + shared _setup_env.sh
-├── setup/                        # env setup scripts (local.sh, cluster.sh, docker.sh)
-└── LICENSE  CITATION.cff  ACKNOWLEDGMENTS.md  CREDITS.md  ruff.toml  pyproject.toml  (CONTRIBUTING.md / CODE_OF_CONDUCT.md live under .github/)
-```
+---
 
-Python dependencies are declared once in `pyproject.toml` (core stack +
-`[tournament]` / `[dev]` extras); the setup scripts install them via
-`pip install -e ".[dev,tournament]"`.
+## Read more
 
-Generated runs, recordings, and tournament CSVs all land under `outputs/`
-(git-ignored). The subset that backs the dissertation and the CoG paper is
-curated under `data/`.
+- **Dissertation** (full text): [`dissertation/dissertation.pdf`](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/dissertation/dissertation.pdf)
+- **Short paper** (CoG 2026, under review): [`cog-2026-paper/paper.pdf`](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/cog-2026-paper/paper.pdf)
+- **Supplementary site** (tournament visualisations, game recordings, analyses): <https://mathisdelsart.github.io/microrts-drl-uecd-website/>
 
-## Quick start
+---
 
-**Requirements:** conda, a JDK 17 (for the bridge + JPype), and CUDA for GPU training.
+## Released and installable
 
-### Optional: RAISocketAI competition bot
-
-`setup/local.sh` automatically downloads the RAISocketAI bot wheel
-(`rl_algo_impls v0.2.1`, ~225 MB) from this repo's
-[release assets](https://github.com/mathisdelsart/microrts-drl-uecd/releases/tag/assets-rai-v0.2.1)
-on first run, verifies its SHA-256, and installs it with `--no-deps`. Set
-`SKIP_RAISOCKETAI=1 bash setup/local.sh` to skip. Every other feature
-(training, evaluation against the other competition bots, tournaments that
-don't include RAISocketAI) still works.
+Frozen at **v0.1.0** and archived on Zenodo. The full pipeline (training,
+evaluation, tournament, behaviour cloning, benchmarks, analysis) is
+reproducible from a single `pip install -e ".[dev,tournament]"`. No
+proprietary dependencies. Two shell scripts under
+[`setup/`](https://github.com/mathisdelsart/microrts-drl-uecd/tree/v0.1.0/setup)
+fully automate the install on either a laptop or a CECI HPC cluster
+(modules, Java 17 JDK, JNI bridge build, RAISocketAI competition wheel,
+Python 3.6 sidecar for the UTS_Imass bot). Once installed, the **unified
+CLI** dispatches every operation:
 
 ```bash
-# 1. Set up the environment (creates the `microrts_agent` conda env and
-#    rebuilds the Java<->Python bridge from source)
-bash setup/local.sh
-conda activate microrts_agent
-
-# 2. (Re)build the bridge manually if you edit microrts_agent/microrts/src/
-bash microrts_agent/microrts/build_bridge.sh
-
-# 3. Train  (list every command with:  microrts-agent --help)
-microrts-agent train --total-timesteps 1000000
-microrts-agent train --help        # all flags
-
-# 4. Monitor
-tensorboard --logdir outputs/runs/
-
-# 5. Evaluate a trained agent against a bot (any of the shipped agents under data/agents/, or your own outputs/runs/<run>)
-microrts-agent evaluate --agent data/agents/UECD-SingleMap-Best --opponent CoacAI
-
-# 6. Run a tournament
-microrts-agent tournament --help
+microrts-agent --help
+# train | evaluate | tournament | bc | bench | analysis
 ```
 
-On the HPC cluster, use `setup/cluster.sh` and the job scripts under
-`experiments/` (grouped by single-map/ multi-map/ BC/ eval/ tournament/ ablation/, with a shared `_setup_env.sh` preamble each script sources).
+Seven numbered notebooks under
+[`examples/`](https://github.com/mathisdelsart/microrts-drl-uecd/tree/v0.1.0/examples)
+walk through each subcommand with shipped agents and tiny smoke budgets,
+so you can verify the install and learn the CLI in ~30 minutes total.
 
-### Docker
+---
 
-Two images are shipped. The default `Dockerfile` is CPU-only (~2.7 GB with
-the 9 shipped agents baked in) and sufficient for evaluation; `Dockerfile.gpu`
-adds CUDA 12.9 + cuDNN (~6.5 GB) for training. Pass
-`--build-arg SKIP_RAISOCKETAI=1` to either build to skip the ~225 MB
-RAISocketAI wheel; see the Dockerfile header for `docker run -v` examples
-that mount the excluded `data/` subtrees (ablation, BC, tournaments, ...)
-at runtime when needed.
+## Repository tour
 
-```bash
-# CPU image (Python 3.10 + Java 17 + CPU-only torch + prebuilt JNI bridge)
-docker build -t microrts-drl-uecd .
-docker run --rm microrts-drl-uecd                              # prints CLI help
-docker run --rm microrts-drl-uecd evaluate \
-    --agent data/agents/UECD-SingleMap-Best \
-    --opponent CoacAI --nb_games 10 --max_steps 1000
+| Folder | What's there | Doc |
+|---|---|---|
+| [`microrts_agent/`](https://github.com/mathisdelsart/microrts-drl-uecd/tree/v0.1.0/microrts_agent) | The importable Python package: 80 modules across `architectures/`, `training/`, `envs/`, `wrappers/`, `tournament/`, `registries/`, `bc/`, `bench/`, `analysis/`, plus the vendored MicroRTS engine + JNI bridge | [README](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/microrts_agent/README.md) |
+| [`data/`](https://github.com/mathisdelsart/microrts-drl-uecd/tree/v0.1.0/data) | Curated artefacts shipped with the repo: 9 trained agents, BC teacher dataset, headline tournaments (50 PDFs), 85 ablation runs, 36 game recordings, generalisation probes | [README](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/data/README.md) |
+| [`dissertation/`](https://github.com/mathisdelsart/microrts-drl-uecd/tree/v0.1.0/dissertation) | LaTeX source of the master's thesis, including 30 PDF figures regenerated by Python scripts in `figs/figs-python/` from the shipped `data/` tree | [README](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/dissertation/README.md) |
+| [`cog-2026-paper/`](https://github.com/mathisdelsart/microrts-drl-uecd/tree/v0.1.0/cog-2026-paper) | CoG 2026 short-paper submission (IEEEtran, single-file LaTeX) | [README](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/cog-2026-paper/README.md) |
+| [`experiments/`](https://github.com/mathisdelsart/microrts-drl-uecd/tree/v0.1.0/experiments) | 19 SLURM batch scripts: every shipped agent and ablation is reproducible from these drivers on a CECI HPC node | [README](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/experiments/README.md) |
+| [`examples/`](https://github.com/mathisdelsart/microrts-drl-uecd/tree/v0.1.0/examples) | 7 numbered Jupyter notebooks, one per CLI subcommand, from `00_navigate` (install + sanity check) to `06_analysis` (metrics + audit + parameter counts) | [README](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/examples/README.md) |
+| [`tests/`](https://github.com/mathisdelsart/microrts-drl-uecd/tree/v0.1.0/tests) | pytest smoke suite: 124 tests covering imports, every CLI subcommand, every shipped agent, the JNI bridge, end-to-end train/evaluate, and dataset schemas (~90s in CI) | [README](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/tests/README.md) |
+| [`setup/`](https://github.com/mathisdelsart/microrts-drl-uecd/tree/v0.1.0/setup) | Install scripts: `local.sh` (conda env on laptop), `cluster.sh` (venv on CECI HPC), `_common.sh` (shared helpers) | [README](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/setup/README.md) |
 
-# GPU image (CUDA 12.9, requires nvidia-container-toolkit + --gpus all)
-docker build -f Dockerfile.gpu -t microrts-drl-uecd:gpu .
-docker run --rm --gpus all microrts-drl-uecd:gpu train \
-    --exp-name docker-smoke --total-timesteps 100000
-```
+---
 
-The CPU image stays the default for evaluation; SLURM-style cluster training
-still uses the conda path above.
+## Acknowledgments
 
-### Reproducible installs (lock file)
+Every experiment ran on the HPC clusters of the **CÉCI** (Consortium des
+Équipements de Calcul Intensif). See
+[`ACKNOWLEDGMENTS.md`](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/ACKNOWLEDGMENTS.md)
+for the full acknowledgment.
 
-`requirements-lock.txt` pins every transitive dependency with SHA-256 hashes
-(generated via `uv pip compile --generate-hashes`). For a byte-reproducible
-install:
+## License
 
-```bash
-pip install -r requirements-lock.txt --require-hashes
-pip install -e . --no-deps
-```
-
-The plain `pip install -e ".[dev]"` path stays the recommended one for day-to-day
-development; the lock file is for archival reproducibility (the CoG paper, future
-researchers reproducing thesis results).
-
-### Demo notebook
-
-`examples/load_agent.ipynb` walks through loading `UECD-SingleMap-Best`,
-printing its training config, and playing one game against `RandomBiasedAI`
-from inside Jupyter. CPU-only, ~30 seconds end-to-end on a laptop.
-
-## Results
-
-Full experiments and analysis are in the dissertation (architecture and feature ablations,
-single-map and multi-map agents, generalisation probes, BC warm-start, and head-to-head
-tournaments vs the competition bots). See [`dissertation/dissertation.pdf`](dissertation/dissertation.pdf)
-and the [supplementary site](https://mathisdelsart.github.io/microrts-drl-uecd-website/).
-
-## Development
-
-Conventions (branch naming, Conventional Commits, PR workflow, squash-merge) are in
-[`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md). Code is linted and formatted with
-[ruff](https://docs.astral.sh/ruff/) (config in `ruff.toml`), enforced in CI.
-
-```bash
-uvx ruff@0.15.14 check .      # lint
-uvx ruff@0.15.14 format .     # format
-```
+Released under the [MIT License](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/LICENSE) © 2026 Mathis Delsart.
 
 ## Citation
 
 If you use this code or any of the shipped artefacts in academic work,
-please cite the project ([`CITATION.cff`](CITATION.cff) is the source of truth):
+please cite the project ([`CITATION.cff`](https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/CITATION.cff) is the source of truth):
 
 ```bibtex
 @software{delsart_microrts_drl_uecd_2026,
@@ -204,21 +153,11 @@ please cite the project ([`CITATION.cff`](CITATION.cff) is the source of truth):
   title   = {{Deep Reinforcement Learning for Competitive Agents in MicroRTS: Architecture, Training, and Tournament Evaluation}},
   year    = {2026},
   version = {0.1.0},
-  url     = {https://github.com/mathisdelsart/microrts-drl-uecd},
+  url     = {https://github.com/mathisdelsart/microrts-drl-uecd/releases/tag/v0.1.0},
   note    = {Master's thesis, UCLouvain},
 }
 ```
 
-## License
-
-Released under the [MIT License](LICENSE) © 2026 Mathis Delsart.
-
 ## Author
 
-**Mathis Delsart**, Master's thesis, UCLouvain.
-
-## Acknowledgments
-
-Every experiment ran on the HPC clusters of the **CÉCI** (Consortium des
-Équipements de Calcul Intensif). See [`ACKNOWLEDGMENTS.md`](ACKNOWLEDGMENTS.md)
-for the full acknowledgment.
+**[Mathis Delsart](https://orcid.org/0009-0005-1136-9203)**, Master's thesis, UCLouvain.

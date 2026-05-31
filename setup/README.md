@@ -1,9 +1,9 @@
 # `setup/`
 
-Install + provision scripts for the three contexts the project targets.
-All three share the same helpers in [`_common.sh`](_common.sh) (rebuild
-the JNI bridge, install Python deps, fetch the RAISocketAI wheel, verify
-the install).
+Install + provision scripts for the two contexts the project targets
+(laptop dev and CECI HPC). Both share the same helpers in
+[`_common.sh`](_common.sh): rebuild the JNI bridge, install Python deps,
+fetch the RAISocketAI wheel, verify the install.
 
 ## Files
 
@@ -11,8 +11,7 @@ the install).
 |---|---|---|
 | [`local.sh`](local.sh) | Laptop dev (macOS or Linux) | Creates a conda env `microrts_agent` with Python 3.10, installs the project + `[dev,tournament]` extras, fetches the RAISocketAI wheel, activates pre-commit hooks. |
 | [`cluster.sh`](cluster.sh) | HPC (CECI: Lyra, Manneback, Hercules, Dragon1) | Creates a venv at `cluster_venv/` (inside the repo), installs the project + extras, also bootstraps a separate Python 3.6 venv for the UTS_Imass bot's BL_JPS pathfinding. Uses the cu121 torch wheel by default (matches typical CECI GPU drivers). |
-| [`docker.sh`](docker.sh) | Containerised eval / smoke tests | Wraps `docker build` for both the CPU image ([`../Dockerfile`](../Dockerfile)) and the GPU image ([`../Dockerfile.gpu`](../Dockerfile.gpu)). Usage: `bash setup/docker.sh [cpu\|gpu\|both]`. |
-| [`_common.sh`](_common.sh) | sourced by the three above | Constants (wheel URL + SHA-256) + helpers (`check_java`, `build_bridge`, `install_python_deps`, `install_raisocketai_wheel`, `verify_install`, `install_pre_commit_hooks`). Never executed directly. |
+| [`_common.sh`](_common.sh) | sourced by the two above | Constants (wheel URL + SHA-256) + helpers (`check_java`, `build_bridge`, `install_python_deps`, `install_raisocketai_wheel`, `verify_install`, `install_pre_commit_hooks`). Never executed directly. |
 
 ## Quick-start by context
 
@@ -49,21 +48,6 @@ example for Lyra). Then it checks Java + Python version, builds the
 JNI bridge, creates the venv, installs deps + the RAISocketAI wheel, and
 also boostraps `uts_imass_env/` (Python 3.6) for the UTS_Imass bot.
 
-### Docker
-
-```bash
-bash setup/docker.sh cpu      # CPU image only (~2.7 GB)
-bash setup/docker.sh gpu      # GPU image only (~6.5 GB, needs CUDA host)
-bash setup/docker.sh both     # both
-```
-
-The CPU image bakes in `data/agents/` (the 9 shipped trained agents) so
-`docker run --rm microrts-drl-uecd evaluate --agent
-data/agents/UECD-SingleMap-Best --opponent CoacAI ...` works out of the
-box. Other `data/` subtrees are dropped by `.dockerignore` and must be
-mounted with `-v`; see the [`Dockerfile`](../Dockerfile) header for the
-exact `docker run -v` recipes.
-
 ## Override knobs
 
 | Env var | Effect |
@@ -75,7 +59,7 @@ exact `docker run -v` recipes.
 
 ```bash
 microrts-agent --help                          # CLI tour
-pytest tests/                                  # 115 smoke tests (~90s)
+pytest tests/                                  # 124 smoke tests (~90s)
 microrts-agent evaluate --agent data/agents/UECD-SingleMap-Best \
     --opponent CoacAI --maps maps/open_competition/basesWorkers16x16A.xml \
     --nb_games 1 --max-steps 4000
@@ -84,3 +68,19 @@ microrts-agent evaluate --agent data/agents/UECD-SingleMap-Best \
 If those three pass, the install is solid. See
 [`examples/00_navigate.ipynb`](../examples/00_navigate.ipynb) for a
 notebook walkthrough of the install + CLI tour.
+
+## Reproducible installs (lock file)
+
+[`../requirements-lock.txt`](../requirements-lock.txt) pins every transitive
+dependency with SHA-256 hashes (generated via `uv pip compile
+--generate-hashes`). For a byte-reproducible install:
+
+```bash
+pip install -r requirements-lock.txt --require-hashes
+pip install -e . --no-deps
+```
+
+The plain `pip install -e ".[dev,tournament]"` path (via `local.sh` /
+`cluster.sh` above) stays the recommended one for day-to-day development;
+the lock file is for archival reproducibility (the CoG paper, future
+researchers reproducing thesis results).
