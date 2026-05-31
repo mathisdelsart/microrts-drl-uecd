@@ -96,12 +96,24 @@ for future generalist agents and hybrid DRL/LLM systems.
 
 Frozen at **v0.1.0** and archived on Zenodo. The full pipeline (training,
 evaluation, tournament, behaviour cloning, benchmarks, analysis) is
-reproducible from a single `pip install -e ".[dev,tournament]"`. No
-proprietary dependencies. Two shell scripts under [`setup/`](setup/) fully
-automate the install on either a laptop or a CECI HPC cluster (modules,
-Java 17 JDK, JNI bridge build, RAISocketAI competition wheel, Python 3.6
-sidecar for the UTS_Imass bot). Once installed, the **unified CLI**
-dispatches every operation:
+reproducible from one of two automated setup scripts under
+[`setup/`](setup/). Each script checks for a Java 17 JDK, rebuilds the
+JNI bridge from source, installs the Python package with all extras
+(`[dev,tournament]`), and fetches the RAISocketAI competition wheel (the
+cluster path also bootstraps a Python 3.6 sidecar for the UTS_Imass
+bot). No proprietary dependencies.
+
+```bash
+# Laptop (macOS or Linux): creates the `microrts_agent` conda env
+bash setup/local.sh
+conda activate microrts_agent
+
+# Or HPC cluster (CECI: Lyra, Manneback, ...): creates ./cluster_venv
+bash setup/cluster.sh
+source cluster_venv/bin/activate
+```
+
+Once activated, the **unified CLI** dispatches every operation:
 
 ```bash
 microrts-agent --help
