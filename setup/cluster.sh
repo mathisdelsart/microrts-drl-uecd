@@ -25,6 +25,17 @@ set -e
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"  # repo root (script lives in setup/)
 VENV_DIR="$PROJECT_DIR/cluster_venv"
+
+# Default to a torch wheel that matches typical CECI GPU drivers (Lyra, etc.,
+# all support CUDA >=12.1 as of 2026). PyPI's default torch wheel is built
+# against a much newer CUDA runtime and triggers "NVIDIA driver too old" at
+# import time on most CECI nodes. Override on different sites with e.g.
+#   TORCH_INDEX_URL=https://download.pytorch.org/whl/cu118 bash setup/cluster.sh
+# Or to use PyPI's default (CPU-only / latest CUDA), explicitly unset:
+#   TORCH_INDEX_URL= bash setup/cluster.sh
+: "${TORCH_INDEX_URL:=https://download.pytorch.org/whl/cu121}"
+export TORCH_INDEX_URL
+
 # shellcheck source=setup/_common.sh
 source "$PROJECT_DIR/setup/_common.sh"
 
@@ -57,6 +68,10 @@ echo "Sanity check after loading:"
 echo "  java -version          # should print 17.x"
 echo "  python3 --version      # should print 3.10.x or 3.11.x"
 echo "  nvidia-smi             # if on a GPU node, should print the card"
+echo ""
+echo "torch CUDA wheel: pulling from $TORCH_INDEX_URL"
+echo "  (override with TORCH_INDEX_URL=... bash setup/cluster.sh if your"
+echo "   site's driver needs a different cuXXX wheel; see nvidia-smi)"
 echo "========================================"
 echo ""
 

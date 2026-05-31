@@ -76,6 +76,7 @@ tournament = [
     "GPUtil",
     "moviepy",
     "pyvirtualdisplay",
+    "vec-noise",
 ]
 dev = [
     "ruff==0.15.14",

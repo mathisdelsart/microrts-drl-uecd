@@ -60,7 +60,19 @@ build_bridge() {
 # Install the core stack + the [dev] and [tournament] extras in editable mode.
 # Bumps pip first so resolver-related issues with old pip versions don't appear.
 # [dev] adds ruff/pytest/pre-commit/tomli (a few extra MB, harmless on cluster).
+#
+# If TORCH_INDEX_URL is set (typical on HPC where the GPU driver dictates
+# which CUDA wheel works), torch + torchvision are pre-installed from that
+# index before resolving the rest of the deps. Default PyPI torch wheels
+# can hit "NVIDIA driver too old" errors on older cluster drivers; setting
+# this explicitly (e.g. cu121 on a cluster with CUDA 12.x driver) sidesteps
+# the problem.
 install_python_deps() {
+    if [ -n "${TORCH_INDEX_URL:-}" ]; then
+        echo "=== Pre-installing torch from $TORCH_INDEX_URL ==="
+        pip install --upgrade pip
+        pip install torch torchvision --index-url "$TORCH_INDEX_URL"
+    fi
     echo "=== Installing Python dependencies (pip install -e .[dev,tournament]) ==="
     pip install --upgrade pip
     pip install -e "${PROJECT_DIR}[dev,tournament]"
