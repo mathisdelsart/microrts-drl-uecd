@@ -10,16 +10,8 @@ Output: figures/best_vs_stier_100M.pdf
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
-from _style import (
-    FIGURES_DIR,
-    C,
-    M,
-    apply_style,
-    load_eval,
-    overall_wr,
-    parse_train_log,
-    smooth,
-)
+from _data import FIGURES_DIR, M, load_eval, overall_wr, parse_train_log, smooth
+from _style import C, apply_style
 
 apply_style()
 plt.rcParams.update({"text.usetex": True, "text.latex.preamble": r"\usepackage{lmodern}"})
