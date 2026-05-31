@@ -8,7 +8,7 @@ the Python package; it only affects how the repo behaves on GitHub itself.
 
 ```
 .github/
-├── README.md                       # this file
+├── STRUCTURE.md                    # this file
 ├── SECURITY.md                     # security disclosure policy
 ├── dependabot.yml                  # Dependabot version-update config
 ├── pull_request_template.md        # auto-filled when opening a PR
@@ -16,6 +16,9 @@ the Python package; it only affects how the repo behaves on GitHub itself.
 │   ├── bug_report.yml
 │   ├── feature_request.yml
 │   └── config.yml                  # disables blank issues + contact link
+├── rulesets/                       # JSON snapshot of the live ruleset (doc only)
+│   ├── README.md
+│   └── protect-main.json
 └── workflows/                      # GitHub Actions (CI/CD)
     ├── ci.yml                      # ruff + bridge build + pytest matrix
     ├── codeql.yml                  # static security analysis
@@ -111,9 +114,10 @@ following checks to pass before a PR can merge to `main`:
 - `pytest (smoke)` (aggregator)
 
 It also enforces: PR required, squash-only, no force-push, no deletion. The
-ruleset is configured via the GitHub API / UI; it is intentionally **not**
-committed as a file in this repo (no GitHub-native YAML for this exists
-outside the Settings UI).
+ruleset is configured via the GitHub API / UI; GitHub has no native YAML
+auto-import for rulesets, so `rulesets/protect-main.json` in this folder
+is a stripped JSON snapshot kept for traceability only (editing it does
+nothing). See `rulesets/README.md` for the refresh procedure.
 
 ## What is deliberately NOT here
 
