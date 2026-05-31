@@ -1,219 +1,242 @@
+% IEEE bibliography for the CoG 2026 paper, formatted to the official IEEEtran
+% conventions (see IEEEtranBST2/IEEEexample.bib and IEEEtran_bst_HOWTO.pdf):
+%   - Field values in "..." quotes; proper nouns / acronyms brace-protected ({AI}, {StarCraft II}).
+%   - Journal/conference names IEEE-abbreviated; "Proc. {IEEE} ..." for proceedings.
+%   - Full {IEEEtranBSTCTL} control entry (activate once with \bstctlcite{BSTcontrol}).
+%   - The 3 uncited entries (alpha-Rank, Copeland, Savage) are intentionally omitted.
+%
+% Author display is governed entirely by the control entry below (NOT by the entries):
+%   CTLuse_forced_etal = "yes" + CTLmax_names_forced_etal = "5" + CTLnames_show_etal = "1"
+%   => 1-5 authors are listed in full; 6 or more collapse to "First Author et al."
+%   This follows the IEEE conference template ("Unless there are six authors or
+%   more give all authors' names; do not use et al."). Set CTLuse_forced_etal = "no"
+%   to list every author instead (the IEEEexample.bib default).
+
+@IEEEtranBSTCTL{BSTcontrol,
+  CTLuse_article_number     = "yes",
+  CTLuse_paper              = "yes",
+  CTLuse_forced_etal        = "yes",
+  CTLmax_names_forced_etal  = "5",
+  CTLnames_show_etal        = "1",
+  CTLuse_alt_spacing        = "yes",
+  CTLalt_stretch_factor     = "4",
+  CTLdash_repeated_names    = "yes",
+  CTLname_format_string     = "{f.~}{vv~}{ll}{, jj}",
+  CTLname_latex_cmd         = "",
+  CTLname_url_prefix        = "[Online]. Available:"
+}
+
 @inproceedings{buroRTSChallenge2003,
-  author    = {M. Buro},
-  title     = {Real-Time Strategy Games: A New AI Research Challenge},
-  booktitle = {Proc. IJCAI},
-  year      = {2003},
-  pages     = {1534--1535}
+  author    = "Michael Buro",
+  title     = "Real-Time Strategy Games: A New {AI} Research Challenge",
+  booktitle = "Proc. Int. Joint Conf. Artif. Intell. ({IJCAI})",
+  year      = "2003",
+  pages     = "1534-1535"
 }
 
 @article{ontanonSurveyRealTimeStrategy2013,
-  author  = {S. Onta{\~n}{\'o}n and G. Synnaeve and A. Uriarte and F. Richoux and D. Churchill and M. Preuss},
-  title   = {A Survey of Real-Time Strategy Game AI Research and Competition in StarCraft},
-  journal = {IEEE Trans. Comput. Intell. AI Games},
-  volume  = {5},
-  number  = {4},
-  pages   = {293--311},
-  year    = {2013}
+  author  = "Santiago Onta{\~n}{\'o}n and Gabriel Synnaeve and Alberto Uriarte and Florian Richoux and David Churchill and Mike Preuss",
+  title   = "A Survey of Real-Time Strategy Game {AI} Research and Competition in {StarCraft}",
+  journal = "{IEEE} Trans. Comput. Intell. {AI} Games",
+  volume  = "5",
+  number  = "4",
+  month   = dec,
+  year    = "2013",
+  pages   = "293-311",
+  doi     = "10.1109/TCIAIG.2013.2286295"
 }
 
 @article{vinyalsGrandmasterLevelStarCraft2019,
-  author  = {O. Vinyals and others},
-  title   = {Grandmaster Level in StarCraft II Using Multi-Agent Reinforcement Learning},
-  journal = {Nature},
-  volume  = {575},
-  number  = {7782},
-  pages   = {350--354},
-  year    = {2019}
+  author  = "Oriol Vinyals and Igor Babuschkin and Wojciech M. Czarnecki and Micha{\"e}l Mathieu and Andrew Dudzik and Junyoung Chung and David H. Choi and Richard Powell and Timo Ewalds and Petko Georgiev and Junhyuk Oh and Dan Horgan and Manuel Kroiss and Ivo Danihelka and Aja Huang and Laurent Sifre and Trevor Cai and John P. Agapiou and Max Jaderberg and Alexander S. Vezhnevets and R{\'e}mi Leblond and Tobias Pohlen and Valentin Dalibard and David Budden and Yury Sulsky and James Molloy and Tom L. Paine and Caglar Gulcehre and Ziyu Wang and Tobias Pfaff and Yuhuai Wu and Roman Ring and Dani Yogatama and Dario W{\"u}nsch and Katrina McKinney and Oliver Smith and Tom Schaul and Timothy Lillicrap and Koray Kavukcuoglu and Demis Hassabis and Chris Apps and David Silver",
+  title   = "Grandmaster Level in {StarCraft II} Using Multi-Agent Reinforcement Learning",
+  journal = "Nature",
+  volume  = "575",
+  number  = "7782",
+  month   = nov,
+  year    = "2019",
+  pages   = "350-354",
+  doi     = "10.1038/s41586-019-1724-z"
 }
 
-@article{ontanonCombinatorialMultiArmedBandit2013,
-  author  = {S. Onta{\~n}{\'o}n},
-  title   = {The Combinatorial Multi-Armed Bandit Problem and Its Application to Real-Time Strategy Games},
-  journal = {Proc. AAAI Conf. AIIDE},
-  volume  = {9},
-  number  = {1},
-  pages   = {58--64},
-  year    = {2013}
+@inproceedings{ontanonCombinatorialMultiArmedBandit2013,
+  author    = "Santiago Onta{\~n}{\'o}n",
+  title     = "The Combinatorial Multi-Armed Bandit Problem and Its Application to Real-Time Strategy Games",
+  booktitle = "Proc. {AAAI} Conf. Artif. Intell. Interact. Digit. Entertain. ({AIIDE})",
+  year      = "2013",
+  pages     = "58-64",
+  doi       = "10.1609/aiide.v9i1.12681"
 }
 
 @article{ontanonFirstMicroRTSArtificial2018,
-  author  = {S. Onta{\~n}{\'o}n and N. A. Barriga and C. R. Silva and R. O. Moraes and L. H. S. Lelis},
-  title   = {The First MicroRTS Artificial Intelligence Competition},
-  journal = {AI Mag.},
-  volume  = {39},
-  number  = {1},
-  pages   = {75--83},
-  year    = {2018}
+  author  = "Santiago Onta{\~n}{\'o}n and Nicolas A. Barriga and Cleyton R. Silva and Rubens O. Moraes and Levi H. S. Lelis",
+  title   = "The First {MicroRTS} Artificial Intelligence Competition",
+  journal = "{AI} Mag.",
+  volume  = "39",
+  number  = "1",
+  month   = mar,
+  year    = "2018",
+  pages   = "75-83",
+  doi     = "10.1609/aimag.v39i1.2777"
 }
 
-@misc{huangGym$m$RTSAffordableFull2021,
-  author = {S. Huang and S. Onta{\~n}{\'o}n and C. Bamford and L. Grela},
-  title  = {Gym-$\mu$RTS: Toward Affordable Full Game Real-Time Strategy Games Research with Deep Reinforcement Learning},
-  year   = {2021},
-  note   = {arXiv:2105.13807}
+@inproceedings{huangGym$m$RTSAffordableFull2021,
+  author    = "Shengyi Huang and Santiago Onta{\~n}{\'o}n and Chris Bamford and Lukasz Grela",
+  title     = "Gym-{$\mu$RTS}: Toward Affordable Full Game Real-Time Strategy Games Research With Deep Reinforcement Learning",
+  booktitle = "Proc. {IEEE} Conf. Games ({CoG})",
+  year      = "2021",
+  pages     = "1-8",
+  doi       = "10.1109/CoG52621.2021.9619076"
 }
 
 @inproceedings{goodfriendCompetitionWinningDeep2024,
-  author    = {S. Goodfriend},
-  title     = {A Competition Winning Deep Reinforcement Learning Agent in MicroRTS},
-  booktitle = {Proc. IEEE Conf. Games (CoG)},
-  year      = {2024},
-  pages     = {1--8}
+  author    = "Scott Goodfriend",
+  title     = "A Competition Winning Deep Reinforcement Learning Agent in {microRTS}",
+  booktitle = "Proc. {IEEE} Conf. Games ({CoG})",
+  year      = "2024",
+  pages     = "1-8",
+  doi       = "10.1109/CoG60054.2024.10645610"
 }
 
-@article{huangCloserLookInvalid2022,
-  author  = {S. Huang and S. Onta{\~n}{\'o}n},
-  title   = {A Closer Look at Invalid Action Masking in Policy Gradient Algorithms},
-  journal = {Proc. Int. FLAIRS Conf.},
-  volume  = {35},
-  year    = {2022}
+@inproceedings{huangCloserLookInvalid2022,
+  author    = "Shengyi Huang and Santiago Onta{\~n}{\'o}n",
+  title     = "A Closer Look at Invalid Action Masking in Policy Gradient Algorithms",
+  booktitle = "Proc. Int. {FLAIRS} Conf.",
+  year      = "2022",
+  doi       = "10.32473/flairs.v35i.130584"
 }
 
 @inproceedings{huSqueezeandExcitationNetworks2018,
-  author    = {J. Hu and L. Shen and G. Sun},
-  title     = {Squeeze-and-Excitation Networks},
-  booktitle = {Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR)},
-  year      = {2018},
-  pages     = {7132--7141}
+  author    = "Jie Hu and Li Shen and Gang Sun",
+  title     = "Squeeze-and-Excitation Networks",
+  booktitle = "Proc. {IEEE/CVF} Conf. Comput. Vis. Pattern Recognit. ({CVPR})",
+  year      = "2018",
+  pages     = "7132-7141",
+  doi       = "10.1109/CVPR.2018.00745"
 }
 
-@incollection{ronnebergerUNetConvolutionalNetworks2015,
-  author    = {O. Ronneberger and P. Fischer and T. Brox},
-  title     = {U-Net: Convolutional Networks for Biomedical Image Segmentation},
-  booktitle = {Proc. MICCAI},
-  year      = {2015},
-  pages     = {234--241}
+@inproceedings{ronnebergerUNetConvolutionalNetworks2015,
+  author    = "Olaf Ronneberger and Philipp Fischer and Thomas Brox",
+  title     = "{U-Net}: Convolutional Networks for Biomedical Image Segmentation",
+  booktitle = "Proc. Med. Image Comput. Comput.-Assist. Interv. ({MICCAI})",
+  year      = "2015",
+  pages     = "234-241",
+  doi       = "10.1007/978-3-319-24574-4_28"
 }
 
-@incollection{wooCBAMConvolutionalBlock2018,
-  author    = {S. Woo and J. Park and J.-Y. Lee and I. S. Kweon},
-  title     = {CBAM: Convolutional Block Attention Module},
-  booktitle = {Proc. ECCV},
-  year      = {2018},
-  pages     = {3--19}
+@inproceedings{wooCBAMConvolutionalBlock2018,
+  author    = "Sanghyun Woo and Jongchan Park and Joon-Young Lee and In So Kweon",
+  title     = "{CBAM}: Convolutional Block Attention Module",
+  booktitle = "Proc. Eur. Conf. Comput. Vis. ({ECCV})",
+  year      = "2018",
+  pages     = "3-19",
+  doi       = "10.1007/978-3-030-01234-2_1"
 }
 
-@misc{vaswaniAttentionAllYou2017,
-  author = {A. Vaswani and others},
-  title  = {Attention Is All You Need},
-  year   = {2017},
-  note   = {arXiv:1706.03762}
+@inproceedings{vaswaniAttentionAllYou2017,
+  author    = "Ashish Vaswani and Noam Shazeer and Niki Parmar and Jakob Uszkoreit and Llion Jones and Aidan N. Gomez and Lukasz Kaiser and Illia Polosukhin",
+  title     = "Attention Is All You Need",
+  booktitle = "Proc. Adv. Neural Inf. Process. Syst. ({NeurIPS})",
+  year      = "2017",
+  pages     = "5998-6008"
 }
 
 @misc{schulmanProximalPolicyOptimization2017,
-  author = {J. Schulman and F. Wolski and P. Dhariwal and A. Radford and O. Klimov},
-  title  = {Proximal Policy Optimization Algorithms},
-  year   = {2017},
-  note   = {arXiv:1707.06347}
+  author = "John Schulman and Filip Wolski and Prafulla Dhariwal and Alec Radford and Oleg Klimov",
+  title  = "Proximal Policy Optimization Algorithms",
+  year   = "2017",
+  note   = "arXiv:1707.06347",
+  url    = "https://arxiv.org/abs/1707.06347"
 }
 
-@misc{schulmanHighDimensionalContinuousControl2015,
-  author = {J. Schulman and P. Moritz and S. Levine and M. Jordan and P. Abbeel},
-  title  = {High-Dimensional Continuous Control Using Generalized Advantage Estimation},
-  year   = {2015},
-  note   = {arXiv:1506.02438}
+@inproceedings{schulmanHighDimensionalContinuousControl2015,
+  author    = "John Schulman and Philipp Moritz and Sergey Levine and Michael Jordan and Pieter Abbeel",
+  title     = "High-Dimensional Continuous Control Using Generalized Advantage Estimation",
+  booktitle = "Proc. Int. Conf. Learn. Represent. ({ICLR})",
+  year      = "2016"
 }
 
 @article{jinPartialAdvantageEstimator2025,
-  author  = {Y. Jin and X. Song and G. Slabaugh and S. Lucas},
-  title   = {Partial Advantage Estimator for Proximal Policy Optimization},
-  journal = {IEEE Trans. Games},
-  volume  = {17},
-  number  = {1},
-  pages   = {158--166},
-  year    = {2025}
+  author  = "Yizhao Jin and Xiulei Song and Gregory Slabaugh and Simon Lucas",
+  title   = "Partial Advantage Estimator for Proximal Policy Optimization",
+  journal = "{IEEE} Trans. Games",
+  volume  = "17",
+  number  = "1",
+  month   = mar,
+  year    = "2025",
+  pages   = "158-166",
+  doi     = "10.1109/TG.2024.3408298"
 }
 
-@misc{vanhasseltLearningValuesMany2016,
-  author = {H. van Hasselt and A. Guez and M. Hessel and V. Mnih and D. Silver},
-  title  = {Learning Values Across Many Orders of Magnitude},
-  year   = {2016},
-  note   = {arXiv:1602.07714}
+@inproceedings{vanhasseltLearningValuesMany2016,
+  author    = "Hado {van Hasselt} and Arthur Guez and Matteo Hessel and Volodymyr Mnih and David Silver",
+  title     = "Learning Values Across Many Orders of Magnitude",
+  booktitle = "Proc. Adv. Neural Inf. Process. Syst. ({NeurIPS})",
+  year      = "2016",
+  pages     = "4287-4295"
 }
 
 @misc{hendrycksGaussianErrorLinear2016,
-  author = {D. Hendrycks and K. Gimpel},
-  title  = {Gaussian Error Linear Units (GELUs)},
-  year   = {2016},
-  note   = {arXiv:1606.08415}
+  author = "Dan Hendrycks and Kevin Gimpel",
+  title  = "Gaussian Error Linear Units ({GELUs})",
+  year   = "2016",
+  note   = "arXiv:1606.08415",
+  url    = "https://arxiv.org/abs/1606.08415"
 }
 
 @article{heSpatialPyramidPooling2015,
-  author  = {K. He and X. Zhang and S. Ren and J. Sun},
-  title   = {Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition},
-  journal = {IEEE Trans. Pattern Anal. Mach. Intell.},
-  volume  = {37},
-  number  = {9},
-  pages   = {1904--1916},
-  year    = {2015}
+  author  = "Kaiming He and Xiangyu Zhang and Shaoqing Ren and Jian Sun",
+  title   = "Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition",
+  journal = "{IEEE} Trans. Pattern Anal. Mach. Intell.",
+  volume  = "37",
+  number  = "9",
+  month   = sep,
+  year    = "2015",
+  pages   = "1904-1916",
+  doi     = "10.1109/TPAMI.2015.2389824"
 }
 
-@misc{jiangPrioritizedLevelReplay2021,
-  author = {M. Jiang and E. Grefenstette and T. Rockt{\"a}schel},
-  title  = {Prioritized Level Replay},
-  year   = {2021},
-  note   = {arXiv:2010.03934}
-}
-
-@article{omidshafieiARankMultiAgentEvaluation2019,
-  author  = {S. Omidshafiei and others},
-  title   = {$\alpha$-Rank: Multi-Agent Evaluation by Evolution},
-  journal = {Sci. Rep.},
-  volume  = {9},
-  number  = {1},
-  pages   = {9937},
-  year    = {2019}
-}
-
-@article{saariCopelandMethodRelationships1996,
-  author  = {D. G. Saari and V. R. Merlin},
-  title   = {The Copeland Method: I. Relationships and the Dictionary},
-  journal = {Econ. Theory},
-  volume  = {8},
-  number  = {1},
-  pages   = {51--76},
-  year    = {1996}
-}
-
-@article{savageTheoryStatisticalDecision1951,
-  author  = {L. J. Savage},
-  title   = {The Theory of Statistical Decision},
-  journal = {J. Amer. Stat. Assoc.},
-  volume  = {46},
-  number  = {253},
-  pages   = {55--67},
-  year    = {1951}
+@inproceedings{jiangPrioritizedLevelReplay2021,
+  author    = "Minqi Jiang and Edward Grefenstette and Tim Rockt{\"a}schel",
+  title     = "Prioritized Level Replay",
+  booktitle = "Proc. Int. Conf. Mach. Learn. ({ICML})",
+  year      = "2021",
+  pages     = "4940-4950"
 }
 
 @article{manandharReinforcementActorcriticLearning2024,
-  author  = {S. Manandhar and B. Banerjee},
-  title   = {Reinforcement Actor-Critic Learning as a Rehearsal in MicroRTS},
-  journal = {Knowl. Eng. Rev.},
-  volume  = {39},
-  pages   = {e6},
-  year    = {2024}
+  author  = "Shiron Manandhar and Bikramjit Banerjee",
+  title   = "Reinforcement Actor-Critic Learning as a Rehearsal in {MicroRTS}",
+  journal = "Knowl. Eng. Rev.",
+  volume  = "39",
+  month   = nov,
+  year    = "2024",
+  pages   = "e6",
+  doi     = "10.1017/S0269888924000092"
 }
 
 @article{mnihHumanlevelControlDeep2015,
-  author  = {V. Mnih and others},
-  title   = {Human-Level Control Through Deep Reinforcement Learning},
-  journal = {Nature},
-  volume  = {518},
-  number  = {7540},
-  pages   = {529--533},
-  year    = {2015}
+  author  = "Volodymyr Mnih and Koray Kavukcuoglu and David Silver and Andrei A. Rusu and Joel Veness and Marc G. Bellemare and Alex Graves and Martin Riedmiller and Andreas K. Fidjeland and Georg Ostrovski and Stig Petersen and Charles Beattie and Amir Sadik and Ioannis Antonoglou and Helen King and Dharshan Kumaran and Daan Wierstra and Shane Legg and Demis Hassabis",
+  title   = "Human-Level Control Through Deep Reinforcement Learning",
+  journal = "Nature",
+  volume  = "518",
+  number  = "7540",
+  month   = feb,
+  year    = "2015",
+  pages   = "529-533",
+  doi     = "10.1038/nature14236"
 }
 
-@misc{schaulPrioritizedExperienceReplay2015,
-  author = {T. Schaul and J. Quan and I. Antonoglou and D. Silver},
-  title  = {Prioritized Experience Replay},
-  year   = {2015},
-  note   = {arXiv:1511.05952}
+@inproceedings{schaulPrioritizedExperienceReplay2015,
+  author    = "Tom Schaul and John Quan and Ioannis Antonoglou and David Silver",
+  title     = "Prioritized Experience Replay",
+  booktitle = "Proc. Int. Conf. Learn. Represent. ({ICLR})",
+  year      = "2016"
 }
 
-@misc{espeholtIMPALAScalableDistributed2018,
-  author = {L. Espeholt and others},
-  title  = {IMPALA: Scalable Distributed Deep-RL with Importance Weighted Actor-Learner Architectures},
-  year   = {2018},
-  note   = {arXiv:1802.01561}
+@inproceedings{espeholtIMPALAScalableDistributed2018,
+  author    = "Lasse Espeholt and Hubert Soyer and Remi Munos and Karen Simonyan and Volodymyr Mnih and Tom Ward and Yotam Doron and Vlad Firoiu and Tim Harley and Iain Dunning and Shane Legg and Koray Kavukcuoglu",
+  title     = "{IMPALA}: Scalable Distributed Deep-{RL} With Importance Weighted Actor-Learner Architectures",
+  booktitle = "Proc. Int. Conf. Mach. Learn. ({ICML})",
+  year      = "2018",
+  pages     = "1406-1415"
 }
