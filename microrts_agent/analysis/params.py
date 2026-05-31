@@ -106,7 +106,7 @@ def main():
         if p is None:
             print(f"{name:<40} {'ERROR':>12}  {delta}")
         else:
-            d_str = f"{delta:+,}" if delta != 0 else "—"
+            d_str = f"{delta:+,}" if delta != 0 else "-"
             print(f"{name:<40} {p:>12,} {d_str:>18}")
 
 

@@ -37,6 +37,21 @@ echo "========================================"
 echo ""
 
 # ── Prerequisites ────────────────────────────────────────────────────────────
+
+# Detect a stray active venv (e.g. cluster_venv left over from an earlier
+# session). `conda activate` later does not cleanly override an active venv,
+# so the resulting Python ends up being the venv's, not the conda env's,
+# and RAISocketAI rejects Python 3.12+ with "requires <3.12".
+if [ -n "${VIRTUAL_ENV:-}" ]; then
+    echo "WARNING: a Python venv is active: $VIRTUAL_ENV"
+    echo "  Running 'conda activate microrts_agent' on top of it will likely"
+    echo "  leave the venv's python on PATH, which breaks the RAISocketAI install."
+    echo "  Deactivate first, then re-run this script:"
+    echo "      deactivate"
+    echo "      bash setup/local.sh"
+    exit 1
+fi
+
 if ! command -v conda &>/dev/null; then
     echo "ERROR: conda not found. Install miniconda first:"
     echo "  https://docs.conda.io/en/latest/miniconda.html"
@@ -84,11 +99,23 @@ install_pre_commit_hooks
 echo ""
 verify_install
 
-echo "Setup complete! Activate with:"
 echo ""
-echo "  conda activate $ENV_NAME"
-echo ""
-echo "Quick test:"
-echo "  cd $PROJECT_DIR"
-echo "  microrts-agent train --help"
+echo "###############################################################################"
+echo "#                                                                             #"
+echo "#  SETUP COMPLETE.                                                            #"
+echo "#                                                                             #"
+echo "#  THE CONDA ENV IS NOT ACTIVE IN YOUR SHELL YET. Run this:                  #"
+echo "#                                                                             #"
+echo "#      conda activate $ENV_NAME"
+echo "#                                                                             #"
+echo "#  (A bash script runs in a subshell; the activate inside it dies with the   #"
+echo "#   script. You MUST activate the env yourself in your parent shell.)        #"
+echo "#                                                                             #"
+echo "#  If you have another venv already active (e.g. cluster_venv), 'deactivate' #"
+echo "#  first; nested envs cause surprising Python-version conflicts.             #"
+echo "#                                                                             #"
+echo "#  Quick test once activated:                                                 #"
+echo "#      microrts-agent --help                                                  #"
+echo "#                                                                             #"
+echo "###############################################################################"
 echo ""
