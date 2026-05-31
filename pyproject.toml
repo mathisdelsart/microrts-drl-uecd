@@ -76,7 +76,16 @@ tournament = [
     "GPUtil",
     "moviepy",
     "pyvirtualdisplay",
-    "vec-noise",
+    # NOTE: vec-noise is also a RAISocketAI runtime dep but cannot live here:
+    # the latest sdist (1.1.4) fails to build with modern setuptools+numpy
+    # ("AttributeError: 'dict' object has no attribute '__NUMPY_SETUP__'"),
+    # and no binary wheel is published on PyPI. Adding it to [tournament]
+    # breaks `pip install -e .[tournament]` on every fresh setup.
+    # If you need the RAISocketAI bot to actually run as an opponent, install
+    # vec-noise manually after the main install (may still fail on some
+    # setuptools versions):
+    #   pip install vec-noise
+    # Without it: every other feature works, only RAISocketAI as opponent crashes.
 ]
 dev = [
     "ruff==0.15.14",
