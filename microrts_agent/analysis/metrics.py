@@ -1089,10 +1089,22 @@ def write_summary(config, tb_data, eval_data, out_dir):
 
 
 def analyze_single_run(run_dir, smoothing=0.95, max_points=0):
-    """Generate all analysis outputs for a single run."""
+    """Generate all analysis outputs for a single run.
+
+    Output dir: by default, inside the run dir (`<run-dir>/analysis/`).
+    But if the run dir lives under `data/` (i.e. it is a curated shipped
+    artefact, not a runtime output), writing back into it would pollute
+    the tree with auto-generated files. Redirect such cases to
+    `outputs/analysis/<exp-name>/` so `data/` stays hand-curated.
+    """
     run_dir = str(run_dir)
     exp_name = os.path.basename(run_dir)
-    out_dir = os.path.join(run_dir, "analysis")
+    if os.sep + "data" + os.sep in os.path.abspath(run_dir) + os.sep:
+        from microrts_agent.paths import OUTPUTS_DIR
+
+        out_dir = os.path.join(str(OUTPUTS_DIR), "analysis", exp_name)
+    else:
+        out_dir = os.path.join(run_dir, "analysis")
     os.makedirs(out_dir, exist_ok=True)
 
     print(f"\n{'=' * 50}")
