@@ -1,4 +1,4 @@
-<img width="100%" alt="MicroRTS DRL Agent" src="https://capsule-render.vercel.app/api?type=waving&color=0:0d0208,50:4a0d2b,100:0d0208&height=220&section=header&text=Deep%20RL%20for%20Competitive%20MicroRTS%20Agents&fontSize=38&fontColor=fff&animation=fadeIn&fontAlignY=38&desc=Architecture,%20Training,%20and%20Tournament%20Evaluation&descSize=18&descAlignY=62" />
+<img width="100%" alt="MicroRTS DRL Agent" src="https://capsule-render.vercel.app/api?type=waving&color=0:0d0208,50:4a0d2b,100:0d0208&height=220&section=header&text=Deep%20RL%20for%20Competitive%20MicroRTS%20Agents&fontSize=38&fontColor=fff&animation=fadeIn&fontAlignY=42&desc=Architecture,%20Training,%20and%20Tournament%20Evaluation&descSize=18&descAlignY=56" />
 
 <div align="center">
 
@@ -9,7 +9,6 @@
   <a href="https://github.com/mathisdelsart/microrts-drl-uecd/releases"><img src="https://img.shields.io/github/v/release/mathisdelsart/microrts-drl-uecd?style=for-the-badge&label=release&color=0d0208&labelColor=4a0d2b" alt="Release" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-0d0208?style=for-the-badge&labelColor=4a0d2b" alt="License: MIT" /></a>
   <a href="https://uclouvain.be/"><img src="https://img.shields.io/badge/Master's%20Thesis-UCLouvain-0d0208?style=for-the-badge&labelColor=4a0d2b" alt="Master's Thesis: UCLouvain" /></a>
-  <a href="dissertation/dissertation.pdf"><img src="https://img.shields.io/badge/Dissertation-PDF-0d0208?style=for-the-badge&labelColor=4a0d2b" alt="Dissertation PDF" /></a>
 </p>
 
 <p>
