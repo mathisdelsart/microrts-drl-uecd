@@ -47,6 +47,26 @@ check_java
 check_microrts_jar
 build_bridge
 
+# ── Python version check ─────────────────────────────────────────────────────
+# The venv below inherits whatever python3 is on PATH. RAISocketAI's
+# rl_algo_impls wheel pins `<3.12,>=3.8`, and the project requires `>=3.10`,
+# so the practical window is 3.10 or 3.11. Fail fast with a clear pointer
+# if we're outside that range.
+PY_VERSION=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+case "$PY_VERSION" in
+    3.10|3.11)
+        echo "Python $PY_VERSION: OK"
+        ;;
+    *)
+        echo "ERROR: python3 is $PY_VERSION; this script needs 3.10 or 3.11."
+        echo "  On CECI: module load Python/3.10 (or Python/3.11) before this script."
+        echo "  Locally: use bash setup/local.sh instead (conda manages Python 3.10)."
+        echo "  Or skip RAISocketAI: SKIP_RAISOCKETAI=1 bash setup/cluster.sh"
+        echo "  (works on 3.12+ but the RAISocketAI tournament bot won't be available)."
+        exit 1
+        ;;
+esac
+
 # ── Venv ─────────────────────────────────────────────────────────────────────
 if [ -d "$VENV_DIR" ]; then
     echo ""
