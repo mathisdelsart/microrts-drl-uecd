@@ -1,3 +1,17 @@
+# Skip vendored bot code (third-party, frozen), the vendored MicroRTS engine
+# (maps + .jar), the frozen LaTeX thesis + CoG paper, and curated shipped data
+# artefacts. These mirror the linguist-vendored / linguist-documentation marks
+# in .gitattributes. dissertation/figs/figs-python/ is the only carve-out:
+# those scripts are functional code, they get linted/formatted like the rest.
+exclude: |
+  (?x)^(
+    microrts_agent/bots/.*|
+    microrts_agent/microrts/(microrts\.jar|maps/|lib/).*|
+    dissertation/(?!figs/figs-python/).*|
+    cog-2026-paper/.*|
+    data/.*
+  )$
+
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.14
@@ -15,5 +29,5 @@ repos:
       - id: check-toml
       - id: check-json
       - id: check-added-large-files
-        args: [--maxkb=20000]
+        args: [--maxkb=99000]
       - id: check-merge-conflict

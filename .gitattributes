@@ -12,9 +12,10 @@
 *.mp4 binary
 *.npz binary
 *.pt binary
+*.jpg binary
 
 # Vendored third-party code / data: exclude from GitHub language statistics.
-# The hand-written Java bridge in microrts_agent/microrts/src/ is NOT vendored — it counts.
+# The hand-written Java bridge in microrts_agent/microrts/src/ is NOT vendored, it counts.
 microrts_agent/microrts/maps/** linguist-vendored
 microrts_agent/microrts/microrts.jar linguist-vendored
 microrts_agent/microrts/lib/bots/** linguist-vendored
@@ -23,6 +24,11 @@ microrts_agent/bots/** linguist-vendored
 # Thesis and paper are documentation (LaTeX), not project source languages.
 dissertation/** linguist-documentation
 cog-2026-paper/** linguist-documentation
+
+# Exception: the figure-generator scripts under dissertation/figs/figs-python/
+# are functional Python (re-runnable on a fresh clone, used to render the
+# thesis figures), so they should count in the repo's language statistics.
+dissertation/figs/figs-python/** linguist-documentation=false
 
 # Curated/shipped result artefacts (recordings, tournaments, probes, ...)
 # are data, not source language.

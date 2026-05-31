@@ -1,4 +1,4 @@
-# Credits — Vendored Third-Party Bots
+# Credits for Vendored Third-Party Bots
 
 The competition bots under `microrts_agent/bots/` and the opponent
 JARs under `microrts_agent/microrts/lib/bots/` are **third-party code**, included so that the
@@ -27,7 +27,7 @@ the upstream repository and/or contact the original authors.
 ## Engine
 
 The base **MicroRTS** engine (`microrts_agent/microrts/microrts.jar` and the maps under
-`microrts_agent/microrts/maps/`) is by **Santiago Ontañón** —
-<https://github.com/santiontanon/microrts>.
+`microrts_agent/microrts/maps/`) is by **Santiago Ontañón**
+(<https://github.com/santiontanon/microrts>).
 
 > "none stated" means no `LICENSE` file was found in the upstream repository at the time of writing.

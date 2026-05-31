@@ -1,41 +1,75 @@
-# Ignore macOS system files, build artifacts, logs, Python cache
+# OS files
 .DS_Store
+Thumbs.db
+
+# Editors / IDEs / local context
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+
+# Secrets / local env
+.env
+
+# Build outputs
 bin/
 build/
+dist/
 out/
 *.class
-*.log
+*.whl
+*.zip
+.java-build/
+
+# Python caches / runtime
 __pycache__/
 *.pyc
 *.egg-info/
 .eggs/
-.vscode/
-.claude/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Python virtual environments
+.venv/
+venv/
+cluster_venv/
+uts_imass_env/
 
 # Competition-bot build deploy directory (microrts_agent/bots/build_all.sh output)
 microrts_agent/bots/jars/
 
-# All generated outputs (runs, recordings, tournament results, comparisons)
+# Logs
+*.log
+
+# Run outputs (training, eval, tournaments, BC dumps) + experiment tracking
 outputs/
-
-# Build artifacts
-*.whl
-*.zip
 *.tfevents.*
-.java-build/
+wandb/
 
-# Model checkpoints / experiment tracking
+# Model checkpoints, dataset chunks, recordings
 *.pt
 *.pth
 *.ckpt
 *.safetensors
-wandb/
+*.npz
+*.mp4
 
-# Curated shipped artefacts are tracked explicitly (override *.pt + *.log above)
-!data/agents/**/*.pt
-!data/agents/**/*.log
-!data/ablation/**/*.pt
-!data/ablation/**/*.log
+# Everything under data/ is curated and shipped.
+# Refactor-proof: no per-extension or per-subdir override list to keep in sync.
+!data/**
+
+# Defensive re-ignore for OS / editor / Python junk that may accidentally
+# leak into data/ (e.g. Finder creating .DS_Store while browsing recordings).
+data/**/.DS_Store
+data/**/Thumbs.db
+data/**/*.swp
+data/**/*.swo
+data/**/__pycache__/
+data/**/*.pyc
 
 # Report build artifacts (LaTeX)
 *.aux
@@ -60,4 +94,3 @@ wandb/
 *.glsdefs
 *.ist
 *.xdv
-

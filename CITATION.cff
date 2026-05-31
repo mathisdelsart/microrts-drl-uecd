@@ -1,10 +1,40 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-title: "MicroRTS Deep-RL Agent"
+title: "Deep Reinforcement Learning for Competitive Agents in MicroRTS: Architecture, Training, and Tournament Evaluation"
 abstract: >-
-  A competitive real-time-strategy agent for MicroRTS, trained with PPO over a
-  hand-written Java<->Python bridge, opponent curricula and self-play, targeting
-  the IEEE-CoG MicroRTS competition winner RAISocketAI. Master's thesis, UCLouvain.
+  Real-time strategy (RTS) games are among the most demanding benchmarks for
+  sequential decision-making: players gather resources, coordinate many units,
+  and plan over long horizons under real-time and combinatorial-action
+  constraints. AlphaStar reached Grandmaster level in StarCraft II at the cost
+  of hundreds of accelerators running for weeks, beyond academic reach;
+  MicroRTS distills these difficulties onto small grid maps while keeping
+  training tractable on a modest budget, and has been the subject of an annual
+  competition since 2017. This master's thesis investigates deep reinforcement
+  learning for MicroRTS, guided by two questions: which architectural and
+  algorithmic design decisions most improve a MicroRTS agent, and whether one
+  competitive with the strongest prior competition entries can be trained
+  within an academic compute budget. Starting from the Gym-microRTS GridNet
+  baseline and taking RAISocketAI (the first DRL winner of the competition) as
+  reference, every design decision is ablated individually before being
+  combined. Contributions: a reproducible CoG-style tournament framework over
+  twelve maps and fifteen reference agents under five ranking metrics; an
+  extended, modular Java/Python environment stack with composable wrappers and
+  vectorized self-play; the UECD architecture fusing multi-scale convolution,
+  entity-level Transformer reasoning, and bottleneck self-attention; a modular
+  PPO pipeline whose mechanisms are ablated individually; and a formal
+  analysis of a discount-induced reward collapse under shaped-to-sparse
+  annealing. The resulting agent, UECD-Best, combines these under a two-phase
+  opponent-curriculum fine-tuning schedule. On basesWorkers16x16A it tops a
+  19-agent round-robin tournament (96.67% win rate, first on four of five
+  metrics) and wins 65.7% of its head-to-head games against RAISocketAI,
+  using 9.47 GPU-days and about 350M steps, below the 23.6 GPU-days and 500M
+  steps RAISocketAI reports for its small-map subset. A second agent,
+  UECD-MultiMap, trained across five layouts of three different sizes,
+  spreads competence evenly with no per-map collapse, showing that the padded
+  environment and a prioritized-level-replay curriculum make cross-layout
+  training feasible. The open-source pipeline released with this thesis
+  offers a DRL substrate for future generalist agents and hybrid DRL/LLM
+  systems.
 type: software
 version: "0.1.0"
 date-released: "2026-05-30"
@@ -13,9 +43,14 @@ authors:
     given-names: Mathis
     affiliation: "UCLouvain"
     email: "mathis.delsart@gmail.com"
-url: "https://github.com/mathisdelsart/microrts-drl-uecd"
+    orcid: "https://orcid.org/0009-0005-1136-9203"
+url: "https://mathisdelsart.github.io/microrts-drl-uecd-website/"
 repository-code: "https://github.com/mathisdelsart/microrts-drl-uecd"
 license: MIT
+identifiers:
+  - type: url
+    value: "https://github.com/mathisdelsart/microrts-drl-uecd/blob/v0.1.0/dissertation/dissertation.pdf"
+    description: "Master's thesis PDF (full text)"
 keywords:
   - reinforcement-learning
   - deep-reinforcement-learning
