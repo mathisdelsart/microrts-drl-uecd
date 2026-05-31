@@ -7,8 +7,8 @@ before being fine-tuned with PPO and an optional KL teacher penalty.
 
 ## What's in here
 
-Six NPZ chunks, one pair per opponent — `RAISocketAI` playing **100 games**
-against each of:
+Six NPZ chunks, one pair per opponent (`RAISocketAI` playing **100 games**
+against each of):
 
 | Opponent | Files | Transitions | Total size |
 |---|---|---:|---:|
@@ -43,7 +43,7 @@ size).
 and merges them on the fly. To re-train from the shipped data:
 
 ```bash
-python -m microrts_agent bc train \
+microrts-agent bc train \
     --data data/bc_training/bc_chunk_*.npz \
     --epochs 20 \
     --batch-size 256 \
@@ -60,7 +60,7 @@ Three back-to-back invocations of the BC generator, one per opponent:
 
 ```bash
 for opp in RAISocketAI CoacAI Mayari; do
-    python -m microrts_agent bc generate \
+    microrts-agent bc generate \
         --bot RAISocketAI \
         --opponents $opp \
         --games-per-opponent 100 \

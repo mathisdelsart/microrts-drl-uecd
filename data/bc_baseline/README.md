@@ -1,19 +1,19 @@
-# BC-only baseline — UECD-BC
+# BC-only baseline (UECD-BC)
 
-Win-rate evaluation of the **BC-only** model (`UECD-BC`, formerly
-`bc_v3_pure_s1`) against the 5 base-pool bots on `basesWorkers16x16A`.
-This is the **78% horizontal line** in the dissertation's BC+VF→PPO vs
-*from scratch* figure (`bc_only_wr = 0.78` hardcoded in
+Win-rate evaluation of the **BC-only** model (`UECD-BC`) against the 5
+base-pool bots on `basesWorkers16x16A`. This is the **78% horizontal
+line** in the dissertation's BC+VF→PPO vs *from scratch* figure
+(`bc_only_wr = 0.78` hardcoded in
 [`dissertation/figs/figs-python/bc_vs_scratch_overall.py`](../../dissertation/figs/figs-python/bc_vs_scratch_overall.py)).
 
-The model was trained by behaviour cloning **only** — no RL phase, no
+The model was trained by behaviour cloning only: no RL phase, no
 value-function head update past the supervised loss. The dataset is the
 v3 BC teacher set shipped under [`../bc_training/`](../bc_training/)
 (`RAISocketAI` demonstrating against `RAISocketAI`, `CoacAI`, `Mayari`,
 100 games each, 313 394 transitions).
 
-The next step in the pipeline — adding 100 M of PPO fine-tuning on top
-of these BC weights — produces the **`UECD-BC-PPO`** agent
+The next step in the pipeline, adding 100 M of PPO fine-tuning on top
+of these BC weights, produces the **`UECD-BC-PPO`** agent
 ([`../agents/UECD-BC-PPO/`](../agents/UECD-BC-PPO/)), which lifts the
 pool win rate from 78 % to ~96 % on the same five opponents.
 
@@ -51,12 +51,8 @@ Per-game logs: [`raw/`](raw/).
 
 | Path | What |
 |---|---|
-| [`results.csv`](results.csv) | 5 rows (one per opponent) — the table above as machine-readable CSV |
+| [`results.csv`](results.csv) | 5 rows (one per opponent): the table above as machine-readable CSV |
 | [`raw/UECD-BC_vs_<opponent>.txt`](raw/) | Full evaluator stdout (per-game W/L + the aggregate `RESULTS` block at the bottom), 5 files |
-
-The raw dumps were originally captured under the run name `bc_v3_s1`
-during training; renamed to `UECD-BC` in the cleaned copy shipped here
-for naming consistency with the rest of `data/`.
 
 ## Reproducing
 
@@ -65,7 +61,7 @@ The BC-only agent itself lives at
 
 ```bash
 for opp in RandomBiasedAI WorkerRush LightRush CoacAI Mayari; do
-    python -m microrts_agent evaluate \
+    microrts-agent evaluate \
         --agent data/agents/UECD-BC \
         --opponent $opp \
         --maps maps/open_competition/basesWorkers16x16A.xml \
@@ -79,6 +75,6 @@ in the table above).
 
 ## See also
 
-- 🎓 **Teacher dataset** behind the BC weights: [`../bc_training/`](../bc_training/)
-- 🤖 **The next-step agent** (BC + 100 M of PPO): [`../agents/UECD-BC-PPO/`](../agents/UECD-BC-PPO/)
-- 📈 **Dissertation figure** comparing BC-only / BC+PPO / from-scratch: [`../../dissertation/figs/figs-python/bc_vs_scratch_overall.py`](../../dissertation/figs/figs-python/bc_vs_scratch_overall.py)
+- **Teacher dataset** behind the BC weights: [`../bc_training/`](../bc_training/)
+- **The next-step agent** (BC + 100 M of PPO): [`../agents/UECD-BC-PPO/`](../agents/UECD-BC-PPO/)
+- **Dissertation figure** comparing BC-only / BC+PPO / from-scratch: [`../../dissertation/figs/figs-python/bc_vs_scratch_overall.py`](../../dissertation/figs/figs-python/bc_vs_scratch_overall.py)
