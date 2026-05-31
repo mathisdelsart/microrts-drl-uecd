@@ -9,7 +9,7 @@ behaves on GitHub itself.
 
 ```
 .github/
-├── README.md                       # this file
+├── STRUCTURE.md                    # this file
 ├── CONTRIBUTING.md                 # branch naming, Conventional Commits, PR workflow
 ├── CODE_OF_CONDUCT.md              # Contributor Covenant 2.1
 ├── SECURITY.md                     # security disclosure policy
