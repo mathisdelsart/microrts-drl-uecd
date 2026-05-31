@@ -55,7 +55,7 @@ public class GameStateWrapper
 
     /**
      * Constructs a vector observation for a player
-     * 
+     *
      * |Idx| Observation Features | Max | Values
      * |---|-------------------|------------------------------------------------------------------|
      * | 0 | Hit Points | 10
@@ -73,7 +73,7 @@ public class GameStateWrapper
      * |10 | Relative Attack Position | 6 | -, north, east, south, west, ranged
      * |11 | ETA | -128 - +127 | ETA can be up to 200, so offset by -128 to fit
      * |12 | Terrain | 2 | wall, empty
-     * 
+     *
      * @param player
      * @return a vector observation for the specified player
      */
@@ -203,7 +203,7 @@ public class GameStateWrapper
 
     /**
      * Constructs an array observation for a player (length number of units)
-     * 
+     *
      * |Idx| Observation Features | Max | Values
      * |---|-------------------|------------------------------------------------------------------|
      * | 0 | y | 128 | Java's bytes are signed, while Python's are unsigned
@@ -222,7 +222,7 @@ public class GameStateWrapper
      * heavy, ranged
      * |12 | Relative Attack Position | 6 | -, north, east, south, west, ranged
      * |13 | ETA | -128 - +127 | ETA can be up to 200, so offset by -128 to fit
-     * 
+     *
      * @param player
      * @return a vector observation for the specified player
      */
