@@ -16,7 +16,7 @@ BC_RUN_DIR="outputs/runs/UECD-BC_s${SEED}"
 mkdir -p "${BC_RUN_DIR}/EVAL"
 
 echo "=== BC+VF Train ==="
-python -m microrts_agent.bc train \
+microrts-agent bc train \
     --data outputs/bc_data/bc_chunk_RAISocketAI_*.npz outputs/bc_data/bc_chunk_CoacAI_*.npz outputs/bc_data/bc_chunk_Mayari_*.npz \
     --architecture unet_entity_cbam_deep \
     --gelu --epochs 30 --batch-size 128 --lr 1e-4 --vf-coef 0.5 --gamma 0.99 \
@@ -27,7 +27,7 @@ python -m microrts_agent.bc train \
 echo "=== Eval ==="
 for BOT in RandomBiasedAI WorkerRush LightRush CoacAI Mayari; do
     echo "  vs $BOT..."
-    python -m microrts_agent evaluate \
+    microrts-agent evaluate \
         --agent "$BC_RUN_DIR" --opponent "$BOT" \
         --nb_games 10 --maps maps/open_competition/basesWorkers16x16A.xml --max-steps 4000 \
         2>&1 | tee "${BC_RUN_DIR}/EVAL/bc_vs_${BOT}.txt"

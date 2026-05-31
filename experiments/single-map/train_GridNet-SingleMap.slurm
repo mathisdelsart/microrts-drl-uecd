@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Baseline — GridNet encoder-decoder (0.84M params) — 300M steps
+# Baseline: GridNet encoder-decoder (0.84M params): 300M steps
 #
 # Matches the best GridNet config from Huang et al. 2021:
 #   - 24 envs: 18 CoacAI + 2 RandomBiased + 2 WorkerRush + 2 LightRush
@@ -41,7 +41,7 @@ source "$(dirname "$0")/../_setup_env.sh"
 python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"N/A\"}')"
 
 # Build training command
-CMD="python -m microrts_agent train \
+CMD="microrts-agent train \
     --architecture gridnet \
     --baseline \
     --total-timesteps 300000000 \

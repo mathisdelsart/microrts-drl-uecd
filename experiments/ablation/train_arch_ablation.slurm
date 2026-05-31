@@ -10,7 +10,7 @@
 #SBATCH --partition=batch
 #SBATCH --array=0-6
 #
-# ARCHITECTURE ABLATION — 100M steps each — basesWorkers16x16A
+# ARCHITECTURE ABLATION: 100M steps each: basesWorkers16x16A
 #
 #   Array job: launches 7 architectures in parallel (1 GPU each).
 #   0=gridnet, 1=impala, 2=impala_entity, 3=unet,
@@ -28,7 +28,7 @@ CURRENT_ARCH=${ARCHS[$SLURM_ARRAY_TASK_ID]}
 EXP_NAME="arch_ablation_${CURRENT_ARCH}_s${SEED}"
 
 echo "============================================================"
-echo "  ARCHITECTURE ABLATION — 100M steps, basesWorkers16x16A"
+echo "  ARCHITECTURE ABLATION: 100M steps, basesWorkers16x16A"
 echo "============================================================"
 echo "  Job ID:       $SLURM_JOB_ID (array task $SLURM_ARRAY_TASK_ID)"
 echo "  Architecture: $CURRENT_ARCH"
@@ -47,7 +47,7 @@ python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.
 
 # ── Training command ───────────────────────────────────────────────────────
 
-python -m microrts_agent train \
+microrts-agent train \
     --architecture $CURRENT_ARCH \
     --total-timesteps 100000000 \
     --num-bot-envs 24 \

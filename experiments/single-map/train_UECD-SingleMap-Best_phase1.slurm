@@ -19,11 +19,11 @@ SEED=${SEED:-1}
 source "$(dirname "$0")/../_setup_env.sh"
 
 echo "============================================================"
-echo "  Fine-tune from 150M — no reward annealing, self-play"
+echo "  Fine-tune from 150M: no reward annealing, self-play"
 echo "  Seed: $SEED | Started: $(date)"
 echo "============================================================"
 
-python -m microrts_agent train \
+microrts-agent train \
     --resume outputs/runs/UECD-SingleMap-Best_phase1_s1 \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \

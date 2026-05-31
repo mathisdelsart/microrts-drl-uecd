@@ -10,7 +10,7 @@
 #SBATCH --partition=batch
 #SBATCH --array=0-21
 #
-# FEATURE ABLATION — 50M steps, UNet-Entity-CBAM-Deep, single map (basesWorkers16x16A)
+# FEATURE ABLATION: 50M steps, UNet-Entity-CBAM-Deep, single map (basesWorkers16x16A)
 #
 #   0  = BASELINE (no extra features)
 #   1  = + extended obs (73ch)
@@ -166,7 +166,7 @@ case $SLURM_ARRAY_TASK_ID in
 esac
 
 echo "============================================================"
-echo "  FEATURE ABLATION — 50M steps, basesWorkers16x16A"
+echo "  FEATURE ABLATION: 50M steps, basesWorkers16x16A"
 echo "============================================================"
 echo "  Job ID:       $SLURM_JOB_ID (array task $SLURM_ARRAY_TASK_ID)"
 echo "  Experiment:   $NAME"
@@ -191,7 +191,7 @@ if [ -f "${RUN_DIR}/checkpoint.pt" ]; then
     RESUME_FLAG="--resume ${RUN_DIR}"
 fi
 
-python -m microrts_agent train \
+microrts-agent train \
     $COMMON_ARGS \
     $EXTRA \
     --exp-name $NAME \

@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --partition=batch
 #
-# Multi-map training on small maps (<=16x16) — 100M steps
+# Multi-map training on small maps (<=16x16): 100M steps
 # S-tier features + padded observations
 #
 SEED=${SEED:-1}
@@ -17,11 +17,11 @@ SEED=${SEED:-1}
 source "$(dirname "$0")/../_setup_env.sh"
 
 echo "============================================================"
-echo "  Multi-map small (<=16x16) — 100M steps"
+echo "  Multi-map small (<=16x16): 100M steps"
 echo "  Seed: $SEED | Started: $(date)"
 echo "============================================================"
 
-python -m microrts_agent train \
+microrts-agent train \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 200000000 \

@@ -11,7 +11,7 @@
 #SBATCH --array=0-7
 #
 # Evaluate UECD-SingleMap-Rushed_s1 at 150M (balanced) and 300M (rush)
-# against TMA, ObiBotKenobi, CoacAI, Mayari — 500 games per position.
+# against TMA, ObiBotKenobi, CoacAI, Mayari: 500 games per position.
 #
 # Array layout (8 jobs):
 #   0-3: 150M checkpoint vs [TMA, ObiBotKenobi, CoacAI, Mayari]
@@ -56,7 +56,7 @@ echo "  Eval: ${LABEL} checkpoint vs ${BOT} (${NB_GAMES} games/position)"
 echo "  Array task: ${SLURM_ARRAY_TASK_ID} | $(date)"
 echo "============================================================"
 
-python -m microrts_agent evaluate \
+microrts-agent evaluate \
     --agent "$TMPDIR" \
     --opponent "$BOT" \
     --nb_games "$NB_GAMES" \

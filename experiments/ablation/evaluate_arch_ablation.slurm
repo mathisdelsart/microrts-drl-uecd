@@ -10,7 +10,7 @@
 #SBATCH --partition=batch
 #SBATCH --array=0-34
 #
-# ARCHITECTURE EVALUATION — 500 games per position (1000 total) per bot
+# ARCHITECTURE EVALUATION: 500 games per position (1000 total) per bot
 #
 #   7 architectures × 5 bots = 35 jobs (array 0-34)
 #   Each job runs: python evaluate.py --agent <arch> --opponent <bot> --nb_games 500
@@ -44,7 +44,7 @@ ARCH_NAME=${ARCH_NAMES[$ARCH_IDX]}
 BOT=${BOTS[$BOT_IDX]}
 
 echo "============================================================"
-echo "  ARCH EVALUATION — 1000 games (500 P0 + 500 P1)"
+echo "  ARCH EVALUATION: 1000 games (500 P0 + 500 P1)"
 echo "============================================================"
 echo "  Job ID:       $SLURM_JOB_ID (array task $SLURM_ARRAY_TASK_ID)"
 echo "  Architecture: $ARCH_NAME"
@@ -64,7 +64,7 @@ OUTDIR="outputs/eval_arch_ablation/s${SEED}"
 mkdir -p "$OUTDIR"
 OUTFILE="$OUTDIR/${ARCH_NAME}_vs_${BOT}.txt"
 
-python -m microrts_agent evaluate \
+microrts-agent evaluate \
     --agent "$AGENT_DIR" \
     --opponent "$BOT" \
     --nb_games 500 \

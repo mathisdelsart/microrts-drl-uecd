@@ -35,7 +35,7 @@ echo "  Games: 50 P0 + 50 P1 = 100 stochastic"
 echo "  $(date)"
 echo "============================================================"
 
-python -m microrts_agent evaluate \
+microrts-agent evaluate \
     --agent "$AGENT" \
     --opponent "$BOT" \
     --nb_games 50 \

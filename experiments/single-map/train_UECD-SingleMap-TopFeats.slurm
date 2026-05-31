@@ -9,19 +9,19 @@
 #SBATCH --gres=gpu:TeslaA40:1
 #SBATCH --partition=batch
 #
-# S-tier only agent — 100M steps, only the 4 robust features
+# S-tier only agent: 100M steps, only the 4 robust features
 #
 SEED=${SEED:-1}
 
 echo "============================================================"
-echo "  S-tier Agent — 100M steps, 4 robust features only"
+echo "  S-tier Agent: 100M steps, 4 robust features only"
 echo "  Seed: $SEED"
 echo "  Started: $(date)"
 echo "============================================================"
 
 source "$(dirname "$0")/../_setup_env.sh"
 
-python -m microrts_agent train \
+microrts-agent train \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 100000000 \

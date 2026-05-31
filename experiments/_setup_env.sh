@@ -7,7 +7,7 @@
 # It loads the Python / Java / CUDA cluster modules, activates the project's
 # venv at $HOME/microrts-drl-uecd/cluster_venv, fixes PYTHONUNBUFFERED, and
 # cds to the repo root. Any missing module aborts the SLURM job with a clear
-# message — preferable to letting the python process crash with a stale
+# message: preferable to letting the python process crash with a stale
 # library later.
 
 module load Python/3.11 2>/dev/null || module load Python/3.9 2>/dev/null || {

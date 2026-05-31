@@ -23,7 +23,7 @@ SEED=${SEED:-1}
 BC_MODEL="outputs/runs/UECD-BC_s1/agent.pt"
 
 echo "============================================================"
-echo "  BC-PPO Fine-tuning — 100M steps, single map"
+echo "  BC-PPO Fine-tuning: 100M steps, single map"
 echo "============================================================"
 echo "  Job ID:       $SLURM_JOB_ID"
 echo "  Seed:         $SEED"
@@ -58,7 +58,7 @@ fi
 
 # ── Training command ───────────────────────────────────────────────────────
 
-python -m microrts_agent train \
+microrts-agent train \
     $RESUME_FLAG \
     --load-model "$BC_MODEL" \
     --architecture unet_entity_cbam_deep \
