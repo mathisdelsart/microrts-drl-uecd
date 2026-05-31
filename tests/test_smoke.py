@@ -317,9 +317,9 @@ def test_shell_script_syntax(script):
 
 # ── 14. BC teacher dataset schema ───────────────────────────────────────
 def test_bc_chunks_schema():
-    """Every shipped BC chunk under data/bc_training/ has the expected
+    """Every shipped BC chunk under data/BC/training/ has the expected
     NPZ keys and 4D obs shape."""
-    bc_dir = REPO_ROOT / "data" / "bc_training"
+    bc_dir = REPO_ROOT / "data" / "BC" / "training"
     chunks = sorted(bc_dir.glob("bc_chunk_*.npz"))
     assert len(chunks) >= 3, f"too few BC chunks: {len(chunks)}"
     for chunk in chunks:
@@ -552,7 +552,7 @@ def test_setup_script_executable_bit(script):
 @pytest.mark.parametrize(
     "csv_path, required_cols",
     [
-        ("data/bc_baseline/results.csv", {"opponent", "games", "total_wr"}),
+        ("data/BC/baseline/results.csv", {"opponent", "games", "total_wr"}),
         ("data/rush_collapse/results.csv", {"opponent", "games", "total_wr"}),
         ("data/generalization_probes/results.csv", {"map", "opponent", "games", "total_wr"}),
         ("data/ablation/arch/eval/results.csv", {"arch", "seed", "opponent", "total_wr"}),
