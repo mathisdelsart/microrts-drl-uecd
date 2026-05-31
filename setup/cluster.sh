@@ -37,11 +37,22 @@ echo "========================================"
 echo ""
 
 # ── Cluster modules (operator-driven, not loaded by this script) ─────────────
-echo "=== Loading modules ==="
-echo "(Skipped, load modules manually before running this script)"
-# module load Python/3.10
-# module load Java/17.0.6
-# module load CUDA/12.1.1
+echo "=== Cluster modules (load BEFORE running this script) ==="
+echo ""
+echo "Discover what's available on your CECI site (names drift across sites):"
+echo "  module avail Java"
+echo "  module avail Python"
+echo "  module avail CUDA"
+echo ""
+echo "Then load:"
+echo "  module load Java/17.0.6           # JDK 17 for the JNI bridge"
+echo "  module load Python/3.10           # 3.10 or 3.11 (RAISocketAI wheel pins <3.12)"
+echo "  module load CUDA/12.1.1           # only if training on GPU"
+echo ""
+echo "If a name doesn't match exactly, try plain 'Java/17', 'Python/3.11',"
+echo "etc. (whatever 'module avail' above lists)."
+echo "========================================"
+echo ""
 
 check_java
 check_microrts_jar
