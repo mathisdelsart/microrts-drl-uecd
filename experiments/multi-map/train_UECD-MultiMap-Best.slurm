@@ -52,7 +52,7 @@ source "$(dirname "$0")/../_setup_env.sh"
 python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"N/A\"}')"
 
 RESUME_FLAG=""
-RUN_DIR="outputs/runs/best_multimap_400M_s${SEED}"
+RUN_DIR="outputs/runs/UECD-MultiMap-Best_s${SEED}"
 if [ -f "${RUN_DIR}/checkpoint.pt" ]; then
     echo "  Resuming from $RUN_DIR"
     RESUME_FLAG="--resume ${RUN_DIR}"
@@ -139,7 +139,7 @@ python -m microrts_agent train \
     --eval-games 10 \
     --num-models 16 \
     --seed $SEED \
-    --exp-name best_multimap_400M_s${SEED}
+    --exp-name UECD-MultiMap-Best_s${SEED}
 
 EXIT_CODE=$?
 

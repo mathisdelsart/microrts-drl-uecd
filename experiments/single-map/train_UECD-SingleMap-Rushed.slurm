@@ -48,7 +48,7 @@ python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.
 # ── Resume logic ──────────────────────────────────────────────────────────
 
 RESUME_FLAG=""
-RUN_DIR="outputs/runs/phased_single_map_300M_s${SEED}"
+RUN_DIR="outputs/runs/UECD-SingleMap-Rushed_s${SEED}"
 if [ -f "${RUN_DIR}/checkpoint.pt" ]; then
     echo "  Resuming from $RUN_DIR"
     RESUME_FLAG="--resume ${RUN_DIR}"
@@ -98,7 +98,7 @@ python -m microrts_agent train \
     --with-eval True \
     --num-models 2 \
     --seed $SEED \
-    --exp-name phased_single_map_300M_s${SEED}
+    --exp-name UECD-SingleMap-Rushed_s${SEED}
 
 EXIT_CODE=$?
 

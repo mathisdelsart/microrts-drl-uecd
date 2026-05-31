@@ -10,7 +10,7 @@
 #SBATCH --partition=gpu
 #SBATCH --array=0-7
 #
-# Evaluate phased_single_map_300M_s1 at 150M (balanced) and 300M (rush)
+# Evaluate UECD-SingleMap-Rushed_s1 at 150M (balanced) and 300M (rush)
 # against TMA, ObiBotKenobi, CoacAI, Mayari — 500 games per position.
 #
 # Array layout (8 jobs):
@@ -23,7 +23,7 @@
 
 source "$(dirname "$0")/../_setup_env.sh"
 
-RUN_DIR="outputs/runs/phased_single_map_300M_s1"
+RUN_DIR="outputs/runs/UECD-SingleMap-Rushed_s1"
 BOTS=("TMA" "ObiBotKenobi" "CoacAI" "Mayari")
 NB_GAMES=500
 MAP="maps/open_competition/basesWorkers16x16A.xml"

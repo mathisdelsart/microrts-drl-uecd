@@ -65,4 +65,4 @@ python -m microrts_agent train \
     --with-eval True \
     --num-models 2 \
     --seed $SEED \
-    --exp-name multimap_small_200M_s${SEED}
+    --exp-name UECD-MultiMap_s${SEED}

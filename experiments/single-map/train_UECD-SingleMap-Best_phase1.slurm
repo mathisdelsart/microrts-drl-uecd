@@ -24,7 +24,7 @@ echo "  Seed: $SEED | Started: $(date)"
 echo "============================================================"
 
 python -m microrts_agent train \
-    --resume outputs/runs/FineTuneStronger-300M \
+    --resume outputs/runs/UECD-SingleMap-Best_phase1_s1 \
     --architecture unet_entity_cbam_deep \
     --arch-channels 48 \
     --total-timesteps 300000000 \
@@ -63,4 +63,4 @@ python -m microrts_agent train \
     --with-eval True \
     --num-models 5 \
     --seed $SEED \
-    --exp-name finetune_from_150M_s${SEED}
+    --exp-name UECD-SingleMap-Best_phase1_s${SEED}

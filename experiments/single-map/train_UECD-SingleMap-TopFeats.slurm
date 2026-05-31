@@ -51,4 +51,4 @@ python -m microrts_agent train \
     --with-eval True \
     --num-models 2 \
     --seed $SEED \
-    --exp-name stier_single_map_100M_s${SEED}
+    --exp-name UECD-SingleMap-TopFeats_s${SEED}

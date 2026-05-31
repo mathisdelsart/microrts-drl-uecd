@@ -16,8 +16,8 @@
 
 source "$(dirname "$0")/../_setup_env.sh"
 
-RUN_DIR="outputs/runs/finetune_raisocket_160M_s1"
-CKPT_SRC="outputs/runs/FineTuneStronger-300M/239972352.pt"
+RUN_DIR="outputs/runs/UECD-SingleMap-Best_phase2_s1"
+CKPT_SRC="outputs/runs/UECD-SingleMap-Best_phase1_s1/239972352.pt"
 
 # Set up new run dir with the 240M checkpoint as checkpoint.pt for --resume
 mkdir -p "$RUN_DIR"
@@ -75,4 +75,4 @@ python -m microrts_agent train \
     --eval-bots RAISocketAI CoacAI Mayari ObiBotKenobi TMA \
     --num-models 16 \
     --seed 1 \
-    --exp-name finetune_raisocket_160M_s1
+    --exp-name UECD-SingleMap-Best_phase2_s1

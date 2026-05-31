@@ -12,7 +12,7 @@
 source "$(dirname "$0")/../_setup_env.sh"
 
 SEED=${SEED:-1}
-BC_RUN_DIR="outputs/runs/bc_v3_s${SEED}"
+BC_RUN_DIR="outputs/runs/UECD-BC_s${SEED}"
 mkdir -p "${BC_RUN_DIR}/EVAL"
 
 echo "=== BC+VF Train ==="

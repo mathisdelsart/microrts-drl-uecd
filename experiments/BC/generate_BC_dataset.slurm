@@ -39,7 +39,7 @@ python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, GPU: {torch.
 # ── Paths ──────────────────────────────────────────────────────────────────
 
 BC_DATA_DIR="outputs/bc_data"
-BC_RUN_DIR="outputs/runs/bc_v3_s${SEED}"
+BC_RUN_DIR="outputs/runs/UECD-BC_s${SEED}"
 BC_EVAL_DIR="${BC_RUN_DIR}/EVAL"
 MAP="maps/open_competition/basesWorkers16x16A.xml"
 
