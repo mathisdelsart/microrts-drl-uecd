@@ -27,7 +27,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/dependency-review-action@v4
+      - uses: actions/dependency-review-action@v5
         with:
           # Block PRs that add deps with HIGH or CRITICAL CVEs. Moderate
           # findings get reported but don't fail the check, keeping the
