@@ -32,6 +32,7 @@ __pycache__/
 .mypy_cache/
 .coverage
 htmlcov/
+.ipynb_checkpoints/
 
 # Python virtual environments
 .venv/
