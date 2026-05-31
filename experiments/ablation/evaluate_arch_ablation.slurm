@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=eval_arch
-#SBATCH --output=slurm-%j_%a.out
-#SBATCH --error=slurm-%j_%a.err
+#SBATCH --job-name=evaluate_arch_ablation
+#SBATCH --output=slurm-evaluate_arch_ablation-%j_%a.out
+#SBATCH --error=slurm-evaluate_arch_ablation-%j_%a.err
 #SBATCH --time=24:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
@@ -13,7 +13,7 @@
 # ARCHITECTURE EVALUATION: 500 games per position (1000 total) per bot
 #
 #   7 architectures × 5 bots = 35 jobs (array 0-34)
-#   Each job runs: python evaluate.py --agent <arch> --opponent <bot> --nb_games 500
+#   Each job runs: microrts-agent evaluate --agent <arch> --opponent <bot> --nb_games 500
 #   Results saved to outputs/eval_arch_ablation/
 #
 # Usage:

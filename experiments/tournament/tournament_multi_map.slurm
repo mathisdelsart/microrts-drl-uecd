@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=tourney-multi
-#SBATCH --output=slurm-tourney-multi-%A_%a.out
-#SBATCH --error=slurm-tourney-multi-%A_%a.err
+#SBATCH --job-name=tournament_multi_map
+#SBATCH --output=slurm-tournament_multi_map-%A_%a.out
+#SBATCH --error=slurm-tournament_multi_map-%A_%a.err
 #SBATCH --time=3-00:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12

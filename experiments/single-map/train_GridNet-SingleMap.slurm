@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=GridNet-SingleMap
-#SBATCH --output=slurm-%j.out
-#SBATCH --error=slurm-%j.err
+#SBATCH --job-name=train_GridNet-SingleMap
+#SBATCH --output=slurm-train_GridNet-SingleMap-%j.out
+#SBATCH --error=slurm-train_GridNet-SingleMap-%j.err
 #SBATCH --time=48:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24
