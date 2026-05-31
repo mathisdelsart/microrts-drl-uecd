@@ -13,7 +13,7 @@
 # (b) installs the CUDA-enabled torch wheel (no `--index-url cpu` override),
 # and (c) requires `--gpus all` at run time. The CPU image stays the default
 # (~1 GB vs ~6 GB) and is sufficient for evaluation.
-FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
+FROM nvidia/cuda:13.2.1-cudnn-runtime-ubuntu22.04
 
 # Avoid tzdata interactive prompt during apt install.
 ENV DEBIAN_FRONTEND=noninteractive
