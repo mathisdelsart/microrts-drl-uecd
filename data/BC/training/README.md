@@ -25,7 +25,7 @@ sparse reward at that step.
 ## Chunk format
 
 Each `.npz` file contains three arrays produced by
-`microrts_agent/bc/generate.py`:
+[`microrts_agent/bc/generate.py`](../../../microrts_agent/bc/generate.py):
 
 | Key | Shape | Dtype | Meaning |
 |---|---|---|---|
@@ -39,7 +39,7 @@ size).
 
 ## How it is consumed
 
-`microrts_agent/bc/train.py` globs every `bc_chunk_*.npz` it is pointed at
+[`microrts_agent/bc/train.py`](../../../microrts_agent/bc/train.py) globs every `bc_chunk_*.npz` it is pointed at
 and merges them on the fly. To re-train from the shipped data:
 
 ```bash
