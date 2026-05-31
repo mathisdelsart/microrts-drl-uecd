@@ -62,14 +62,16 @@ uvx ruff@0.15.14 check .      # lint
 uvx ruff@0.15.14 format .     # auto-format
 ```
 
-Or install the hooks once so they run on every commit:
+Hooks are activated automatically by `bash setup/local.sh` (`pre-commit` is
+in the `[dev]` extras and the setup script runs `pre-commit install` for
+you). If you skip the setup script, run `pre-commit install` once to get
+the same coverage. Then `pre-commit run --all-files` runs everything in
+`.pre-commit-config.yaml` locally.
 
-```bash
-pipx install pre-commit && pre-commit install
-```
-
-CI runs the same `ruff check` + `ruff format --check` on every PR; it must be green
-before merge.
+CI runs ruff, the java bridge build, the pytest smoke matrix
+(3.10/3.11/3.12), the pre-commit hook bundle, CodeQL static analysis
+(Python + Java), and a dependency-review check. The protected-branch
+ruleset blocks merge until the required ones are green.
 
 ## Merge strategy
 
