@@ -930,3 +930,29 @@ def test_requirements_lock_well_formed():
     assert hash_count >= pin_count, (
         f"fewer hashes ({hash_count}) than pins ({pin_count}); --require-hashes will fail"
     )
+
+
+# ── 41. ObsAdapter multi-map reserved-plane alignment ───────────────────
+def test_obs_adapter_multimap_reserved_alignment():
+    """Regression: rl_vs_rl evaluation of two multi-map agents crashed on any
+    map smaller than max_map_size.
+
+    The multi-map env emits obs already padded to max_map_size, so ObsAdapter's
+    padding block is skipped, but the reserved-position planes are built at the
+    real (smaller) map size. The reserved channel must be aligned to the obs
+    spatial dims before concatenation, otherwise numpy raises a shape mismatch.
+    """
+    from microrts_agent.obs_adapter import ObsAdapter
+
+    n, real, target, c = 2, 8, 16, 5
+    adapter = ObsAdapter(
+        {"reserved_obs": True, "multi_map": True, "max_map_size": target, "frame_stack": 0},
+        num_envs=n,
+    )
+    obs = np.zeros((n, target, target, c), dtype=np.float32)  # already padded to 16x16
+    reserved = np.ones((n, real, real, 1), dtype=np.float32)  # built at the real 8x8 size
+    out = adapter(obs, reserved_planes=reserved)
+    assert out.shape == (n, target, target, c + 1)
+    # real-map reserved content stays top-left; the pad region is zero.
+    assert out[:, :real, :real, c:].sum() == n * real * real
+    assert out[:, real:, real:, c:].sum() == 0
