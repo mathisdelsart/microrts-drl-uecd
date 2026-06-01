@@ -90,6 +90,17 @@ class ObsAdapter:
 
         # Append reserved-position channel
         if self.reserved and reserved_planes is not None:
+            # reserved_planes are built at the real map size, but obs may have been
+            # padded/cropped to max_map_size (multi_map) or cropped to the real size
+            # (single_map). When the env already emits obs padded to max_map_size, the
+            # blocks above leave reserved_planes untouched, so align spatial dims here.
+            oh, ow = obs.shape[1], obs.shape[2]
+            rh, rw = reserved_planes.shape[1], reserved_planes.shape[2]
+            if (rh, rw) != (oh, ow):
+                reserved_planes = np.pad(
+                    reserved_planes,
+                    ((0, 0), (0, max(0, oh - rh)), (0, max(0, ow - rw)), (0, 0)),
+                )[:, :oh, :ow, :]
             obs = np.concatenate([obs, reserved_planes], axis=-1)
 
         return obs
