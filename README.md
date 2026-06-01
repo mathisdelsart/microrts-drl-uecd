@@ -6,7 +6,7 @@
 
 <p>
   <a href="https://github.com/mathisdelsart/microrts-drl-uecd/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/mathisdelsart/microrts-drl-uecd/ci.yml?branch=main&style=for-the-badge&label=CI&color=0d0208&labelColor=4a0d2b" alt="CI" /></a>
-  <a href="https://github.com/mathisdelsart/microrts-drl-uecd/releases"><img src="https://img.shields.io/github/v/release/mathisdelsart/microrts-drl-uecd?style=for-the-badge&label=release&color=0d0208&labelColor=4a0d2b" alt="Release" /></a>
+  <a href="https://github.com/mathisdelsart/microrts-drl-uecd/releases"><img src="https://img.shields.io/badge/release-v0.1.0-0d0208?style=for-the-badge&labelColor=4a0d2b" alt="Release" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-0d0208?style=for-the-badge&labelColor=4a0d2b" alt="License: MIT" /></a>
   <a href="https://uclouvain.be/"><img src="https://img.shields.io/badge/Master's%20Thesis-UCLouvain-0d0208?style=for-the-badge&labelColor=4a0d2b" alt="Master's Thesis: UCLouvain" /></a>
 </p>
