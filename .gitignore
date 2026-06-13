@@ -81,6 +81,8 @@ data/**/*.pyc
 *.fls
 *.lof
 *.lot
+*.snm
+*.nav
 *.out
 *.run.xml
 *.synctex.gz
