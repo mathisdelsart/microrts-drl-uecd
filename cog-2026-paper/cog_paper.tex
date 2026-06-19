@@ -1,10 +1,6 @@
 \documentclass[conference]{IEEEtran}
 
-% Anonymization switch
-\newif\ifanonymous
-\anonymousfalse
-
-% Packages
+%% Packages
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{cite}
 \usepackage{graphicx}
@@ -13,86 +9,60 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 
-% Colors and hyperlinks
-\definecolor{link-blue}{RGB}{30,120,210}
-\definecolor{link-burgundy}{RGB}{140,30,50}
-\definecolor{link-bot}{RGB}{180,60,20}
-
-\ifanonymous
-    \hypersetup{
-      pdfauthor={Anonymous},
-      pdftitle={Combining Spatial and Entity-Based Reasoning for Competitive MicroRTS Via U-Net and Transformers},
-      pdfsubject={Deep Reinforcement Learning for MicroRTS},
-      pdfkeywords={Deep Reinforcement Learning, Real-Time Strategy Games, MicroRTS, Entity-Based Reasoning, Spatial Reasoning, U-Net, Transformer},
-      colorlinks=true,
-      urlcolor=link-blue,
-      linkcolor=link-burgundy,
-      citecolor=link-blue
-    }
-\else
-    \hypersetup{
-      pdfauthor={Mathis Delsart, Achille Morenville, \'Eric Piette},
-      pdftitle={Combining Spatial and Entity-Based Reasoning for Competitive MicroRTS Via U-Net and Transformers},
-      pdfsubject={Deep Reinforcement Learning for MicroRTS},
-      pdfkeywords={Deep Reinforcement Learning, Real-Time Strategy Games, MicroRTS, Entity-Based Reasoning, Spatial Reasoning, U-Net, Transformer},
-      colorlinks=true,
-      urlcolor=link-blue,
-      linkcolor=link-burgundy,
-      citecolor=link-blue
-    }
-\fi
-  
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
-% Commands
-\newcommand{\code}[1]{{\ttfamily\hyphenchar\font=45\relax #1}}
-\newcommand{\urlref}[2]{\href{#1}{\textcolor{link-bot}{#2}}}
+%% Colors
+\definecolor{link-blue}{RGB}{30,120,210}
+\definecolor{link-burgundy}{RGB}{140,30,50}
 
+%% PDF document properties + colored hyperlinks (citations blue, cross-references burgundy)
+\hypersetup{
+  pdfauthor={Mathis Delsart, Achille Morenville, \'Eric Piette},
+  pdftitle={Combining Spatial and Entity-Based Reasoning for Competitive MicroRTS Via U-Net and Transformers},
+  pdfsubject={Deep Reinforcement Learning for Competitive Agents in MicroRTS: Architecture, Training, and Tournament Evaluation},
+  pdfkeywords={Deep Reinforcement Learning, Real-Time Strategy Games, MicroRTS, Entity-Based Reasoning, Spatial Reasoning, U-Net, Transformer},
+  colorlinks=true,
+  urlcolor=link-blue,
+  linkcolor=link-burgundy,
+  citecolor=link-blue
+}
+
+%% Commands
+\newcommand{\code}[1]{{\ttfamily\hyphenchar\font=45\relax #1}}
+\newcommand{\urlref}[2]{\href{#1}{\textcolor{black}{#2}}}
+
+%% Document
 \begin{document}
 
+% Title + authors
 \title{Combining Spatial and Entity-Based Reasoning for Competitive MicroRTS via U-Net and Transformers}
 
-\ifanonymous
-    \author{%
-        \IEEEauthorblockN{Anonymous Author}
-        \IEEEauthorblockA{
-        Anonymous Institution\\
-        Anonymous City, Country
-        }
-        \and
-        \IEEEauthorblockN{Anonymous Author}
-        \IEEEauthorblockA{
-        Anonymous Institution\\
-        Anonymous City, Country
-        }
-        \and
-        \IEEEauthorblockN{Anonymous Author}
-        \IEEEauthorblockA{
-        Anonymous Institution\\
-        Anonymous City, Country
-        }
-    }
-\else
-    \author{%
-      \IEEEauthorblockN{Mathis Delsart}
-      \IEEEauthorblockA{\textit{ICTEAM, UCLouvain} \\
-                        Louvain-la-Neuve, Belgium}
-      \and
-      \IEEEauthorblockN{Achille Morenville}
-      \IEEEauthorblockA{\textit{ICTEAM, UCLouvain} \\
-                        Louvain-la-Neuve, Belgium}
-      \and
-      \IEEEauthorblockN{\'Eric Piette}
-      \IEEEauthorblockA{\textit{ICTEAM, UCLouvain} \\
-                        Louvain-la-Neuve, Belgium}%
-    }
-\fi
+\author{%
+  \IEEEauthorblockN{Mathis Delsart}
+  \IEEEauthorblockA{\textit{ICTEAM, UCLouvain} \\
+                    Louvain-la-Neuve, Belgium}
+  \and
+  \IEEEauthorblockN{Achille Morenville}
+  \IEEEauthorblockA{\textit{ICTEAM, UCLouvain} \\
+                    Louvain-la-Neuve, Belgium}
+  \and
+  \IEEEauthorblockN{Éric Piette}
+  \IEEEauthorblockA{\textit{ICTEAM, UCLouvain} \\
+                    Louvain-la-Neuve, Belgium}%
+}
+
+% 2026 Copyright Notice
+\IEEEoverridecommandlockouts
+\IEEEpubid{\makebox[\columnwidth]{979-8-3315-9476-3/26/\$31.00 \copyright2026 IEEE\hfill}
+\hspace{\columnsep}\makebox[\columnwidth]{ }}
 
 \maketitle
 
+\IEEEpubidadjcol
+
 \begin{abstract}
-In MicroRTS, a real-time strategy benchmark, winning requires long-range coordination between many units. Yet, current deep reinforcement learning agents reason only over spatial feature maps and treat units implicitly through stacks of channels. The contributions of this paper are threefold: \textbf{\emph{(i)}} \code{UECD}, a hybrid architecture coupling spatial and per-unit reasoning explicitly via a multi-scale convolutional backbone and a Transformer over unit entities; \textbf{\emph{(ii)}} a PPO training recipe distilled from systematic ablation; \textbf{\emph{(iii)}} a reproducible round-robin tournament. On \emph{basesWorkers16x16A}, \code{UECD} reaches a $96.67$\% win-rate, ahead of all prior competition winners.
+In MicroRTS, a real-time strategy benchmark, winning requires long-range coordination between many units. Yet, current deep reinforcement learning agents reason only over spatial feature maps and treat units implicitly through stacks of channels. The contributions of this paper are twofold: \textbf{\emph{(i)}} \code{UECD}, a hybrid architecture coupling spatial and per-unit reasoning explicitly via a multi-scale convolutional backbone and a Transformer over unit entities; and \textbf{\emph{(ii)}} a PPO-based training recipe derived from systematic ablation. On the \emph{basesWorkers16x16A} map, \code{UECD} outranks prior competition winners, topping an open-source and reproducible tournament with a $96.67$\% win rate.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -101,11 +71,11 @@ Deep Reinforcement Learning, Real-Time Strategy Games, MicroRTS, Entity-Based Re
 
 \section{Introduction}
 
-Real-time strategy (RTS) games combine large combinatorial action spaces, multi-unit coordination, sparse long-horizon rewards, and real-time constraints, making them a challenging benchmark for sequential decision-making~\cite{buroRTSChallenge2003, ontanonSurveyRealTimeStrategy2013}. AlphaStar~\cite{vinyalsGrandmasterLevelStarCraft2019} demonstrated Grandmaster-level play in StarCraft~II through deep reinforcement learning (DRL), but at an extreme compute cost ($384$ TPUs over $44$ days). MicroRTS~\cite{ontanonCombinatorialMultiArmedBandit2013} distills RTS gameplay onto small grid maps while preserving its core difficulties and has served as the IEEE Conference on Games (CoG) competition benchmark since $2017$~\cite{ontanonFirstMicroRTSArtificial2018}. Current MicroRTS agents fall into two paradigms: DRL agents such as \urlref{https://github.com/sgoodfriend/rl-algo-impls}{RAISocketAI}~\cite{goodfriendCompetitionWinningDeep2024}, dominant on small maps ($\le\!16{\times}16$) where per-tick inference cost remains manageable, and rule-based bots such as \urlref{https://github.com/Coac/coac-ai-microrts}{CoacAI}, \urlref{https://github.com/barvazkrav/mayariBot}{Mayari}, \urlref{https://github.com/Jannis42/MicroRTSObiBotKenobi}{ObiBotKenobi}, and \urlref{https://github.com/MazzaAlessandro/TMA}{TMA}, which generalize to larger layouts within tight time budgets.
+Real-time strategy (RTS) games combine large combinatorial action spaces, multi-unit coordination, sparse long-horizon rewards, and real-time constraints, making them a challenging benchmark for sequential decision-making~\cite{buroRTSChallenge2003, ontanonSurveyRealTimeStrategy2013}. AlphaStar~\cite{vinyalsGrandmasterLevelStarCraft2019} demonstrated Grandmaster-level play in StarCraft~II through deep reinforcement learning (DRL), but at an extreme compute cost ($384$ TPUs over $44$ days). MicroRTS~\cite{ontanonCombinatorialMultiArmedBandit2013} distills RTS gameplay onto small grid maps while preserving its core difficulties and has served as the IEEE Conference on Games (CoG) MicroRTS competition benchmark since $2017$~\cite{ontanonFirstMicroRTSArtificial2018}. Current MicroRTS agents fall into two paradigms: DRL agents such as \urlref{https://github.com/sgoodfriend/rl-algo-impls}{RAISocketAI}~\cite{goodfriendCompetitionWinningDeep2024}, dominant on small maps ($\le\!16{\times}16$) where per-tick inference cost remains manageable, and rule-based bots such as \urlref{https://github.com/Coac/coac-ai-microrts}{CoacAI}, \urlref{https://github.com/barvazkrav/mayariBot}{Mayari}, \urlref{https://github.com/Jannis42/MicroRTSObiBotKenobi}{ObiBotKenobi}, and \urlref{https://github.com/MazzaAlessandro/TMA}{TMA}, which generalize to larger layouts within tight time budgets.
 
-Purely convolutional backbones capture long-range unit interactions only indirectly. This paper addresses this limitation through: \textbf{\emph{(i)} \code{UECD}}, a hybrid architecture combining a multi-scale encoder-decoder with skip connections (U-Net~\cite{ronnebergerUNetConvolutionalNetworks2015}) gated by channel-and-spatial attention (CBAM, Convolutional Block Attention Module)~\cite{wooCBAMConvolutionalBlock2018} for spatial reasoning, and an entity Transformer~\cite{vaswaniAttentionAllYou2017} for unit-level reasoning; and \textbf{\emph{(ii)} a training recipe} derived from ablating $12$ Proximal Policy Optimization (PPO)~\cite{schulmanProximalPolicyOptimization2017} additions, including Matchup Competitiveness Weighting (MCW) and two-phase opponent-pool fine-tuning. A third contribution, \textbf{\emph{(iii)} a reproducible round-robin tournament}, is motivated by the $2026$ CoG MicroRTS edition's shift to Large Language Model (LLM) agents.
+Purely convolutional backbones capture long-range unit interactions only indirectly. This paper addresses this limitation through two contributions: \textbf{\emph{(i)} \code{UECD}}, a hybrid architecture combining a multi-scale encoder-decoder with skip connections (U-Net)~\cite{ronnebergerUNetConvolutionalNetworks2015} gated by channel-and-spatial attention (CBAM, Convolutional Block Attention Module)~\cite{wooCBAMConvolutionalBlock2018} for spatial reasoning, and an entity Transformer~\cite{vaswaniAttentionAllYou2017} for unit-level reasoning; and \textbf{\emph{(ii)} a PPO-based training recipe}~\cite{schulmanProximalPolicyOptimization2017} derived from systematic ablation, introducing \emph{Matchup Competitiveness Weighting} and two-phase opponent-pool fine-tuning.
 
-On the standard \emph{basesWorkers16x16A} map, \code{UECD} tops a $19$-agent tournament (past CoG winners, baselines, and $4$ \code{UECD} checkpoints) with a $96.67$\% overall win-rate (WR) and a $9$--$1$ head-to-head record against RAISocketAI.
+\code{UECD} is benchmarked in an open-source, reproducible tournament prompted by the 2026 CoG MicroRTS competition's shift to Large Language Model (LLM) agents. On the \emph{basesWorkers16x16A} map, \code{UECD} tops the standings against past CoG winners and baselines, achieving a $96.67$\% win rate (WR) and a $9$--$1$ head-to-head record against RAISocketAI. Robustness is further evaluated under layout and scale shifts.
 
 \section{Background and Related Work}
 \label{sec:background}
@@ -119,30 +89,30 @@ Further details on competition rules, mechanics, and the environment are availab
 \section{UECD Architecture}
 \label{sec:arch}
 
-Fig.~\ref{fig:cbam-deep-arch} shows the proposed \code{UECD} architecture, short for \code{U-Net-Entity-CBAM-Deep}. Unlike purely spatial baselines, \code{UECD} combines three complementary reasoning axes: \textbf{\emph{(i)}} spatial, \textbf{\emph{(ii)}} relational, and \textbf{\emph{(iii)}} global.
+Fig.~\ref{fig:cbam-deep-arch} shows the proposed \code{UECD} architecture, short for \code{U-Net-Entity-CBAM-Deep}. Unlike purely spatial baselines, \code{UECD} combines three complementary reasoning axes:
 
 \begin{figure*}[!bt]
     \centering
     \includegraphics[width=\textwidth]{figures/arch_cbam_deep.pdf}
-    \caption{\textbf{\code{UECD} Architecture:} CBAM-gated U-Net encoder-decoder (blue/orange) with bottleneck self-attention (red) and a parallel Entity Transformer (green), scattering enriched features at two scales. Actor and critic heads (grey) produce policy logits $\pi(a|s)$ and value estimates $\hat{V}(s)$ from the observation (yellow).}
+    \caption{\textbf{\code{UECD} Architecture:} CBAM-gated U-Net encoder-decoder (blue/orange) with bottleneck self-attention (red) and a parallel Entity Transformer (green), scattering enriched features at two scales. Actor and critic heads (gray) produce policy logits $\pi(a|s)$ and value estimates $\hat{V}(s)$ from the observation (yellow).}
     \label{fig:cbam-deep-arch}
 \end{figure*}
 
-\paragraph*{\textbf{\emph{(i)} Spatial perception}}
-A CBAM-gated U-Net~\cite{ronnebergerUNetConvolutionalNetworks2015,wooCBAMConvolutionalBlock2018} backbone (Fig.~\ref{fig:cbam-deep-arch}, blue and orange) performs multi-scale spatial reasoning through skip connections between the encoder and decoder. Unlike channel-only Squeeze-and-Excitation (SE) attention~\cite{huSqueezeandExcitationNetworks2018}, CBAM jointly weights channels (e.g. ranged-unit and HP channels during combat) and spatial regions (e.g. frontlines and resource fields). Most depth sits at the bottleneck, where small feature maps keep it cheap.
+\paragraph*{\textbf{1. Spatial perception}}
+A CBAM-gated U-Net~\cite{ronnebergerUNetConvolutionalNetworks2015,wooCBAMConvolutionalBlock2018} backbone (Fig.~\ref{fig:cbam-deep-arch}, blue and orange) performs multi-scale spatial reasoning through skip connections between the encoder and decoder. Unlike channel-only Squeeze-and-Excitation (SE) attention~\cite{huSqueezeandExcitationNetworks2018}, CBAM jointly weights channels and spatial regions (e.g. HP channels and frontlines). Most depth sits at the bottleneck, where small feature maps keep it cheap.
 
-\paragraph*{\textbf{\emph{(ii)} Relational reasoning}}
+\paragraph*{\textbf{2. Relational reasoning}}
 A parallel Entity Transformer~\cite{vaswaniAttentionAllYou2017} (Fig.~\ref{fig:cbam-deep-arch}, green) captures long-range unit interactions explicitly (e.g. units coordinating an attack). Each unit is encoded as a token combining raw attributes, spatial features, and positional embeddings. Refined entity features are scattered additively back into the spatial map at both bottleneck (strategic) and mid-resolution (tactical) scales.
 
-\paragraph*{\textbf{\emph{(iii)} Global spatial reasoning}}
-A lightweight 4-head self-attention layer over the bottleneck grid (Fig.~\ref{fig:cbam-deep-arch}, red) captures long-range region-to-region dependencies beyond local convolutional receptive fields (e.g. trading a frontal push against pressure on the home base).
+\paragraph*{\textbf{3. Global spatial reasoning}}
+A lightweight 4-head self-attention layer over the bottleneck grid (Fig.~\ref{fig:cbam-deep-arch}, red) captures long-range region-to-region dependencies beyond local convolutional receptive fields (e.g. front push vs.\ base defense).
 
 \section{Setup and Methodology}
 \label{sec:setup-method}
 
 Training runs on the standard $16{\times}16$ \emph{basesWorkers16x16A} map ($4000$-step episode cap), across $24$ parallel bot environments ($9$ CoacAI, $9$ Mayari, $2$ \urlref{https://github.com/Farama-Foundation/MicroRTS/blob/master/src/ai/RandomBiasedAI.java}{RandomBiasedAI}, $2$ \urlref{https://github.com/Farama-Foundation/MicroRTS/blob/master/src/ai/abstraction/partialobservability/POWorkerRush.java}{POWorkerRush}, $2$ \urlref{https://github.com/Farama-Foundation/MicroRTS/blob/master/src/ai/abstraction/partialobservability/POLightRush.java}{POLightRush}; sides swapped per episode). PPO~\cite{schulmanProximalPolicyOptimization2017} with Generalized Advantage Estimation (GAE)~\cite{schulmanHighDimensionalContinuousControl2015} uses $\gamma{=}0.99$, $\lambda_{\text{GAE}}{=}0.95$, $\epsilon_{\text{clip}}{=}0.1$, rollouts/epochs/minibatches $=512/2/3$, $c_v{=}0.5$, max grad norm $0.5$; learning rate and entropy linearly annealed from $2.5e{-}4{\to}0$ and $1e{-}2{\to}1e{-}3$, respectively. Reward weights follow~\cite{huangGym$m$RTSAffordableFull2021}.
 
-Game counts are split evenly between P0 and P1. WRs are averages over $1000$ stochastic games per opponent ($100$ in Fig.~\ref{fig:gen-probe}). The tournament (Section~\ref{sec:tournament}) uses the deterministic CoG protocol ($10$ games per matchup). Architecture and feature ablations (Sections~\ref{sec:arch-ablation}--\ref{sec:feat-ablation}) use $3$ seeds.
+Game counts are split evenly between P0 and P1. WRs are averages over $1000$ stochastic games per opponent ($100$ in Fig.~\ref{fig:gen-probe}). The tournament (Section~\ref{sec:tournament}) uses the deterministic MicroRTS CoG protocol ($10$ games per matchup). Architecture and feature ablations (Sections~\ref{sec:arch-ablation}--\ref{sec:feat-ablation}) use $3$ seeds.
 
 \section{Experiments and Results}
 \label{sec:experiments}
@@ -150,7 +120,7 @@ Game counts are split evenly between P0 and P1. WRs are averages over $1000$ sto
 \subsection{Architecture Ablation}
 \label{sec:arch-ablation}
 
-The three backbones are GridNet, IMPALA-CNN~\cite{espeholtIMPALAScalableDistributed2018} (a deeper residual CNN), and U-Net. Each addition trades more parameters and lower SPS (Steps Per Second) for a higher WR gain ($\bar{\Delta}$). Each architecture is trained for $100$\,M steps over $3$ seeds ($21$ runs, $13.6$ GPU-days). Table~\ref{tab:arch-ablation-summary} confirms Section~\ref{sec:arch}'s three axes. \textbf{\emph{(i)}} U-Net trends above IMPALA-CNN by $+8.3$\%, supporting multi-scale spatial perception. \textbf{\emph{(ii)}} The Entity Transformer lifts both backbones ($+6.2$\% IMPALA-CNN, $+5.7$\% U-Net), since RTS interactions are naturally entity-level rather than cell-level, and CNNs encode them only indirectly through stacked local fields. \textbf{\emph{(iii)}} CBAM alone shows no clear gain ($-3.6$\%); benefits emerge only with \emph{-Deep} (more capacity), where \code{UECD} reaches $86.3$\% WR ($\bar{\Delta}=+21.5$\%).
+The three backbones are GridNet, IMPALA-CNN~\cite{espeholtIMPALAScalableDistributed2018} (a deeper residual CNN), and U-Net. Each addition trades more parameters and lower SPS (Steps Per Second) for a higher WR gain ($\bar{\Delta}$). Each architecture is trained for $100$\,M steps over $3$ seeds ($21$ runs, $\approx\!13.6$ GPU-days). Table~\ref{tab:arch-ablation-summary} confirms Section~\ref{sec:arch}'s three axes. \textbf{\emph{(i)}} U-Net trends above IMPALA-CNN by $+8.3$\%, supporting multi-scale spatial perception. \textbf{\emph{(ii)}} The Entity Transformer lifts both backbones ($+6.2$\% IMPALA-CNN, $+5.7$\% U-Net), since RTS interactions are naturally entity-level rather than cell-level, and CNNs encode them only indirectly through stacked local fields. \textbf{\emph{(iii)}} CBAM alone shows no clear gain ($-3.6$\%); benefits emerge only with \emph{-Deep} (more capacity), where \code{UECD} reaches $86.3$\% WR ($\bar{\Delta}=+21.5$\%).
 
 \begin{table}[!tb]
 \centering
@@ -190,7 +160,7 @@ Table~\ref{tab:feat-ablation-summary} reports each feature's WR gain ($\bar{\Del
   \midrule
   Extended Observation ($73$ channels)~\cite{goodfriendCompetitionWinningDeep2024}    & $84.3 \pm 1.7$ & \textcolor{teal}{$+26.3$} \\
   Filtered Masks + Reserved Observation~\cite{goodfriendCompetitionWinningDeep2024}   & $80.6 \pm 5.6$ & \textcolor{teal}{$+22.6$} \\
-  Matchup Competitiveness Weighting (MCW) & $78.4 \pm 0.4$ & \textcolor{teal}{$+20.4$} \\
+  \textbf{Matchup Competitiveness Weighting (MCW)} & $78.4 \pm 0.4$ & \textcolor{teal}{$+20.4$} \\
   Opponent Modeling~\cite{manandharReinforcementActorcriticLearning2024} & $77.8 \pm 4.0$ & \textcolor{teal}{$+19.8$} \\
   \midrule
   Partial Advantage Estimation (PAE, $95$\%)~\cite{jinPartialAdvantageEstimator2025}  & $71.3 \pm 8.1$ & \textcolor{teal}{$+13.3$} \\
@@ -208,8 +178,8 @@ Table~\ref{tab:feat-ablation-summary} reports each feature's WR gain ($\bar{\Del
 \end{table}
 
 The ranking shows a sharp discontinuity at the fourth feature: the top-$4$ yield $\ge\!+19.8$\% ($\le\!5.6$\% std), while the fifth drops to $+13.3$\% ($8.1$\% std), with the mean gain falling and stds elevated thereafter. The dichotomy is clean: each top-$4$ feature enriches the \emph{training signal} (Extended Observation~\cite{goodfriendCompetitionWinningDeep2024} adds environment channels; Filtered Masks + Reserved Observation~\cite{goodfriendCompetitionWinningDeep2024} tighten action validity; MCW concentrates gradients on informative matchups; Opponent Modeling~\cite{manandharReinforcementActorcriticLearning2024} adds an auxiliary opponent-prediction head). The remaining eight tune \emph{optimization} (PAE~\cite{jinPartialAdvantageEstimator2025}, PopArt~\cite{vanhasseltLearningValuesMany2016}, GELU~\cite{hendrycksGaussianErrorLinear2016}), \emph{inductive bias} (autoregressive action sampling~\cite{vinyalsGrandmasterLevelStarCraft2019}, SPP critic~\cite{heSpatialPyramidPooling2015}), or add a \emph{redundant signal} already saturated by the top-$4$ (adaptive curriculum, frame stacking~\cite{mnihHumanlevelControlDeep2015}). PFSP self-play~\cite{vinyalsGrandmasterLevelStarCraft2019} is deferred until bots saturate (Section~\ref{sec:agent}).
-  
-Of the $12$ features, only MCW is introduced here; the rest draw from prior work. It scales each PPO sample on-policy by a weight that peaks at $1.0$ against $50$\%-WR opponents (highest learning signal) and floors at $0.5$ against extreme-WR opponents (saturated, no learning signal). Unlike sampling-based methods (PFSP~\cite{vinyalsGrandmasterLevelStarCraft2019}) or off-policy reweighting (Prioritized Experience Replay, PER~\cite{schaulPrioritizedExperienceReplay2015}), MCW reweights gradients on-policy without changing the distribution.
+
+Of the $12$ features, only MCW is novel; the rest draw from prior work. This gradient-reweighting scheme scales each PPO sample by a weight peaking at $1.0$ against $50$\%-WR opponents (highest learning signal) and flooring at $0.5$ against extreme-WR opponents (saturated, no signal). Unlike sampling-based methods (PFSP~\cite{vinyalsGrandmasterLevelStarCraft2019}) or off-policy reweighting (Prioritized Experience Replay, PER~\cite{schaulPrioritizedExperienceReplay2015}), MCW reweights gradients on-policy without changing the sampling distribution.
 
 \begin{figure}[!tb]
 \centering
@@ -245,14 +215,7 @@ The resulting agent, \code{UECD-Best}, is evaluated in Section~\ref{sec:tourname
 \section{Round-Robin Tournament}
 \label{sec:tournament}
 
-The $19$-agent tournament\footnote{\textbf{Supplementary Website:} $36$ recorded \code{UECD-Best} matchups, extended tournament game-theoretic metrics, source code, and CoG bots archive. Available at%
-  \ifanonymous
-    ~[URL \textit{anonymized} for double-blind review].%
-  \else
-    ~\url{https://mathisdelsart.github.io/microrts-drl-uecd-website/}.%
-  \fi
-  }
-evaluates $15$ external agents (baselines, past CoG winners) and $4$ UECD checkpoints under the deterministic CoG protocol (Section~\ref{sec:setup-method}).
+The $19$-agent tournament\footnote{\textbf{Supplementary Website:} $36$ recorded \code{UECD-Best} matchups, extended tournament game-theoretic metrics, source code, and CoG bots archive. Available at~\url{https://mathisdelsart.github.io/microrts-drl-uecd-website/}.} evaluates $15$ external agents (baselines, past CoG winners) and $4$ UECD checkpoints under the deterministic MicroRTS CoG protocol (Section~\ref{sec:setup-method}).
 
 \code{UECD-Best} tops the standings with \textbf{174 points} (Fig.~\ref{fig:standings}; per-game scoring: $\text{Win}=+1$, $\text{Draw}=+0.5$, $\text{Loss}=+0$), ahead of RAISocketAI ($164$ points) and every intermediate \code{UECD} checkpoint. Rank-$1$ holds excluding these, ruling out a within-family bias. In head-to-head (Fig.~\ref{fig:h2h}), \code{UECD-Best} wins \textbf{100\%} against all except RAISocketAI ($90$\%) and POWorkerRush ($50$\%). However, under the stochastic protocol, \code{UECD-Best} wins $99.3$\% against POWorkerRush, resolving the deterministic-protocol artifact specific to this matchup. Against RAISocketAI, the WR drops to $65.7$\%, a narrower but still decisive margin. The improvement from \code{UECD-TopFeats} (131) to \code{UECD-Best} (174) confirms that two-phase fine-tuning bridges the gap to competitive play.
 
@@ -294,18 +257,15 @@ The asymmetry is striking: scale-shift WR sits well above layout-shift WR for ev
 The architecture is already size-agnostic; future work targets joint training on small maps ($\leq\!16{\times}16$) via padded environments and Prioritized Level Replay (PLR)~\cite{jiangPrioritizedLevelReplay2021}, then scaling to $64{\times}64$, where per-unit reasoning matters most.
 
 \section*{Acknowledgment}
-\ifanonymous
-    Computational resources have been provided by the \textit{Anonymous}, funded by the \textit{Anonymous} under Grant \textit{Anonymous}.
 
-    Anthropic's Claude (Opus 4) was used for English language polishing of the paper.
-\else
-    Computational resources have been provided by the Consortium des Equipements de Calcul Intensif (CECI), funded by the Fonds de la Recherche Scientifique de Belgique (F.R.S.-FNRS) under Grant No. 2.5020.11 and by the Walloon Region.
+Computational resources have been provided by the Consortium des Équipements de Calcul Intensif (CÉCI), funded by the Fonds de la Recherche Scientifique de Belgique (F.R.S.-FNRS) under Grant No. 2.5020.11 and by the Walloon Region.
 
-    Anthropic's Claude (Opus 4) was used for English language polishing of the paper.
-\fi
+Anthropic's Claude (Opus 4) was used for English language polishing of the paper.
+
+
+%% Bibliography
 
 \hypersetup{urlcolor=black}
-
 \begin{thebibliography}{10}
 \providecommand{\url}[1]{#1}
 \csname url@samestyle\endcsname
@@ -401,7 +361,7 @@ J.~Schulman, P.~Moritz, S.~Levine, M.~Jordan, and P.~Abbeel, ``High-dimensional
 \bibitem{espeholtIMPALAScalableDistributed2018}
 L.~Espeholt \emph{et~al.}, ``{IMPALA}: Scalable distributed deep-{RL} with
   importance weighted actor-learner architectures,'' in \emph{Proc. Int. Conf.
-  Mach. Learn. ({ICML})}, 2018, pp. 1406--1415.
+  Mach. Learn. ({ICML})}, 2018, pp. 1407--1416.
 
 \bibitem{manandharReinforcementActorcriticLearning2024}
 S.~Manandhar and B.~Banerjee, ``Reinforcement actor-critic learning as a
@@ -443,78 +403,5 @@ M.~Jiang, E.~Grefenstette, and T.~Rockt{\"a}schel, ``Prioritized level
   4940--4950.
 
 \end{thebibliography}
-
-% \begin{thebibliography}{00}
-
-% \bibitem{buroRTSChallenge2003}
-% M.~Buro, ``Real-time strategy games: A new ai research challenge,'' in \emph{Proc. IJCAI}, 2003, pp. 1534--1535.
-
-% \bibitem{ontanonSurveyRealTimeStrategy2013}
-% S.~Onta{\~n}{\'o}n, G.~Synnaeve, A.~Uriarte, F.~Richoux, D.~Churchill, and M.~Preuss, ``A survey of real-time strategy game ai research and competition in starcraft,'' \emph{IEEE Trans. Comput. Intell. AI Games}, vol.~5, no.~4, pp. 293--311, 2013.
-
-% \bibitem{vinyalsGrandmasterLevelStarCraft2019}
-% O.~Vinyals \emph{et~al.}, ``Grandmaster level in starcraft ii using multi-agent reinforcement learning,'' \emph{Nature}, vol. 575, no. 7782, pp. 350--354, 2019.
-
-% \bibitem{ontanonCombinatorialMultiArmedBandit2013}
-% S.~Onta{\~n}{\'o}n, ``The combinatorial multi-armed bandit problem and its application to real-time strategy games,'' \emph{Proc. AAAI Conf. AIIDE}, vol.~9, no.~1, pp. 58--64, 2013.
-
-% \bibitem{ontanonFirstMicroRTSArtificial2018}
-% S.~Onta{\~n}{\'o}n, N.~A. Barriga, C.~R. Silva, R.~O. Moraes, and L.~H.~S. Lelis, ``The first microrts artificial intelligence competition,'' \emph{AI Mag.}, vol.~39, no.~1, pp. 75--83, 2018.
-
-% \bibitem{goodfriendCompetitionWinningDeep2024}
-% S.~Goodfriend, ``A competition winning deep reinforcement learning agent in microrts,'' in \emph{Proc. IEEE Conf. Games (CoG)}, 2024, pp. 1--8.
-
-% \bibitem{ronnebergerUNetConvolutionalNetworks2015}
-% O.~Ronneberger, P.~Fischer, and T.~Brox, ``U-net: Convolutional networks for biomedical image segmentation,'' in \emph{Proc. MICCAI}, 2015, pp. 234--241.
-
-% \bibitem{wooCBAMConvolutionalBlock2018}
-% S.~Woo, J.~Park, J.-Y. Lee, and I.~S. Kweon, ``Cbam: Convolutional block attention module,'' in \emph{Proc. ECCV}, 2018, pp. 3--19.
-
-% \bibitem{vaswaniAttentionAllYou2017}
-% A.~Vaswani \emph{et~al.}, ``Attention is all you need,'' 2017, arXiv:1706.03762.
-
-% \bibitem{schulmanProximalPolicyOptimization2017}
-% J.~Schulman, F.~Wolski, P.~Dhariwal, A.~Radford, and O.~Klimov, ``Proximal policy optimization algorithms,'' 2017, arXiv:1707.06347.
-
-% \bibitem{huangGym$m$RTSAffordableFull2021}
-% S.~Huang, S.~Onta{\~n}{\'o}n, C.~Bamford, and L.~Grela, ``Gym-$\mu$rts: Toward affordable full game real-time strategy games research with deep reinforcement learning,'' 2021, arXiv:2105.13807.
-
-% \bibitem{huangCloserLookInvalid2022}
-% S.~Huang and S.~Onta{\~n}{\'o}n, ``A closer look at invalid action masking in policy gradient algorithms,'' \emph{Proc. Int. FLAIRS Conf.}, vol.~35, 2022.
-
-% \bibitem{huSqueezeandExcitationNetworks2018}
-% J.~Hu, L.~Shen, and G.~Sun, ``Squeeze-and-excitation networks,'' in \emph{Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR)}, 2018, pp. 7132--7141.
-
-% \bibitem{schulmanHighDimensionalContinuousControl2015}
-% J.~Schulman, P.~Moritz, S.~Levine, M.~Jordan, and P.~Abbeel, ``High-dimensional continuous control using generalized advantage estimation,'' 2015, arXiv:1506.02438.
-
-% \bibitem{espeholtIMPALAScalableDistributed2018}
-% L.~Espeholt \emph{et~al.}, ``Impala: Scalable distributed deep-rl with importance weighted actor-learner architectures,'' 2018, arXiv:1802.01561.
-
-% \bibitem{manandharReinforcementActorcriticLearning2024}
-% S.~Manandhar and B.~Banerjee, ``Reinforcement actor-critic learning as a rehearsal in microrts,'' \emph{Knowl. Eng. Rev.}, vol.~39, p.~e6, 2024.
-
-% \bibitem{jinPartialAdvantageEstimator2025}
-% Y.~Jin, X.~Song, G.~Slabaugh, and S.~Lucas, ``Partial advantage estimator for proximal policy optimization,'' \emph{IEEE Trans. Games}, vol.~17, no.~1, pp. 158--166, 2025.
-
-% \bibitem{vanhasseltLearningValuesMany2016}
-% H.~van Hasselt, A.~Guez, M.~Hessel, V.~Mnih, and D.~Silver, ``Learning values across many orders of magnitude,'' 2016, arXiv:1602.07714.
-
-% \bibitem{hendrycksGaussianErrorLinear2016}
-% D.~Hendrycks and K.~Gimpel, ``Gaussian error linear units (gelus),'' 2016, arXiv:1606.08415.
-
-% \bibitem{mnihHumanlevelControlDeep2015}
-% V.~Mnih \emph{et~al.}, ``Human-level control through deep reinforcement learning,'' \emph{Nature}, vol. 518, no. 7540, pp. 529--533, 2015.
-
-% \bibitem{heSpatialPyramidPooling2015}
-% K.~He, X.~Zhang, S.~Ren, and J.~Sun, ``Spatial pyramid pooling in deep convolutional networks for visual recognition,'' \emph{IEEE Trans. Pattern Anal. Mach. Intell.}, vol.~37, no.~9, pp. 1904--1916, 2015.
-
-% \bibitem{schaulPrioritizedExperienceReplay2015}
-% T.~Schaul, J.~Quan, I.~Antonoglou, and D.~Silver, ``Prioritized experience replay,'' 2015, arXiv:1511.05952.
-
-% \bibitem{jiangPrioritizedLevelReplay2021}
-% M.~Jiang, E.~Grefenstette, and T.~Rockt{\"a}schel, ``Prioritized level replay,'' 2021, arXiv:2010.03934.
-
-% \end{thebibliography}
 
 \end{document}

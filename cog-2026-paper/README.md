@@ -6,31 +6,27 @@ contributions:
 > **Combining Spatial and Entity-Based Reasoning for Competitive
 > MicroRTS via U-Net and Transformers**
 
-Status: under review for IEEE CoG 2026. The compiled PDF is shipped at
-[`paper.pdf`](paper.pdf).
+Status: accepted at IEEE CoG 2026 (auxiliary short paper). The compiled
+PDF is shipped at [`cog_paper.pdf`](cog_paper.pdf).
 
 ## Layout
 
 | Path | What it is |
 |---|---|
-| [`paper.tex`](paper.tex) | The whole paper (single-file IEEEtran layout). |
-| [`IEEEtran.cls`](IEEEtran.cls) | IEEE conference class. Vendored so build is reproducible across hosts. |
-| [`references.bib`](references.bib) | Biblatex bibliography. |
+| [`cog_paper.tex`](cog_paper.tex) | The whole paper (single-file IEEEtran layout, bibliography embedded inline). |
+| [`IEEEtran.cls`](IEEEtran.cls) | IEEE conference class. Vendored so the build is reproducible across hosts. |
+| [`references.bib`](references.bib) | Bibliography source, kept for reference only. The paper ships its bibliography inline (`thebibliography`), so BibTeX/biber is not run. |
 | [`figures/`](figures/) | Figures used by the paper (subset of the dissertation's `figs-pdf/`, plus tighter layouts where needed). |
 
 ## How to compile
 
 ```bash
 cd cog-2026-paper/
-latexmk -pdf -interaction=nonstopmode paper.tex
+latexmk -pdf -interaction=nonstopmode cog_paper.tex
 ```
 
-## Anonymisation switch
-
-`paper.tex` exposes a `\newif\ifanonymous` toggle in the preamble. Flip
-`\anonymousfalse` to `\anonymoustrue` for the anonymised submission
-version (authors blacked out, hyperref title set to "Anonymous"). The
-build flow is unchanged.
+Plain `pdflatex cog_paper.tex` (run twice for cross-references) also
+works, since the bibliography is embedded and no BibTeX pass is needed.
 
 ## Cross-references
 

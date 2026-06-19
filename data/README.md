@@ -24,4 +24,4 @@ into this tree.
 - **Supplementary site:** <https://mathisdelsart.github.io/microrts-drl-uecd-website/>
 - **Site source:** <https://github.com/mathisdelsart/microrts-drl-uecd-website>
 - **Dissertation PDF:** [`../dissertation/dissertation.pdf`](../dissertation/dissertation.pdf)
-- **CoG 2026 short paper (under review):** [`../cog-2026-paper/`](../cog-2026-paper/)
+- **CoG 2026 short paper (accepted):** [`../cog-2026-paper/`](../cog-2026-paper/)
