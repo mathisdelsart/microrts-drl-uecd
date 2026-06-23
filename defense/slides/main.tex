@@ -76,16 +76,16 @@
       \end{column}
       \begin{column}{0.52\textwidth}
         \footnotesize
-        \planentry{1}{Context \& Objective}{1--6}%
-        \planentry{2}{Background}{7--11}%
-        \planentry{3}{State of the Art}{12--15}%
-        \planentry{4}{Contributions}{16--17}%
-        \planentry{5}{Evaluation Framework}{18--21}%
-        \planentry{6}{Environment Stack}{22--25}%
-        \planentry{7}{The UECD Architecture}{26--31}%
-        \planentry{8}{Training Recipe}{32--34}%
-        \planentry{9}{Results \& Interpretation}{35--51}%
-        \planentry{10}{Discussion \& Conclusion}{52--55}%
+        \planentry{1}{Context \& Objective}{1--5}%
+        \planentry{2}{Background}{6--10}%
+        \planentry{3}{State of the Art}{11--13}%
+        \planentry{4}{Contributions}{14--15}%
+        \planentry{5}{Evaluation Framework}{16--19}%
+        \planentry{6}{Environment Stack}{20--23}%
+        \planentry{7}{The UECD Architecture}{24--29}%
+        \planentry{8}{Training Recipe}{30--32}%
+        \planentry{9}{Results \& Interpretation}{33--49}%
+        \planentry{10}{Discussion \& Conclusion}{50--52}%
       \end{column}
     \end{columns}
     \vfill
@@ -336,30 +336,6 @@
   \end{columns}
 \end{frame}
 
-% --- Motivation: gameplay clips (PLACEHOLDERS -- add the GIFs in PowerPoint) ---
-\begin{frame}{Motivation: MicroRTS in action}
-  \centering
-  \vspace{0.2cm}
-  {\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.8pt}%
-  \begin{columns}[c]
-    \begin{column}{0.47\textwidth}\centering
-      \fcolorbox{black!30}{black!4}{\parbox[c][0.60\textheight][c]{\linewidth}{\centering
-        {\fontsize{42}{42}\selectfont\color{black!28}\faPlayCircle}\\[0.5em]
-        {\footnotesize\color{black!45}[ gameplay clip -- add in PPT ]}}}\\[0.45em]
-      {\small\bfseries CoacAI \textcolor{black!45}{vs} RAISocketAI}
-    \end{column}
-    \begin{column}{0.47\textwidth}\centering
-      \fcolorbox{black!30}{black!4}{\parbox[c][0.60\textheight][c]{\linewidth}{\centering
-        {\fontsize{42}{42}\selectfont\color{black!28}\faPlayCircle}\\[0.5em]
-        {\footnotesize\color{black!45}[ gameplay clip -- add in PPT ]}}}\\[0.45em]
-      {\small\bfseries CoacAI \textcolor{black!45}{vs} RAISocketAI}
-    \end{column}
-  \end{columns}}
-  \vspace{0.35cm}
-  {\footnotesize Real-time, multi-unit battles decided in milliseconds: this is the
-  level a MicroRTS agent must master.}
-\end{frame}
-
 \begin{frame}{Research questions}
   \vfill
   \begin{tcolorbox}[enhanced,colback=uclBlue!5,colframe=uclBlue!30,arc=4pt,
@@ -430,11 +406,24 @@
   \end{tabular}
 \end{frame}
 
-\begin{frame}{PPO: on-policy, model-free, actor-critic}
+% --- The PPO algorithm: introduce PPO + why it's the choice (first PPO slide) ---
+\begin{frame}{The PPO Algorithm}
   \vfill
   \centering
   {\Large\textbf{\alert{P}}roximal \textbf{\alert{P}}olicy \textbf{\alert{O}}ptimization}\par
   \vfill
+  {\small
+  \begin{tabular}{@{}c@{\hspace{0.4cm}}l@{}}
+    \schip{\faCheckCircle} & \textbf{The \alert{standard} on-policy algorithm} for MicroRTS DRL agents.\\[1.5em]
+    \schip{\faCogs} & \textbf{A \alert{stable} training loop}, robust and well understood.\\[1.5em]
+    \schip{\faVial} & \textbf{A clean \alert{testbed}}: every architecture and mechanism ablated in isolation.\\
+  \end{tabular}}
+  \vfill
+\end{frame}
+
+\begin{frame}{PPO: on-policy, model-free, actor-critic}
+  \vfill
+  \centering
   \renewcommand{\arraystretch}{1.45}
   \begin{tabular}{@{}>{\centering\arraybackslash}m{1.3cm}@{\hspace{0.45cm}}m{0.74\textwidth}@{}}
     \chip{\faDice}     & \alert{Model-free}: learns from play, with no model of the dynamics.\newline
@@ -447,6 +436,7 @@
   \vfill
 \end{frame}
 
+\iffalse % equations slide hidden from the deck (kept in source, not shown)
 \begin{frame}{From policy gradients to PPO}
   \small
   \vspace{-0.1cm}
@@ -462,6 +452,7 @@
          \quad \rho_t = \tfrac{\pi_{\theta}(a_t|s_t)}{\pi_{\theta_{\mathrm{old}}}(a_t|s_t)} \]
   \end{enumerate}
 \end{frame}
+\fi
 
 \begin{frame}{The PPO training loop}
   \begin{tikzpicture}[remember picture,overlay]
@@ -494,26 +485,6 @@
     \schip{\faBolt}      & \alert{Into real-time strategy} (2019): AlphaStar in StarCraft~II, OpenAI Five in Dota~2.\\[0.55em]
     \schip{\faMicrochip} & \alert{But at a massive compute cost}: AlphaStar ran 384 TPUs for 44 days.\\
   \end{tabular}
-  \vfill
-\end{frame}
-
-\begin{frame}{AlphaStar: the ideas I borrow}
-  \centering
-  \vfill
-  \begin{tikzpicture}
-    \node[anchor=south west,inner sep=0] (img) at (0,0)
-      {\includegraphics[width=0.9\textwidth]{nature-alphastar-model_bg.png}};
-    \begin{scope}[x={(img.south east)},y={(img.north west)}]
-      \draw[uclAccent,line width=1.4pt,rounded corners=5pt,fill=uclAccent,fill opacity=0.16] (0.147,0.62) rectangle (1.0,0.985);
-      \node[uclAccent,font=\footnotesize\bfseries,anchor=south,fill=white,
-        inner sep=1.5pt,rounded corners=2pt] at (0.56,0.998)
-        {Auto-regressive action head};
-      \draw[uecdGreen,line width=1.4pt,rounded corners=5pt,fill=uecdGreen,fill opacity=0.16] (0.415,0.17) rectangle (0.705,0.345);
-      \node[uecdGreen,font=\footnotesize\bfseries,anchor=north,fill=white,
-        inner sep=1.5pt,rounded corners=2pt] at (0.56,0.155)
-        {Entity Transformer + spatial CNN};
-    \end{scope}
-  \end{tikzpicture}
   \vfill
 \end{frame}
 
@@ -581,7 +552,7 @@
   experiments} (behaviour-cloning warm-start, multi-map training).\par}
 \end{frame}
 
-\begin{frame}{A paper submitted to IEEE CoG 2026}
+\begin{frame}{A paper accepted at IEEE CoG 2026}
   \begin{columns}[c]
     \begin{column}{0.4\textwidth}\centering
       {\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.6pt}%
@@ -594,22 +565,25 @@
       {\footnotesize\color{black!55}M. Delsart, A. Morenville, \'E. Piette
       \,--\, ICTEAM, UCLouvain}\par
       \vspace{0.5em}
-      {\small The core of this thesis, condensed into a paper submitted to the
+      {\small The core of this thesis, condensed into a paper accepted at the
       \alert{IEEE Conference on Games (CoG) 2026}.}\par
       \vspace{0.7em}
       % ============ STATUS BOX: keep exactly ONE state active ============
       % --- (A) ACCEPTED ---
-      % \begin{tcolorbox}[enhanced,colback=uecdGreen!10,colframe=uecdGreen!65,arc=4pt,
-      %   boxrule=0.8pt,left=10pt,right=10pt,top=7pt,bottom=7pt,drop fuzzy shadow=black!12]
-      %   {\color{uecdGreen}\faCheckCircle}~~\textbf{Accepted at IEEE CoG 2026.}\newline
-      %   {\footnotesize\color{black!60}To appear in the conference proceedings.}
-      % \end{tcolorbox}
-      % --- (B) UNDER REVIEW (default until the decision) ---
-      \begin{tcolorbox}[enhanced,colback=black!4,colframe=black!35,arc=4pt,
+      \begin{tcolorbox}[enhanced,colback=uecdGreen!10,colframe=uecdGreen!65,arc=4pt,
         boxrule=0.8pt,left=10pt,right=10pt,top=7pt,bottom=7pt,drop fuzzy shadow=black!12]
-        {\color{black!55}\faHourglassHalf}~~\textbf{Under review.}\newline
-        {\footnotesize\color{black!60}Decision pending.}
+        {\color{uecdGreen}\faCheckCircle}~~\textbf{Accepted at IEEE CoG 2026.}\newline
+        {\footnotesize\color{black!60}To appear in the conference proceedings.}
       \end{tcolorbox}
+      \vspace{0.7em}
+      {\centering\color{uclBlue}\faMapMarker~~\textbf{Madrid, Spain}\quad
+       \textcolor{black!30}{\textbullet}\quad\faCalendar~~\textbf{September 2026}\par}
+      % --- (B) UNDER REVIEW (default until the decision) ---
+      % \begin{tcolorbox}[enhanced,colback=black!4,colframe=black!35,arc=4pt,
+      %   boxrule=0.8pt,left=10pt,right=10pt,top=7pt,bottom=7pt,drop fuzzy shadow=black!12]
+      %   {\color{black!55}\faHourglassHalf}~~\textbf{Under review.}\newline
+      %   {\footnotesize\color{black!60}Decision pending.}
+      % \end{tcolorbox}
       % --- (C) IF REJECTED: frank but neutral (grey, no red) ---
       % \begin{tcolorbox}[enhanced,colback=black!4,colframe=black!35,arc=4pt,
       %   boxrule=0.8pt,left=10pt,right=10pt,top=7pt,bottom=7pt,drop fuzzy shadow=black!12]
@@ -693,7 +667,7 @@
   \vfill
   \centering
   {\small\renewcommand{\arraystretch}{1.75}\setlength{\tabcolsep}{9pt}\arrayrulecolor{uclBlue}%
-  \begin{tabular}{@{}l l l@{}}
+  \begin{tabular}{@{}l >{\columncolor{uclBlue!10}}l l@{}}
     \specialrule{0.9pt}{0pt}{3pt}
     {\color{uclBlue}\bfseries Metric} & {\color{uclBlue}\bfseries Perspective} & {\color{uclBlue}\bfseries Question} \\[2pt]
     \specialrule{0.9pt}{0pt}{4pt}
@@ -1040,6 +1014,8 @@
 
 \begin{frame}{Architecture ablation: +21.5 pp}
   \centering
+  {\footnotesize\color{black!60}\textbf{\color{uclBlue}7 architectures} $\times$ \textbf{\color{uclBlue}3 seeds}, 100M steps each (\textbf{\color{uclBlue}13.6 GPU-days}); grouped by reasoning axis.\par}
+  \vspace{0.45em}
   {\small\renewcommand{\arraystretch}{1.0}%
   \begin{tabular}{l r c c c}
     \rowcolor{uclBlue}
@@ -1059,35 +1035,33 @@
     \textbf{UECD}        & \textbf{4.72\,M} & \textbf{86.3\%} & {\color{black!55}$\pm$7.1} & \textbf{+21.5 pp} \\
     \bottomrule
   \end{tabular}}
-  \par\smallskip
-  {\footnotesize 7 architectures $\times$ 3 seeds, 100M steps each ($13.6$ GPU-days); grouped by reasoning axis.}
 \end{frame}
 
 \begin{frame}{Feature ablation: signal beats capacity}
-  \vspace{0.1em}
+  \vspace{-0.4em}
   \centering
   {\footnotesize\color{black!55}The four reliable gains change \textbf{\color{uclBlue}perception} and \textbf{\color{uclBlue}gradient allocation}, not capacity ($+0.78\%$ params).\par}
-  \vspace{0.35em}
-  \includegraphics[width=\linewidth,height=0.78\textheight,keepaspectratio]{feat_ablation_full.png}\\[0.15em]
+  \vspace{0.3em}
+  \includegraphics[width=\linewidth,height=0.76\textheight,keepaspectratio]{feat_ablation_full.png}\\[0.7em]
   {\scriptsize\color{black!50}21 features $\times$ 3 seeds, 50M steps each $\cdot$ 19.4 GPU-days.}
 \end{frame}
 
 \begin{frame}{Single-map agent: a discount-induced rush collapse}
   \begin{columns}[c]
-    \begin{column}{0.57\textwidth}
-      \fitfig[0.82\textheight]{rush_collapse_bg.png}
+    \begin{column}{0.6\textwidth}
+      \fitfig[0.9\textheight]{rush_collapse_bg.png}
     \end{column}
-    \begin{column}{0.43\textwidth}
+    \begin{column}{0.4\textwidth}
       \small
-      \begin{itemize}\setlength\itemsep{5pt}
-        \item \alert{Setup}: UECD $+$ top-5 scaled to \alert{300M steps}, the
-              shaped reward \alert{annealed to sparse} ($1.0\to0$), with self-play.
-        \item Once shaped $\to0$ and $\gamma < 1$, the only way to grow return is
+      \begin{itemize}\setlength\itemsep{7pt}
+        \item \textbf{\color{uclBlue}Setup}: UECD $+$ top-5, \alert{300M steps},
+              shaped reward \alert{annealed to sparse} ($1.0\to0$), self-play.
+        \item Once shaped $\to0$ with $\gamma<1$, the only way to grow return is
               a \alert{shorter episode}.
         \item 750 $\to$ 300 frames amplifies the terminal signal
-              \alert{$\sim$92$\times$}: collapse to a worker-rush exploit.
+              \alert{$\sim$92$\times$}: collapse into a worker-rush exploit.
       \end{itemize}
-      \vspace{0.5em}
+      \vspace{0.25em}
       \begin{tcolorbox}[enhanced,colback=mStandout,colframe=mStandout,arc=4pt,boxrule=0pt,
         left=8pt,right=8pt,top=5pt,bottom=5pt,drop fuzzy shadow=black!25]
         {\footnotesize\color{white}\faWrench~~\textbf{Fix}: a 10\% shaped-reward floor.}
@@ -1096,45 +1070,42 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Why it collapses: a discount-induced shortcut}
-  \small
-  Annealing kills the shaped sum; only the discounted terminal reward survives:
-  \[ J(\pi)\;\xrightarrow{\,w_{\text{shape}}\to0\,}\;
-     w_{\text{term}}\,\mathbb{E}_{\tau\sim\pi}\!\big[\gamma^{T-1}\,r^{\text{term}}_T\big]
-     \;\approx\; 10\,\mathbb{E}_{\tau\sim\pi}\!\big[\gamma^{T-1}\big]. \]
-  With $\gamma<1$, $\gamma^{T-1}$ strictly decreases in $T$: the only way to grow
-  $J$ is a \alert{shorter episode}, irrespective of play quality.
-  \vspace{0.25cm}
-
-  \textbf{It reaches the policy through the advantage}, and the clip fails to
-  suppress it.\\
-  Two rollouts share $s_t$ but end at $T$ and $T-\Delta$ (same
-  state-only $V(s_t)$):
-  \[ \hat{A}_t^{(T-\Delta)}-\hat{A}_t^{(T)}
-     \;=\;\big(\gamma^{-\Delta}-1\big)\,G_t^{(T)}\;>\;0. \]
-  The shorter rollout always gets the larger advantage;\\
-  PPO clips the ratio $\rho_t$, \alert{not} $\hat{A}_t$, so the gradient flows.
-\end{frame}
-
 \begin{frame}{Rush fragility on held-out opponents}
   \vspace{0.1em}
   \centering
-  {\footnotesize\color{black!55}On held-out opponents the rush policy collapses while the balanced one holds:
+  {\footnotesize\color{black!55}On held-out opponents the rush policy \alert{\textbf{collapses}} while the balanced one holds:\\
   the rush is a \textbf{\color{uclBlue}training-distribution exploit}, not transferable.\par}
   \vfill
   \fitfig[0.80\textheight]{rush_fragility_bg.png}
   \vfill
 \end{frame}
 
+\begin{frame}{Why it collapses: a discount-induced shortcut}
+  \small
+  \textbf{\color{uclBlue}1. Annealing leaves only the discounted terminal reward.}
+  \[ J(\pi)\;\xrightarrow{\,w_{\text{shape}}\to0\,}\;
+     10\,\mathbb{E}_{\tau\sim\pi}\!\big[\gamma^{T-1}\big]. \]
+  With $\gamma<1$, $\gamma^{T-1}$ falls as $T$ grows: maximizing $J$ rewards a
+  \alert{shorter episode}, not better play.
+  \vspace{1.4em}
+
+  \textbf{\color{uclBlue}2. It reaches the policy through the advantage.}\\
+  Two rollouts share $s_t$ but end at $T$ vs $T-\Delta$:
+  \[ \hat{A}_t^{(T-\Delta)}-\hat{A}_t^{(T)}
+     \;=\;\big(\gamma^{-\Delta}-1\big)\,G_t^{(T)}\;>\;0. \]
+  The shorter one always wins, and PPO clips the ratio $\rho_t$,
+  \alert{not} $\hat{A}_t$, so the gradient flows.
+\end{frame}
+
 \begin{frame}{UECD-Best: two-phase fine-tuning}
   \small
-  Resume from the \alert{150M (pre-collapse) checkpoint} and fine-tune in two
+  Resume from the \textbf{150M (pre-collapse) checkpoint} and fine-tune in two
   short phases, keeping the 10\% shaped floor:
   \begin{itemize}\setlength\itemsep{2pt}
-    \item \alert{Phase 1} ($150\text{M}\to240\text{M}$): \alert{broaden the pool}
+    \item \textbf{\color{uclBlue}Phase 1} ($150\text{M}\to240\text{M}$): \textbf{broaden the pool}
           --- swap the 3 weakest bots for TMA $+$ ObiBotKenobi, more self-play.
-    \item \alert{Phase 2} ($240\text{M}\to350\text{M}$): \alert{harden} ---
-          add RAISocketAI to the opponent pool.
+    \item \textbf{\color{uclBlue}Phase 2} ($240\text{M}\to350\text{M}$): \textbf{harden}
+          --- add RAISocketAI to the opponent pool.
   \end{itemize}
   \vspace{0.25cm}
   \centering
@@ -1152,31 +1123,66 @@
   \end{tabular}}
 \end{frame}
 
+% --- UECD-Best: cue slide; the live demo is shown on the project website ---
+\begin{frame}{UECD-Best in action on basesWorkers16x16A}
+  \vfill
+  \centering
+  \begin{tcolorbox}[enhanced,colback=uclBlue!5,colframe=uclBlue!30,arc=6pt,boxrule=0.8pt,
+      width=0.88\linewidth,left=16pt,right=16pt,top=15pt,bottom=15pt,
+      drop fuzzy shadow=black!15]
+    \centering
+    {\fontsize{38}{38}\selectfont\color{uclBlue}\faLaptopCode}\\[0.6em]
+    {\Large\bfseries\color{uclBlue}Watch the final agent play, live}\\[0.55em]
+    {\footnotesize\color{black!60}UECD-Best \textcolor{black!45}{vs} RAISocketAI
+      \;{\textcolor{uclBlue}{\textbullet}}\; basesWorkers16x16A}\\[0.7em]
+    {\small\faGlobe~~\href{https://mathisdelsart.github.io/microrts-drl-uecd-website/}%
+      {\color{uclBlue}\bfseries mathisdelsart.github.io/microrts-drl-uecd-website}}
+  \end{tcolorbox}
+  \vspace{0.5em}
+
+  {\small {\color{uclAccent}\faCrosshairs}~~The agent fields a single military type:
+  the \alert{Ranged} unit.}
+  \vfill
+\end{frame}
+
 \begin{frame}{Tournament: UECD-Best tops the field}
-  \fitfig[0.66\textheight]{final_standings_bg.png}
-  \begin{center}\small
-    19-agent round-robin on basesWorkers16x16A: \alert{96.67\%} win rate,
-    \alert{first of 19}.
-  \end{center}
+  \centering
+  {\footnotesize\color{black!60}19-agent round-robin on basesWorkers16x16A:
+  \textbf{\color{uclBlue}96.67\%} win rate, \textbf{\color{uclBlue}first of 19}.\par}
+  \vspace{0.3em}
+  \fitfig[0.73\textheight]{final_standings_bg.png}
 \end{frame}
 
 \begin{frame}{Tournament: the head-to-head matrix}
   \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
-      \fitfig[0.72\textheight]{h2h_matrix_bg.png}
+    \begin{column}{0.56\textwidth}
+      \fitfig[0.78\textheight]{h2h_matrix_bg.png}
     \end{column}
-    \begin{column}{0.45\textwidth}
+    \begin{column}{0.44\textwidth}
       \small
-      \begin{itemize}\setlength\itemsep{4pt}
-        \item UECD-Best wins \alert{100\%} against every agent but two:
-              WorkerRush (50\%) and RAISocketAI (90\%).
-        \item This matrix is the CoG protocol: \alert{10 games/matchup},
-              \alert{deterministic actions} (not sampling). WorkerRush's 50\% is
-              a 2-replay artifact.
-        \item Re-run with \alert{sampling} (1000 games): WorkerRush 99.3\%,
-              RAISocketAI \alert{65.7\%} ($\pm$2.9). The deterministic 90\% is
-              optimistic.
-      \end{itemize}
+      UECD-Best wins \textbf{\color{uclBlue}100\%} against every agent
+      \emph{but two}:
+      \vspace{0.7em}
+
+      \resizebox{\linewidth}{!}{%
+      \renewcommand{\arraystretch}{1.35}%
+      \setlength{\tabcolsep}{10pt}%
+      \begin{tabular}{l c c}
+        \rowcolor{uclBlue}
+        \textcolor{white}{\textbf{Opponent}} &
+        \textcolor{white}{\textbf{CoG}} &
+        \textcolor{white}{\textbf{Sampling}}\\
+        WorkerRush  & 50\% & \textbf{99.3\%}\\
+        RAISocketAI & 90\% & \alert{\textbf{65.7\%}}\\
+        \bottomrule
+      \end{tabular}}
+      \vspace{0.7em}
+
+      {\footnotesize\color{black!70}\raggedright
+      The matrix is the \textbf{CoG} protocol: only \textbf{10 deterministic}
+      games per matchup, which produces tie and edge artifacts.\\[3pt]
+      We therefore re-evaluate with \textbf{1000 stochastic} games to recover the
+      honest win rates (the \alert{Sampling} column).\par}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1184,142 +1190,140 @@
 \begin{frame}{Beyond win rate: Copeland and Nash}
   \begin{columns}[c]
     \begin{column}{0.5\textwidth}\centering
-      \includegraphics[width=\linewidth,height=0.6\textheight,keepaspectratio]{copeland_scores_bg.png}\\[0.25em]
       {\footnotesize \textcolor{uclBlue}{\textbf{Copeland}} (1st, $+17$): breadth ---
-      \alert{how many} opponents you beat, regardless of margin.}
+      \textbf{how many} opponents you beat, regardless of margin.}\\[0.3em]
+      \includegraphics[width=\linewidth,height=0.66\textheight,keepaspectratio]{copeland_scores_bg.png}
     \end{column}
     \begin{column}{0.5\textwidth}\centering
-      \includegraphics[width=\linewidth,height=0.6\textheight,keepaspectratio]{nash_scores_bg.png}\\[0.25em]
       {\footnotesize \textcolor{uclBlue}{\textbf{Nash}} (in support):
-      \alert{non-exploitable} vs the equilibrium mix; immune to padding the pool.}
+      \textbf{non-exploitable} vs the equilibrium mix; immune to padding the pool.}\\[0.3em]
+      \includegraphics[width=\linewidth,height=0.66\textheight,keepaspectratio]{nash_scores_bg.png}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{Beyond win rate: $\alpha$-Rank}
   \centering
-  \vfill
-  \includegraphics[width=\linewidth,height=0.64\textheight,keepaspectratio]{alpha_rank_sweep_bg.png}\\[0.45em]
   {\footnotesize \textcolor{uclBlue}{\textbf{$\alpha$-Rank}} (1st):
-  \alert{evolutionary stability} --- the strategy hardest to invade and displace.}
-  \vfill
+  \textbf{evolutionary stability} --- the strategy hardest to invade and displace.}\\[0.45em]
+  \includegraphics[width=\linewidth,height=0.72\textheight,keepaspectratio]{alpha_rank_sweep_bg.png}
 \end{frame}
 
 \begin{frame}{Beyond win rate: regret}
   \centering
-  \vfill
-  \includegraphics[width=\linewidth,height=0.64\textheight,keepaspectratio]{robustness_score_bg.png}\\[0.45em]
   {\footnotesize \textcolor{uclBlue}{\textbf{Regret}} (1st avg, 2nd worst-case):
-  \alert{robustness} --- the gap to the pool's best counter for each opponent.}
-  \vfill
+  \textbf{robustness} --- the gap to the pool's best counter for each opponent.}\\[0.45em]
+  \includegraphics[width=\linewidth,height=0.72\textheight,keepaspectratio]{robustness_score_bg.png}
 \end{frame}
 
 \begin{frame}{Generalization: two distribution-shift probes}
   \centering
-  {\small Trained \alert{only} on basesWorkers16x16A, then evaluated under two shifts:}\\[0.35cm]
+  {\small Trained \textbf{only} on \textit{basesWorkers16x16A}, then evaluated under two shifts:}\\[0.25cm]
   \begin{tikzpicture}[
     mapnode/.style={inner sep=0pt, line width=1.4pt, sharp corners},
     arr/.style={-{Stealth[length=8pt,width=7pt]}, line width=1.5pt, draw=black!40},
-    arrlbl/.style={font=\footnotesize\itshape, text=black!55, inner sep=2pt}]
-    \node[mapnode, draw=black!45] (train) at (0,0) {\includegraphics[height=2.8cm]{map_bw16x16}};
-    \node[mapnode, draw=uclBlue] (scale) at (6,1.55) {\includegraphics[height=2.4cm]{map_bw32x32}};
-    \node[mapnode, draw=uecdRed] (layout) at (6,-1.55) {\includegraphics[height=2.4cm]{map_2bb16x16}};
+    arrlbl/.style={font=\footnotesize\bfseries, text=black!65, inner sep=2pt}]
+    \node[mapnode, draw=black!45] (train) at (0,0) {\includegraphics[height=2.5cm]{map_bw16x16}};
+    \node[mapnode, draw=uclBlue] (scale) at (6,1.35) {\includegraphics[height=2.1cm]{map_bw32x32}};
+    \node[mapnode, draw=uecdRed] (layout) at (6,-1.35) {\includegraphics[height=2.1cm]{map_2bb16x16}};
     \draw[arr] (train.east) -- node[arrlbl,above,sloped,pos=0.5]{larger grid} (scale.west);
     \draw[arr] (train.east) -- node[arrlbl,below,sloped,pos=0.5]{new topology} (layout.west);
     \node[anchor=west, align=left, font=\small] at ([xshift=6pt]scale.east)
-      {\bfseries\textcolor{uclBlue}{Scale shift}\\[1pt]{\scriptsize\color{black!55}basesWorkers32x32A}};
+      {\bfseries\textcolor{uclBlue}{Scale shift}\\[1pt]{\scriptsize\color{black!55}\itshape basesWorkers32x32A}};
     \node[anchor=west, align=left, font=\small] at ([xshift=6pt]layout.east)
-      {\bfseries\textcolor{uecdRed}{Layout shift}\\[1pt]{\scriptsize\color{black!55}TwoBasesBarracks16x16}};
-  \end{tikzpicture}\\[0.35cm]
-  {\footnotesize 100 stochastic-sampling games against 8 opponents on each map.}
+      {\bfseries\textcolor{uecdRed}{Layout shift}\\[1pt]{\scriptsize\color{black!55}\itshape TwoBasesBarracks16x16}};
+  \end{tikzpicture}\\[0.25cm]
+  {\footnotesize\color{black!55} \textbf{100} stochastic-sampling games against \textbf{8} opponents on each map.}
+  \vspace{0.35cm}
 \end{frame}
 
 \begin{frame}{Generalization: scale vs layout}
   \begin{columns}[c]
-    \begin{column}{0.62\textwidth}\centering
-      \includegraphics[width=\linewidth,height=0.76\textheight,keepaspectratio]{generalization_probes_bg.png}
+    \begin{column}{0.7\textwidth}\centering
+      \includegraphics[width=\linewidth,height=0.86\textheight,keepaspectratio]{generalization_probes_bg.png}
     \end{column}
-    \begin{column}{0.36\textwidth}
-      \small
-      Tolerates a \alert{scale} shift (32x32), but is brittle under a \alert{layout} shift.\\[0.8em]
-      Single-map training overfits \alert{topology} more than \alert{size}.
+    \begin{column}{0.3\textwidth}
+      {\small Single-map training\\ \alert{overfits} \textbf{topology}, not \textbf{size}.}\\[1.6em]
+
+      \begin{tcolorbox}[blanker,left=10pt,right=2pt,top=4pt,bottom=4pt,
+        borderline west={2.6pt}{0pt}{uclBlue}]
+        \footnotesize
+        {\textcolor{uclBlue}{\faCheckCircle}~~\textcolor{uclBlue}{\textbf{Scale shift}}~{\scriptsize(32x32)}}\\[2pt]
+        {\color{black!65}Win rate \textbf{holds}: tolerated.}
+      \end{tcolorbox}
+      \vspace{0.45em}
+
+      \begin{tcolorbox}[blanker,left=10pt,right=2pt,top=4pt,bottom=4pt,
+        borderline west={2.6pt}{0pt}{uecdRed}]
+        \footnotesize
+        {\textcolor{uecdRed}{\faTimesCircle}~~\textcolor{uecdRed}{\textbf{Layout shift}}}\\[2pt]
+        {\color{black!65}Win rate \textbf{collapses}: brittle.}
+      \end{tcolorbox}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{The five-map training pool}
+  \vspace{-0.2cm}
   \centering
-  {\small \alert{UECD-MultiMap} trains on the five open layouts of size
-   $\leq 16{\times}16$, shown here \alert{to scale}:}\\[0.5cm]
+  {\small \textbf{\color{uclBlue}UECD-MultiMap} trains on the five open layouts of size
+   $\leq 16{\times}16$, shown here \textbf{to scale}:}\\[0.45cm]
   {\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.8pt}%
   \begin{tabular}{@{}c@{\hspace{0.5cm}}c@{\hspace{0.5cm}}c@{\hspace{0.65cm}}c@{\hspace{0.5cm}}c@{}}
     \fcolorbox{black!40}{white}{\includegraphics[height=1.4cm]{map_bw8x8}} &
     \fcolorbox{black!40}{white}{\includegraphics[height=1.4cm]{map_4bw8x8}} &
     \fcolorbox{black!40}{white}{\includegraphics[height=1.4cm]{map_nwtr9x8}} &
     \fcolorbox{black!40}{white}{\includegraphics[height=2.8cm]{map_bw16x16}} &
-    \fcolorbox{black!40}{white}{\includegraphics[height=2.8cm]{map_2bb16x16}} \\[0.25em]
+    \fcolorbox{black!40}{white}{\includegraphics[height=2.8cm]{map_2bb16x16}} \\[0.12em]
     {\scriptsize\bfseries 8x8} & {\scriptsize\bfseries 8x8} & {\scriptsize\bfseries 9x8}
-      & {\scriptsize\bfseries 16x16} & {\scriptsize\bfseries 16x16} \\[0.05em]
-    {\tiny\color{black!55}basesWorkers8x8A} & {\tiny\color{black!55}FourBasesWorkers8x8}
-      & {\tiny\color{black!55}NoWhereToRun9x8} & {\tiny\color{black!55}basesWorkers16x16A}
-      & {\tiny\color{black!55}TwoBasesBarracks16x16} \\
+      & {\scriptsize\bfseries 16x16} & {\scriptsize\bfseries 16x16} \\[-0.1em]
+    {\tiny\itshape\color{black!55}basesWorkers8x8A} & {\tiny\itshape\color{black!55}FourBasesWorkers8x8}
+      & {\tiny\itshape\color{black!55}NoWhereToRun9x8} & {\tiny\itshape\color{black!55}basesWorkers16x16A}
+      & {\tiny\itshape\color{black!55}TwoBasesBarracks16x16} \\
   \end{tabular}}
-  \\[0.5cm]
-  {\footnotesize Three sizes, five topologies. The small boards are almost a
-   \alert{different game}:\\
-   tiny maps reward an immediate \alert{rush}, unlike the macro play on 16x16.}
+  \\[0.4cm]
+  {\footnotesize\color{black!70} Five maps, three sizes, \textbf{\color{uclBlue}different games}.}
 \end{frame}
 
 \begin{frame}{Extra experiment \#1: multi-map training}
   \vspace{-2.5mm}
   \begin{tcolorbox}[enhanced, colback=uclBlue!6, colframe=uclBlue!45, boxrule=0.8pt,
-      arc=4pt, left=10pt, right=10pt, top=4pt, bottom=4pt, drop fuzzy shadow=uclBlue!12]
+      arc=4pt, left=10pt, right=10pt, top=3pt, bottom=3pt]
     \centering\small
     {\color{uclBlue}\faBullseye}\;{\bfseries\color{uclBlue}GOAL:}\ Can a
-    \alert{Prioritized Level Replay (PLR)} curriculum on a \alert{padded environment}\\
-    train \emph{one} agent across every map size?
+    \textbf{Prioritized Level Replay (PLR)} curriculum\\
+    on a \textbf{padded environment} train \emph{one} agent across every map size?
   \end{tcolorbox}
-  \vspace{1mm}
+  \vspace{0.5mm}
   \begin{columns}[T]
-    \begin{column}{0.57\textwidth}\centering
-      \fitfig[0.62\textheight]{winrates_per_map_bg.png}
+    \begin{column}{0.53\textwidth}\centering
+      \fitfig[0.66\textheight]{winrates_per_map_bg.png}
     \end{column}
-    \begin{column}{0.43\textwidth}
-      \footnotesize
-      \begin{itemize}\setlength\itemsep{3pt}\setlength\leftmargini{1.1em}
-        \item \alert{UECD-SingleMap collapses on 8x8} (14th/16) - yet 8x8 is
-              only a \alert{scale} shift the probes called tolerable.
-        \item Why: tiny maps reward an immediate \alert{rush}, a strategy
-              padding cannot transfer.
-        \item \alert{UECD-MultiMap} removes the per-map collapse.
-        \item Trade: \alert{82 pts (7th)} vs 141 (1st) at home.
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Multi-map: the pipeline works}
-  \begin{columns}[T]
-    \begin{column}{0.6\textwidth}\centering
-      \fitfig[0.76\textheight]{h2h_matrix_global_bg.png}
-    \end{column}
-    \begin{column}{0.4\textwidth}
-      \footnotesize
-      \begin{itemize}\setlength\itemsep{4pt}\setlength\leftmargini{1.1em}
-        \item Head-to-head, \alert{UECD-MultiMap} beats the specialist
-              \alert{UECD-SingleMap} on nearly every matchup.
-        \item Trails only on \alert{RAISocketAI} and \alert{ObiBotKenobi}:
-              the single-map peak still scores higher.
-        \item Only \alert{200M steps / 5 maps}; more budget should flip
-              even those two.
-      \end{itemize}
-      \vspace{4pt}
-      \begin{tcolorbox}[enhanced, colback=mStandout, colframe=mStandout, coltext=white,
-          arc=3pt, boxrule=0pt, left=8pt, right=8pt, top=5pt, bottom=5pt,
-          drop fuzzy shadow=black!25]
+    \begin{column}{0.47\textwidth}
+      \scriptsize
+      \begin{tcolorbox}[enhanced, colback=uecdRed!6, colframe=uecdRed!45, boxrule=0pt,
+          borderline west={3pt}{0pt}{uecdRed}, arc=2pt, left=8pt, right=6pt, top=3pt, bottom=3pt,
+          before skip=0pt, after skip=3pt]
         \raggedright
-        {\color{uclAccent}\faCheckCircle}\ {\bfseries The \alert{PLR + padding} pipeline
-        works: a multi-map agent is feasible.}
+        {\color{uecdRed}\faExclamationTriangle}\ {\bfseries\color{uecdRed}Problem}\\[1pt]
+        On \textbf{8x8} (a \textbf{scale} shift) SingleMap collapses: tiny maps reward
+        a \alert{rush} padding cannot carry.
+      \end{tcolorbox}
+      \begin{tcolorbox}[enhanced, colback=uecdGreen!7, colframe=uecdGreen!50, boxrule=0pt,
+          borderline west={3pt}{0pt}{uecdGreen}, arc=2pt, left=8pt, right=6pt, top=3pt, bottom=3pt,
+          before skip=0pt, after skip=3pt]
+        \raggedright
+        {\color{uecdGreen}\faCheckCircle}\ {\bfseries\color{uecdGreen}Fix}\\[1pt]
+        Removes the per-map collapse; ranks \textbf{5th overall} (\textbf{64\%} vs
+        \textbf{47\%}). Below 50\% only vs the four strongest, on just
+        \textbf{200M\,/\,5 maps}.
+      \end{tcolorbox}
+      \begin{tcolorbox}[enhanced, colback=mStandout, colframe=mStandout, coltext=white,
+          arc=2pt, boxrule=0pt, left=8pt, right=6pt, top=3pt, bottom=3pt,
+          before skip=0pt, after skip=0pt, drop fuzzy shadow=black!25]
+        \raggedright
+        {\color{uclAccent}\faCheckCircle}\ {\bfseries The \alert{PLR + padding}
+        pipeline works: a multi-map agent is feasible.}
       \end{tcolorbox}
     \end{column}
   \end{columns}
@@ -1362,32 +1366,6 @@
 % =====================================================================
 \section{Discussion \& Conclusion}
 % =====================================================================
-
-\begin{frame}{Discussion: results vs the literature}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      {\bfseries\color{uclBlue}Where I differ}\\[3pt]
-      \begin{itemize}\small\setlength\itemsep{5pt}
-        \item \alert{Signal beats capacity}: the reliable gains reshape
-              perception and gradient, at near-zero parameter cost.
-        \item \alert{BC} speeds up early PPO but lifts no ceiling on a single
-              map (vs RAISocketAI's multi-map 72\%$\to$88\%).
-        \item The \alert{rush collapse} has no MicroRTS precedent: formalized,
-              quantified ($\sim$92$\times$), and mitigated.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      {\bfseries\color{uclBlue}Where I confirm}\\[3pt]
-      \begin{itemize}\small\setlength\itemsep{5pt}
-        \item \alert{Relational attention} helps multi-unit control, as in
-              StarCraft~II agents.
-        \item Single-map training \alert{overfits topology} more than scale.
-        \item \alert{Multi-metric} evaluation surfaces structure a plain win
-              rate hides.
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
 
 \begin{frame}{Honest limitations}
   \begin{columns}[T]
@@ -1474,7 +1452,6 @@
     1  & Warcraft~III screenshot      & \href{https://warcraft3.blizzard.com}{\color{uclBlue}Blizzard Entertainment (2002)} \\
     3  & MicroRTS game state          & \href{https://onlinelibrary.wiley.com/doi/10.1609/aimag.v39i1.2777}{\color{uclBlue}Onta\~n\'on et al., \emph{AI Magazine} (2018)} \\
     6  & Agent--environment loop      & \href{http://incompleteideas.net/book/the-book-2nd.html}{\color{uclBlue}Sutton \& Barto, \emph{RL: An Introduction} (2018)} \\
-    14 & AlphaStar architecture       & \href{https://www.nature.com/articles/s41586-019-1724-z}{\color{uclBlue}Vinyals et al., \emph{Nature} (2019)} \\
     \textit{all} & Interface icons     & \href{https://fontawesome.com}{\color{uclBlue}Font Awesome 5 Free (CC BY 4.0)} \\
   \end{tabular}}
   \vspace{0.65cm}\par
@@ -1500,7 +1477,7 @@
   {\footnotesize%
   \renewcommand{\arraystretch}{1.35}%
   \begin{tabular}{@{}r@{\hspace{0.5cm}}l@{}}
-    {\color{hlTeal}\faEnvelope} & \href{mailto:mathis.delsart@gmail.com}{\color{white!60}mathis.delsart@gmail.com}\\
+    {\color{hlTeal}\faEnvelope} & \href{mailto:mathis.delsart@student.uclouvain.be}{\color{white!60}mathis.delsart@student.uclouvain.be}\\
     {\color{hlTeal}\faGithub} & \href{https://github.com/mathisdelsart/microrts-drl-uecd}{\color{white!60}github.com/mathisdelsart/microrts-drl-uecd}\\
     {\color{hlTeal}\faGlobe} & \href{https://mathisdelsart.github.io/microrts-drl-uecd-website}{\color{white!60}mathisdelsart.github.io/microrts-drl-uecd-website}\\
   \end{tabular}\par}
