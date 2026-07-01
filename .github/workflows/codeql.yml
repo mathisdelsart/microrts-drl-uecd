@@ -33,7 +33,7 @@ jobs:
         # our own sources.
         language: [python, java]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # Java needs a JDK so build_bridge.sh can compile the bridge sources
       # against microrts.jar; CodeQL traces the javac invocation.
