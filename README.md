@@ -86,7 +86,7 @@ for future generalist agents and hybrid DRL/LLM systems.
 
 ## Read more
 
-- **Dissertation** (full text): [`dissertation/dissertation.pdf`](dissertation/dissertation.pdf)
+- **Dissertation** (full text): [`dissertation/dissertation.pdf`](dissertation/dissertation.pdf) (official version on [UCLouvain DIAL](https://hdl.handle.net/2078.2/49506))
 - **Short paper** (CoG 2026, accepted): [`cog-2026-paper/cog_paper.pdf`](cog-2026-paper/cog_paper.pdf)
 - **Defense slides** (20-minute oral defense deck): [`defense/slides/main.pdf`](defense/slides/main.pdf)
 - **Supplementary site** (tournament visualisations, game recordings, analyses): <https://mathisdelsart.github.io/microrts-drl-uecd-website/>

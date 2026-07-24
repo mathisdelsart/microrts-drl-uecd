@@ -5,7 +5,7 @@ LaTeX source of the master's thesis:
 > **Deep Reinforcement Learning for Competitive Agents in MicroRTS: Architecture, Training, and Tournament Evaluation**
 > Mathis Delsart, UCLouvain (EPL), 2026.
 
-The compiled PDF is shipped at [`dissertation.pdf`](dissertation.pdf).
+The compiled PDF is shipped at [`dissertation.pdf`](dissertation.pdf). The official published version is on [UCLouvain DIAL](https://hdl.handle.net/2078.2/49506).
 
 ## Layout
 
